@@ -1,0 +1,29 @@
+/* Saved alternatives use the existing FENIXA surfaces, type and purple accents. */
+body .saved-builds{margin:20px 0 24px;padding:20px;border:1px solid var(--stroke-soft);border-radius:24px;background:var(--surface-2);color:var(--text);min-width:0}
+body .saved-builds-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+body .saved-builds h3{margin:4px 0 0;font-size:18px;line-height:1.35}
+body .saved-builds h3>span{margin-left:6px;color:var(--muted);font-size:12px;font-weight:500;white-space:nowrap}
+body .saved-builds p{margin:12px 0;color:var(--muted);font-size:13px;line-height:1.6;overflow-wrap:anywhere}
+body .saved-builds summary{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:44px;cursor:pointer;list-style:none;font-size:13px;font-weight:600;color:var(--purple)}
+body .saved-builds summary::-webkit-details-marker{display:none}
+body .saved-builds details[open]>summary>span{transform:rotate(180deg)}
+body .saved-builds-list{display:grid;gap:0}
+body .saved-build-card{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid var(--stroke-soft);min-width:0}
+body .saved-build-card>div:first-child{display:grid;gap:6px;min-width:0;overflow-wrap:anywhere}
+body .saved-build-card strong{font-size:14px;line-height:1.45}
+body .saved-build-card small{color:var(--muted);font-size:12px;line-height:1.5}
+body .saved-build-card-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+body .saved-builds button,body .saved-build-dialog button{min-height:44px}
+body .saved-builds button:disabled{opacity:.5;cursor:not-allowed}
+body .saved-builds .saved-builds-warning,body .saved-build-dialog .saved-builds-warning{color:var(--text);border-left:3px solid var(--purple);padding-left:10px}
+body .saved-builds-status:empty{display:none}
+body .saved-builds summary:focus-visible,body .saved-builds button:focus-visible,body .saved-build-dialog input:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
+body .saved-build-content{padding:0 24px 20px;min-width:0}
+body .saved-build-content p{font-size:13px;line-height:1.65;color:var(--muted);overflow-wrap:anywhere}
+body .saved-build-content label{display:block;margin:20px 0 8px;font-size:13px;font-weight:600}
+body .saved-build-content input{box-sizing:border-box;width:100%;min-height:48px;padding:12px 14px;border:1px solid var(--stroke);border-radius:14px;background:var(--surface-2);color:var(--text);font:inherit;font-size:16px}
+body .saved-build-preview{display:grid;gap:8px;padding:16px;border:1px solid var(--stroke-soft);border-radius:16px;background:var(--surface-2);font-size:13px;overflow-wrap:anywhere}
+body .saved-build-preview>span{color:var(--muted)}
+body .saved-build-preview ul{margin:4px 0 0;padding-left:18px;display:grid;gap:6px;max-height:180px;overflow-y:auto;line-height:1.5}
+body #savedBuildError{color:var(--red);margin-bottom:0}
+@media(max-width:540px){body .saved-builds{padding:16px;border-radius:20px}body .saved-builds-heading{gap:12px}body .saved-build-card{align-items:flex-start;flex-direction:column;gap:8px}body .saved-build-card-actions{width:100%;justify-content:flex-end}body .saved-build-content{padding:0 18px 18px}body .saved-build-dialog .build-sheet-footer{flex-wrap:wrap}body .saved-build-dialog .build-sheet-footer button{flex:1 1 130px}}

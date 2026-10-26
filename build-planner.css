@@ -1,0 +1,100 @@
+/* Existing theme tokens and typography; native keyboard-friendly range controls. */
+.planner-levels { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }
+.planner-level { padding:18px; border:1px solid var(--stroke); border-radius:18px; background:var(--surface); color:var(--text); text-align:left; cursor:pointer; font:inherit; }
+.planner-level[aria-pressed="true"] { border-color:var(--purple); background:var(--purple-faint); }
+.planner-level-title { display:flex; justify-content:space-between; gap:12px; font-size:15px; font-weight:600; line-height:1.5; }
+.planner-selection-dot { display:block; width:18px; height:18px; flex-shrink:0; border:1px solid var(--stroke); border-radius:50%; }
+[aria-pressed="true"] > .planner-level-title .planner-selection-dot { border:5px solid var(--purple); background:var(--surface); }
+.planner-level ul { margin:14px 0 0; padding-left:16px; color:var(--muted); font-size:12px; line-height:1.7; }
+.planner-level li+li { margin-top:6px; }
+.planner-budget { padding:22px; border:1px solid var(--stroke-soft); border-radius:20px; background:var(--surface); }
+.planner-budget-heading { display:flex; align-items:baseline; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.planner-budget-heading label { font-size:14px; color:var(--muted); }
+.planner-budget-heading output { font-size:28px; line-height:1.3; font-weight:650; letter-spacing:-.04em; font-variant-numeric:tabular-nums; }
+.planner-budget input[type="range"],.my-build-budget input[type="range"] { display:block; width:100%; min-height:44px; accent-color:var(--purple); cursor:pointer; margin:12px 0 0; }
+.planner-range-labels { display:flex; justify-content:space-between; color:var(--muted); font-size:12px; }
+.planner-stepper { display:flex; align-items:center; justify-content:center; gap:16px; margin-top:18px; }
+.planner-stepper button { width:44px; height:44px; border:1px solid var(--stroke); border-radius:50%; background:var(--surface-2); color:var(--purple); cursor:pointer; font-size:24px; }
+.planner-stepper button:disabled { opacity:.35; cursor:default; }
+.planner-stepper span,.planner-budget p { color:var(--muted); font-size:12px; line-height:1.6; }
+.planner-budget p { margin:16px 0 0; }
+.planner-result { margin-top:36px; padding:28px; border:1px solid var(--stroke); border-radius:24px; background:var(--surface); }
+.planner-result-heading { display:flex; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+.planner-result-heading h2 { margin:8px 0; font-size:28px; line-height:1.3; letter-spacing:-.04em; }
+.planner-result-heading p,.planner-result-heading small { color:var(--muted); font-size:13px; }
+.planner-total { display:grid; align-content:center; gap:8px; }
+.planner-total strong { font-size:22px; font-variant-numeric:tabular-nums; line-height:1.4; }
+.planner-budget-status { padding:14px 16px; margin:24px 0; border-radius:14px; background:var(--purple-faint); color:var(--muted); font-size:13px; line-height:1.7; }
+.planner-parts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.planner-parts article { display:grid; align-content:start; gap:8px; padding:18px; border:1px solid var(--stroke-soft); border-radius:16px; }
+.planner-parts article>span { font-size:11px; font-weight:600; color:var(--purple); }
+.planner-parts h3 { margin:0 0 4px; font-size:14px; line-height:1.55; overflow-wrap:anywhere; }
+.planner-parts article>strong { font-size:13px; }
+.planner-parts small,.planner-parts a { font-size:11px; line-height:1.6; color:var(--muted); }
+.planner-gaps,.planner-fps,.planner-checks { margin-top:18px; padding:16px; background:var(--surface-2); border-radius:16px; color:var(--muted); font-size:13px; line-height:1.7; }
+.planner-result summary { min-height:28px; cursor:pointer; color:var(--text); font-weight:600; }
+.planner-result table { width:100%; border-collapse:collapse; margin:16px 0; text-align:left; font-size:12px; }
+.planner-result th,.planner-result td { padding:12px 8px; border-bottom:1px solid var(--stroke); vertical-align:top; overflow-wrap:anywhere; }
+.planner-result-actions { display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-top:24px; }
+.planner-result-actions button { min-height:48px; border-radius:14px; }
+.planner-result-actions span { font-size:12px; color:var(--muted); }
+.planner-level:focus-visible,.planner-budget button:focus-visible,.planner-budget input:focus-visible { outline:2px solid var(--purple); outline-offset:4px; }
+@media(max-width:1100px) { .planner-levels { grid-template-columns:1fr; } .planner-level ul { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px 20px; } .planner-level li+li { margin:0; } }
+@media(max-width:650px) { .planner-level ul { display:block; } .planner-level li+li { margin-top:6px; } .planner-parts { grid-template-columns:1fr; } .planner-result { padding:20px; } .planner-result-heading h2 { font-size:24px; } .planner-total strong { font-size:19px; } .planner-budget-heading output { font-size:25px; } .planner-result-actions button { width:100%; } .planner-budget { padding:18px; } .planner-result table { table-layout:fixed; } }
+
+/* Keep the result next to the control that changes it. DOM order also works on mobile. */
+body .planner-controls { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); grid-template-areas:"use levels" "budget result" "paths paths"; align-items:start; gap:24px; }
+body .planner-controls > .start-field { margin:0; padding:24px; min-width:0; }
+body .planner-controls > .start-field:first-child { grid-area:use; }
+body .planner-controls > .planner-level-field { grid-area:levels; }
+body .planner-controls > .planner-budget-field { grid-area:budget; }
+body .planner-controls > .planner-paths { grid-area:paths; display:block; }
+body .planner-controls > .planner-result { grid-area:result; margin:0; padding:24px; min-width:0; scroll-margin-top:calc(var(--storefront-header,104px) + 16px); }
+body .planner-controls .planner-budget { padding:0; border:0; background:transparent; }
+body .planner-result-heading { gap:12px; }
+body .planner-result-heading h2 { font-size:22px; margin:6px 0; }
+body .planner-result-heading p { margin:0; font-size:12px; }
+body .planner-total { gap:4px; }
+body .planner-total strong { font-size:19px; overflow-wrap:anywhere; }
+body .planner-update { color:var(--purple); font-size:12px; line-height:1.6; margin:16px 0 10px; }
+body .planner-overview { margin:0; }
+body .planner-overview > div { display:grid; grid-template-columns:82px minmax(0,1fr); gap:12px; padding:12px 10px; border-bottom:1px solid var(--stroke-soft); border-radius:8px; }
+body .planner-overview dt { display:grid; align-content:start; gap:4px; margin:0; font-size:11px; color:var(--muted); line-height:1.6; }
+body .planner-overview dd { margin:0; font-size:13px; line-height:1.6; overflow-wrap:anywhere; color:var(--text); }
+body .planner-change-badge { justify-self:start; font-size:9px; font-weight:600; color:var(--purple); }
+body .planner-overview > .is-updated,body .planner-parts > .is-updated { background:var(--purple-faint); }
+body .planner-result .planner-budget-status { margin:16px 0; padding:12px; font-size:12px; }
+body .planner-result-actions { margin-top:16px; gap:8px; }
+body .planner-result-actions button { width:100%; }
+body .planner-result-actions > span { width:100%; text-align:center; font-size:11px; }
+body #automaticImportStatus:empty { display:none; }
+body .planner-all-parts { margin-top:18px; padding:16px; background:var(--surface-2); border-radius:16px; color:var(--muted); font-size:13px; line-height:1.7; }
+body .planner-all-parts[open] > summary { margin-bottom:16px; }
+body .planner-parts { grid-template-columns:repeat(2,minmax(0,1fr)); }
+body .planner-parts article { padding:12px; background:var(--surface); }
+body .planner-budget-feedback { display:none; }
+body .planner-result,body .planner-budget-feedback { overflow-anchor:none; }
+body .planner-budget .planner-live-status { position:absolute; width:1px; height:1px; padding:0; margin:0; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
+@media(min-width:1001px) and (min-height:700px) { body .planner-controls > .planner-budget-field { position:sticky; top:calc(var(--storefront-header,104px) + 16px); } }
+@media(max-width:1000px) {
+  body .planner-controls { grid-template-columns:minmax(0,1fr); grid-template-areas:"use" "levels" "budget" "result" "paths"; gap:16px; }
+  body .planner-budget-feedback { display:grid; grid-template-columns:minmax(0,1fr) auto; grid-template-areas:"cost action" "message message"; gap:8px 12px; margin-top:18px; padding-top:16px; border-top:1px solid var(--stroke-soft); }
+  body .planner-budget-feedback > div { grid-area:cost; display:grid; gap:4px; min-width:0; }
+  body .planner-budget-feedback > div > span { color:var(--text); font-size:12px; font-weight:600; }
+  body .planner-budget-feedback strong { color:var(--purple); font-size:16px; line-height:1.5; overflow-wrap:anywhere; }
+  body .planner-budget-feedback small { font-size:10px; line-height:1.5; color:var(--muted); }
+  body .planner-budget-feedback > p { grid-area:message; margin:0; font-size:12px; }
+  body .planner-budget-feedback > button { grid-area:action; align-self:center; min-height:44px; padding:10px 12px; font-size:12px; border-radius:12px; }
+  body .planner-budget-feedback > button:focus-visible { outline:2px solid var(--purple); outline-offset:3px; }
+  body:has(#startBuild:not([hidden])) .build-quick-dock:not(:has([aria-expanded="true"])) { left:12px; right:auto; bottom:max(16px,env(safe-area-inset-bottom)); width:140px; border-radius:14px; }
+  body:has(#startBuild:not([hidden])) .build-quick-dock:not(:has([aria-expanded="true"])) .build-quick-toggle { min-height:44px; gap:6px; padding:10px; }
+  body:has(#startBuild:not([hidden])) .build-quick-dock:not(:has([aria-expanded="true"])) .build-quick-toggle > svg { display:none; }
+  body:has(#startBuild:not([hidden])) .build-quick-dock:not(:has([aria-expanded="true"])) .build-quick-toggle strong { font-size:12px; white-space:nowrap; }
+  body:has(#startBuild:not([hidden])) .build-quick-dock:not(:has([aria-expanded="true"])) #buildQuickCount { font-size:10px; white-space:nowrap; }
+}
+@media(max-width:650px) {
+  body .planner-controls > .start-field,body .planner-controls > .planner-result { padding:20px; }
+  body .planner-overview > div { grid-template-columns:68px minmax(0,1fr); gap:8px; padding:10px 0; }
+  body .planner-overview dd { font-size:12px; }
+  body .planner-parts { grid-template-columns:1fr; }
+}

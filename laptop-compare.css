@@ -1,0 +1,73 @@
+.laptop-comparison { position:sticky; top:72px; z-index:5; display:flex; flex-direction:column; max-height:calc(100dvh - 84px); }
+.laptop-comparison > .laptop-disclaimer { margin:8px 0; }
+.laptop-comparison-grid { display:flex; flex-direction:column; flex:1; min-height:0; gap:0; max-height:none; overflow:hidden; padding:0; }
+.laptop-compare-heads { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); flex-shrink:0; gap:16px; border-bottom:1px solid var(--stroke); }
+.laptop-compare-heads .laptop-compare-identity { position:static; display:grid; grid-template-columns:68px minmax(0,1fr); align-content:center; gap:4px 10px; padding:12px 0; border:0; min-width:0; }
+.laptop-compare-identity > :not(img) { grid-column:2; }
+.laptop-compare-identity img { grid-column:1; grid-row:1/span 4; height:68px; align-self:center; margin:0; }
+.laptop-compare-identity > .laptop-series-key { justify-self:start; }
+.laptop-compare-identity h4 { font-size:16px; line-height:1.3; overflow-wrap:anywhere; }
+.laptop-compare-identity strong { font-size:14px; overflow-wrap:anywhere; }
+.laptop-compare-identity small { font-size:12px; line-height:1.4; }
+.laptop-version-field { display:flex; align-items:center; gap:8px; width:100%; min-width:0; font-size:12px; }
+.laptop-version-field > span { white-space:nowrap; color:var(--muted); }
+.laptop-version-field select { width:100%; min-width:0; min-height:34px; padding:6px 28px 6px 8px; font:inherit; font-size:14px; color:var(--text); background:var(--surface-2); border:1px solid var(--stroke); border-radius:8px; }
+.laptop-version-field select:focus-visible { outline:2px solid var(--purple); outline-offset:2px; }
+.laptop-comparison-body { min-height:0; overflow:auto; overscroll-behavior:contain; padding:18px 8px 18px 0; scrollbar-gutter:stable; }
+.laptop-chart-controls { display:flex; flex-wrap:wrap; gap:8px; }
+.laptop-chart-controls button { min-height:40px; padding:8px 12px; font-size:14px; }
+.laptop-chart-controls button[aria-pressed=true] { background:var(--purple-faint); border-color:var(--purple); color:var(--text); }
+.laptop-chart-intro,.laptop-quote-help { font-size:14px; line-height:1.5; color:var(--muted); }
+.laptop-metric-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.laptop-metric-card,.laptop-price-chart,.laptop-value-note { min-width:0; padding:18px; border:1px solid var(--stroke); border-radius:14px; background:var(--surface-2); }
+.laptop-metric-card > summary { display:block; cursor:pointer; font-size:16px; font-weight:700; list-style:none; }
+.laptop-metric-card > summary::-webkit-details-marker { display:none; }
+.laptop-metric-card > summary > small { display:block; font-size:12px; font-weight:400; color:var(--muted); margin:4px 0 14px; }
+.laptop-metric-hint { display:block; font-size:14px; color:var(--purple); font-weight:500; margin-top:14px; text-decoration:underline; }
+.laptop-metric-help { border-top:1px solid var(--stroke); margin-top:14px; padding-top:6px; font-size:14px; line-height:1.6; }
+.laptop-metric-help a { color:var(--purple); }
+.laptop-bar-row { display:grid; grid-template-columns:24px minmax(30px,1fr) minmax(0,max-content); gap:6px 10px; margin-top:12px; align-items:center; }
+.laptop-bar-row > strong { grid-column:3; max-width:150px; font-size:14px; font-variant-numeric:tabular-nums; font-weight:600; overflow-wrap:anywhere; }
+.laptop-series-key { border:1px solid currentColor; border-radius:6px; padding:2px 5px; font-size:12px; font-weight:700; white-space:nowrap; }
+.laptop-series-key.series-0 { color:var(--purple); }
+.laptop-series-key.series-1 { color:#53beca; }
+body.light .laptop-series-key.series-1 { color:#087582; }
+.laptop-bar-track { height:12px; border-radius:4px; background:var(--surface); position:relative; }
+.laptop-bar-fill { display:block; height:100%; border-radius:4px; background:var(--purple); }
+.laptop-bar-fill.series-1 { background:#269ca9; }
+.laptop-bar-fill.is-options { opacity:.4; }
+.laptop-bar-marker { position:absolute; width:3px; height:16px; top:-2px; transform:translateX(-3px); background:var(--text); border-radius:2px; }
+.laptop-quote-fields,.laptop-compare-descriptions { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+.laptop-quote-fields label { display:grid; gap:8px; font-size:14px; }
+.laptop-quote-fields input { width:100%; min-width:0; min-height:44px; border:1px solid var(--stroke); border-radius:8px; padding:10px; color:var(--text); background:var(--surface-2); font:inherit; }
+.laptop-quote-fields input[aria-invalid=true] { border-color:var(--red); }
+.laptop-price-chart { margin:18px 0; }
+.laptop-price-chart h4,.laptop-value-note h4 { margin:0 0 16px; font-size:18px; }
+.laptop-price-chart small,.laptop-value-note p { font-size:14px; color:var(--muted); line-height:1.6; }
+.laptop-price-result { font-size:16px; font-weight:600; }
+.laptop-evidence-steps { display:flex; flex-wrap:wrap; gap:8px; }
+.laptop-evidence-steps span { font-size:14px; padding:8px 10px; border:1px dashed var(--stroke); border-radius:8px; }
+.laptop-compare-descriptions { margin-top:22px; padding-top:16px; border-top:1px solid var(--stroke); }
+.laptop-compare-column { font-size:16px; }
+.laptop-compare-column summary { padding:10px 0; cursor:pointer; font-size:14px; }
+.laptop-compare-column a { font-size:14px; }
+.laptop-chart-controls button:focus-visible,.laptop-metric-card > summary:focus-visible,.laptop-comparison-body:focus-visible { outline:2px solid var(--purple); outline-offset:3px; }
+@media(max-width:600px) {
+  .laptop-comparison { top:64px; max-height:calc(100dvh - 76px); }
+  .laptop-compare-heads { gap:8px; }
+  .laptop-compare-heads .laptop-compare-identity { grid-template-columns:minmax(0,1fr); padding:8px 0; justify-items:center; text-align:center; }
+  .laptop-compare-identity > :not(img),.laptop-compare-identity img { grid-column:1; grid-row:auto; }
+  .laptop-compare-identity img { height:58px; }
+  .laptop-compare-identity > .laptop-series-key { justify-self:center; }
+  .laptop-compare-identity h4 { font-size:14px; }
+  .laptop-compare-identity strong { font-size:12px; }
+  .laptop-compare-identity small { font-size:12px; }
+  .laptop-version-field { flex-direction:column; gap:3px; }
+  .laptop-version-field select { padding:6px 22px 6px 5px; font-size:12px; }
+  .laptop-metric-grid { grid-template-columns:1fr; }
+  .laptop-chart-controls { gap:6px; }
+  .laptop-chart-controls button { font-size:14px; padding:8px; }
+  .laptop-metric-card { padding:14px; }
+  .laptop-quote-fields,.laptop-compare-descriptions { grid-template-columns:1fr; }
+  .laptop-comparison-body { padding-top:12px; }
+}

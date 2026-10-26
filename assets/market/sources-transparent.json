@@ -1,0 +1,4230 @@
+{
+  "images": [
+  {
+    "productId": "market-speedlogic-54281",
+    "model": "Antec MEGA850 Gold ATX 3.1 · etiqueta 850W preservada",
+    "path": "assets/market/market-speedlogic-54281-reviewed-outline.png",
+    "imageUrl": "https://www.antec.com/product/power/images/mega-850-atx3-1-pdt01-1.png",
+    "sourcePage": "https://www.antec.com/product/power/mega-850-atx3-1",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "originalPath": "assets/market/antec-mega-850w-official.png",
+    "originalSha256": "1f9111047d561e665b1dee942a013ff686845323c36dbc30acf65a389dce269c",
+    "sha256": "fa19cd52b741805d7c2669221700df42e36fc433dcc50d070479d2ec5c968478",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "sourceHadAlpha": true,
+      "originalAlphaNeverIncreased": true,
+      "outlines": [[[249,362],[809,0],[1228,555],[1194,655],[676,1016],[250,370]]],
+      "rgbPixelsChanged": 0,
+      "visualReviewRequired": true,
+      "guardPoints": [[690,480],[980,770],[350,395],[790,120]],
+      "visualReview": "Original y resultado comparados a resolución nativa 1229×1116 en oscuro y claro. Solo se elimina la sombra exterior triangular; rejilla, tornillos, borde metálico, Antec, texto 850W y sello de la etiqueta se conservan. RGB idéntico y alfa no incrementado. No recrear el producto ni certificar stock local."
+    },
+    "rights": "Fotografía oficial de Antec, derechos reservados. No licencia abierta ni autorización comercial específica comprobada. Original oficial y anterior de tienda conservados; procedencia y transformación documentadas."
+  },
+  {
+    "productId": "market-speedlogic-54280",
+    "model": "Antec MEGA1000 Gold ATX 3.1 · etiqueta 1000W preservada",
+    "path": "assets/market/market-speedlogic-54280-reviewed-outline.png",
+    "imageUrl": "https://www.antec.com/product/power/images/mega-1000-atx3-1-pdt01-1.png",
+    "sourcePage": "https://www.antec.com/product/power/mega-1000-atx3-1",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "originalPath": "assets/market/antec-mega-1000w-official.png",
+    "originalSha256": "fad030e3ccb6b37d8718f40ee2c1492ed666b06ab8e8eb7414a8aae7b1fc7f34",
+    "sha256": "18d9a95f04a8855047a93965fdb6e7c4f41826a63127ba737c146aafd7bf1447",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "sourceHadAlpha": true,
+      "originalAlphaNeverIncreased": true,
+      "outlines": [[[249,362],[809,0],[1228,555],[1194,655],[676,1016],[250,370]]],
+      "rgbPixelsChanged": 0,
+      "visualReviewRequired": true,
+      "guardPoints": [[690,480],[980,770],[350,395],[790,120]],
+      "visualReview": "Cotejo individual con el original 1000W a resolución nativa 1229×1116, oscuro/claro. Misma orientación fotográfica, pero etiqueta 1000W propia conservada; no reutilizar la fotografía 850W. Solo sombra exterior triangular retirada, sin modificación RGB ni aumento del alfa original. Rejilla, tornillos y bordes intactos."
+    },
+    "rights": "Fotografía oficial de Antec, derechos reservados. No licencia abierta ni autorización comercial específica comprobada. Original oficial y anterior de tienda conservados; procedencia y transformación documentadas."
+  },
+  {
+    "productId": "market-speedlogic-54286",
+    "model": "Lenovo Legion K310 RGB Gaming Keyboard · fotografía oficial de familia, layout US English",
+    "path": "assets/market/lenovo-legion-k310-family-official.png",
+    "imageUrl": "https://download.lenovo.com/km/media/images/ACC500332/K310_s_20250415024718225.png",
+    "sourcePage": "https://support.lenovo.com/vg/en/accessories/acc500332-lenovo-legion-k310-rgb-gaming-keyboard-overview-and-service-parts",
+    "sourceType": "manufacturer_product_family_asset",
+    "checkedAt": "2026-10-03",
+    "sha256": "fbf64b4acac6c15a1f7492c0900ccdde433400ae33eb889cfab28239f8d0efc0",
+    "originalPath": "assets/market/market-speedlogic-54286.webp",
+    "originalSha256": "3a07ebabcaba13751c5a54393a1c6aa93852d2e1448a724e95bd4b4860f28cb1",
+    "imageReview": "Archivo RGBA original de Lenovo, 600×240, alfa 0–255 y esquinas transparentes. Modelo K310 y diseño frontal cotejados con soporte oficial y foto existente. Sin extracción, escalado, IA ni retoque. Vista US English; el modelo de tienda no declara part number/layout regional, por lo que no se certifica su SKU ni la tecla de una revisión distinta. Original con marca de agua preservada, no borrada ni editada.",
+    "region": "US English en la imagen; disponibilidad y layout colombianos pendientes",
+    "rights": "Fotografía publicada por Lenovo; derechos reservados de su titular. No se declara licencia abierta ni permiso comercial específico para FENIXA. Fuente y atribución conservadas."
+  },
+{
+  "productId": "market-ryzen-9600x",
+  "model": "AMD Ryzen 5 9600X · imagen original preservada",
+  "path": "assets/market/market-ryzen-9600x-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2024/09/2096-300x300.png",
+  "sourcePage": "https://speedlogic.com.co/tienda/procesadores/procesador-amd-ryzen-5-9600x-54-6core-radeon-am5-no-fan/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "9ee99398a4ca6de15cf12b67b4fda421b15041a96ca06ece4b38d2fc28862f19",
+  "originalPath": "assets/market/market-ryzen-9600x.webp",
+  "originalSha256": "a9a66ee3509723601f860f4e9c058102e731f0db2e8a58baa5cfc9f886f615b2",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          63,
+          65
+        ],
+        [
+          213,
+          38
+        ],
+        [
+          237,
+          48
+        ],
+        [
+          238,
+          242
+        ],
+        [
+          213,
+          243
+        ],
+        [
+          61,
+          240
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        130,
+        144
+      ],
+      [
+        94,
+        210
+      ],
+      [
+        221,
+        142
+      ]
+    ],
+    "sourceHadAlpha": true,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-inset-cpu-ram-final-review\\market-ryzen-9600x-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-speedlogic-31655",
+  "model": "PROCESADOR AMD RYZEN 7-7800X 3D 4,2 8CORES RADEON AM5 NO INCLUYE EL DISIPADOR · imagen original preservada",
+  "path": "assets/market/market-speedlogic-31655-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2024/05/2089-300x300.png",
+  "sourcePage": "https://speedlogic.com.co/tienda/procesadores/amd/procesador-amd-ryzen-7-7800x-3d-42-8cores-radeon-am5-no-incluye-el-disipador/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "1916358e08e68776c2d10c2751bb326b84411bebedf767826a11bc82d754b236",
+  "originalPath": "assets/market/market-speedlogic-31655.webp",
+  "originalSha256": "9b88924ea64e10e06810a4752db14d8143eeca02783226c798fe56a055c13d3d",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          50,
+          60
+        ],
+        [
+          180,
+          34
+        ],
+        [
+          238,
+          57
+        ],
+        [
+          240,
+          214
+        ],
+        [
+          180,
+          218
+        ],
+        [
+          48,
+          216
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        110,
+        139
+      ],
+      [
+        209,
+        144
+      ],
+      [
+        93,
+        208
+      ]
+    ],
+    "sourceHadAlpha": true,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-inset-cpu-ram-final-review\\market-speedlogic-31655-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-ryzen-5800xt",
+  "model": "AMD Ryzen 7 5800XT · imagen original preservada",
+  "path": "assets/market/market-ryzen-5800xt-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2024/09/2099-300x300.png",
+  "sourcePage": "https://speedlogic.com.co/tienda/procesadores/procesador-amd-ryzen-7-5800xt-38-32m-8core-am4-no-fan-no-video/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "5a32e25c0d90616be99bfb020e00d164439ee7ebe35d2065f715b3e327560592",
+  "originalPath": "assets/market/market-ryzen-5800xt.webp",
+  "originalSha256": "717a7ecfb0704c99bebe1c57de49c6f6d26173bba4b90a13eb41bcaf2402a2e7",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          62,
+          49
+        ],
+        [
+          158,
+          34
+        ],
+        [
+          236,
+          45
+        ],
+        [
+          241,
+          199
+        ],
+        [
+          158,
+          221
+        ],
+        [
+          62,
+          189
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        97,
+        117
+      ],
+      [
+        198,
+        128
+      ],
+      [
+        144,
+        197
+      ]
+    ],
+    "sourceHadAlpha": true,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-inset-alpha-refined\\market-ryzen-5800xt-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-ryzen-9950x3d",
+  "model": "AMD Ryzen 9 9950X3D · imagen original preservada",
+  "path": "assets/market/market-ryzen-9950x3d-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2024/09/2098-300x300.png",
+  "sourcePage": "https://speedlogic.com.co/tienda/procesadores/amd/procesador-amd-ryzen-9-9950x-3d-57-16-cores-radeon-am5-no-fan/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "c3ede8c04fea713a78bbf542d7b6a417f15c94a2e8b2a56cc80d024c1ee7234f",
+  "originalPath": "assets/market/market-ryzen-9950x3d.webp",
+  "originalSha256": "22b272121798143acb5e57fd64ab9eec42293baf88479d12a4e060a1507ee4dc",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          73,
+          75
+        ],
+        [
+          205,
+          51
+        ],
+        [
+          229,
+          60
+        ],
+        [
+          229,
+          232
+        ],
+        [
+          71,
+          231
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        130,
+        143
+      ],
+      [
+        93,
+        200
+      ],
+      [
+        217,
+        147
+      ]
+    ],
+    "sourceHadAlpha": true,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-inset-cpu-ram-final-review\\market-ryzen-9950x3d-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-speedlogic-33536",
+  "model": "Caja Antec Cx200m Elite Vidrio Templado + 5 Rgb Fijo Negro · imagen original preservada",
+  "path": "assets/market/market-speedlogic-33536-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2024/08/16513-300x300.png",
+  "sourcePage": "https://speedlogic.com.co/tienda/cajas/caja-antec-cx200m-elite-vidrio-templado-5-rgb-fijo-negro/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "0b6188a6904e1d6dfd8958e89b0531fe4c67c87dbec8611eb20b05bf5a868cc5",
+  "originalPath": "assets/market/market-speedlogic-33536.webp",
+  "originalSha256": "f8cc54b3e55dccde7dd4baae64e52f8a1e187d910520879aa8b06f92cfff1371",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          62,
+          68
+        ],
+        [
+          148,
+          37
+        ],
+        [
+          238,
+          52
+        ],
+        [
+          240,
+          250
+        ],
+        [
+          149,
+          254
+        ],
+        [
+          59,
+          246
+        ]
+      ],
+      [
+        [
+          67,
+          247
+        ],
+        [
+          84,
+          249
+        ],
+        [
+          83,
+          254
+        ],
+        [
+          79,
+          256
+        ],
+        [
+          69,
+          255
+        ]
+      ],
+      [
+        [
+          136,
+          253
+        ],
+        [
+          155,
+          254
+        ],
+        [
+          156,
+          261
+        ],
+        [
+          153,
+          263
+        ],
+        [
+          140,
+          263
+        ],
+        [
+          137,
+          261
+        ]
+      ],
+      [
+        [
+          210,
+          253
+        ],
+        [
+          229,
+          253
+        ],
+        [
+          228,
+          259
+        ],
+        [
+          222,
+          261
+        ],
+        [
+          211,
+          260
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        74,
+        250
+      ],
+      [
+        145,
+        258
+      ],
+      [
+        218,
+        256
+      ]
+    ],
+    "sourceHadAlpha": true,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-inset-alpha-refined\\market-speedlogic-33536-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-speedlogic-33550",
+  "model": "Caja Antec Cx200m Elite Vidrio Templado + 5 Rgb Fijo Blanco · imagen original preservada",
+  "path": "assets/market/market-speedlogic-33550-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2024/08/16512-300x300.png",
+  "sourcePage": "https://speedlogic.com.co/tienda/cajas/caja-antec-cx200m-elite-vidrio-templado-5-rgb-fijo-blanco/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "935836ccf682e24a105e4518a2328776bea0e4ac433ca43cfd62ffe41cdfe46a",
+  "originalPath": "assets/market/market-speedlogic-33550.webp",
+  "originalSha256": "1e40bfef96d26ed5a105b740ee096cd0f95d2683a027755ce14940183749fb88",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          62,
+          68
+        ],
+        [
+          148,
+          37
+        ],
+        [
+          238,
+          52
+        ],
+        [
+          240,
+          250
+        ],
+        [
+          149,
+          254
+        ],
+        [
+          59,
+          246
+        ]
+      ],
+      [
+        [
+          67,
+          247
+        ],
+        [
+          84,
+          249
+        ],
+        [
+          83,
+          254
+        ],
+        [
+          79,
+          256
+        ],
+        [
+          69,
+          255
+        ]
+      ],
+      [
+        [
+          136,
+          253
+        ],
+        [
+          155,
+          254
+        ],
+        [
+          156,
+          261
+        ],
+        [
+          153,
+          263
+        ],
+        [
+          140,
+          263
+        ],
+        [
+          137,
+          261
+        ]
+      ],
+      [
+        [
+          210,
+          253
+        ],
+        [
+          229,
+          253
+        ],
+        [
+          228,
+          259
+        ],
+        [
+          222,
+          261
+        ],
+        [
+          211,
+          260
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        209,
+        184
+      ],
+      [
+        145,
+        258
+      ],
+      [
+        218,
+        256
+      ]
+    ],
+    "sourceHadAlpha": true,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-inset-alpha-refined\\market-speedlogic-33550-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-speedlogic-37899",
+  "model": "Fuente Antec G850w 80p Gold 115v Semi Modular · imagen original preservada",
+  "path": "assets/market/market-speedlogic-37899-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2025/02/14244-300x300.png",
+  "sourcePage": "https://speedlogic.com.co/tienda/fuentes/fuente-antec-g850w-80p-gold-115v-semi-modular/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "db880f877dacc6dd85e0f76ed2d80275df5f6830a79ebd01895e2105abf8b74f",
+  "originalPath": "assets/market/market-speedlogic-37899.webp",
+  "originalSha256": "f5dbeaf59ea598edcba4d33e9f57c94de3fb17f53d9b93898285701ee516d6ad",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          28,
+          33
+        ],
+        [
+          76,
+          25
+        ],
+        [
+          210,
+          33
+        ],
+        [
+          211,
+          134
+        ],
+        [
+          99,
+          143
+        ],
+        [
+          100,
+          163
+        ],
+        [
+          76,
+          169
+        ],
+        [
+          28,
+          155
+        ]
+      ],
+      [
+        [
+          109,
+          164
+        ],
+        [
+          186,
+          124
+        ],
+        [
+          206,
+          127
+        ],
+        [
+          210,
+          136
+        ],
+        [
+          230,
+          139
+        ],
+        [
+          278,
+          159
+        ],
+        [
+          275,
+          213
+        ],
+        [
+          269,
+          214
+        ],
+        [
+          269,
+          224
+        ],
+        [
+          196,
+          277
+        ],
+        [
+          125,
+          240
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        100,
+        120
+      ],
+      [
+        190,
+        190
+      ],
+      [
+        196,
+        257
+      ]
+    ],
+    "sourceHadAlpha": true,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-inset-alpha-refined\\market-speedlogic-37899-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-clones-90789",
+  "model": "MEMORIA RAM PARA PORTATIL 16GB 5600MHz DDR5 · imagen original preservada",
+  "path": "assets/market/market-clones-90789-reviewed-outline.png",
+  "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2024/07/MEMORIA-RAM-PARA-PORTATIL-16GB-5600MHz-DDR5.png",
+  "sourcePage": "https://clonesyperifericos.com/comprar/memoria-ram-para-portatil-16gb-5600mhz-ddr5/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "98a4b5b5a5255f1063b8fb0cbae2a36238344265886b6cac32b27a2adaac5ab5",
+  "originalPath": "assets/market/market-clones-90789.webp",
+  "originalSha256": "315b43a364b9f908f0102cc6e1a66054e6ec4287266061f012f9d30a4780dcba",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          53,
+          42
+        ],
+        [
+          164,
+          42
+        ],
+        [
+          172,
+          46
+        ],
+        [
+          175,
+          53
+        ],
+        [
+          175,
+          411
+        ],
+        [
+          172,
+          420
+        ],
+        [
+          165,
+          425
+        ],
+        [
+          54,
+          425
+        ],
+        [
+          47,
+          423
+        ],
+        [
+          43,
+          415
+        ],
+        [
+          43,
+          51
+        ],
+        [
+          47,
+          45
+        ]
+      ],
+      [
+        [
+          197,
+          306
+        ],
+        [
+          448,
+          307
+        ],
+        [
+          449,
+          321
+        ],
+        [
+          445,
+          322
+        ],
+        [
+          445,
+          339
+        ],
+        [
+          449,
+          341
+        ],
+        [
+          450,
+          401
+        ],
+        [
+          443,
+          401
+        ],
+        [
+          443,
+          415
+        ],
+        [
+          318,
+          415
+        ],
+        [
+          318,
+          409
+        ],
+        [
+          315,
+          402
+        ],
+        [
+          312,
+          408
+        ],
+        [
+          312,
+          415
+        ],
+        [
+          197,
+          415
+        ],
+        [
+          195,
+          412
+        ],
+        [
+          195,
+          309
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [
+      [
+        [
+          71,
+          63
+        ],
+        [
+          105,
+          53
+        ],
+        [
+          110,
+          53
+        ],
+        [
+          143,
+          62
+        ],
+        [
+          146,
+          65
+        ],
+        [
+          145,
+          69
+        ],
+        [
+          141,
+          73
+        ],
+        [
+          74,
+          73
+        ],
+        [
+          70,
+          69
+        ]
+      ]
+    ],
+    "guardPoints": [
+      [
+        125,
+        290
+      ],
+      [
+        280,
+        365
+      ],
+      [
+        230,
+        410
+      ],
+      [
+        152,
+        86
+      ]
+    ],
+    "sourceHadAlpha": false,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-inset-cpu-ram-final-review\\market-clones-90789-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-clones-90791",
+  "model": "MEMORIA RAM PARA PORTATIL 32GB 5600MHz DDR5 · imagen original preservada",
+  "path": "assets/market/market-clones-90791-reviewed-outline.png",
+  "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2024/07/MEMORIA-RAM-PARA-PORTATIL-32GB-5600MHz-DDR5.png",
+  "sourcePage": "https://clonesyperifericos.com/comprar/memoria-ram-para-portatil-32gb-5600mhz-ddr5/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "f0ac91ae3df4372f303d3cffb3dd5b08d89bd1c98094a2fde76e54f8f66c36bd",
+  "originalPath": "assets/market/market-clones-90791.webp",
+  "originalSha256": "905e79bb8628226025e6b09246b090a25fc3c773a27258d09c3559598ba9b45d",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          44,
+          33
+        ],
+        [
+          165,
+          33
+        ],
+        [
+          172,
+          36
+        ],
+        [
+          176,
+          45
+        ],
+        [
+          176,
+          440
+        ],
+        [
+          172,
+          447
+        ],
+        [
+          44,
+          447
+        ],
+        [
+          36,
+          444
+        ],
+        [
+          33,
+          439
+        ],
+        [
+          33,
+          43
+        ],
+        [
+          37,
+          36
+        ]
+      ],
+      [
+        [
+          197,
+          306
+        ],
+        [
+          448,
+          307
+        ],
+        [
+          449,
+          321
+        ],
+        [
+          445,
+          322
+        ],
+        [
+          445,
+          339
+        ],
+        [
+          449,
+          341
+        ],
+        [
+          450,
+          401
+        ],
+        [
+          443,
+          401
+        ],
+        [
+          443,
+          415
+        ],
+        [
+          318,
+          415
+        ],
+        [
+          318,
+          409
+        ],
+        [
+          315,
+          402
+        ],
+        [
+          312,
+          408
+        ],
+        [
+          312,
+          415
+        ],
+        [
+          197,
+          415
+        ],
+        [
+          195,
+          412
+        ],
+        [
+          195,
+          309
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [
+      [
+        [
+          63,
+          55
+        ],
+        [
+          101,
+          46
+        ],
+        [
+          107,
+          46
+        ],
+        [
+          141,
+          55
+        ],
+        [
+          144,
+          58
+        ],
+        [
+          144,
+          63
+        ],
+        [
+          140,
+          67
+        ],
+        [
+          68,
+          67
+        ],
+        [
+          62,
+          63
+        ]
+      ]
+    ],
+    "guardPoints": [
+      [
+        75,
+        335
+      ],
+      [
+        280,
+        365
+      ],
+      [
+        230,
+        410
+      ],
+      [
+        152,
+        86
+      ]
+    ],
+    "sourceHadAlpha": false,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-last-hardware-first-review\\market-clones-90791-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-speedlogic-12736",
+  "model": "Teclado Redragon Shiva K512w Rgb Blanco · imagen original preservada",
+  "path": "assets/market/market-speedlogic-12736-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2021/11/20129-300x300.png",
+  "sourcePage": "https://speedlogic.com.co/tienda/teclados/teclado-redragon-shiva-k512w-rgb-blanco/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "da4cb30c07b1955d65d577541b7722111fa1587c548a1daf8923293a2b3d8984",
+  "originalPath": "assets/market/market-speedlogic-12736.webp",
+  "originalSha256": "92abda7ca462305944df24460a3625428ad00668e73ba2102da1a44f5bb58ef1",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          27,
+          131
+        ],
+        [
+          271,
+          131
+        ],
+        [
+          276,
+          134
+        ],
+        [
+          277,
+          239
+        ],
+        [
+          275,
+          244
+        ],
+        [
+          271,
+          246
+        ],
+        [
+          28,
+          246
+        ],
+        [
+          24,
+          243
+        ],
+        [
+          23,
+          136
+        ]
+      ],
+      [
+        [
+          249,
+          55
+        ],
+        [
+          251,
+          55
+        ],
+        [
+          251,
+          131
+        ],
+        [
+          249,
+          131
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        50,
+        150
+      ],
+      [
+        150,
+        160
+      ],
+      [
+        250,
+        110
+      ]
+    ],
+    "sourceHadAlpha": true,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-inset-cpu-ram-final-review\\market-speedlogic-12736-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-speedlogic-45349",
+  "model": "Disipador Arctic Freezer 36 · imagen original preservada",
+  "path": "assets/market/market-speedlogic-45349-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2025/10/1-300x300.jpg",
+  "sourcePage": "https://speedlogic.com.co/tienda/refrigeraciones/disipadores/disipador-arctic-freezer-36/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "956c3ae019c6a3c8df30530dcb99dd6d18438ae4b387d01108c342af978e51f3",
+  "originalPath": "assets/market/market-speedlogic-45349.webp",
+  "originalSha256": "e6341b8768b68ac6401125051a2c5abb735803852dcf8e754b9ea2021cb63b32",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          64,
+          31
+        ],
+        [
+          235,
+          31
+        ],
+        [
+          241,
+          37
+        ],
+        [
+          241,
+          209
+        ],
+        [
+          235,
+          215
+        ],
+        [
+          64,
+          215
+        ],
+        [
+          58,
+          209
+        ],
+        [
+          58,
+          37
+        ]
+      ],
+      [
+        [
+          82,
+          215
+        ],
+        [
+          96,
+          215
+        ],
+        [
+          96,
+          235
+        ],
+        [
+          102,
+          249
+        ],
+        [
+          114,
+          258
+        ],
+        [
+          131,
+          265
+        ],
+        [
+          130,
+          271
+        ],
+        [
+          115,
+          267
+        ],
+        [
+          101,
+          260
+        ],
+        [
+          92,
+          250
+        ],
+        [
+          86,
+          235
+        ]
+      ],
+      [
+        [
+          204,
+          215
+        ],
+        [
+          218,
+          215
+        ],
+        [
+          215,
+          236
+        ],
+        [
+          207,
+          251
+        ],
+        [
+          198,
+          261
+        ],
+        [
+          183,
+          268
+        ],
+        [
+          170,
+          271
+        ],
+        [
+          169,
+          265
+        ],
+        [
+          187,
+          258
+        ],
+        [
+          199,
+          245
+        ],
+        [
+          204,
+          230
+        ]
+      ],
+      [
+        [
+          137,
+          217
+        ],
+        [
+          155,
+          217
+        ],
+        [
+          155,
+          229
+        ],
+        [
+          162,
+          233
+        ],
+        [
+          162,
+          242
+        ],
+        [
+          171,
+          244
+        ],
+        [
+          172,
+          254
+        ],
+        [
+          170,
+          269
+        ],
+        [
+          130,
+          269
+        ],
+        [
+          127,
+          254
+        ],
+        [
+          131,
+          243
+        ],
+        [
+          138,
+          241
+        ],
+        [
+          138,
+          230
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        150,
+        140
+      ],
+      [
+        150,
+        258
+      ],
+      [
+        86,
+        225
+      ],
+      [
+        212,
+        225
+      ]
+    ],
+    "sourceHadAlpha": false,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-last-hardware-first-review\\market-speedlogic-45349-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-speedlogic-46077",
+  "model": "Caja Antec Ax20 Extreme Vidrio Templado + 5 Rgb Fijo · imagen original preservada",
+  "path": "assets/market/market-speedlogic-46077-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2025/11/16576_2-300x300.jpg",
+  "sourcePage": "https://speedlogic.com.co/tienda/cajas/caja-antec-ax20-extreme-vidrio-templado-5-rgb-fijo/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "b5b33cb98140d535be2da634fc98c20282139f5e35bcc5118be908fd5ef86be8",
+  "originalPath": "assets/market/market-speedlogic-46077.webp",
+  "originalSha256": "4eed9945d06790e740af20b45b729a8d347e43bf28ec3abed25559cb2ab3151c",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          61,
+          55
+        ],
+        [
+          122,
+          4
+        ],
+        [
+          159,
+          4
+        ],
+        [
+          236,
+          17
+        ],
+        [
+          242,
+          287
+        ],
+        [
+          129,
+          291
+        ],
+        [
+          59,
+          284
+        ]
+      ],
+      [
+        [
+          66,
+          284
+        ],
+        [
+          78,
+          285
+        ],
+        [
+          78,
+          290
+        ],
+        [
+          68,
+          290
+        ]
+      ],
+      [
+        [
+          114,
+          291
+        ],
+        [
+          130,
+          291
+        ],
+        [
+          130,
+          296
+        ],
+        [
+          117,
+          297
+        ],
+        [
+          114,
+          295
+        ]
+      ],
+      [
+        [
+          209,
+          290
+        ],
+        [
+          225,
+          289
+        ],
+        [
+          225,
+          294
+        ],
+        [
+          211,
+          294
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        64,
+        218
+      ],
+      [
+        213,
+        216
+      ],
+      [
+        125,
+        294
+      ]
+    ],
+    "sourceHadAlpha": false,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-last-hardware-first-review\\market-speedlogic-46077-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-speedlogic-54279",
+  "model": "Caja Antec Vcx100m Vidrio Templado + 5 Argb · imagen original preservada",
+  "path": "assets/market/market-speedlogic-54279-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2026/07/16635_1-300x300.jpg",
+  "sourcePage": "https://speedlogic.com.co/tienda/cajas/caja-antec-vcx100m-vidrio-templado-5-argb/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "8d1e29cfee4819ee30b7df16b1dcb8b00711078e595d9418129ccd57ae97e15b",
+  "originalPath": "assets/market/market-speedlogic-54279.webp",
+  "originalSha256": "f118467bd8e742f547ef4e99f9387a9391fdcb576893d6992115f4ed1d5f086c",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          63,
+          54
+        ],
+        [
+          149,
+          29
+        ],
+        [
+          237,
+          45
+        ],
+        [
+          240,
+          262
+        ],
+        [
+          155,
+          275
+        ],
+        [
+          61,
+          252
+        ]
+      ],
+      [
+        [
+          139,
+          272
+        ],
+        [
+          161,
+          271
+        ],
+        [
+          161,
+          280
+        ],
+        [
+          150,
+          283
+        ],
+        [
+          138,
+          278
+        ]
+      ],
+      [
+        [
+          66,
+          252
+        ],
+        [
+          79,
+          255
+        ],
+        [
+          79,
+          259
+        ],
+        [
+          71,
+          260
+        ],
+        [
+          63,
+          257
+        ]
+      ],
+      [
+        [
+          214,
+          265
+        ],
+        [
+          234,
+          263
+        ],
+        [
+          233,
+          267
+        ],
+        [
+          218,
+          269
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        95,
+        190
+      ],
+      [
+        195,
+        210
+      ],
+      [
+        150,
+        277
+      ]
+    ],
+    "sourceHadAlpha": false,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-last-hardware-refined\\market-speedlogic-54279-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-clones-84096",
+  "model": "DISIPADOR NOCTUA NH-U12S REDUX · imagen original preservada",
+  "path": "assets/market/market-clones-84096-reviewed-outline.png",
+  "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/Disipador-Noctua-NH-U12S-REDUX-Gris-2.jpg",
+  "sourcePage": "https://clonesyperifericos.com/comprar/disipador-noctua-120mm-nh-u12s-redux-gris/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "2093928161743bc34ebfbebb52736fb096adbbe0eec8740996866db4d5fd58c5",
+  "originalPath": "assets/market/market-clones-84096.webp",
+  "originalSha256": "c6d5a6516c4ce0f4a19c06bcd471a6019d6815bc964bd56243c8744165eb5c7b",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          147,
+          34
+        ],
+        [
+          335,
+          34
+        ],
+        [
+          342,
+          42
+        ],
+        [
+          343,
+          229
+        ],
+        [
+          337,
+          239
+        ],
+        [
+          145,
+          240
+        ],
+        [
+          138,
+          233
+        ],
+        [
+          136,
+          223
+        ],
+        [
+          136,
+          51
+        ],
+        [
+          140,
+          42
+        ]
+      ],
+      [
+        [
+          155,
+          240
+        ],
+        [
+          170,
+          240
+        ],
+        [
+          176,
+          258
+        ],
+        [
+          187,
+          274
+        ],
+        [
+          207,
+          285
+        ],
+        [
+          207,
+          299
+        ],
+        [
+          190,
+          290
+        ],
+        [
+          174,
+          274
+        ],
+        [
+          164,
+          257
+        ]
+      ],
+      [
+        [
+          309,
+          240
+        ],
+        [
+          325,
+          240
+        ],
+        [
+          320,
+          259
+        ],
+        [
+          307,
+          277
+        ],
+        [
+          288,
+          293
+        ],
+        [
+          278,
+          300
+        ],
+        [
+          276,
+          284
+        ],
+        [
+          293,
+          270
+        ],
+        [
+          304,
+          253
+        ]
+      ],
+      [
+        [
+          204,
+          278
+        ],
+        [
+          225,
+          275
+        ],
+        [
+          249,
+          276
+        ],
+        [
+          277,
+          279
+        ],
+        [
+          280,
+          292
+        ],
+        [
+          278,
+          301
+        ],
+        [
+          205,
+          301
+        ]
+      ],
+      [
+        [
+          234,
+          240
+        ],
+        [
+          248,
+          240
+        ],
+        [
+          248,
+          278
+        ],
+        [
+          234,
+          278
+        ]
+      ],
+      [
+        [
+          100,
+          365
+        ],
+        [
+          245,
+          365
+        ],
+        [
+          248,
+          363
+        ],
+        [
+          251,
+          364
+        ],
+        [
+          251,
+          443
+        ],
+        [
+          244,
+          451
+        ],
+        [
+          100,
+          451
+        ]
+      ],
+      [
+        [
+          268,
+          344
+        ],
+        [
+          367,
+          344
+        ],
+        [
+          374,
+          347
+        ],
+        [
+          374,
+          448
+        ],
+        [
+          270,
+          448
+        ],
+        [
+          264,
+          444
+        ],
+        [
+          264,
+          348
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        150,
+        50
+      ],
+      [
+        330,
+        50
+      ],
+      [
+        238,
+        160
+      ],
+      [
+        240,
+        263
+      ],
+      [
+        215,
+        289
+      ],
+      [
+        145,
+        400
+      ],
+      [
+        300,
+        400
+      ]
+    ],
+    "sourceHadAlpha": false,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-last-hardware-first-review\\market-clones-84096-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+{
+  "productId": "market-speedlogic-28636",
+  "model": "Refrigeración Liquida Cougar Poseidon Elite Argb 240 Blanca · imagen original preservada",
+  "path": "assets/market/market-speedlogic-28636-reviewed-outline.png",
+  "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2024/01/11130-300x300.png",
+  "sourcePage": "https://speedlogic.com.co/tienda/refrigeraciones/liquidas/refrigeracion-liquida-cougar-poseidon-elite-argb-240-blanca/",
+  "sourceType": "existing_photo_local_outline_extraction",
+  "checkedAt": "2026-10-03",
+  "sha256": "e4f750f862acd94cc967e0f1c07e95df382189bfe0f8e2f4ffe7b53862135ead",
+  "originalPath": "assets/market/market-speedlogic-28636.webp",
+  "originalSha256": "7910b8a2769578890cd3edb9af887c10c24e60c5105a0b1249bcd8629cc43d68",
+  "extraction": {
+    "method": "per_photo_explicit_silhouettes_alpha_only",
+    "outlines": [
+      [
+        [
+          23,
+          92
+        ],
+        [
+          62,
+          92
+        ],
+        [
+          70,
+          97
+        ],
+        [
+          136,
+          102
+        ],
+        [
+          146,
+          105
+        ],
+        [
+          188,
+          109
+        ],
+        [
+          196,
+          117
+        ],
+        [
+          198,
+          195
+        ],
+        [
+          190,
+          203
+        ],
+        [
+          58,
+          211
+        ],
+        [
+          49,
+          211
+        ],
+        [
+          23,
+          211
+        ]
+      ],
+      [
+        [
+          216,
+          129
+        ],
+        [
+          245,
+          129
+        ],
+        [
+          257,
+          135
+        ],
+        [
+          264,
+          146
+        ],
+        [
+          264,
+          158
+        ],
+        [
+          258,
+          172
+        ],
+        [
+          251,
+          179
+        ],
+        [
+          227,
+          181
+        ],
+        [
+          215,
+          179
+        ],
+        [
+          204,
+          176
+        ],
+        [
+          197,
+          168
+        ],
+        [
+          196,
+          146
+        ],
+        [
+          200,
+          137
+        ],
+        [
+          208,
+          132
+        ]
+      ],
+      [
+        [
+          256,
+          131
+        ],
+        [
+          267,
+          132
+        ],
+        [
+          274,
+          136
+        ],
+        [
+          276,
+          143
+        ],
+        [
+          269,
+          145
+        ],
+        [
+          258,
+          141
+        ],
+        [
+          252,
+          138
+        ]
+      ],
+      [
+        [
+          259,
+          152
+        ],
+        [
+          271,
+          150
+        ],
+        [
+          277,
+          153
+        ],
+        [
+          278,
+          168
+        ],
+        [
+          274,
+          173
+        ],
+        [
+          258,
+          170
+        ]
+      ],
+      [
+        [
+          194,
+          169
+        ],
+        [
+          205,
+          169
+        ],
+        [
+          216,
+          177
+        ],
+        [
+          216,
+          180
+        ],
+        [
+          195,
+          180
+        ]
+      ]
+    ],
+    "reviewedEmptyHoles": [],
+    "guardPoints": [
+      [
+        40,
+        95
+      ],
+      [
+        60,
+        145
+      ],
+      [
+        145,
+        175
+      ],
+      [
+        234,
+        155
+      ],
+      [
+        269,
+        162
+      ]
+    ],
+    "sourceHadAlpha": true,
+    "originalAlphaNeverIncreased": true,
+    "rgbPixelsChanged": 0,
+    "visualReviewRequired": true,
+    "visualReview": "Cotejo a tamaño nativo original / oscuro / claro. Franjas iniciales de empaques, patas y fuente rechazadas; RAM 90791 recibió contorno propio, no el de 16 GB; bomba Cougar inicial truncada rechazada y corregida. Blancos físicos, cables, contactos, cajas, texto y logos preservados. Solo alfa; RGB y tamaño íntegros.",
+    "candidate": ".sites-runtime\\photo-last-hardware-refined\\market-speedlogic-28636-outline.png"
+  },
+  "rights": "Fotografía publicada por la tienda; derechos de sus titulares. No se declara licencia abierta ni permiso comercial específico. Extracción local determinista sin IA expresamente autorizada por el usuario; no elimina atribución ni marcas de agua."
+},
+  {
+    "productId": "market-clones-104185",
+    "model": "TECLADO REDRAGON FIZZ PRO (SW. RED) (BLANCO/ROSADO) · imagen existente preservada",
+    "path": "assets/market/market-clones-104185-reviewed-outline.png",
+    "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2026/02/IMAGENES_WEB_FIZZ_PRO_WHITE_PINK.jpg",
+    "sourcePage": "https://clonesyperifericos.com/comprar/teclado-mecanico-redragon-k616-rgb-fizz-pro-white-gray-usb-c-bt-inalambrico-usb-2/",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "sha256": "36cc1ae34b509ab32671b6ae1d781deb8ae3a486521b623564b5983e786b5ab5",
+    "originalPath": "assets/market/market-clones-104185.webp",
+    "originalSha256": "e04a3596e75947cca9169c01eac4c33ce442e224809b0f7d128f521097501bbe",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "outlines": [
+        [
+          [
+            34,
+            38
+          ],
+          [
+            50,
+            29
+          ],
+          [
+            378,
+            61
+          ],
+          [
+            376,
+            199
+          ],
+          [
+            48,
+            232
+          ],
+          [
+            34,
+            224
+          ]
+        ],
+        [
+          [
+            55,
+            241
+          ],
+          [
+            446,
+            218
+          ],
+          [
+            467,
+            240
+          ],
+          [
+            434,
+            440
+          ],
+          [
+            26,
+            399
+          ],
+          [
+            28,
+            383
+          ],
+          [
+            33,
+            360
+          ],
+          [
+            32,
+            351
+          ],
+          [
+            36,
+            332
+          ],
+          [
+            40,
+            327
+          ],
+          [
+            40,
+            315
+          ],
+          [
+            44,
+            291
+          ],
+          [
+            49,
+            284
+          ],
+          [
+            49,
+            274
+          ],
+          [
+            54,
+            250
+          ]
+        ]
+      ],
+      "borderThreshold": 235,
+      "inkRegions": [],
+      "protectedWhiteRegions": [
+        [
+          [
+            55,
+            241
+          ],
+          [
+            446,
+            218
+          ],
+          [
+            467,
+            240
+          ],
+          [
+            434,
+            440
+          ],
+          [
+            26,
+            399
+          ],
+          [
+            28,
+            383
+          ],
+          [
+            33,
+            360
+          ],
+          [
+            32,
+            351
+          ],
+          [
+            36,
+            332
+          ],
+          [
+            40,
+            327
+          ],
+          [
+            40,
+            315
+          ],
+          [
+            44,
+            291
+          ],
+          [
+            49,
+            284
+          ],
+          [
+            49,
+            274
+          ],
+          [
+            54,
+            250
+          ]
+        ]
+      ],
+      "alphaFilter": "bicubic",
+      "floatingGraphics": "original logos/badges retained; neutral canvas-edge alpha only, no recoloring",
+      "rgbPixelsChanged": 0,
+      "dimensionsUnchanged": true,
+      "visualReviewRequired": true,
+      "visualReview": "Original, candidato nativo y claro/oscuro cotejados. Teclado blanco/rosado, carcasa, todas las teclas, texto y logo Redragon preservados. Candidato con franja blanca rechazado; versión corregida protege blancos físicos. Confirma layout/switches/SKU local.",
+      "guardPoints": [
+        [
+          128,
+          367
+        ],
+        [
+          221,
+          313
+        ],
+        [
+          182,
+          405
+        ],
+        [
+          90,
+          60
+        ]
+      ]
+    },
+    "rights": "Imagen publicada por la tienda, derechos de sus titulares; licencia abierta/permiso comercial específico no verificado. Alfa local determinista autorizado, sin IA, cambios RGB, ampliación ni reconstrucción. Original preservada; no certifica stock, revisión, presentación ni configuración entregada."
+  },
+  {
+    "productId": "market-clones-99476",
+    "model": "FUENTE XPG 750W 80+ BRONCE PYLON II · imagen existente preservada",
+    "path": "assets/market/market-clones-99476-reviewed-outline.png",
+    "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2025/08/Fuente-de-Poder-XPG-Pylon-750w-80-plus-Bronce.jpg",
+    "sourcePage": "https://clonesyperifericos.com/comprar/fuente-de-poder-xpg-pylon-750w-80-plus-bronce/",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "sha256": "d6e4d187a472f987694b4661de44668d09c1ef7cde90e089c111cee11a259161",
+    "originalPath": "assets/market/market-clones-99476.webp",
+    "originalSha256": "e617964de44fb9f2dc933789578af39f91b3837b24b9e28221d12f49564fd4ef",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "outlines": [
+        [
+          [
+            26,
+            98
+          ],
+          [
+            316,
+            77
+          ],
+          [
+            378,
+            100
+          ],
+          [
+            378,
+            248
+          ],
+          [
+            243,
+            264
+          ],
+          [
+            243,
+            315
+          ],
+          [
+            77,
+            327
+          ],
+          [
+            30,
+            287
+          ]
+        ],
+        [
+          [
+            243,
+            266
+          ],
+          [
+            355,
+            243
+          ],
+          [
+            450,
+            280
+          ],
+          [
+            450,
+            362
+          ],
+          [
+            332,
+            405
+          ],
+          [
+            243,
+            336
+          ]
+        ]
+      ],
+      "borderThreshold": 235,
+      "inkRegions": [],
+      "protectedWhiteRegions": [],
+      "alphaFilter": "bicubic",
+      "floatingGraphics": "original logos/badges retained; neutral canvas-edge alpha only, no recoloring",
+      "rgbPixelsChanged": 0,
+      "dimensionsUnchanged": true,
+      "visualReviewRequired": true,
+      "visualReview": "Original, candidato nativo y claro/oscuro cotejados. Caja PYLON 750 y fuente conservadas, sin convertir su texto en PYLON II. Primer contorno con franja inferior rechazado. Confirma revisión II del título con la tienda.",
+      "guardPoints": []
+    },
+    "rights": "Imagen publicada por la tienda, derechos de sus titulares; licencia abierta/permiso comercial específico no verificado. Alfa local determinista autorizado, sin IA, cambios RGB, ampliación ni reconstrucción. Original preservada; no certifica stock, revisión, presentación ni configuración entregada."
+  },
+  {
+    "productId": "market-clones-105860",
+    "model": "FUENTE DE PODER LIAN LI RB0750B 80+ BRONZE 750W · imagen existente preservada",
+    "path": "assets/market/market-clones-105860-reviewed-outline.png",
+    "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2026/04/IMAGENES_WEB_FUENTE_LIANLI_RB_750_6.jpg",
+    "sourcePage": "https://clonesyperifericos.com/comprar/fuente-de-poder-lian-li-rb0750b-80-bronze-750w/",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "sha256": "68df4f2fd0c067adb7d6a87ace35f66b964fa3f06d61ef5c28b46ecf3f7bdd55",
+    "originalPath": "assets/market/market-clones-105860.webp",
+    "originalSha256": "b5a048544c181a38e6c6931f6aa3defadc0a0422c19688a786659d89ceee46a7",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "outlines": [
+        [
+          [
+            162,
+            36
+          ],
+          [
+            198,
+            26
+          ],
+          [
+            447,
+            38
+          ],
+          [
+            447,
+            250
+          ],
+          [
+            430,
+            282
+          ],
+          [
+            280,
+            270
+          ],
+          [
+            161,
+            235
+          ]
+        ],
+        [
+          [
+            40,
+            273
+          ],
+          [
+            210,
+            225
+          ],
+          [
+            342,
+            296
+          ],
+          [
+            328,
+            430
+          ],
+          [
+            166,
+            471
+          ],
+          [
+            40,
+            377
+          ]
+        ],
+        [
+          [
+            1,
+            322
+          ],
+          [
+            5,
+            314
+          ],
+          [
+            17,
+            308
+          ],
+          [
+            29,
+            309
+          ],
+          [
+            43,
+            315
+          ],
+          [
+            51,
+            323
+          ],
+          [
+            55,
+            348
+          ],
+          [
+            42,
+            375
+          ],
+          [
+            31,
+            372
+          ],
+          [
+            20,
+            363
+          ],
+          [
+            10,
+            353
+          ],
+          [
+            2,
+            349
+          ]
+        ]
+      ],
+      "borderThreshold": 235,
+      "inkRegions": [],
+      "protectedWhiteRegions": [],
+      "alphaFilter": "bicubic",
+      "floatingGraphics": "original logos/badges retained; neutral canvas-edge alpha only, no recoloring",
+      "rgbPixelsChanged": 0,
+      "dimensionsUnchanged": true,
+      "visualReviewRequired": true,
+      "visualReview": "Original, candidato nativo y claro/oscuro cotejados. Caja RB0750B/750W, fuente, cables, correas, rejilla y logos conservados. No sustituir por foto RB0650B. Primer contorno con franja inferior rechazado.",
+      "guardPoints": []
+    },
+    "rights": "Imagen publicada por la tienda, derechos de sus titulares; licencia abierta/permiso comercial específico no verificado. Alfa local determinista autorizado, sin IA, cambios RGB, ampliación ni reconstrucción. Original preservada; no certifica stock, revisión, presentación ni configuración entregada."
+  },
+  {
+    "productId": "market-speedlogic-51124",
+    "model": "Fuente Antec Bf700w 80p Bronze · imagen existente preservada",
+    "path": "assets/market/market-speedlogic-51124-reviewed-outline.png",
+    "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2026/03/14273_1-300x300.jpg",
+    "sourcePage": "https://speedlogic.com.co/tienda/fuentes/fuente-antec-bf700w-80p-bronze/",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "sha256": "92f261bdec86e6631041285f744711396d1941d2ba1d60cf153cb2e8d637e70e",
+    "originalPath": "assets/market/market-speedlogic-51124.webp",
+    "originalSha256": "6db354c6eb97cdcf8c206bc80a28d320ebbcd98d4551bcb391b5ea347b5e885f",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "outlines": [
+        [
+          [
+            41,
+            63
+          ],
+          [
+            262,
+            65
+          ],
+          [
+            261,
+            252
+          ],
+          [
+            39,
+            254
+          ]
+        ]
+      ],
+      "borderThreshold": 235,
+      "inkRegions": [
+        [
+          23,
+          17,
+          122,
+          43
+        ]
+      ],
+      "protectedWhiteRegions": [],
+      "alphaFilter": "bicubic",
+      "floatingGraphics": "original logos/badges retained; neutral canvas-edge alpha only, no recoloring",
+      "rgbPixelsChanged": 0,
+      "dimensionsUnchanged": true,
+      "visualReviewRequired": true,
+      "visualReview": "Original, candidato nativo y claro/oscuro cotejados. Empaque BF700, texto, sellos y marca Antec flotante conservados. No cambiar el color del logo para hacerlo contrastar en oscuro.",
+      "guardPoints": []
+    },
+    "rights": "Imagen publicada por la tienda, derechos de sus titulares; licencia abierta/permiso comercial específico no verificado. Alfa local determinista autorizado, sin IA, cambios RGB, ampliación ni reconstrucción. Original preservada; no certifica stock, revisión, presentación ni configuración entregada."
+  },
+  {
+    "productId": "market-speedlogic-54245",
+    "model": "Ventilador Antec Infinity Matrix 120 Argb · imagen existente preservada",
+    "path": "assets/market/market-speedlogic-54245-reviewed-outline.png",
+    "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2026/07/26140_1-300x300.jpg",
+    "sourcePage": "https://speedlogic.com.co/tienda/refrigeraciones/ventiladores/ventilador-antec-infinity-matrix-120-argb/",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "sha256": "c618affe880c3a283dfab3d4459724f9eaac4fc8f3b5a9543d5b25667d1c8e51",
+    "originalPath": "assets/market/market-speedlogic-54245.webp",
+    "originalSha256": "b54b3aa458dc0c04fee96170986159e49cc2f4cd7241b74bd8f937612ef3ea4d",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "outlines": [
+        [
+          [
+            11,
+            70
+          ],
+          [
+            151,
+            34
+          ],
+          [
+            162,
+            43
+          ],
+          [
+            158,
+            160
+          ],
+          [
+            148,
+            164
+          ],
+          [
+            147,
+            203
+          ],
+          [
+            22,
+            253
+          ],
+          [
+            11,
+            246
+          ]
+        ],
+        [
+          [
+            153,
+            117
+          ],
+          [
+            283,
+            105
+          ],
+          [
+            286,
+            267
+          ],
+          [
+            271,
+            272
+          ],
+          [
+            155,
+            260
+          ]
+        ]
+      ],
+      "borderThreshold": 235,
+      "inkRegions": [
+        [
+          23,
+          17,
+          122,
+          43
+        ]
+      ],
+      "protectedWhiteRegions": [],
+      "alphaFilter": "bicubic",
+      "floatingGraphics": "original logos/badges retained; neutral canvas-edge alpha only, no recoloring",
+      "rgbPixelsChanged": 0,
+      "dimensionsUnchanged": true,
+      "visualReviewRequired": true,
+      "visualReview": "Original, candidato nativo y claro/oscuro cotejados. Infinity Matrix 120, caja, etiquetas, iluminación y Antec flotante preservados. Ilustración blanca impresa no se borra.",
+      "guardPoints": []
+    },
+    "rights": "Imagen publicada por la tienda, derechos de sus titulares; licencia abierta/permiso comercial específico no verificado. Alfa local determinista autorizado, sin IA, cambios RGB, ampliación ni reconstrucción. Original preservada; no certifica stock, revisión, presentación ni configuración entregada."
+  },
+  {
+    "productId": "market-speedlogic-54246",
+    "model": "Ventiladores 3en1 Antec Infinity Matrix Blanco 360 Argb · imagen existente preservada",
+    "path": "assets/market/market-speedlogic-54246-reviewed-outline.png",
+    "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2026/07/26139_1-300x300.jpg",
+    "sourcePage": "https://speedlogic.com.co/tienda/refrigeraciones/ventiladores/ventiladores-3en1-antec-infinity-matrix-blanco-360-argb/",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "sha256": "01e49c510ef713d54079d9c7a8cda3311573ebd2ea8d0cce801dfd4833843648",
+    "originalPath": "assets/market/market-speedlogic-54246.webp",
+    "originalSha256": "c6301ba4040a73bbec899619960ea596b4e1adc2856b93704c2d6051717ff2cc",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "outlines": [
+        [
+          [
+            9,
+            69
+          ],
+          [
+            276,
+            34
+          ],
+          [
+            287,
+            45
+          ],
+          [
+            283,
+            137
+          ],
+          [
+            28,
+            174
+          ],
+          [
+            10,
+            163
+          ]
+        ],
+        [
+          [
+            75,
+            179
+          ],
+          [
+            271,
+            145
+          ],
+          [
+            286,
+            149
+          ],
+          [
+            287,
+            262
+          ],
+          [
+            74,
+            259
+          ]
+        ]
+      ],
+      "borderThreshold": null,
+      "inkRegions": [
+        [
+          23,
+          17,
+          122,
+          43
+        ]
+      ],
+      "protectedWhiteRegions": [],
+      "alphaFilter": "bicubic",
+      "floatingGraphics": "original logos/badges retained; neutral canvas-edge alpha only, no recoloring",
+      "rgbPixelsChanged": 0,
+      "dimensionsUnchanged": true,
+      "visualReviewRequired": true,
+      "visualReview": "Original, candidato nativo y claro/oscuro cotejados. Infinity Matrix 360 blanco, carcasa y aspas blancas físicas, caja y Antec flotante preservados. No transformarlo en tres unidades independientes.",
+      "guardPoints": [
+        [
+          100,
+          210
+        ],
+        [
+          155,
+          210
+        ],
+        [
+          229,
+          210
+        ]
+      ]
+    },
+    "rights": "Imagen publicada por la tienda, derechos de sus titulares; licencia abierta/permiso comercial específico no verificado. Alfa local determinista autorizado, sin IA, cambios RGB, ampliación ni reconstrucción. Original preservada; no certifica stock, revisión, presentación ni configuración entregada."
+  },
+  {
+    "productId": "market-speedlogic-54247",
+    "model": "Ventiladores 3en1 Antec Infinity Matrix Negro 360 Argb · imagen existente preservada",
+    "path": "assets/market/market-speedlogic-54247-reviewed-outline.png",
+    "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2026/07/26138_1-300x300.jpg",
+    "sourcePage": "https://speedlogic.com.co/tienda/refrigeraciones/ventiladores/ventiladores-3en1-antec-infinity-matrix-negro-360-argb/",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "sha256": "1476d7b8b44e2c34aa90303b2133aa6b50b038d89d96193f26cdddd8fbe8f63d",
+    "originalPath": "assets/market/market-speedlogic-54247.webp",
+    "originalSha256": "09e76f2b2e0453ef3867695c7334c35ae40af6c526aa8ed111bbc75a108578ce",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "outlines": [
+        [
+          [
+            9,
+            69
+          ],
+          [
+            276,
+            34
+          ],
+          [
+            287,
+            45
+          ],
+          [
+            283,
+            137
+          ],
+          [
+            28,
+            174
+          ],
+          [
+            10,
+            163
+          ]
+        ],
+        [
+          [
+            75,
+            179
+          ],
+          [
+            274,
+            146
+          ],
+          [
+            284,
+            149
+          ],
+          [
+            287,
+            260
+          ],
+          [
+            76,
+            258
+          ]
+        ]
+      ],
+      "borderThreshold": 235,
+      "inkRegions": [
+        [
+          23,
+          17,
+          122,
+          43
+        ]
+      ],
+      "protectedWhiteRegions": [],
+      "alphaFilter": "bicubic",
+      "floatingGraphics": "original logos/badges retained; neutral canvas-edge alpha only, no recoloring",
+      "rgbPixelsChanged": 0,
+      "dimensionsUnchanged": true,
+      "visualReviewRequired": true,
+      "visualReview": "Original, candidato nativo y claro/oscuro cotejados. Infinity Matrix 360 negro, caja, iluminación, texto y Antec flotante conservados; no mezclar con variante blanca ni Infinity 120.",
+      "guardPoints": []
+    },
+    "rights": "Imagen publicada por la tienda, derechos de sus titulares; licencia abierta/permiso comercial específico no verificado. Alfa local determinista autorizado, sin IA, cambios RGB, ampliación ni reconstrucción. Original preservada; no certifica stock, revisión, presentación ni configuración entregada."
+  },
+  {
+    "productId": "market-speedlogic-51122",
+    "model": "Unidad De Estado Solido Ssd (M2) Nvme 500gb Patriot P400 V4 (6200×5200) · imagen existente preservada",
+    "path": "assets/market/market-speedlogic-51122-reviewed-outline.png",
+    "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2026/03/13259_2-300x300.jpg",
+    "sourcePage": "https://speedlogic.com.co/tienda/unidades-ssd/m-2-nvme/unidad-de-estado-solido-ssd-m2-nvme-500gb-patriot-p400-v4-6200x5200/",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "sha256": "78c73faf09faa0ee914ab4ea58a0b0a9a82951b34fecb6fb73a607087ee459e1",
+    "originalPath": "assets/market/market-speedlogic-51122.webp",
+    "originalSha256": "f9ec9738b2bba0cbace921ac707d6fa66845d000045c16d6b14e1eb86714dcfc",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "outlines": [
+        [
+          [
+            43,
+            134
+          ],
+          [
+            247,
+            134
+          ],
+          [
+            248,
+            138
+          ],
+          [
+            257,
+            138
+          ],
+          [
+            257,
+            180
+          ],
+          [
+            250,
+            180
+          ],
+          [
+            251,
+            192
+          ],
+          [
+            43,
+            192
+          ]
+        ],
+        [
+          [
+            190,
+            41
+          ],
+          [
+            293,
+            41
+          ],
+          [
+            293,
+            80
+          ],
+          [
+            190,
+            80
+          ]
+        ]
+      ],
+      "borderThreshold": 235,
+      "inkRegions": [
+        [
+          16,
+          40,
+          131,
+          67
+        ]
+      ],
+      "protectedWhiteRegions": [],
+      "alphaFilter": "bicubic",
+      "floatingGraphics": "original logos/badges retained; neutral canvas-edge alpha only, no recoloring",
+      "rgbPixelsChanged": 0,
+      "dimensionsUnchanged": true,
+      "visualReviewRequired": true,
+      "visualReview": "Original, candidato nativo y claro/oscuro cotejados. SSD, etiqueta, Patriot flotante y badge 500 GB conservados. Candidato que borraba letras del badge rechazado; badge entero protegido. Etiqueta dice P400, no V4: confirmar revisión anunciada por la tienda, no inferir cifras de la imagen.",
+      "guardPoints": [
+        [
+          200,
+          50
+        ],
+        [
+          215,
+          60
+        ],
+        [
+          240,
+          60
+        ],
+        [
+          280,
+          65
+        ],
+        [
+          140,
+          168
+        ]
+      ]
+    },
+    "rights": "Imagen publicada por la tienda, derechos de sus titulares; licencia abierta/permiso comercial específico no verificado. Alfa local determinista autorizado, sin IA, cambios RGB, ampliación ni reconstrucción. Original preservada; no certifica stock, revisión, presentación ni configuración entregada."
+  },
+  {
+    "productId": "gpu-amd-radeon-rx-9070-xt",
+    "model": "AMD Radeon RX 9070 XT · imagen existente preservada",
+    "path": "assets/market/gpu-amd-radeon-rx-9070-xt-reviewed-outline.png",
+    "imageUrl": "https://www.amd.com/content/dam/amd/en/images/products/graphics/radeon-rx-9070/2922918-radeon-rx-9070xt-product.jpg",
+    "sourcePage": "https://www.amd.com/en/products/graphics/desktops/radeon/9000-series/amd-radeon-rx-9070xt.html",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "sha256": "0e0c1c9615b4ba211df32e6c42e993d83f44f0ed08c5d61a3eafddbb35ac0905",
+    "originalPath": "assets/market/amd-radeon-rx-9070-xt.jpg",
+    "originalSha256": "8b3447d09304d0e8d8902e3d7f98afca94a18c91d475978e2a8d63b353f1ed39",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "outlines": [
+        [
+          [
+            164,
+            182
+          ],
+          [
+            202,
+            183
+          ],
+          [
+            203,
+            168
+          ],
+          [
+            233,
+            165
+          ],
+          [
+            247,
+            150
+          ],
+          [
+            268,
+            141
+          ],
+          [
+            425,
+            140
+          ],
+          [
+            912,
+            140
+          ],
+          [
+            985,
+            147
+          ],
+          [
+            1006,
+            163
+          ],
+          [
+            1010,
+            179
+          ],
+          [
+            1024,
+            188
+          ],
+          [
+            1033,
+            201
+          ],
+          [
+            1036,
+            404
+          ],
+          [
+            1033,
+            420
+          ],
+          [
+            1018,
+            441
+          ],
+          [
+            1008,
+            451
+          ],
+          [
+            624,
+            452
+          ],
+          [
+            614,
+            465
+          ],
+          [
+            624,
+            465
+          ],
+          [
+            622,
+            478
+          ],
+          [
+            590,
+            478
+          ],
+          [
+            588,
+            464
+          ],
+          [
+            581,
+            464
+          ],
+          [
+            580,
+            487
+          ],
+          [
+            338,
+            487
+          ],
+          [
+            338,
+            453
+          ],
+          [
+            327,
+            453
+          ],
+          [
+            327,
+            475
+          ],
+          [
+            305,
+            475
+          ],
+          [
+            304,
+            453
+          ],
+          [
+            273,
+            452
+          ],
+          [
+            273,
+            475
+          ],
+          [
+            222,
+            475
+          ],
+          [
+            214,
+            473
+          ],
+          [
+            207,
+            466
+          ],
+          [
+            206,
+            515
+          ],
+          [
+            204,
+            532
+          ],
+          [
+            198,
+            535
+          ],
+          [
+            196,
+            528
+          ],
+          [
+            198,
+            198
+          ],
+          [
+            164,
+            188
+          ]
+        ]
+      ],
+      "borderThreshold": 235,
+      "inkRegions": [],
+      "protectedWhiteRegions": [],
+      "alphaFilter": "bicubic",
+      "floatingGraphics": "original logos/badges retained; neutral canvas-edge alpha only, no recoloring",
+      "rgbPixelsChanged": 0,
+      "dimensionsUnchanged": true,
+      "visualReviewRequired": true,
+      "visualReview": "Original, candidato nativo y claro/oscuro cotejados. Render oficial ilustrativo de referencia, no foto de ensamblador ni SKU AIB. Radeon, bracket, contactos y tres ventiladores intactos; longitud/revisión permanecen pendientes.",
+      "guardPoints": [
+        [
+          400,
+          152
+        ],
+        [
+          600,
+          310
+        ],
+        [
+          890,
+          320
+        ],
+        [
+          400,
+          477
+        ]
+      ]
+    },
+    "rights": "Imagen publicada por AMD, derechos de sus titulares; licencia abierta/permiso comercial específico no verificado. Alfa local determinista autorizado, sin IA, cambios RGB, ampliación ni reconstrucción. Original preservada; no certifica stock, revisión, presentación ni configuración entregada."
+  },
+  {
+    "productId": "market-speedlogic-48953",
+    "model": "Kitx3 Ventiladores Antec Orbit 120 Argb · imagen existente preservada",
+    "path": "assets/market/market-speedlogic-48953-reviewed-outline.png",
+    "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2026/02/26136.1-300x300.jpg",
+    "sourcePage": "https://speedlogic.com.co/tienda/refrigeraciones/ventiladores/kitx3-ventiladores-antec-orbit-120-argb/",
+    "sourceType": "existing_photo_local_outline_extraction",
+    "checkedAt": "2026-10-03",
+    "sha256": "0658b9ebcccdf317c27b8e5c67f14452f85420053ba73cdc32050efad8cf9544",
+    "originalPath": "assets/market/market-speedlogic-48953.webp",
+    "originalSha256": "1ac1c69d7cf4dfcd8fba77a5e255fab0afa1e7c7b27d8ab2f2b4e53769cb6586",
+    "extraction": {
+      "method": "per_photo_explicit_silhouettes_alpha_only",
+      "outlines": [
+        [
+          [
+            24,
+            29
+          ],
+          [
+            131,
+            21
+          ],
+          [
+            191,
+            29
+          ],
+          [
+            191,
+            134
+          ],
+          [
+            180,
+            161
+          ],
+          [
+            25,
+            157
+          ]
+        ],
+        [
+          [
+            87,
+            155
+          ],
+          [
+            114,
+            143
+          ],
+          [
+            155,
+            122
+          ],
+          [
+            184,
+            120
+          ],
+          [
+            200,
+            126
+          ],
+          [
+            210,
+            135
+          ],
+          [
+            216,
+            136
+          ],
+          [
+            230,
+            138
+          ],
+          [
+            249,
+            147
+          ],
+          [
+            258,
+            152
+          ],
+          [
+            269,
+            158
+          ],
+          [
+            276,
+            181
+          ],
+          [
+            277,
+            269
+          ],
+          [
+            272,
+            279
+          ],
+          [
+            100,
+            281
+          ],
+          [
+            84,
+            272
+          ],
+          [
+            81,
+            262
+          ],
+          [
+            82,
+            201
+          ]
+        ]
+      ],
+      "borderThreshold": 235,
+      "inkRegions": [],
+      "protectedWhiteRegions": [],
+      "alphaFilter": "bicubic",
+      "floatingGraphics": "original logos/badges retained; neutral canvas-edge alpha only, no recoloring",
+      "rgbPixelsChanged": 0,
+      "dimensionsUnchanged": true,
+      "visualReviewRequired": true,
+      "visualReview": "Original, candidato nativo y claro/oscuro cotejados. Tres Orbit y caja originales preservados. Candidatos que cortaban aristas de ventiladores traseros rechazados; contorno corregido conserva tornillos, marcos y RGB.",
+      "guardPoints": [
+        [
+          220,
+          150
+        ],
+        [
+          255,
+          165
+        ],
+        [
+          183,
+          134
+        ]
+      ]
+    },
+    "rights": "Imagen publicada por la tienda, derechos de sus titulares; licencia abierta/permiso comercial específico no verificado. Alfa local determinista autorizado, sin IA, cambios RGB, ampliación ni reconstrucción. Original preservada; no certifica stock, revisión, presentación ni configuración entregada."
+  },
+    {
+      "productId": "market-clones-95498",
+      "model": "AMD Ryzen 5 8400F · fotografía de tienda, empaque y CPU ilustrativos",
+      "path": "assets/market/market-clones-95498-reviewed-outline.png",
+      "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2025/01/AMD-Ryzen-5-8400F-Processor.jpg",
+      "sourcePage": "https://clonesyperifericos.com/comprar/procesador-amd-ryzen-5-8400f-4-7-ghz/",
+      "sourceType": "existing_photo_local_outline_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "3185cba0c52a042ae1e73c1eadccc2a3c130bad76b72c0ed04b86e58762625a9",
+      "originalPath": "assets/market/market-clones-95498.webp",
+      "originalSha256": "3bace2e0e718bc70b344adb1f4f07d52897a81ea7e1b3d45bf7757e5773be028",
+      "extraction": {"method":"explicit_outer_outline_and_reviewed_border_white","outline":[[56,69],[304,21],[437,69],[437,357],[429,358],[436,414],[286,452],[279,365],[54,357]],"borderThreshold":250,"rgbPixelsChanged":0,"dimensionsUnchanged":true,"visualReviewRequired":true,"visualReview":"Original 480×480, recorte nativo y claro/oscuro cotejados. Letras AMD/Ryzen, número 5, ventana, CPU metálica, contactos y componentes conservados; solo lienzo y sombra externos. La foto ilustrativa no identifica 8400F por texto ni prueba la presentación local."},
+      "rights": "Foto de tienda, derechos de sus titulares, licencia abierta o permiso comercial específico no verificado. Extracción local de alfa autorizada el 03/10, sin IA, retoques RGB o reconstrucción. Original preservada; no certifica SKU del empaque, stock o garantía."
+    },
+    {
+      "productId":"market-speedlogic-51795","model":"Crucial SO-DIMM · fotografía existente de tienda, referencia local pendiente",
+      "path":"assets/market/market-speedlogic-51795-reviewed-outline.png",
+      "imageUrl":"https://speedlogic.com.co/wp-content/uploads/2026/04/6135_4-300x300.jpg",
+      "sourcePage":"https://speedlogic.com.co/tienda/memorias-ram/memoria-ram-para-portatil-ddr5-16g-4800-crucial/",
+      "sourceType":"existing_photo_local_outline_extraction","checkedAt":"2026-10-03",
+      "sha256":"e28423eb7bf910f3ff76530562716dc6544ff90d2ca00c244d31373794e6c281",
+      "originalPath":"assets/market/market-speedlogic-51795.webp","originalSha256":"6ff2c0e795b6f83f7369285697072ae302c789b90e51eac0d0778ef4b73186ce",
+      "extraction":{"method":"explicit_outer_outline_and_reviewed_border_white","outline":[[43,102],[255,102],[258,106],[258,129],[255,129],[255,139],[259,139],[259,197],[146,197],[146,184],[144,184],[144,198],[40,198],[40,163],[38,163],[38,151],[40,151],[40,143],[38,143],[38,132],[40,132],[40,106]],"borderThreshold":235,"rgbPixelsChanged":0,"dimensionsUnchanged":true,"visualReviewRequired":true,"visualReview":"Original 300×300 y claro/oscuro cotejados. Se corrigió la posición del hueco a partir del original, preservando toda la hilera de contactos, chips, logo, códigos/etiqueta y bordes. Los primeros candidatos que cortaban contactos se rechazaron; borde suavizado nativo conservado."},
+      "rights":"Foto de tienda, derechos de sus titulares; no licencia abierta/permiso comercial específico verificado. Solo alfa local autorizado, sin IA, cambio RGB, mejora de resolución ni reconstrucción. Original preservada; la foto no certifica part number, stock o tasa de la unidad vendida."
+    },
+    {
+      "productId":"market-speedlogic-49182","model":"Crucial SO-DIMM · fotografía existente de tienda, referencia local pendiente",
+      "path":"assets/market/market-speedlogic-49182-reviewed-outline.png",
+      "imageUrl":"https://speedlogic.com.co/wp-content/uploads/2026/02/6136.1-300x300.jpg",
+      "sourcePage":"https://speedlogic.com.co/tienda/memorias-ram/memoria-ram-para-portatil-portatil-ddr5-16gb-5600-crucial/",
+      "sourceType":"existing_photo_local_outline_extraction","checkedAt":"2026-10-03",
+      "sha256":"505d4f1be895ef0761f09c02d34e0c272c44a9e4562f684e5606e8354cb5bf36",
+      "originalPath":"assets/market/market-speedlogic-49182.webp","originalSha256":"a0be5f28c1648505ac0bd2c6fca7059b46120b04f48e282041706d87feda613c",
+      "extraction":{"method":"explicit_outer_outline_and_reviewed_border_white","outline":[[29,95],[271,95],[276,99],[276,122],[272,122],[272,136],[276,136],[276,204],[24,204],[24,166],[22,166],[22,150],[24,150],[24,137],[22,137],[22,124],[24,124],[24,100]],"borderThreshold":235,"rgbPixelsChanged":0,"dimensionsUnchanged":true,"visualReviewRequired":true,"visualReview":"Original 300×300, versión nativa y claro/oscuro cotejados: etiqueta física blanca, logo, chips y contactos íntegros. No vaciar el hueco gris mediante un recorte que toque los pines. Primer candidato con muesca equivocada rechazado; pequeño borde suavizado nativo conservado."},
+      "rights":"Fotografía publicada por tienda; derechos de sus titulares, no permiso comercial específico verificado. Alfa local autorizado sin IA ni cambios RGB, original preservada. Foto y capacidad/tasa de unidad local requieren confirmar part number; no se asignan cifras por una fotografía."
+    },
+    {
+      "productId":"market-speedlogic-49212","model":"Kingston UDIMM sin disipador · fotografía existente de tienda, referencia local pendiente",
+      "path":"assets/market/market-speedlogic-49212-reviewed-outline.png",
+      "imageUrl":"https://speedlogic.com.co/wp-content/uploads/2026/02/1-300x300.jpeg",
+      "sourcePage":"https://speedlogic.com.co/tienda/memorias-ram/memoria-ram-para-pc-ddr5-16g-5600-kingston-no-disipada/",
+      "sourceType":"existing_photo_local_outline_extraction","checkedAt":"2026-10-03",
+      "sha256":"bb3f824ddc3f9e34a1b128acdcce7b7355752b8e5ded8059c02c2f22718849c6",
+      "originalPath":"assets/market/market-speedlogic-49212.webp","originalSha256":"29c6fe143440d783da9e669bef693cea201d7fa8cfd776416ca14faa421b00c7",
+      "extraction":{"method":"explicit_outer_outline_and_reviewed_border_white","outline":[[15,118],[285,118],[285,150],[282,150],[282,160],[285,160],[285,181],[162,181],[162,175],[160,175],[160,182],[15,182],[15,151],[18,151],[18,140],[15,140]],"borderThreshold":235,"alphaFilter":"bicubic","rgbPixelsChanged":0,"dimensionsUnchanged":true,"visualReviewRequired":true,"visualReview":"Original 300×300 y ambos fondos cotejados, chips/PCB verde, etiqueta Kingston blanca y contactos preservados. Muesca situada según los píxeles originales, no una geometría genérica de RAM. Primer recorte de pines y anillo Lanczos junto a contactos rechazados; bicubic solo para alfa, sin retoque RGB, forma o logo."},
+      "rights":"Foto publicada por la tienda, derechos de sus titulares; licencia abierta/permiso comercial específico no verificado. Extracción local autorizada, solo alfa, resolución y RGB originales preservados. No identificar capacidad/tasa/part number del ejemplar por esta foto genérica ni certificar stock."
+    },
+    {
+      "productId": "market-clones-107000",
+      "model": "Thermaltake Toughpower GT Snow 850W · PS-TPT-0850FNFAGU-W",
+      "path": "assets/market/market-clones-107000-reviewed-outline.png",
+      "imageUrl": "https://thermaltakeusa.com/cdn/shop/files/ps-tpt-0850fnfag-w_01.jpg?v=1729016540&width=1946",
+      "sourcePage": "https://thermaltakeusa.com/products/toughpower-gt-snow-850w-ps-tpt-0850fnfagu-w",
+      "sourceType": "existing_photo_local_outline_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "3780420f9a82ef9f6f0c208e9584dfce286c97b9c9aa1b51cc678974001748c0",
+      "originalPath": "assets/market/thermaltake-gt-snow-850w-official-original.jpg",
+      "originalSha256": "cb7a2aeb70b531ca337fa44f01c73ddf9d829682e1a40d894fc13b88521da6d9",
+      "previousRetailerPath": "assets/market/market-clones-107000.webp",
+      "extraction": {"method": "explicit_outer_package_outline", "outline": [[62,229],[372,109],[654,227],[635,437],[339,625],[81,426]], "rgbPixelsChanged": 0, "dimensionsUnchanged": true, "visualReviewRequired": true, "visualReview": "Original oficial a resolución nativa y composición clara/oscura cotejados con la anterior de tienda: carcasa blanca, rejilla, ventilador, conectores modulares, logos y 850W intactos. Solo lienzo exterior; no se borra el blanco físico ni se reconstruyen agujeros."},
+      "rights": "Fotografía oficial publicada por Thermaltake USA, derechos reservados, licencia abierta o permiso comercial específico no verificado. JPG nativo 720×720, extracción determinista de alfa autorizada el 03/10 sin IA ni cambios RGB. JPG oficial y original anterior de tienda conservados. Confirma referencia y revisión del ejemplar local: esta imagen no prueba stock ni cobertura de garantía en Colombia."
+    },
+    {
+      "productId": "market-clones-100471",
+      "model": "AMD Ryzen 5 9600 · foto de empaque de tienda",
+      "path": "assets/market/market-clones-100471-reviewed-outline.png",
+      "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2025/09/Procesador-AMD-Ryzen-5-9600-AM5-5.2-GHz.jpg",
+      "sourcePage": "https://clonesyperifericos.com/comprar/procesador-amd-ryzen-5-9600-am5-5-2-ghz/",
+      "sourceType": "existing_photo_local_outline_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "958b03a5ee9215dad8d3b6c7a34f7eef698d3246e709f4d416604d2f5fc6db7a",
+      "originalPath": "assets/market/market-clones-100471.webp",
+      "originalSha256": "3d44e969bd6ab5ebe30b1f537b4d9f057345c833feddee4a023b812f9d7f3337",
+      "extraction": {"method": "explicit_outer_package_outline", "outline": [[40,90],[301,40],[440,90],[441,394],[301,402],[38,394]], "rgbPixelsChanged": 0, "dimensionsUnchanged": true, "visualReviewRequired": true, "visualReview": "Original 480×480, recorte nativo y composición clara/oscura cotejados. Letras blancas AMD/Ryzen, número 5, ventana y bordes del empaque intactos; solo lienzo y sombra externos eliminados."},
+      "rights": "Fotografía de la tienda, derechos de sus titulares; sin licencia abierta o permiso comercial específico verificado. Contorno local autorizado el 03/10, alfa únicamente, resolución original y RGB idénticos, sin IA ni reconstrucción. Original conservada. Empaque ilustrativo, no identificación del sufijo por imagen ni certificación de stock local."
+    },
+    {
+      "productId": "market-clones-94762",
+      "model": "AMD Ryzen 7 8700F · foto de empaque de tienda",
+      "path": "assets/market/market-clones-94762-reviewed-outline.png",
+      "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2024/12/Procesador-AMD-Ryzen-7-8700F-5.0Ghz.jpg",
+      "sourcePage": "https://clonesyperifericos.com/comprar/procesador-amd-ryzen-7-8700f-5-0ghz/",
+      "sourceType": "existing_photo_local_outline_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "7ce4e452311f8324f39d1259a8e5eb8406a1b13c84c954da34c338e181dc8ddd",
+      "originalPath": "assets/market/market-clones-94762.webp",
+      "originalSha256": "3500635613ef96236a70f95bcf96928d354471d942e1c0fa89c3b93a22abd398",
+      "extraction": {"method": "explicit_outer_package_outline", "outline": [[23,95],[306,41],[458,96],[459,425],[306,435],[20,426]], "rgbPixelsChanged": 0, "dimensionsUnchanged": true, "visualReviewRequired": true, "visualReview": "Original 480×480, recorte nativo y ambos fondos cotejados: impresión AMD/Ryzen, número 7, anillo gris, ventana y seis vértices conservados. Borde original suavizado permanece; no se reconstruye."},
+      "rights": "Foto publicada por la tienda; derechos de sus titulares, sin licencia abierta ni permiso comercial específico verificado. Contorno local autorizado el 03/10, sin IA ni cambio RGB, dimensiones originales y fuente preservada. Empaque ilustrativo de familia que no prueba sufijo, stock o garantía del ejemplar vendido."
+    },
+    {
+      "productId": "cpu-amd-ryzen-5-7600",
+      "model": "AMD Ryzen 5 7600 · fotografía de empaque original",
+      "path": "assets/market/cpu-amd-ryzen-5-7600-reviewed-outline.png",
+      "imageUrl": "https://csdam.net/digitalcontent/0/5160/51607291.jpg",
+      "sourcePage": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-5-7600.html",
+      "sourceType": "existing_photo_local_outline_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "6319cc801d4123cf404e0aace5396b8b5512e558d7fd8499e393feeb76de6c2d",
+      "originalPath": "assets/cpu-amd-ryzen-5-7600.jpg",
+      "originalSha256": "39847db54da75e30a3c44da232ca982e33272e92af4c910d6808348ccbc9c0c5",
+      "extraction": {"method": "explicit_outer_package_outline", "outline": [[186,139],[413,93],[519,131],[524,424],[414,433],[181,425]], "rgbPixelsChanged": 0, "dimensionsUnchanged": true, "visualReviewRequired": true, "visualReview": "Original nativo y composición clara/oscura cotejados: Ryzen, AMD, número 5, ventana del procesador y seis esquinas conservados. Se conserva el borde original suavizado, sin regenerarlo."},
+      "rights": "Fotografía distribuida por csdam.net según SOURCES.json original; ficha de producto AMD no convierte esa fotografía en una toma oficial AMD. Derechos de sus titulares; licencia abierta o permiso comercial específico no verificado. Extracción local determinista autorizada por el usuario el 03/10, solo alfa, sin IA, 707×530 y RGB intactos. Original preservada. No certifica presentación ni stock de una tienda."
+    },
+    {
+      "productId": "cpu-amd-ryzen-7-9800x3d",
+      "model": "AMD Ryzen 7 9800X3D · imagen ilustrativa de empaque AMD",
+      "path": "assets/market/cpu-amd-ryzen-7-9800x3d-reviewed-outline.png",
+      "imageUrl": "https://www.amd.com/content/dam/amd/en/images/products/processors/ryzen/2900400-ryzen-7-9800x3d-product.jpg",
+      "sourcePage": "https://www.amd.com/en/products/processors/desktops/ryzen/9000-series/amd-ryzen-7-9800x3d.html",
+      "sourceType": "existing_photo_local_outline_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "fada27fe6b6926aa31cb95f9318d4285dae91a512b4325e75b0a0ca40330f19b",
+      "originalPath": "assets/market/amd-ryzen-7-9800x3d.jpg",
+      "originalSha256": "b5fc278011d0d2377a8815e24b0e86df355de6cda557558e5c37ca8fd3fff2c4",
+      "extraction": {"method": "explicit_outer_package_outline", "outline": [[210,220],[871,99],[987,151],[992,1004],[880,1011],[199,995]], "rgbPixelsChanged": 0, "dimensionsUnchanged": true, "visualReviewRequired": true, "visualReview": "Original a resolución nativa y ambos fondos cotejados: impresión blanca física, AMD, Ryzen, número 7, ventana y forma intactos. Solo lienzo/sombra externos; no borrar el diseño blanco de la caja."},
+      "rights": "Imagen publicada por AMD, derechos reservados; licencia abierta o permiso comercial específico no verificado. Contorno local autorizado el 03/10, sin IA ni cambios RGB, resolución 1200×1200. Original oficial conservada. El empaque ilustrativo no muestra sufijo 9800X3D legible ni prueba stock local; no se añade texto para fingir identificación."
+    },
+    {
+      "productId": "market-ryzen-9850x3d",
+      "model": "AMD Ryzen 7 9850X3D · fotografía de empaque publicada por tienda",
+      "path": "assets/market/market-ryzen-9850x3d-reviewed-outline.png",
+      "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2026/05/2107-300x300.png",
+      "sourcePage": "https://speedlogic.com.co/tienda/procesadores/amd/procesador-amd-ryzen-7-9850x-3d-47-8cor-radeon-am5-no-fan/",
+      "sourceType": "existing_photo_local_outline_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "9e18ad595b088d8e785490725c0ab2fc49f20f6f4b3548d4e8da45f6e0c9a955",
+      "originalPath": "assets/market/market-ryzen-9850x3d.webp",
+      "originalSha256": "8e003a80a92b93b48c366f0eec6af8d2e514b3ff7dd201a9f37b8bdff0592926",
+      "extraction": {"method": "explicit_outer_package_outline", "outline": [[53,55],[218,24],[247,38],[248,251],[220,253],[50,250]], "rgbPixelsChanged": 0, "dimensionsUnchanged": true, "visualReviewRequired": true, "visualReview": "Original 300×300 y composiciones clara/oscura comparados: se conservan letras, logos, impresión blanca física, ventana y forma del empaque; borde suavizado original intacto. No reconstrucción ni ampliación."},
+      "rights": "Fotografía de Speedlogic, derechos de sus titulares; sin permiso comercial específico o licencia abierta verificado. Contorno local autorizado por el usuario el 03/10, alfa únicamente, 300×300 y RGB idénticos. Original preservada. Empaque ilustrativo de Ryzen 7 X3D que no permite leer el sufijo del SKU; confirmar presentación y referencia de la unidad, sin añadir ni alterar texto."
+    },
+    {
+      "productId": "ram-kingston-kf556c36bbek2-32",
+      "model": "Kingston FURY Beast Black EXPO KF556C36BBEK2-32 · kit 2×16 GB",
+      "path": "assets/market/kingston-kf556c36bbek2-32-official.png",
+      "imageUrl": "https://media.kingston.com/kingston/product/FURY_Beast_Black_DDR5_1-tn.png",
+      "sourcePage": "https://www.kingston.com/en/memory/search?partid=KF556C36BBEK2-32",
+      "sourceType": "manufacturer_part_page",
+      "checkedAt": "2026-10-03",
+      "sha256": "6560dac4b0ffb656d3572b247466ebb7d012814d999dc3189ff4a124b4e0d8be",
+      "rights": "PNG oficial enlazado por Kingston desde la ficha exacta KF556C36BBEK2-32; derechos reservados, sin licencia abierta o permiso comercial específico verificado. Archivo intacto 220×57 con alfa, sin edición ni ampliación. Vista de un módulo Beast Black, no fotografía de todo el kit, etiqueta de capacidad o ejemplar local. La hoja avisa que las imágenes son ilustrativas; el part number del kit procede de la ficha, no del aspecto. Precio y stock colombiano pendientes."
+    },
+    {
+      "productId": "market-clones-105846",
+      "model": "ADATA SO-DIMM DDR4 3200 16 GB · foto de tienda conservada",
+      "path": "assets/market/market-clones-105846-reviewed-cutout.png",
+      "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2026/04/MODULO_RAM_DDR4_ADATA_2.jpg",
+      "sourcePage": "https://clonesyperifericos.com/comprar/memoria-ram-adata-para-portatil-16gb-3200mhz-ddr4/",
+      "sourceType": "retailer_photo_local_alpha_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "43684dddf0f50d604dbc66d7e1b453b60921ea7475501e442bdc9b632b905e48",
+      "originalPath": "assets/market/market-clones-105846.webp",
+      "originalSha256": "de2e799445c1413e65a0336842458009520dd7188f2dfb652bdbbecc55efe888",
+      "extraction": {"threshold": 250, "backgroundSeeds": [[100,55]], "rgbPixelsChanged": 0, "dimensionsUnchanged": true, "visualReviewRequired": true, "visualReview": "Original, recorte nativo y composición clara/oscura cotejados: logos/etiquetas/contactos intactos. Semilla solo en el hueco vacío para colgar el empaque, no etiqueta blanca."},
+      "rights": "Foto de la tienda, derechos de sus titulares; sin licencia abierta o permiso comercial específico verificado. Extracción local determinista autorizada por el usuario el 03/10, sin IA, retoque de RGB ni reconstrucción. Conserva resolución 480×480 y original. No certifica el part number del stock ni permite inferir cifras desde el título; confirma memoria y presentación de la unidad."
+    },
+    {
+      "productId": "market-clones-55872",
+      "model": "Intel Core i3-12100F · foto de tienda conservada",
+      "path": "assets/market/market-clones-55872-reviewed-cutout.png",
+      "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2022/05/1-11.jpg",
+      "sourcePage": "https://clonesyperifericos.com/comprar/procesador-intel-core-i3-12100f-4-30-ghz/",
+      "sourceType": "retailer_photo_local_alpha_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "73196428db962fcf1c50beef0520d2239747a1da2211e210d26cb13a2e9debe3",
+      "originalPath": "assets/market/market-clones-55872.webp",
+      "originalSha256": "b8d8ef28aa2161f4b534b51357c6b7f21d1a3ec1db216a83a9db41a80ae7e0c1",
+      "extraction": {"threshold": 235, "backgroundSeeds": [], "rgbPixelsChanged": 0, "dimensionsUnchanged": true, "visualReviewRequired": true, "visualReview": "Comparación nativa y clara/oscura: texto Intel/Core/i3, empaque, sustrato y tapa metálica intactos; sin fondo exterior ni reconstrucción."},
+      "rights": "Foto publicada por la tienda, derechos de sus titulares; licencia abierta o permiso comercial específico no verificado. Extracción determinista local autorizada el 03/10, solo alfa, 480×480, sin IA generativa, cambios RGB ni ampliación. Original conservada. Confirma referencia y presentación del procesador vendido."
+    },
+    {
+      "productId": "market-clones-45743",
+      "model": "Trust GXT 833 THADO · foto de tienda conservada",
+      "path": "assets/market/market-clones-45743-reviewed-cutout.png",
+      "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2021/09/7-19.jpg",
+      "sourcePage": "https://clonesyperifericos.com/comprar/teclado-trust-tkl-gxt833-thado-rgb/",
+      "sourceType": "retailer_photo_local_alpha_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "20633eb47cdbaf58e83427b3a4bed1a6322bfe7bef8b66cffe3d30f7e5acb077",
+      "originalPath": "assets/market/market-clones-45743.webp",
+      "originalSha256": "a24091a38ae8e4bcf89c12a3bb87ea62012e5bc68e1ee6cb293c83ccf8022315",
+      "extraction": {"threshold": 250, "backgroundSeeds": [], "rgbPixelsChanged": 0, "dimensionsUnchanged": true, "visualReviewRequired": true, "visualReview": "Original y recorte cotejados a resolución nativa y claro/oscuro: teclas, iluminación, cable, empaque, marca y texto intactos."},
+      "rights": "Foto de tienda, derechos de sus titulares, sin permiso comercial específico o licencia abierta verificado. Extracción local de alfa autorizada el 03/10, sin IA, cambios RGB, sustitución de teclas ni reconstrucción, 480×480. Original preservada; no certifica layout o stock regional."
+    },
+    {
+      "productId": "market-clones-108233",
+      "model": "Redragon KUMARA K552 RGB switches red negro · foto de tienda",
+      "path": "assets/market/market-clones-108233-reviewed-cutout.png",
+      "imageUrl": "https://clonesyperifericos.com/wp-content/uploads/2026/07/KUMARA_RED_SWITCH_1.png",
+      "sourcePage": "https://clonesyperifericos.com/comprar/teclado-redragon-kumara-k552-rgb-sw-red-negro/",
+      "sourceType": "retailer_photo_local_alpha_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "8a0192cc4abf87c6b728678d5c52c190082e76be05b80d0463e5b801a713396d",
+      "originalPath": "assets/market/market-clones-108233.webp",
+      "originalSha256": "8345d691880b63d1ace3870711faceb86b617a69081d4b03e022a9ffffe1f19d",
+      "extraction": {"threshold": 250, "backgroundSeeds": [], "rgbPixelsChanged": 0, "dimensionsUnchanged": true, "visualReviewRequired": true, "visualReview": "Forma, teclas, iluminación, logo rojo y texto KUMARA del empaque cotejados contra el original nativo y en ambos fondos; intactos."},
+      "rights": "Foto publicada por la tienda, derechos reservados de sus titulares; sin licencia abierta o permiso comercial específico verificado. Extracción local de alfa autorizada el 03/10, sin IA ni alteración RGB, 480×480. Original preservada; confirma layout, switches y referencia local."
+    },
+    {
+      "productId": "market-speedlogic-49455",
+      "model": "Antec VCX100M Elite + 5 RGB · foto de gabinete de tienda",
+      "path": "assets/market/market-speedlogic-49455-reviewed-cutout.png",
+      "imageUrl": "https://speedlogic.com.co/wp-content/uploads/2026/02/1-1-300x300.jpeg",
+      "sourcePage": "https://speedlogic.com.co/tienda/cajas/caja-antec-vcx100m-elite-vidrio-templado-5-rgb/",
+      "sourceType": "retailer_photo_local_alpha_extraction",
+      "checkedAt": "2026-10-03",
+      "sha256": "27af618477671b39a2efe82ec7d596ec206fa150fc0ce040002030c02c99c986",
+      "originalPath": "assets/market/market-speedlogic-49455.webp",
+      "originalSha256": "78f67ea38940b9dbab3ee83c864f5c00c14cd96d09c6403d30acb65d40ebf895",
+      "extraction": {"threshold": 235, "backgroundSeeds": [], "rgbPixelsChanged": 0, "dimensionsUnchanged": true, "visualReviewRequired": true, "visualReview": "Vidrio, perfiles, patas, ventiladores y puertos cotejados en el original nativo y ambos fondos. Sin reconstrucción, recorte de piezas ni alteración de texto."},
+      "rights": "Fotografía de tienda, derechos de sus titulares, sin permiso comercial específico ni licencia abierta verificado. Extracción determinista de alfa autorizada el 03/10, sin IA ni cambios RGB, resolución original 300×300. Foto de gabinete con ventiladores, NO PC montada. Original preservada; confirma revisión y accesorios locales."
+    },
+    {
+      "productId": "market-speedlogic-48894",
+      "model": "Antec Vision 120 ARGB standard 3-in-1 pack / HD25PA1225MAB",
+      "path": "assets/market/antec-vision-120-argb-3pack-official.png",
+      "imageUrl": "https://www.antec.com/product/cooling/images/vision-120-argb-pdt07.png",
+      "sourcePage": "https://www.antec.com/product/cooling/vision-120-argb",
+      "sourceType": "manufacturer_gallery",
+      "checkedAt": "2026-10-03",
+      "sha256": "6d7fdcb56230d75269ff62afaf11f068f9d085762f1a32b9683bf76f56ec1f93",
+      "originalPath": "assets/market/market-speedlogic-48894.webp",
+      "originalSha256": "053c250b9617268d249f69766cabf789dffc83eb04073e6fefce7c48d69fb387",
+      "rights": "PNG oficial Antec, derechos reservados; licencia abierta o permiso comercial específico no verificado. 550×503 con transparencia de paleta, alfa 0–255, 26,79% no opaco, cuatro esquinas transparentes. Archivo intacto, sin extracción, reconstrucción ni cambio de píxeles. Tres ventiladores estándar y etiqueta amarilla Vision 120 ARGB 3-in-1 pack; no variante reverse 120R ni PC montado. Logos, aspas y geometría cotejados con la original de tienda, que permanece para reversión. Confirmar referencia y accesorios de la unidad local; no certifica stock ni garantía."
+    },
+    {
+      "productId": "market-clones-108404",
+      "model": "GIGABYTE GeForce RTX 5060 Ti AERO OC 8G · GV-N506TAERO OC-8GD",
+      "path": "assets/market/gigabyte-rtx5060ti-aero-oc-8g-official.webp",
+      "imageUrl": "https://static.gigabyte.com/StaticFile/Image/Global/4989e267a43fab5c80892b6e096e5823/ProductRemoveBg/44865/webp/1024",
+      "sourcePage": "https://www.gigabyte.com/Graphics-Card/GV-N506TAERO-OC-8GD/gallery",
+      "sourceType": "manufacturer_transparent_product_image",
+      "checkedAt": "2026-10-03",
+      "sha256": "3930bf271f7b6c0de78e5167e21470af400f5d4da8138d5d166f5f95233c128d",
+      "originalPath": "assets/market/market-clones-108404.webp",
+      "originalSha256": "8c74c68ebee70449a9c18c598ff0d107d0df3048023362c769b425cbf7599a29",
+      "rights": "WebP original de la galería del modelo exacto GIGABYTE, derechos reservados; no licencia abierta ni permiso comercial específico verificado. Enlace observado en la galería, archivo intacto RGBA 1024×535, alfa 0–255, 25,1141% de píxeles no opacos y cuatro esquinas transparentes. Vista de tres ventiladores sin caja, cotejada con la original: carcasa blanca, logos AERO, forma, bracket y contactos conservados; no corresponde a una 5060 sin Ti ni a una capacidad inferida desde la carcasa. Página de 8 GB y foto de galería con empaque AERO OC 8G/5060 Ti confirman el contexto. Sin extracción, reconstrucción, cambio de píxeles ni aumento local de resolución. Original opaco con empaque preservado con hash. La carcasa blanca física no se borra. Foto ilustrativa del fabricante, no prueba de revisión, stock o garantía de la unidad vendida."
+    },
+    {
+      "productId": "market-clones-107075",
+      "model": "ADATA Ultimate SU650 512 GB · SATA 2,5 pulgadas",
+      "path": "assets/market/adata-su650-512gb-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/p_su650_512gb.png",
+      "sourcePage": "https://www.adata.com/us/consumer/category/ssds/503/",
+      "sourceType": "manufacturer_transparent_product_image",
+      "checkedAt": "2026-10-03",
+      "sha256": "1eaf368680f0431df2fc466e995c183d1f1ff723025e8c7738b8a9b4fa4911d6",
+      "originalPath": "assets/market/market-clones-107075.webp",
+      "originalSha256": "da1423fe02de77ac553f8b30dc92a7f8b505c8e0a5de754a2d03b8dc6fdcdb70",
+      "rights": "PNG original de la galería ADATA, derechos reservados; no licencia abierta ni permiso comercial específico verificado. Imagen de producto con empaque SU650 y rótulo 512 GB, cotejada con el original de tienda: carcasa negra, etiqueta azul/blanca, logos, denominación SU650 y capacidad preservados. RGBA 2000×2000, alfa 0–255, 40,8487% de píxeles no opacos y cuatro esquinas transparentes. Archivo intacto: sin extracción, reconstrucción, recorte ni cambio de píxeles. La etiqueta blanca real no debe borrarse. La imagen no identifica revisión interna, stock o garantía local. Original de tienda preservado con hash. Se descartó la vista de 600×600 sin empaque como imagen final porque no muestra la capacidad."
+    },
+    {
+      "productId": "market-speedlogic-53751",
+      "model": "Kingston Dual Portable SSD SPSD/1TB · 1 TB · USB-A/USB-C",
+      "path": "assets/market/kingston-dual-portable-1tb-official.png",
+      "imageUrl": "https://media.kingston.com/kingston/product/SPSD_1TB-tn.png",
+      "sourcePage": "https://www.kingston.com/en/memory/search?partid=SPSD%2F1TB",
+      "sourceType": "manufacturer_transparent_product_image",
+      "checkedAt": "2026-10-02",
+      "sha256": "7be599990316df8dcd092905ce99a3a87116353b4e281cf2d515df977e178610",
+      "originalPath": "assets/market/market-speedlogic-53751.webp",
+      "originalSha256": "be2d7b69c55522fd80dac42e3a7ef8208401314d30f7df8e4f2fb06447143dc9",
+      "rights": "PNG original Kingston de la ficha exacta SPSD/1TB. Derechos reservados; no licencia abierta ni permiso comercial específico verificado. Carcasa roja, logotipo, extremos y referencia de 1 TB cotejados con la imagen anterior con empaque y la ficha oficial. Resolución nativa 150×50, RGBA, 16,9733% de píxeles no opacos y cuatro esquinas transparentes. Sin extracción, cambio de píxeles, aumento de resolución ni reconstrucción. Original opaco preservado con hash. Pendiente buscar fotografía oficial de mayor resolución; no cambiar por una capacidad distinta. No confirma disponibilidad, revisión ni garantía local."
+    },
+    {
+      "productId": "market-speedlogic-30438",
+      "model": "MSI GeForce RTX 3050 LP 6G OC · 6 GB",
+      "path": "assets/market/msi-rtx3050-lp-6g-oc-official.webp",
+      "imageUrl": "https://storage-asset.msi.com/global/picture/product/product_17068442997ec55916d83eed02ec233a45e8b1e315.webp",
+      "sourcePage": "https://www.msi.com/Graphics-Card/GeForce-RTX-3050-LP-6G-OC/Gallery",
+      "sourceType": "manufacturer_transparent_product_image",
+      "checkedAt": "2026-10-01",
+      "sha256": "097465940e909c9559c414cf75065f71e15f62aec2f50987e8ebe456f07e8bfd",
+      "originalPath": "assets/market/market-speedlogic-30438.webp",
+      "originalSha256": "d36cddc59d9c7c4f54c6967dae883eadb756a2eb78170e070b903b29632acb7f",
+      "rights": "Archivo original de la galería MSI, derechos reservados; no licencia abierta ni permiso comercial específico verificado. Vista frontal aislada, sin caja; ventiladores, logos, carcasa, bracket y contactos cotejados con la imagen anterior y la galería del modelo LP 6G OC. WebP RGBA 1000×800, 68,2245% de píxeles con alfa menor que 255; sin edición, recorte, aumento de resolución ni reconstrucción. Original preservado con hash; ya tenía alfa, así que este cambio elimina el embalaje de la vista pero NO limpia una de las 39 fotos opacas pendientes. La foto no certifica revisión, accesorios, precio o disponibilidad de la unidad vendida."
+    },
+    {
+      "productId": "ssd-kingston-nv3-500gb",
+      "model": "Kingston NV3 SNV3S/500G · 500 GB · M.2 2280",
+      "path": "assets/market/kingston-nv3-500g-official.png",
+      "imageUrl": "https://media.kingston.com/kingston/product/SNV3S_500GB-tn.png",
+      "sourcePage": "https://www.kingston.com/en/memory/search?partid=SNV3S%2F500G",
+      "sourceType": "manufacturer_transparent_product_image",
+      "checkedAt": "2026-10-01",
+      "sha256": "d35e2386584f7965f63f4a188d4d6c142b14dcfaf375de0be78e504915a6365e",
+      "originalPath": "assets/ssd-kingston-nv3-500gb.jpg",
+      "originalSha256": "8095e3ac6dd7d716b829a6c639d59b903ddcf9ea5e5bcf4e2b842d65ebb1941c",
+      "rights": "PNG original Kingston de la ficha SNV3S/500G, derechos reservados; no licencia abierta ni permiso comercial verificado. Modelo, capacidad 500 GB, formato 2280, etiqueta, placa azul y contactos cotejados con la imagen original. RGBA 220×61, 5,51% con alfa menor que 255, cuatro esquinas alfa 15/0/23/0; imagen ceñida al producto, sin margen blanco. Resolución nativa conservada, sin aumentar resolución, cambiar píxeles, recortar ni generar hardware. Original JPEG preservado con hash para reversión. La foto no confirma stock, revisión o garantía local."
+    },
+    {
+      "productId": "market-clones-105945",
+      "model": "LIAN LI SX1000P · 1000W · WHITE",
+      "path": "assets/market/lian-li-sx1000p-white-official.webp",
+      "imageUrl": "https://lian-li.com/wp-content/uploads/2025/11/SX__006.webp",
+      "sourcePage": "https://lian-li.com/product/sx-platinum/",
+      "sourceType": "manufacturer_transparent_product_image",
+      "checkedAt": "2026-10-01",
+      "sha256": "144845bf82b0715121894b7a61007f6002fda7a6a3298193350e5716a7ba306b",
+      "originalPath": "assets/market/market-clones-105945.webp",
+      "originalSha256": "ea3e19972b849fdf7f4f6f5050622edbf06baf9dac6c23eb181d9c503700fcae",
+      "rights": "Archivo oficial LIAN LI, derechos reservados; no licencia abierta ni permiso de reutilización verificado. Página: WHITE / 1000W; imagen rotulada SX1000P. Cotejados carcasa blanca, rejilla, ventilador, conectores modulares y marca con el original de tienda. Vista del producto solo, sin empaque. WebP RGBA 352×274, transparencia 52,55%, cuatro esquinas alfa cero; conserva la sombra oficial. Archivo binariamente intacto: no extracción de fondo, recorte, recoloración ni reconstrucción. Original de tienda conservado con hash para reversión. Confirma revisión, stock y garantía de la unidad local."
+    },
+    {
+      "productId": "market-speedlogic-51841",
+      "model": "ASUS PRIME-750B-BLACK · 750W Bronze",
+      "path": "assets/market/asus-prime750b-black-official.png",
+      "imageUrl": "https://dlcdnwebimgs.asus.com/gain/46f4b046-b24e-4c69-942d-5b2a72cb7230/w800",
+      "sourcePage": "https://www.asus.com/uk/motherboards-components/power-supply-units/prime/prime-750b-black/",
+      "sourceType": "manufacturer_transparent_product_image",
+      "rights": "Archivo original ASUS, derechos reservados; sin licencia abierta verificada. Galería etiquetada PRIME-750B-BLACK_top down angle1. Se cotejaron rotulación 750W, carcasa, ventilador y cables con la foto de tienda; se muestra la fuente sola, sin empaque. Canal alfa verificado, píxeles intactos; original conservado. La ficha UK no confirma garantía ni unidad de tienda en Colombia."
+    },
+    {
+      "productId": "market-clones-105409",
+      "model": "Trust GXT 836 EVOCX · imagen US 24722",
+      "path": "assets/market/trust-evocx-24722-official.png",
+      "imageUrl": "https://dezlwerqy1h00.cloudfront.net/Media/Images/Product/Visual/24722_pictures_product_visual_1.png",
+      "sourcePage": "https://www.trust.com/en/product/24722-gxt-836-evocx-illuminated-gaming-keyboard",
+      "sourceType": "manufacturer_transparent_product_image",
+      "rights": "PNG original transparente de Trust, derechos reservados; sin licencia abierta verificada. Se cotejaron carcasa con reposamanos, botones multimedia, logo, cable y leyendas US con el original de tienda. Se muestra el teclado solo, sin caja. Confirma código regional y layout de la unidad vendida. Original de tienda conservado; sin edición de píxeles ni reconstrucción generativa."
+    },
+    {
+      "productId": "market-clones-105705",
+      "model": "Trust GXT 867 ACIRA · imagen US 24882",
+      "path": "assets/market/trust-acira-24882-official.png",
+      "imageUrl": "https://dezlwerqy1h00.cloudfront.net/Media/Images/Product/Visual/24882_pictures_product_visual_1.png",
+      "sourcePage": "https://www.trust.com/en/product/24882-gxt-867-acira-60-mini-gaming-keyboard",
+      "sourceType": "manufacturer_transparent_product_image",
+      "rights": "PNG original transparente de Trust, derechos reservados; sin licencia abierta verificada. Se cotejaron carcasa 60%, logo en barra espaciadora, cable, leyendas y distribución US con el original de tienda. La ficha oficial identifica switches rojos, pero confirma variante regional de la unidad. Se muestra teclado solo, sin caja. Original conservado; sin edición de píxeles ni reconstrucción generativa."
+    },
+    {
+      "productId": "market-clones-104001",
+      "model": "Trust GXT 834 Callaz · imagen oficial US 24404",
+      "path": "assets/market/trust-callaz-24404-official.png",
+      "imageUrl": "https://dezlwerqy1h00.cloudfront.net/Media/Images/Product/Visual/24404_pictures_product_visual_1.png",
+      "sourcePage": "https://www.trust.com/en/product/24404-gxt-834-callaz-tkl-mechanical-keyboard-us",
+      "sourceType": "manufacturer_transparent_product_image",
+      "rights": "PNG original transparente de Trust, derechos reservados; no se verificó licencia abierta ni cesión. Se cotejaron carcasa, logo, cable, distribución ANSI y leyendas US con la fotografía original de la tienda. Muestra el teclado solo, sin caja. La referencia de tienda no identifica el código regional completo: confirma layout y switch de la unidad vendida. Se conserva intacto el archivo original de tienda. Sin reconstrucción generativa ni edición de píxeles."
+    },
+    {
+      "productId": "market-xpg-probe-700",
+      "model": "XPG PROBE Bronze 700W",
+      "path": "assets/market/xpg-probe-700-family-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/xpg_probe_pd_2000x2000_01.png",
+      "sourcePage": "https://www.xpg.com/en/xpg/pc-components-probe-bronze?tab=gallery",
+      "sourceType": "manufacturer_family_gallery_transparent_image",
+      "rights": "Archivo original transparente de XPG/ADATA, derechos reservados y sin licencia abierta declarada. Galería PROBE Bronze cuya ficha incluye las potencias 600W y 700W; vista lateral compartida de la carcasa PROBE, sin etiqueta eléctrica visible. No prueba potencia, contenido de caja ni unidad del vendedor. Se cotejó forma y rotulación lateral con la foto de tienda. PNG intacto con alfa; original de tienda conservado. No se usó la fotografía antigua específica de PROBE 600 como si identificara 700W."
+    },
+    {
+      "productId": "market-speedlogic-44497",
+      "model": "MSI GeForce RTX 5050 8G SHADOW 2X OC",
+      "path": "assets/market/msi-rtx5050-8g-shadow-2x-oc-official.webp",
+      "imageUrl": "https://storage-asset.msi.com/global/picture/product/product_1750749094686eb812477b40dc5d318cb281027e01.webp",
+      "sourcePage": "https://www.msi.com/Graphics-Card/GeForce-RTX-5050-8G-SHADOW-2X-OC/Gallery",
+      "sourceType": "manufacturer_product_gallery_transparent_image",
+      "rights": "Imagen oficial de MSI, derechos reservados, sin licencia abierta declarada. Vista aislada SHADOW 2X OC de 8 GB cotejada por ventiladores, emblemas y carcasa con la foto de tienda. WebP intacto. El original ya tenía transparencia pero incluía caja y gráfico promocional; se conserva y no se contabiliza esta sustitución como eliminación de otro fondo blanco. Representación ilustrativa, no prueba de disponibilidad."
+    },
+    {
+      "productId": "market-clones-105807",
+      "model": "MSI GeForce RTX 5060 Ti 8G SHADOW 2X OC PLUS",
+      "path": "assets/market/msi-rtx5060ti-8g-shadow-2x-oc-plus-official.webp",
+      "imageUrl": "https://storage-asset.msi.com/global/picture/product/product_17472073879192bd99e59482d657270d6a44065d79.webp",
+      "sourcePage": "https://www.msi.com/Graphics-Card/GeForce-RTX-5060-Ti-8G-SHADOW-2X-OC-PLUS/Gallery",
+      "sourceType": "manufacturer_product_gallery_transparent_image",
+      "rights": "Imagen oficial publicada por MSI; derechos reservados, sin licencia abierta declarada. Vista aislada de la variante de 8 GB; ventiladores, emblemas y carcasa cotejados con la foto de comercio. MSI indica que sus imágenes son ilustrativas: no verifica la unidad del vendedor ni su disponibilidad. WebP intacto con canal alfa; original de tienda conservado para reversión."
+    },
+    {
+      "productId": "market-clones-102936",
+      "model": "MSI GeForce RTX 5060 8G SHADOW 2X OC",
+      "path": "assets/market/msi-rtx5060-8g-shadow-2x-oc-official.webp",
+      "imageUrl": "https://storage-asset.msi.com/global/picture/product/product_1744775268f984f8ff5e971a138d46c5cce81d2f74.webp",
+      "sourcePage": "https://www.msi.com/Graphics-Card/GeForce-RTX-5060-8G-SHADOW-2X-OC/Gallery",
+      "sourceType": "manufacturer_product_gallery_transparent_image",
+      "rights": "Imagen oficial publicada por MSI; derechos reservados, sin licencia abierta declarada. Ventiladores, emblemas y carcasa cotejados con la foto de comercio de la variante SHADOW 2X OC. MSI indica que sus imágenes son ilustrativas: no verifica la unidad del vendedor ni su disponibilidad. WebP intacto con canal alfa; original de tienda conservado para reversión."
+    },
+    {
+      "productIds": ["market-speedlogic-45453", "market-clones-105801"],
+      "model": "MSI GeForce RTX 5050 8G VENTUS 2X OC",
+      "path": "assets/market/msi-rtx5050-ventus-2x-oc-official.png",
+      "imageUrl": "https://storage-asset.msi.com/global/picture/image/feature/vga/NVIDIA/new-gen/gb207-300-ventus/msi-207-300-ventus-kv.png",
+      "sourcePage": "https://www.msi.com/Graphics-Card/GeForce-RTX-5050-8G-VENTUS-2X-OC",
+      "sourceType": "manufacturer_product_page_transparent_image",
+      "rights": "Imagen oficial de MSI, derechos reservados; no se declara licencia abierta. MSI indica que sus representaciones son ilustrativas: no es fotografía de una unidad vendida ni prueba de disponibilidad. Diseño VENTUS 2X plateado, ventiladores y emblemas cotejados con ambas fichas de comercio. PNG sin modificación; originales conservados."
+    },
+    {
+      "productId": "market-clones-106748",
+      "model": "Thermaltake View 170 TG ARGB Micro Chassis, negro",
+      "path": "assets/market/thermaltake-view170-empty-black-official.png",
+      "imageUrl": "https://thermaltake.azureedge.net/pub/media/wysiwyg/key3/img/View_170_TG_ARGB_Micro_Chassis/slide_2.png",
+      "sourcePage": "https://www.thermaltake.com/view-170-tg-argb-micro-chassis.html",
+      "sourceType": "manufacturer_empty_chassis_transparent_image",
+      "rights": "Imagen oficial de Thermaltake, derechos reservados, sin licencia abierta declarada. Se eligió la vista del gabinete vacío con sus tres ventiladores, no slide_1 que contiene un PC montado. Disposición, color y emblemas cotejados con original de comercio. PNG intacto; original conservado para reversión."
+    },
+    {
+      "productId": "market-clones-106764",
+      "model": "Thermaltake View 170 TG ARGB Snow Micro Chassis, blanco",
+      "path": "assets/market/thermaltake-view170-empty-snow-official.png",
+      "imageUrl": "https://thermaltake.azureedge.net/pub/media/wysiwyg/key3/img/View_170_TG_ARGB_Micro_Chassis_wt/slide_2.png",
+      "sourcePage": "https://www.thermaltake.com/view-170-tg-argb-snow-micro-chassis.html",
+      "sourceType": "manufacturer_empty_chassis_transparent_image",
+      "rights": "Imagen oficial de Thermaltake, derechos reservados, sin licencia abierta declarada. Vista del gabinete vacío en su variante SNOW con tres ventiladores, sin piezas de un PC montado. Color, disposición y emblemas cotejados con original de comercio. PNG intacto; original conservado para reversión."
+    },
+    {
+      "productId": "market-clones-105620",
+      "model": "COUGAR FORZA 50 ARGB",
+      "path": "assets/market/cougar-forza50-argb-official.png",
+      "imageUrl": "https://cougargaming.com/_cgrwdr_/wwdpp/wp-content/uploads/2023/04/Forza50RGB-01.png",
+      "sourcePage": "https://cougargaming.com/products/cooling/forza50argb/",
+      "sourceType": "manufacturer_product_gallery_transparent_image",
+      "rights": "Imagen oficial de COUGAR, derechos reservados, sin licencia abierta declarada. Variante ARGB cotejada con foto de comercio: torre, ventilador, clips y base. PNG sin modificación; original con caja conservado para reversión."
+    },
+    {
+      "productId": "market-clones-105653",
+      "model": "COUGAR AIRFACE PURE RGB, negro",
+      "path": "assets/market/cougar-airface-pure-rgb-official.webp",
+      "imageUrl": "https://cougargaming.com/_cgrwdr_/wwdpp/wp-content/uploads/2025/03/Airface-pure-RGB_B_01_1.webp",
+      "sourcePage": "https://cougargaming.com/products/cases/airface-pure-rgb/",
+      "sourceType": "manufacturer_empty_chassis_transparent_image",
+      "rights": "Imagen oficial de COUGAR, derechos reservados, sin licencia abierta declarada. Gabinete vacío negro con cuatro ventiladores, disposición y emblemas cotejados con foto de comercio. WebP original sin modificación; los píxeles exteriores blancos/negros tienen alfa cero, no son fondo visible. Comprobar en navegador, pues algunos visores omiten el alfa WebP. Original conservado."
+    },
+    {
+      "productId": "market-speedlogic-2809",
+      "model": "ASUS PRIME A520M-K",
+      "path": "assets/market/asus-prime-a520m-k-official.png",
+      "imageUrl": "https://www.asus.com/media/global/gallery/p3jbrwz1qhktvcdz_setting_xxx_0_90_end_2000.png",
+      "sourcePage": "https://www.asus.com/motherboards-components/motherboards/prime/prime-a520m-k/",
+      "sourceType": "manufacturer_product_gallery_transparent_variant",
+      "rights": "Fotografía publicada por ASUS; derechos reservados, sin licencia abierta declarada. La imagen sin fondo procede de la variante transparente de la galería oficial, no de la versión social opaca. Serigrafía PRIME A520M-K y disposición cotejadas con la ficha de tienda. No verifica revisión física ni disponibilidad; original de tienda conservado para reversión."
+    },
+    {
+      "productId": "market-speedlogic-24251",
+      "model": "ASUS PRIME B550M-A AC",
+      "path": "assets/market/asus-prime-b550m-a-ac-official.png",
+      "imageUrl": "https://dlcdnwebimgs.asus.com/gain/a153ae97-c99f-4c09-a653-fe25756f9fc4/",
+      "sourcePage": "https://www.asus.com/motherboards-components/motherboards/prime/prime-b550m-a-ac/",
+      "sourceType": "manufacturer_product_page_og_image",
+      "rights": "Fotografía publicada por ASUS; derechos reservados, sin licencia abierta declarada. Serigrafía PRIME B550M-A AC y disposición cotejadas con la ficha de tienda. No verifica revisión física ni disponibilidad; original de tienda conservado para reversión."
+    },
+    {
+      "productId": "market-speedlogic-21944",
+      "model": "ASUS TUF GAMING B550M-PLUS WIFI II",
+      "path": "assets/market/asus-tuf-b550m-plus-wifi-ii-official.png",
+      "imageUrl": "https://dlcdnwebimgs.asus.com/gain/22bd771c-1a57-439b-97d2-ef75363fe11a/",
+      "sourcePage": "https://www.asus.com/motherboards-components/motherboards/tuf-gaming/tuf-gaming-b550m-plus-wifi-ii/",
+      "sourceType": "manufacturer_product_page_og_image",
+      "rights": "Fotografía publicada por ASUS; derechos reservados, sin licencia abierta declarada. La serigrafía B550M-PLUS WIFI II y la disposición se cotejaron con la imagen de tienda. No verifica revisión física ni disponibilidad; la foto original de tienda se conserva para reversión."
+    },
+    {
+      "productId": "market-speedlogic-26903",
+      "model": "ASUS TUF GAMING A620M-PLUS WIFI",
+      "path": "assets/market/asus-tuf-a620m-plus-wifi-official.png",
+      "imageUrl": "https://dlcdnwebimgs.asus.com/gain/362589f1-34fb-4f66-bed7-2df2c26a2b1e/",
+      "sourcePage": "https://www.asus.com/motherboards-components/motherboards/tuf-gaming/tuf-gaming-a620m-plus-wifi/",
+      "sourceType": "manufacturer_product_page_og_image",
+      "rights": "Fotografía publicada por ASUS; derechos reservados, sin licencia abierta declarada. La serigrafía A620M-PLUS WIFI y la disposición se cotejaron con la imagen de tienda. No verifica revisión física ni disponibilidad; la foto original de tienda se conserva para reversión."
+    },
+    {
+      "productId": "market-speedlogic-37410",
+      "model": "ASUS PRIME B840M-A WIFI",
+      "path": "assets/market/asus-prime-b840m-a-wifi-official.png",
+      "imageUrl": "https://dlcdnwebimgs.asus.com/gain/8f19c569-0ee9-4a97-96e9-bb38d082087b/",
+      "sourcePage": "https://www.asus.com/motherboards-components/motherboards/prime/prime-b840m-a-wifi/",
+      "sourceType": "manufacturer_product_page_og_image",
+      "rights": "Fotografía publicada por ASUS; derechos reservados, sin licencia abierta declarada. La serigrafía PRIME B840M-A WIFI es visible en la placa; no verifica revisión física, BIOS ni disponibilidad de la unidad de la tienda. La foto de tienda se conserva para reversión."
+    },
+    {
+      "productId": "market-speedlogic-5469",
+      "model": "XPG VENTO 120 negro, sin RGB",
+      "path": "assets/market/xpg-vento-120-black-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/xpg_vento_120_bk_02_png.png",
+      "sourcePage": "https://www.xpg.com/en/xpg/671?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía publicada por XPG; derechos reservados, sin licencia abierta declarada. Vista aislada del VENTO 120 negro sin iluminación; no verifica revisión ni disponibilidad de la unidad ofrecida. La foto de la tienda permanece para reversión."
+    },
+    {
+      "productId": "market-clones-91851",
+      "model": "Thermaltake ASTRIA 200 ARGB Lighting CPU Cooler (negro, CL-P119-AL12SW-A)",
+      "path": "assets/market/thermaltake-astria-200-black-official.png",
+      "imageUrl": "https://thermaltake.azureedge.net/pub/media/wysiwyg/key3/img/ASTRIA200/bg2_992_200.png",
+      "sourcePage": "https://latam.thermaltake.com/astria-200-argb-lighting-cpu-cooler.html",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía publicada por Thermaltake; derechos reservados, sin licencia abierta declarada. Imagen aislada del disipador negro exacto, sin caja; no verifica revisión ni disponibilidad de la unidad ofrecida."
+    },
+    {
+      "productId": "market-clones-99531",
+      "model": "Thermaltake ASTRIA 200 ARGB Lighting CPU Cooler White (CL-P137-AL12SW-A)",
+      "path": "assets/market/thermaltake-astria-200-white-official.png",
+      "imageUrl": "https://de.thermaltake.com/pub/media/wysiwyg/key3/img/ASTRIA200_W/bg3_992_200.png",
+      "sourcePage": "https://tr.thermaltake.com/astria-200-argb-lighting-cpu-cooler-white.html",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía publicada por Thermaltake; derechos reservados, sin licencia abierta declarada. Vista frontal aislada del disipador blanco exacto, sin caja; no verifica revisión ni disponibilidad de la unidad ofrecida."
+    },
+    {
+      "productId": "market-clones-108954",
+      "model": "Palit GeForce RTX 5070 White OC 12GB",
+      "path": "assets/market/palit-rtx5070-white-oc-official.png",
+      "imageUrl": "https://www.palit.com/product/vga/picture/p05715/p05715_bigimage_249685a3775bdfb2.png",
+      "sourcePage": "https://www.palit.com/palit/vgapro.php?id=5715&lang=en&tab=ga",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía publicada por Palit; derechos reservados, sin licencia abierta declarada. Vista aislada de la tarjeta exacta; no confirma revisión, accesorios ni disponibilidad de la unidad ofrecida."
+    },
+    {
+      "productId": "market-clones-86614",
+      "model": "ASRock H610M-HDV",
+      "path": "assets/market/asrock-h610m-hdv-board-official.png",
+      "imageUrl": "https://www.asrock.com/mb/photo/H610M-HDV%28L2%29.png",
+      "sourcePage": "https://www.asrock.com/mb/Intel/H610M-HDV/",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía publicada por ASRock; derechos reservados, sin licencia abierta declarada. Muestra solo la placa H610M-HDV, no la caja. Confirmar revisión y BIOS de la unidad ofrecida."
+    },
+    {
+      "productId": "market-clones-108032",
+      "model": "ASRock X870 Challenger WiFi White",
+      "path": "assets/market/asrock-x870-challenger-wifi-white-board-official.png",
+      "imageUrl": "https://www.asrock.com/mb/photo/X870%20Challenger%20WiFi%20White%28L2%29.png",
+      "sourcePage": "https://www.asrock.com/mb/AMD/X870%20Challenger%20WiFi%20White/index.us.asp",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía publicada por ASRock; derechos reservados, sin licencia abierta declarada. Muestra solo la placa X870 Challenger WiFi White, no la caja ni antenas. Confirmar revisión y BIOS de la unidad ofrecida."
+    },
+    {
+      "productId": "market-clones-103341",
+      "model": "ASRock Phantom Gaming B850I Lightning WiFi",
+      "path": "assets/market/asrock-b850i-lightning-wifi-board-official.png",
+      "imageUrl": "https://www.asrock.com/mb/photo/B850I%20Lightning%20WiFi%28L2%29.png",
+      "sourcePage": "https://pg.asrock.com/mb/amd/B850I%20Lightning%20WiFi/index.asp",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía publicada por ASRock; derechos reservados, sin licencia abierta declarada. Muestra solo la placa Phantom Gaming B850I Lightning WiFi, no la caja ni antenas. Confirmar revisión y BIOS de la unidad ofrecida."
+    },
+    {
+      "productId": "market-clones-99621",
+      "model": "ASRock B860M Pro-A WiFi",
+      "path": "assets/market/asrock-b860m-pro-a-wifi-board-official.png",
+      "imageUrl": "https://www.asrock.com/mb/photo/B860M%20Pro-A%20WiFi%28L2%29.png",
+      "sourcePage": "https://www.asrock.com/MB/Intel/B860M%20Pro-A%20WiFi/index.asp",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía de ASRock; derechos reservados, sin licencia abierta declarada. Muestra solo la placa B860M Pro-A WiFi, sin caja. No certifica la revisión del ejemplar de tienda."
+    },
+    {
+      "productId": "market-clones-108049",
+      "model": "ASRock B550 Phantom Gaming 4/ac",
+      "path": "assets/market/asrock-b550-phantom-gaming-4-ac-board-official.png",
+      "imageUrl": "https://www.asrock.com/mb/photo/B550%20Phantom%20Gaming%204ac%28L2%29.png",
+      "sourcePage": "https://www.asrock.com/mb/AMD/B550%20Phantom%20Gaming%204ac/",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía de ASRock; derechos reservados, sin licencia abierta declarada. Muestra solo la placa B550 Phantom Gaming 4/ac, sin caja. Confirmar revisión y BIOS de la unidad ofrecida."
+    },
+    {
+      "productId": "market-clones-86621",
+      "model": "ASRock H610M-HDV/M.2+ D5",
+      "path": "assets/market/asrock-h610m-hdv-m2plus-d5-board-official.png",
+      "imageUrl": "https://asrock.com/mb/photo/H610M-HDVM.2%2B%20D5%28L2%29.png",
+      "sourcePage": "https://asrock.com/MB/Intel/H610M-HDVM.2%2B%20D5/index.asp",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía de ASRock; derechos reservados, sin licencia abierta declarada. Muestra solo la placa DDR5 H610M-HDV/M.2+ D5, sin caja. Confirmar revisión y BIOS de la unidad ofrecida."
+    },
+    {
+      "productId": "market-speedlogic-52717",
+      "model": "Corsair 480T RGB Airflow negro (CC-9011272-WW)",
+      "path": "assets/market/corsair-480t-rgb-airflow-black-official.webp",
+      "imageUrl": "https://assets.corsair.com/image/upload/c_pad,q_85,h_1100,w_1100,f_auto/products/Cases/480t-rgb/CC-9011272-WW/Gallery/CC-9011272-WW_01.webp",
+      "sourcePage": "https://www.corsair.com/ww/en/p/pc-cases/CC-9011272-WW/480t-rgb-airflow-tempered-glass-mid-tower-case-cc-9011272-ww",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Foto publicada por Corsair; derechos reservados, sin licencia abierta declarada. Muestra solamente el gabinete 480T RGB Airflow negro con sus ventiladores frontales, no una PC montada ni stock de tienda."
+    },
+    {
+      "productId": "market-speedlogic-48619",
+      "model": "ASUS PRIME B850M-K",
+      "path": "assets/market/asus-prime-b850m-k-official.png",
+      "imageUrl": "https://dlcdnwebimgs.asus.com/gain/a1e47a27-363a-4ab1-9167-480f144efbb3/",
+      "sourcePage": "https://www.asus.com/motherboards-components/motherboards/prime/prime-b850m-k/",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía publicada por ASUS; derechos reservados, sin licencia abierta declarada. Placa aislada del modelo PRIME B850M-K; no confirma revisión física ni BIOS de la unidad ofrecida."
+    },
+    {
+      "productId": "market-speedlogic-46922",
+      "model": "ASUS Dual GeForce RTX 5050 8GB GDDR6 OC Edition (DUAL-RTX5050-O8G)",
+      "path": "assets/market/asus-dual-rtx5050-oc-official.png",
+      "imageUrl": "https://dlcdnwebimgs.asus.com/gain/494437ac-aae9-428d-8354-a18fac20aa01/",
+      "sourcePage": "https://www.asus.com/motherboards-components/graphics-cards/dual/dual-rtx5050-o8g/",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía publicada por ASUS; derechos reservados, sin licencia abierta declarada. Vista de la tarjeta exacta sin caja ni grafismo promocional; no acredita stock ni revisión física del ejemplar."
+    },
+    {
+      "productId": "market-speedlogic-48384",
+      "model": "GIGABYTE GeForce RTX 5060 EAGLE MAX OC 8G (GV-N5060EAGLEMAX-OC-8GD)",
+      "path": "assets/market/gigabyte-rtx-5060-eagle-max-oc-official.png",
+      "imageUrl": "https://static.gigabyte.com/StaticFile/Image/Global/36568d546091f17220e8375371f0dbe7/Product/45748/png/1000",
+      "sourcePage": "https://www.gigabyte.com/Graphics-Card/GV-N5060EAGLEMAX-OC-8GD",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por GIGABYTE; derechos reservados. Vista aislada de la tarjeta exacta sin su caja; no acredita estado del ejemplar en tienda."
+    },
+    {
+      "productId": "market-speedlogic-50001",
+      "model": "GIGABYTE B550M DS3H AC R2",
+      "path": "assets/market/gigabyte-b550m-ds3h-ac-r2-official.png",
+      "imageUrl": "https://static.gigabyte.com/StaticFile/Image/Global/7186efc484fdc422b705a6c36c9c1314/Product/44382/png/1000",
+      "sourcePage": "https://www.gigabyte.com/Motherboard/B550M-DS3H-AC-R2-rev-12",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por GIGABYTE; derechos reservados. Foto aislada del modelo AC R2. La revisión física del ejemplar anunciado por la tienda no está confirmada y debe verificarse antes de consultar BIOS o compatibilidad fina."
+    },
+    {
+      "productId": "market-xpg-probe-600",
+      "model": "XPG PROBE 600W Bronze",
+      "path": "assets/market/xpg-probe-600-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/probe_02.png",
+      "sourcePage": "https://www.xpg.com/cn/xpg/809?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Fotografía publicada por XPG/ADATA; derechos reservados. Uso ilustrativo con atribución; no se declara licencia abierta."
+    },
+    {
+      "productIds": ["market-speedlogic-43321", "market-clones-105157"],
+      "model": "XPG VALOR AIR PLUS negro, variante de cuatro ventiladores",
+      "path": "assets/market/xpg-valor-air-plus-4fan-black-angle-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/valor_air_plus_4fan_pd_2000x2000_02_k.png",
+      "sourcePage": "https://www.xpg.com/en/xpg/pc-components-valor-air-plus?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. Uso ilustrativo con atribución; no se declara licencia abierta."
+    },
+    {
+      "productId": "market-clones-101429",
+      "model": "XPG VALOR AIR PLUS blanco, variante de cuatro ventiladores",
+      "path": "assets/market/xpg-valor-air-plus-4fan-white-angle-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/valor_air_plus_4fan_pd_2000x2000_02_w.png",
+      "sourcePage": "https://www.xpg.com/en/xpg/pc-components-valor-air-plus?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. Uso ilustrativo con atribución; no se declara licencia abierta."
+    },
+    {
+      "productId": "market-speedlogic-39904",
+      "model": "XPG VENTO R 120 ARGB PWM negro",
+      "path": "assets/market/xpg-vento-r-120-argb-black-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/xpg_vento_r_120_argb_pwm_pd_2000x2000_06_bk.png",
+      "sourcePage": "https://www.xpg.com/en/xpg/pc-component-vento-r-120-argb-pwm?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. Uso ilustrativo con atribución; no se declara licencia abierta."
+    },
+    {
+      "productId": "market-speedlogic-54809",
+      "model": "XPG VENTO R 120 ARGB PWM blanco",
+      "path": "assets/market/xpg-vento-r-120-argb-white-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/xpg_vento_r_120_argb_pwm_pd_2000x2000_06_wh.png",
+      "sourcePage": "https://www.xpg.com/en/xpg/pc-component-vento-r-120-argb-pwm?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. Uso ilustrativo con atribución; no se declara licencia abierta."
+    },
+    {
+      "productIds": ["market-speedlogic-42527", "market-clones-108365"],
+      "model": "XPG SPECTRIX D35G DDR4 RGB negro",
+      "path": "assets/market/xpg-spectrix-d35g-black-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/d35g_2000x2000_1_black.png",
+      "sourcePage": "https://www.xpg.com/en/xpg/dram-modules-spectrix-d35g-rgb-ddr4?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. Uso ilustrativo con atribución; no se declara licencia abierta. La foto muestra el módulo, no el número ni la capacidad del kit vendido."
+    },
+    {
+      "productId": "market-speedlogic-55507",
+      "model": "XPG LANCER BLADE RGB DDR5 negro",
+      "path": "assets/market/xpg-lancer-blade-rgb-black-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/01_p_lancer_blade_rgb_2000x2000_01.png",
+      "sourcePage": "https://www.xpg.com/en/xpg/dram-modules-lancer-blade-rgb-ddr5?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. Uso ilustrativo con atribución; no se declara licencia abierta. La foto no certifica la velocidad del módulo vendido."
+    },
+    {
+      "productId": "market-speedlogic-55867",
+      "model": "ARCTIC Freezer 36-S",
+      "path": "assets/market/arctic-36-s-standard.png",
+      "imageUrl": "https://www.arctic.de/media/3c/20/48/1777890264/Freezer_36-S_g00.png",
+      "sourcePage": "https://www.arctic.de/en/Freezer-36-S/ACFRE00194A",
+      "sourceType": "manufacturer_gallery"
+    },
+    {
+      "productId": "market-speedlogic-55873",
+      "model": "ARCTIC Freezer 36-S Black",
+      "path": "assets/market/arctic-36-s-black.png",
+      "imageUrl": "https://www.arctic.de/media/dc/ff/6a/1777890290/Freezer_36-S_Black_g00.png",
+      "sourcePage": "https://www.arctic.de/en/Freezer-36-S-Black/ACFRE00196A",
+      "sourceType": "manufacturer_gallery"
+    },
+    {
+      "productId": "market-speedlogic-55878",
+      "model": "ARCTIC Freezer 36-S A-RGB Black",
+      "path": "assets/market/arctic-36-s-rgb-black.png",
+      "imageUrl": "https://www.arctic.de/media/f8/be/73/1777890311/Freezer_36-S_A-RGB_Black_rainbow_g00.png",
+      "sourcePage": "https://www.arctic.de/en/Freezer-36-S-A-RGB-Black/ACFRE00198A",
+      "sourceType": "manufacturer_gallery"
+    },
+    {
+      "productId": "market-speedlogic-55890",
+      "model": "ARCTIC Freezer 36-S A-RGB White",
+      "path": "assets/market/arctic-36-s-rgb-white.png",
+      "imageUrl": "https://www.arctic.de/media/6c/8c/be/1777890333/Freezer_36-S_A-RGB_White_rainbow_g00.png",
+      "sourcePage": "https://www.arctic.de/en/Freezer-36-S-A-RGB-White/ACFRE00199A",
+      "sourceType": "manufacturer_gallery"
+    },
+    {
+      "productId": "market-speedlogic-40913",
+      "model": "ARCTIC Freezer 36 A-RGB Black",
+      "path": "assets/market/arctic-36-rgb-black.png",
+      "imageUrl": "https://www.arctic.de/media/8f/6d/6c/1707835553/Freezer_36_A-RGB_Black_G01.png",
+      "sourcePage": "https://www.arctic.de/en/Freezer-36-A-RGB-Black/ACFRE00124A",
+      "sourceType": "manufacturer_gallery"
+    },
+    {
+      "productId": "market-speedlogic-40936",
+      "model": "ARCTIC Freezer 36 A-RGB White",
+      "path": "assets/market/arctic-36-rgb-white.png",
+      "imageUrl": "https://www.arctic.de/media/8a/8c/a5/1707835223/Freezer_36_A-RGB_White_G01.png",
+      "sourcePage": "https://www.arctic.de/en/Freezer-36-A-RGB-White/ACFRE00125A",
+      "sourceType": "manufacturer_gallery"
+    },
+    {
+      "productId": "market-clones-102486",
+      "model": "XPG VALOR AIR PRO blanco",
+      "path": "assets/market/xpg-valor-air-pro-white-official.avif",
+      "imageUrl": "https://webapi3.adata.com/storage/product/xpg_valor_air_pro_pd_2000x2000_white_02.avif",
+      "sourcePage": "https://www.xpg.com/en/xpg/pc-components-valor-air-pro?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. Foto ilustrativa del gabinete blanco, sin montaje de PC."
+    },
+    {
+      "productId": "market-clones-108454",
+      "model": "XPG SPECTRIX S65G",
+      "path": "assets/market/xpg-spectrix-s65g-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/spectrix_s65g_pd_011754967232.png",
+      "sourcePage": "https://www.xpg.com/en/xpg/solid-state-drive-spectrix-s65g?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. El aspecto del modelo no certifica la capacidad de 2 TB de la ficha."
+    },
+    {
+      "productIds": ["market-clones-108700", "market-clones-108719"],
+      "model": "XPG MARS 970 PLUS",
+      "path": "assets/market/xpg-mars-970-plus-official.avif",
+      "imageUrl": "https://webapi3.adata.com/storage/product/xpg_mars_970_plus_p_2000x2000_01.avif",
+      "sourcePage": "https://www.xpg.com/en/xpg/ssds-mars-970-plus?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. La foto del modelo físico no certifica 1 TB o 2 TB."
+    },
+    {
+      "productId": "market-clones-108723",
+      "model": "XPG GAMMIX S70 BLADE",
+      "path": "assets/market/xpg-gammix-s70-blade-official.png",
+      "imageUrl": "https://webapi3.adata.com/storage/product/s70_blade_a01.png",
+      "sourcePage": "https://www.xpg.com/en/xpg/830?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. La foto del modelo físico no certifica la capacidad de 4 TB."
+    },
+    {
+      "productId": "market-speedlogic-54243",
+      "model": "XPG MAESTRO PLUS 42SA ARGB",
+      "path": "assets/market/xpg-maestro-plus-42sa-official.avif",
+      "imageUrl": "https://webapi3.adata.com/storage/product/maestro_plus_4pipeblack_fan_rgb_0001.avif",
+      "sourcePage": "https://www.xpg.com/en/xpg/pc-component-maestro-plus-42SA?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. Fotografía del modelo 42SA con iluminación de muestra; no certifica temperatura real."
+    },
+    {
+      "productId": "market-speedlogic-54811",
+      "model": "XPG MAESTRO PLUS 62DA ARGB",
+      "path": "assets/market/xpg-maestro-plus-62da-official.avif",
+      "imageUrl": "https://webapi3.adata.com/storage/product/maestro_plus_6pipeblack_fan_rgb_0001.avif",
+      "sourcePage": "https://www.xpg.com/en/xpg/pc-component-maestro-plus-62DA?tab=gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por XPG/ADATA; derechos reservados. Fotografía del modelo 62DA con iluminación de muestra; no certifica temperatura real."
+    },
+    {
+      "productId": "market-speedlogic-50846",
+      "model": "Antec AX27 RGB ELITE",
+      "path": "assets/market/antec-ax27-rgb-elite-front-official.png",
+      "imageUrl": "https://www.antec.com/product/case/images/ax27-rgb-elite-pdt03.png",
+      "sourcePage": "https://www.antec.com/product/case/ax27-rgb-elite",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por Antec; derechos reservados. Vista frontal del gabinete y sus ventiladores, no de una PC montada."
+    },
+    {
+      "productId": "market-speedlogic-46067",
+      "model": "Antec AX65 ARGB",
+      "path": "assets/market/antec-ax65-argb-front-official.png",
+      "imageUrl": "https://www.antec.com/product/case/images/ax65-argb-pdt03.png",
+      "sourcePage": "https://www.antec.com/product/case/ax65-argb",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por Antec; derechos reservados. Vista frontal del gabinete y sus ventiladores, no de una PC montada."
+    },
+    {
+      "productId": "market-speedlogic-45792",
+      "model": "Antec CSK 650W Bronze",
+      "path": "assets/market/antec-csk-650-bronze-official.png",
+      "imageUrl": "https://www.antec.com/product/power/images/csk-650-bronze-pdt01.png",
+      "sourcePage": "https://www.antec.com/product/power/csk-650-bronze",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por Antec; derechos reservados. Foto de la fuente exacta de 650W, sin licencia abierta declarada."
+    },
+    {
+      "productId": "market-speedlogic-56045",
+      "model": "GIGABYTE GeForce RTX 5050 WINDFORCE OC V2 8G (GV-N5050WF2OCV2-8GD)",
+      "path": "assets/market/gigabyte-rtx-5050-windforce-oc-v2-official.png",
+      "imageUrl": "https://static.gigabyte.com/StaticFile/Image/Global/c3c96d7cab4b0e7538f9327ea4c2a1c8/Product/46656/png/1000",
+      "sourcePage": "https://www.gigabyte.com/Graphics-Card/GV-N5050WF2OCV2-8GD",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por GIGABYTE; derechos reservados. Vista aislada de la tarjeta, no certifica disponibilidad ni revisión física del ejemplar vendido."
+    },
+    {
+      "productId": "market-clones-108975",
+      "model": "GIGABYTE GeForce RTX 5060 AERO OC 8G (GV-N5060AERO-OC-8GD)",
+      "path": "assets/market/gigabyte-rtx-5060-aero-oc-official.png",
+      "imageUrl": "https://static.gigabyte.com/StaticFile/Image/Global/b1da17010d59a04b84c64f98d4435260/Product/44911/png/1000",
+      "sourcePage": "https://www.gigabyte.com/Graphics-Card/GV-N5060AERO-OC-8GD/gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por GIGABYTE; derechos reservados. Vista aislada de la tarjeta, no certifica disponibilidad ni revisión física del ejemplar vendido."
+    },
+    {
+      "productId": "market-speedlogic-45467",
+      "model": "GIGABYTE GeForce RTX 5060 WINDFORCE OC 8G (GV-N5060WF2OC-8GD)",
+      "path": "assets/market/gigabyte-rtx5060-windforce-oc-official.webp",
+      "imageUrl": "https://static.gigabyte.com/StaticFile/Image/Global/4a26330d9dc01d62d3f6bfe55a218acb/ProductRemoveBg/44962/webp/400",
+      "sourcePage": "https://www.gigabyte.com/Graphics-Card/GV-N5060WF2OC-8GD/gallery",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen de la galería pública de GIGABYTE, derechos reservados; no licencia abierta ni permiso de reutilización verificado. Archivo oficial RGBA intacto. La foto de tienda anterior muestra la caja WINDFORCE OC 8G y se conserva para reversión. Confirma con la tienda referencia y revisión exactas del ejemplar; la imagen no certifica stock ni configuración entregada."
+    },
+    {
+      "productId": "market-speedlogic-48822",
+      "model": "Antec AX67 ARGB",
+      "path": "assets/market/antec-ax67-argb-front-official.png",
+      "imageUrl": "https://www.antec.com/product/case/images/ax67-argb-pdt03.png",
+      "sourcePage": "https://www.antec.com/product/case/ax67-argb",
+      "sourceType": "manufacturer_gallery",
+      "rights": "Imagen publicada por Antec; derechos reservados. Vista frontal del gabinete y sus ventiladores, no de una PC montada."
+    }
+  ]
+}

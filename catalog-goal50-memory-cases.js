@@ -1,0 +1,825 @@
+// Exact Kingston modules and Fractal chassis. Sources and mounting limits are preserved.
+window.FENIXA_GOAL50_DATA.push(...[
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR48U40BS6-8 · 8 GB UDIMM",
+    "sku": "KVR48U40BS6-8",
+    "modelKey": "KVR48U40BS6-8",
+    "idSuggested": "model-ram-kvr48u40bs6-8",
+    "source": "https://www.kingston.com/datasheets/KVR48U40BS6-8.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 8,
+      "memory": "DDR5",
+      "rate": 4800,
+      "defaultRate": 4800,
+      "cl": 40,
+      "modules": 1,
+      "voltage": 1.1,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR48U40BS8-16 · 16 GB UDIMM",
+    "sku": "KVR48U40BS8-16",
+    "modelKey": "KVR48U40BS8-16",
+    "idSuggested": "model-ram-kvr48u40bs8-16",
+    "source": "https://www.kingston.com/datasheets/KVR48U40BS8-16.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 16,
+      "memory": "DDR5",
+      "rate": 4800,
+      "defaultRate": 4800,
+      "cl": 40,
+      "modules": 1,
+      "voltage": 1.1,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR48U40BD8-32 · 32 GB UDIMM",
+    "sku": "KVR48U40BD8-32",
+    "modelKey": "KVR48U40BD8-32",
+    "idSuggested": "model-ram-kvr48u40bd8-32",
+    "source": "https://www.kingston.com/datasheets/KVR48U40BD8-32.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 32,
+      "memory": "DDR5",
+      "rate": 4800,
+      "defaultRate": 4800,
+      "cl": 40,
+      "modules": 1,
+      "voltage": 1.1,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR56U46BS6-8 · 8 GB UDIMM",
+    "sku": "KVR56U46BS6-8",
+    "modelKey": "KVR56U46BS6-8",
+    "idSuggested": "model-ram-kvr56u46bs6-8",
+    "source": "https://www.kingston.com/datasheets/KVR56U46BS6-8.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 8,
+      "memory": "DDR5",
+      "rate": 5600,
+      "defaultRate": 5600,
+      "cl": 46,
+      "modules": 1,
+      "voltage": 1.1,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR56U46BS8-16 · 16 GB UDIMM",
+    "sku": "KVR56U46BS8-16",
+    "modelKey": "KVR56U46BS8-16",
+    "idSuggested": "model-ram-kvr56u46bs8-16",
+    "source": "https://www.kingston.com/datasheets/KVR56U46BS8-16.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 16,
+      "memory": "DDR5",
+      "rate": 5600,
+      "defaultRate": 5600,
+      "cl": 46,
+      "modules": 1,
+      "voltage": 1.1,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR56U46BD8-32 · 32 GB UDIMM",
+    "sku": "KVR56U46BD8-32",
+    "modelKey": "KVR56U46BD8-32",
+    "idSuggested": "model-ram-kvr56u46bd8-32",
+    "source": "https://www.kingston.com/datasheets/KVR56U46BD8-32.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 32,
+      "memory": "DDR5",
+      "rate": 5600,
+      "defaultRate": 5600,
+      "cl": 46,
+      "modules": 1,
+      "voltage": 1.1,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR32N22S6/8 · 8 GB UDIMM",
+    "sku": "KVR32N22S6/8",
+    "modelKey": "KVR32N22S6/8",
+    "idSuggested": "model-ram-kvr32n22s6-8",
+    "source": "https://www.kingston.com/datasheets/KVR32N22S6_8.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 8,
+      "memory": "DDR4",
+      "rate": 3200,
+      "defaultRate": 3200,
+      "cl": 22,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR32N22S8/16 · 16 GB UDIMM",
+    "sku": "KVR32N22S8/16",
+    "modelKey": "KVR32N22S8/16",
+    "idSuggested": "model-ram-kvr32n22s8-16",
+    "source": "https://www.kingston.com/datasheets/KVR32N22S8_16.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 16,
+      "memory": "DDR4",
+      "rate": 3200,
+      "defaultRate": 3200,
+      "cl": 22,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR32N22D8/32 · 32 GB UDIMM",
+    "sku": "KVR32N22D8/32",
+    "modelKey": "KVR32N22D8/32",
+    "idSuggested": "model-ram-kvr32n22d8-32",
+    "source": "https://www.kingston.com/datasheets/KVR32N22D8_32.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 32,
+      "memory": "DDR4",
+      "rate": 3200,
+      "defaultRate": 3200,
+      "cl": 22,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR26N19S6/8 · 8 GB UDIMM",
+    "sku": "KVR26N19S6/8",
+    "modelKey": "KVR26N19S6/8",
+    "idSuggested": "model-ram-kvr26n19s6-8",
+    "source": "https://www.kingston.com/datasheets/KVR26N19S6_8.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 8,
+      "memory": "DDR4",
+      "rate": 2666,
+      "defaultRate": 2666,
+      "cl": 19,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR26N19S8/16 · 16 GB UDIMM",
+    "sku": "KVR26N19S8/16",
+    "modelKey": "KVR26N19S8/16",
+    "idSuggested": "model-ram-kvr26n19s8-16",
+    "source": "https://www.kingston.com/datasheets/KVR26N19S8_16.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 16,
+      "memory": "DDR4",
+      "rate": 2666,
+      "defaultRate": 2666,
+      "cl": 19,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR26N19D8/32 · 32 GB UDIMM",
+    "sku": "KVR26N19D8/32",
+    "modelKey": "KVR26N19D8/32",
+    "idSuggested": "model-ram-kvr26n19d8-32",
+    "source": "https://www.kingston.com/datasheets/KVR26N19D8_32.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato DIMM de escritorio; comprobar CPU, BIOS y lista de soporte. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 32,
+      "memory": "DDR4",
+      "rate": 2666,
+      "defaultRate": 2666,
+      "cl": 19,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "UDIMM · 288 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR32S22S6/8 · 8 GB SO-DIMM",
+    "sku": "KVR32S22S6/8",
+    "modelKey": "KVR32S22S6/8",
+    "idSuggested": "model-ram-kvr32s22s6-8",
+    "source": "https://www.kingston.com/datasheets/KVR32S22S6_8.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato SO-DIMM para equipos con esa ranura: no equivale a UDIMM de escritorio. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 8,
+      "memory": "DDR4",
+      "rate": 3200,
+      "defaultRate": 3200,
+      "cl": 22,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "SO-DIMM · 260 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR32S22S8/16 · 16 GB SO-DIMM",
+    "sku": "KVR32S22S8/16",
+    "modelKey": "KVR32S22S8/16",
+    "idSuggested": "model-ram-kvr32s22s8-16",
+    "source": "https://www.kingston.com/datasheets/KVR32S22S8_16.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato SO-DIMM para equipos con esa ranura: no equivale a UDIMM de escritorio. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 16,
+      "memory": "DDR4",
+      "rate": 3200,
+      "defaultRate": 3200,
+      "cl": 22,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "SO-DIMM · 260 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR32S22D8/32 · 32 GB SO-DIMM",
+    "sku": "KVR32S22D8/32",
+    "modelKey": "KVR32S22D8/32",
+    "idSuggested": "model-ram-kvr32s22d8-32",
+    "source": "https://www.kingston.com/datasheets/KVR32S22D8_32.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato SO-DIMM para equipos con esa ranura: no equivale a UDIMM de escritorio. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 32,
+      "memory": "DDR4",
+      "rate": 3200,
+      "defaultRate": 3200,
+      "cl": 22,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "SO-DIMM · 260 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR26S19S6/8 · 8 GB SO-DIMM",
+    "sku": "KVR26S19S6/8",
+    "modelKey": "KVR26S19S6/8",
+    "idSuggested": "model-ram-kvr26s19s6-8",
+    "source": "https://www.kingston.com/datasheets/KVR26S19S6_8.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato SO-DIMM para equipos con esa ranura: no equivale a UDIMM de escritorio. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 8,
+      "memory": "DDR4",
+      "rate": 2666,
+      "defaultRate": 2666,
+      "cl": 19,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "SO-DIMM · 260 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR26S19S8/16 · 16 GB SO-DIMM",
+    "sku": "KVR26S19S8/16",
+    "modelKey": "KVR26S19S8/16",
+    "idSuggested": "model-ram-kvr26s19s8-16",
+    "source": "https://www.kingston.com/datasheets/KVR26S19S8_16.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato SO-DIMM para equipos con esa ranura: no equivale a UDIMM de escritorio. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 16,
+      "memory": "DDR4",
+      "rate": 2666,
+      "defaultRate": 2666,
+      "cl": 19,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "SO-DIMM · 260 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR26S19D8/32 · 32 GB SO-DIMM",
+    "sku": "KVR26S19D8/32",
+    "modelKey": "KVR26S19D8/32",
+    "idSuggested": "model-ram-kvr26s19d8-32",
+    "source": "https://www.kingston.com/datasheets/KVR26S19D8_32.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato SO-DIMM para equipos con esa ranura: no equivale a UDIMM de escritorio. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 32,
+      "memory": "DDR4",
+      "rate": 2666,
+      "defaultRate": 2666,
+      "cl": 19,
+      "modules": 1,
+      "voltage": 1.2,
+      "format": "SO-DIMM · 260 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR56S46BS8-16 · 16 GB SO-DIMM",
+    "sku": "KVR56S46BS8-16",
+    "modelKey": "KVR56S46BS8-16",
+    "idSuggested": "model-ram-kvr56s46bs8-16",
+    "source": "https://www.kingston.com/datasheets/KVR56S46BS8-16.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato SO-DIMM para equipos con esa ranura: no equivale a UDIMM de escritorio. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 16,
+      "memory": "DDR5",
+      "rate": 5600,
+      "defaultRate": 5600,
+      "cl": 46,
+      "modules": 1,
+      "voltage": 1.1,
+      "format": "SO-DIMM · 262 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "ram",
+    "name": "Kingston ValueRAM KVR56S46BD8-32 · 32 GB SO-DIMM",
+    "sku": "KVR56S46BD8-32",
+    "modelKey": "KVR56S46BD8-32",
+    "idSuggested": "model-ram-kvr56s46bd8-32",
+    "source": "https://www.kingston.com/datasheets/KVR56S46BD8-32.pdf",
+    "checkedAt": "2026-10-22",
+    "scope": "Módulo individual de la referencia exacta Kingston. SPD JEDEC y velocidad nominal coinciden; no perfil XMP/EXPO ni kit de dos módulos. Latencia CAS y voltaje de esa fila, no de otra capacidad. Formato SO-DIMM para equipos con esa ranura: no equivale a UDIMM de escritorio. Sin oferta local, memoria incluida ni velocidad garantizada en tu equipo.",
+    "values": {
+      "capacity": 32,
+      "memory": "DDR5",
+      "rate": 5600,
+      "defaultRate": 5600,
+      "cl": 46,
+      "modules": 1,
+      "voltage": 1.1,
+      "format": "SO-DIMM · 262 pines",
+      "profiles": "JEDEC · sin XMP/EXPO"
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Meshify 2 Compact Black",
+    "sku": "FD-C-MES2C-01",
+    "modelKey": "FD-C-MES2C-01",
+    "idSuggested": "model-case-fd-c-mes2c-01",
+    "source": "https://www.fractal-design.com/products/cases/meshify-series/meshify-2-compact/meshify-2-compact-black/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "ATX, Micro ATX, Mini ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 341,
+      "coolerMax": 169,
+      "depth": 424,
+      "width": 210,
+      "height": 475,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Meshify 2 Nano Black TG Dark Tint",
+    "sku": "FD-C-MES2N-01",
+    "modelKey": "FD-C-MES2N-01",
+    "idSuggested": "model-case-fd-c-mes2n-01",
+    "source": "https://www.fractal-design.com/products/cases/meshify-series/meshify-2-nano/meshify-2-nano-black-tg-dark-tint/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "Mini ITX, Mini-DTX",
+      "psuFormat": "ATX",
+      "gpuMax": 331,
+      "coolerMax": 167,
+      "depth": 396,
+      "width": 205,
+      "height": 361,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Meshify 2 XL Black - Light TG",
+    "sku": "FD-C-MES2X-02",
+    "modelKey": "FD-C-MES2X-02",
+    "idSuggested": "model-case-fd-c-mes2x-02",
+    "source": "https://www.fractal-design.com/products/cases/meshify-series/meshify-2-xl/meshify-2-xl-black-light-tg/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "E-ATX, ATX, Micro ATX, Mini ITX, EE-ATX, SSI-CEB, SSI-EEB",
+      "psuFormat": "ATX",
+      "gpuMax": 530,
+      "coolerMax": 185,
+      "depth": 600,
+      "width": 240,
+      "height": 566,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Define 7 Black",
+    "sku": "FD-C-DEF7A-01",
+    "modelKey": "FD-C-DEF7A-01",
+    "idSuggested": "model-case-fd-c-def7a-01",
+    "source": "https://www.fractal-design.com/products/cases/define-series/define-7/black/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "E-ATX, ATX, Micro ATX, Mini ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 470,
+      "coolerMax": 185,
+      "depth": 547,
+      "width": 240,
+      "height": 475,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Define 7 Compact Black Solid",
+    "sku": "FD-C-DEF7C-01",
+    "modelKey": "FD-C-DEF7C-01",
+    "idSuggested": "model-case-fd-c-def7c-01",
+    "source": "https://www.fractal-design.com/products/cases/define-series/define-7-compact/define-7-compact-black-solid/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "ATX, Micro ATX, Mini ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 341,
+      "coolerMax": 169,
+      "depth": 427,
+      "width": 210,
+      "height": 474,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Define 7 Mini Black Solid",
+    "sku": "FD-C-DEF7M-01",
+    "modelKey": "FD-C-DEF7M-01",
+    "idSuggested": "model-case-fd-c-def7m-01",
+    "source": "https://www.fractal-design.com/products/cases/define-series/define-7-mini/define-7-mini-black-solid/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "Micro ATX, Mini-DTX, Mini ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 331,
+      "coolerMax": 167,
+      "depth": 399,
+      "width": 205,
+      "height": 406,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Define 7 Nano Black Solid",
+    "sku": "FD-C-DEF7N-01",
+    "modelKey": "FD-C-DEF7N-01",
+    "idSuggested": "model-case-fd-c-def7n-01",
+    "source": "https://www.fractal-design.com/products/cases/define-series/define-7-nano/define-7-nano-black-solid/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "Mini ITX, Mini DTX",
+      "psuFormat": "ATX",
+      "gpuMax": 331,
+      "coolerMax": 167,
+      "depth": 399,
+      "width": 205,
+      "height": 361,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Define 7 XL Black Solid",
+    "sku": "FD-C-DEF7X-01",
+    "modelKey": "FD-C-DEF7X-01",
+    "idSuggested": "model-case-fd-c-def7x-01",
+    "source": "https://www.fractal-design.com/products/cases/define-series/define-7-xl/define-7-xl-black-solid/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "E-ATX, ATX, Micro ATX, Mini ITX, EE-ATX, SSI-CEB, SSI-EEB",
+      "psuFormat": "ATX",
+      "gpuMax": 530,
+      "coolerMax": 185,
+      "depth": 604,
+      "width": 240,
+      "height": 566,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Pop Air Black Solid",
+    "sku": "FD-C-POA1A-01",
+    "modelKey": "FD-C-POA1A-01",
+    "idSuggested": "model-case-fd-c-poa1a-01",
+    "source": "https://www.fractal-design.com/products/cases/pop-series/pop-air/pop-air-black-solid/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "ATX, Micro ATX, Mini ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 405,
+      "coolerMax": 170,
+      "depth": 473.5,
+      "width": 215,
+      "height": 454,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Pop Mini Air RGB Black TG Clear Tint",
+    "sku": "FD-C-POR1M-06",
+    "modelKey": "FD-C-POR1M-06",
+    "idSuggested": "model-case-fd-c-por1m-06",
+    "source": "https://www.fractal-design.com/products/cases/pop-series/pop-mini-air/pop-mini-air-rgb-black-tg-clear-tint/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "Micro ATX, Mini ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 365,
+      "coolerMax": 170,
+      "depth": 432,
+      "width": 215,
+      "height": 393,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Pop XL Air RGB Black TG Clear Tint",
+    "sku": "FD-C-POR1X-06",
+    "modelKey": "FD-C-POR1X-06",
+    "idSuggested": "model-case-fd-c-por1x-06",
+    "source": "https://www.fractal-design.com/products/cases/pop-series/pop-xl-air/pop-xl-air-rgb-black-tg-clear-tint/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "E-ATX, ATX, Micro ATX, Mini ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 455,
+      "coolerMax": 185,
+      "depth": 522,
+      "width": 230,
+      "height": 520,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Focus 2 Black Solid",
+    "sku": "FD-C-FOC2A-07",
+    "modelKey": "FD-C-FOC2A-07",
+    "idSuggested": "model-case-fd-c-foc2a-07",
+    "source": "https://www.fractal-design.com/products/cases/focus-series/focus-2/focus-2-black-solid/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "ATX, Micro ATX, Mini ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 405,
+      "coolerMax": 170,
+      "depth": 471.5,
+      "width": 215,
+      "height": 450.5,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Focus G Black - Window",
+    "sku": "FD-CA-FOCUS-BK-W",
+    "modelKey": "FD-CA-FOCUS-BK-W",
+    "idSuggested": "model-case-fd-ca-focus-bk-w",
+    "source": "https://www.fractal-design.com/products/cases/focus-series/focus-g/focus-g-black-window/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "ATX, Micro ATX, ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 380,
+      "coolerMax": 165,
+      "depth": 464,
+      "width": 205,
+      "height": 444,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Node 304 Black",
+    "sku": "FD-CA-NODE-304-BL",
+    "modelKey": "FD-CA-NODE-304-BL",
+    "idSuggested": "model-case-fd-ca-node-304-bl",
+    "source": "https://www.fractal-design.com/products/cases/node-series/node-304/node-304-black/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "Mini ITX, Mini DTX",
+      "psuFormat": "ATX",
+      "gpuMax": 310,
+      "coolerMax": 165,
+      "depth": 374,
+      "width": 250,
+      "height": 210,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Node 804",
+    "sku": "FD-CA-NODE-804-BL-W",
+    "modelKey": "FD-CA-NODE-804-BL-W",
+    "idSuggested": "model-case-fd-ca-node-804-bl-w",
+    "source": "https://www.fractal-design.com/products/cases/node-series/node-804/node-804/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "Micro ATX, Mini ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 320,
+      "coolerMax": 160,
+      "depth": 389,
+      "width": 344,
+      "height": 307,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Ridge PCIe 4.0 Black",
+    "sku": "FD-C-RID1N-11",
+    "modelKey": "FD-C-RID1N-11",
+    "idSuggested": "model-case-fd-c-rid1n-11",
+    "source": "https://www.fractal-design.com/products/cases/ridge-series/ridge/ridge-pcie-4-0-black/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "m-ITX",
+      "psuFormat": "SFX, SFX-L",
+      "gpuMax": 335,
+      "coolerMax": 70,
+      "depth": 374,
+      "width": 110,
+      "height": 395.4,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Mood Black",
+    "sku": "FD-C-MOD1N-02",
+    "modelKey": "FD-C-MOD1N-02",
+    "idSuggested": "model-case-fd-c-mod1n-02",
+    "source": "https://www.fractal-design.com/products/cases/mood-series/mood/mood-black/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "Mini ITX",
+      "psuFormat": "SFX, SFX-L",
+      "gpuMax": 325,
+      "coolerMax": 114,
+      "depth": 212,
+      "width": 212,
+      "height": 453,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design North XL Chalk White Mesh",
+    "sku": "FD-C-NOR1X-03",
+    "modelKey": "FD-C-NOR1X-03",
+    "idSuggested": "model-case-fd-c-nor1x-03",
+    "source": "https://www.fractal-design.com/products/cases/north-series/north-xl/north-xl-chalk-white-mesh/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "E-ATX, ATX, Micro ATX, Mini ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 413,
+      "coolerMax": 185,
+      "depth": 503,
+      "width": 240,
+      "height": 509,
+      "gpuMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Era 2 Charcoal Gray",
+    "sku": "FD-C-ERA2N-02",
+    "modelKey": "FD-C-ERA2N-02",
+    "idSuggested": "model-case-fd-c-era2n-02",
+    "source": "https://www.fractal-design.com/products/cases/era-series/era-2/era-2-charcoal-gray/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "ITX",
+      "psuFormat": "SFX, SFX-L",
+      "gpuMax": 326,
+      "coolerMax": 70,
+      "depth": 366,
+      "width": 165,
+      "height": 314,
+      "gpuMaxConditional": true,
+      "coolerMaxConditional": true
+    }
+  },
+  {
+    "category": "case",
+    "name": "Fractal Design Core 1100",
+    "sku": "FD-CA-CORE-1100-BL",
+    "modelKey": "FD-CA-CORE-1100-BL",
+    "idSuggested": "model-case-fd-ca-core-1100-bl",
+    "source": "https://www.fractal-design.com/products/cases/core-series/core-1100/core-1100/",
+    "checkedAt": "2026-10-22",
+    "scope": "Dimensiones del gabinete ensamblado, no del embalaje; orientación indicada por el fabricante. Límites de GPU y disipador dependen de radiadores, ventiladores, bandejas y disposición. Comprobar manual y configuración exacta antes de montar. Sin oferta ni fotografía exacta local.",
+    "values": {
+      "format": "Micro ATX, Mini ITX",
+      "psuFormat": "ATX",
+      "gpuMax": 350,
+      "coolerMax": 148,
+      "depth": 410,
+      "width": 175,
+      "height": 368,
+      "gpuMaxConditional": true,
+      "coolerMaxConditional": true
+    }
+  }
+]);

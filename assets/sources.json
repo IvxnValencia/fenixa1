@@ -1,0 +1,98 @@
+{
+  "note": "Fotos de producto para identificación en el prototipo. Derechos de los respectivos fabricantes/distribuidores; no se afirma una licencia libre. CPU: fotografía distribuida por csdam.net; resto: sitios del fabricante. No se usan fotografías de montajes de terceros.",
+  "items": [
+    {
+      "name": "AMD Ryzen 5 7600",
+      "sku": "100-100001015BOX",
+      "file": "cpu-amd-ryzen-5-7600.jpg",
+      "productSource": "https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-5-7600.html",
+      "imageSource": "https://csdam.net/digitalcontent/0/5160/51607291.jpg"
+    },
+    {
+      "name": "MSI GeForce RTX 4060 GAMING 8G",
+      "sku": "912-V516-021",
+      "file": "gpu-msi-rtx-4060-gaming-8g.png",
+      "productSource": "https://www.msi.com/Graphics-Card/GeForce-RTX-4060-GAMING-8G",
+      "imageSource": "https://pl-store.msi.com/cdn/shop/files/1024_2c67dec6-ca71-4643-9599-d4b141621408.png?v=1715324045&width=1024"
+    },
+    {
+      "name": "MSI PRO B650M-A WIFI",
+      "sku": "PRO B650M-A WIFI",
+      "file": "motherboard-msi-pro-b650m-a-wifi.png",
+      "productSource": "https://www.msi.com/Motherboard/PRO-B650M-A-WIFI",
+      "imageSource": "https://storage-asset.msi.com/global/picture/image/feature/mb/B650M/PRO-B650M-A-WIFI/kv.png"
+    },
+    {
+      "name": "Kingston FURY Beast DDR5 32GB kit",
+      "sku": "KF560C36BBE2K2-32",
+      "file": "ram-kingston-fury-beast-ddr5.png",
+      "productSource": "https://www.kingston.com/en/memory/search/?partid=KF560C36BBE2K2-32",
+      "imageSource": "https://media.kingston.com/kingston/product-comparison/ktc-comp-chart-fury-beast-ddr5_tn.png"
+    },
+    {
+      "name": "Kingston NV3 PCIe 4.0 NVMe SSD 500GB",
+      "sku": "SNV3S/500G",
+      "file": "ssd-kingston-nv3-500gb.jpg",
+      "productSource": "https://www.kingston.com/en/ssd/nv3-nvme-pcie-ssd",
+      "imageSource": "https://media.kingston.com/kingston/product/SNV3S_500GB-lg.jpg"
+    },
+    {
+      "name": "CORSAIR RMe Series RM750e",
+      "sku": "CP-9020295-NA",
+      "file": "psu-corsair-rm750e.webp",
+      "productSource": "https://www.corsair.com/ca/en/p/psu/cp-9020295-na/rme-series-rm750e-fully-modular",
+      "imageSource": "https://assets.corsair.com/image/upload/c_pad%2Cq_85%2Ch_1100%2Cw_1100%2Cf_auto/products/rme-series-2025/Gallery/CP-9020295-NA_01.webp"
+    },
+    {
+      "name": "CORSAIR 4000D AIRFLOW Tempered Glass Mid-Tower — Black",
+      "sku": "CC-9011200-WW",
+      "file": "case-corsair-4000d-airflow-black.webp",
+      "productSource": "https://www.corsair.com/us/en/p/pc-cases/cc-9011200-ww/4000d-airflow-tempered-glass-mid-tower-atx-case-black-cc-9011200-ww",
+      "imageSource": "https://assets.corsair.com/image/upload/c_pad%2Cq_85%2Ch_1100%2Cw_1100%2Cf_auto/products/Cases/base-4000d-airflow-config/Gallery/4000D_AF_BLACK_01.webp"
+    },
+    {
+      "name": "CORSAIR 4000D AIRFLOW Tempered Glass Mid-Tower — White",
+      "sku": "CC-9011201-WW",
+      "file": "case-corsair-4000d-airflow-white.webp",
+      "productSource": "https://www.corsair.com/us/en/p/pc-cases/cc-9011201-ww/4000d-airflow-tempered-glass-mid-tower-atx-case-white-cc-9011201-ww",
+      "imageSource": "https://assets.corsair.com/image/upload/c_pad%2Cq_85%2Ch_1100%2Cw_1100%2Cf_auto/products/Cases/base-4000d-airflow-config/Gallery/4000D_AF_WHITE_01.webp"
+    },
+    {
+      "name": "CORSAIR iCUE H100i ELITE CAPELLIX",
+      "sku": "CW-9060046-WW",
+      "file": "cooler-corsair-h100i-capellix.webp",
+      "productSource": "https://www.corsair.com/us/en/p/cpu-coolers/CW-9060046-WW/icue-h100i-elite-capellix-liquid-cpu-cooler-cw-9060046-ww",
+      "imageSource": "https://assets.corsair.com/image/upload/c_pad%2Cq_85%2Ch_1100%2Cw_1100%2Cf_auto/products/Liquid-Cooling/base-icue-elite-cooler-config/Gallery/H100i_ELITE_CAPELLIX_01.webp"
+    },
+    {
+      "name": "CORSAIR iCUE AF120 RGB ELITE 120mm PWM Fan",
+      "sku": "CO-9050153-WW",
+      "file": "fan-corsair-af120-rgb-elite.webp",
+      "productSource": "https://www.corsair.com/us/en/p/case-fans/CO-9050153-WW/icue-af120-rgb-elite-120mm-pwm-fan-co-9050153-ww",
+      "imageSource": "https://assets.corsair.com/image/upload/c_pad,q_auto,h_1024,w_1024,f_auto/products/Fans/CO-9050153-WW/CO-9050153-WWiCUE-AF120-RGB-ELITE-120mm-PWM-Fan-0.webp"
+    },
+    {
+      "name": "CORSAIR K70 CORE RGB Mechanical Gaming Keyboard",
+      "sku": "CH-910981E-NA",
+      "file": "keyboard-corsair-k70-core.webp",
+      "productSource": "https://www.corsair.com/us/en/p/keyboards/CH-910981E-NA/k70-core-rgb-mechanical-gaming-keyboard-with-palm-rest-black-ch-910981e-na",
+      "imageSource": "https://assets.corsair.com/image/upload/c_pad%2Cq_85%2Ch_1100%2Cw_1100%2Cf_auto/products/Gaming-Keyboards/k70-core/Gallery/CH-910981E/CH-910981E_01.webp"
+    },
+    {
+      "name": "AMD Ryzen 7 9800X3D",
+      "sku": "100-000001084WOF",
+      "file": "market/amd-ryzen-7-9800x3d.jpg",
+      "productSource": "https://www.amd.com/en/products/processors/desktops/ryzen/9000-series/amd-ryzen-7-9800x3d.html",
+      "imageSource": "https://www.amd.com/content/dam/amd/en/images/products/processors/ryzen/2900400-ryzen-7-9800x3d-product.jpg",
+      "rights": "Imagen oficial de AMD; derechos del fabricante. No se declara licencia abierta."
+    },
+    {
+      "name": "AMD Radeon RX 9070 XT",
+      "sku": "Radeon RX 9070 XT · referencia AMD",
+      "file": "market/amd-radeon-rx-9070-xt.jpg",
+      "productSource": "https://www.amd.com/en/products/graphics/desktops/radeon/9000-series/amd-radeon-rx-9070xt.html",
+      "imageSource": "https://www.amd.com/content/dam/amd/en/images/products/graphics/radeon-rx-9070/2922918-radeon-rx-9070xt-product.jpg",
+      "rights": "Render oficial de AMD; derechos del fabricante. La ficha indica que no es una tarjeta disponible para compra y no representa un ensamblador concreto."
+    }
+  ]
+}

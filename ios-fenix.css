@@ -1,0 +1,513 @@
+/* FENIXA visual pass: iOS-inspired hierarchy without changing the black/violet identity. */
+:root {
+  --ios-radius-sm: 10px;
+  --ios-radius-md: 16px;
+  --ios-radius-lg: 22px;
+  --ios-control: 48px;
+  --ios-blur: blur(22px) saturate(135%);
+  --ui-space-1: 8px;
+  --ui-space-2: 16px;
+  --ui-space-3: 24px;
+  --ui-space-4: 32px;
+  --ui-space-5: 48px;
+  --ui-card-shadow: 0 4px 20px rgb(0 0 0 / .07);
+}
+
+body {
+  letter-spacing: -0.006em;
+}
+
+body:not(.light) {
+  --ios-solid: #202027;
+  --ios-glass: rgba(25, 25, 31, .78);
+  --ios-glass-strong: var(--surface);
+  --ios-line: rgba(255,255,255,.095);
+}
+
+body.light {
+  --ios-solid: #ffffff;
+  --ios-glass: rgba(255,255,255,.78);
+  --ios-glass-strong: var(--surface);
+  --ios-line: rgba(37, 24, 65, .11);
+}
+
+body .sidebar {
+  background: var(--ios-glass);
+  border-right-color: var(--ios-line);
+  backdrop-filter: var(--ios-blur);
+  -webkit-backdrop-filter: var(--ios-blur);
+}
+
+body .topbar {
+  min-height: 72px;
+  background: var(--ios-glass);
+  border-bottom: 1px solid var(--ios-line);
+  backdrop-filter: var(--ios-blur);
+  -webkit-backdrop-filter: var(--ios-blur);
+}
+
+body .topbar-search {
+  min-height: var(--ios-control);
+  border-radius: 999px;
+  border-color: var(--ios-line);
+  background: color-mix(in srgb, var(--surface) 76%, transparent);
+}
+
+body .nav-link {
+  min-height: var(--ios-control);
+  border-radius: 13px;
+}
+
+body .nav-link.active {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--purple) 24%, transparent);
+}
+
+body .content {
+  padding-top: 48px;
+}
+
+body .panel,
+body .catalog-panel,
+body .market-card,
+body .build-card,
+body .start-summary,
+body .future-card,
+body .coming-soon,
+body .recommendation,
+body .configurator,
+body .laptop-card,
+body .laptop-compare-panel,
+body .radar-panel,
+body .comparison-wrap {
+  border-radius: var(--ios-radius-lg);
+  border-color: var(--ios-line);
+  background: var(--ios-glass-strong);
+  box-shadow: var(--ui-card-shadow);
+}
+
+body.light .panel,
+body.light .catalog-panel,
+body.light .market-card,
+body.light .build-card,
+body.light .start-summary,
+body.light .future-card,
+body.light .coming-soon,
+body.light .recommendation,
+body.light .configurator,
+body.light .laptop-card,
+body.light .laptop-compare-panel,
+body.light .radar-panel,
+body.light .comparison-wrap {
+  box-shadow: 0 4px 20px rgba(54,39,90,.04);
+}
+
+body .primary-button,
+body .secondary-button,
+body .section-link,
+body .filter-button,
+body .compare-trigger,
+body .catalog-card-actions button,
+body .laptop-chart-controls button {
+  min-height: var(--ios-control);
+  border-radius: 13px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  transition: transform .18s ease, box-shadow .18s ease, background-color .18s ease, border-color .18s ease;
+}
+
+body .primary-button,
+body .secondary-button {
+  padding-inline: 17px;
+}
+
+body .section-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 12px;
+  text-align: center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body :is(.primary-button, .secondary-button, .section-link, .filter-button, .compare-trigger):hover:not(:disabled):not([aria-disabled="true"]) {
+    transform: translateY(-1px);
+  }
+}
+
+body .primary-button:active,
+body .secondary-button:active,
+body .section-link:active,
+body .filter-button:active,
+body .compare-trigger:active {
+  transform: translateY(0);
+}
+
+body button:focus-visible,
+body a:focus-visible,
+body input:focus-visible,
+body select:focus-visible,
+body textarea:focus-visible,
+body summary:focus-visible {
+  outline: 3px solid var(--purple);
+  outline-offset: 3px;
+}
+
+/* Text fields only: radios retain their hidden 1px geometry and sliders
+   retain their native track and thumb. Validation borders remain visible. */
+body input:where(:not([type]), [type="text"], [type="search"], [type="number"], [type="email"], [type="password"], [type="url"], [type="tel"], [type="date"]),
+body select,
+body textarea {
+  min-height: var(--ios-control);
+  border-radius: 12px;
+  border-color: var(--stroke);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+}
+
+body :is(input, select, textarea)[aria-invalid="true"] {
+  border-color: var(--red);
+}
+
+body button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+body .section-heading {
+  margin-bottom: 20px;
+}
+
+body .section-heading h2,
+body .panel-title,
+body .start-heading h1 {
+  letter-spacing: -.045em;
+}
+
+body #partsGrid .part-tile {
+  border: 1px solid transparent;
+  border-radius: var(--ios-radius-md);
+  background: color-mix(in srgb, var(--surface) 64%, transparent);
+  transition: transform .18s ease, border-color .18s ease, background-color .18s ease;
+}
+
+body #partsGrid .part-tile[aria-pressed="true"] {
+  border-color: color-mix(in srgb, var(--purple) 62%, transparent);
+  background: var(--purple-soft);
+}
+
+body #catalogo .catalog-controls,
+body #catalogo .catalog-searchbar,
+body #catalogo .market-filterbar,
+body .compare-tray {
+  border-radius: var(--ios-radius-md);
+  border-color: var(--ios-line);
+  background: var(--ios-glass);
+}
+
+body #marketGrid {
+  gap: 16px;
+  border: 0;
+}
+
+body #marketGrid .market-card {
+  border: 1px solid var(--ios-line);
+  border-radius: var(--ios-radius-md);
+  background: color-mix(in srgb, var(--surface) 87%, transparent);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body #partsGrid .part-tile:hover {
+    border-color: var(--purple);
+    background: var(--purple-soft);
+    transform: translateY(-2px);
+  }
+
+  body #marketGrid .market-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 34px rgba(0,0,0,.16);
+  }
+}
+
+body .catalog-photo,
+body .product-image,
+body .laptop-card img,
+body .laptop-compare-identity img,
+body .compare-product-heads img {
+  border-radius: var(--ios-radius-md);
+}
+
+body .catalog-price-line .market-price {
+  letter-spacing: -.035em;
+}
+
+body .catalog-fit-details,
+body .catalog-card-details,
+body .store-options,
+body .laptop-reference-details {
+  border-radius: var(--ios-radius-sm);
+}
+
+body .component-dialog {
+  border-radius: var(--ios-radius-lg);
+  border: 1px solid var(--ios-line);
+  background: var(--ios-glass-strong);
+  backdrop-filter: var(--ios-blur);
+  -webkit-backdrop-filter: var(--ios-blur);
+}
+
+body .component-dialog header,
+body .compare-product-heads {
+  background: color-mix(in srgb, var(--surface) 86%, transparent);
+  backdrop-filter: var(--ios-blur);
+  -webkit-backdrop-filter: var(--ios-blur);
+}
+
+body .compare-product-heads article,
+body .laptop-compare-identity {
+  border-radius: var(--ios-radius-md);
+  border: 1px solid var(--ios-line);
+  background: color-mix(in srgb, var(--surface-2) 90%, transparent);
+}
+
+body .toast,
+body #nl-badge-frame {
+  border-radius: 999px;
+}
+
+@media (max-width: 900px) {
+  body .content { padding-top: 34px; }
+  body .topbar { min-height: 64px; }
+  body .panel,
+  body .catalog-panel,
+  body .market-card,
+  body .build-card,
+  body .start-summary,
+  body .future-card,
+  body .coming-soon,
+  body .recommendation,
+  body .configurator,
+  body .laptop-card,
+  body .laptop-compare-panel,
+  body .radar-panel,
+  body .comparison-wrap { border-radius: var(--ios-radius-md); }
+}
+
+@media (max-width: 600px) {
+  body .content { padding: 28px 14px 42px; }
+  body .topbar { padding-inline: 14px; }
+  body .topbar-search { min-height: var(--ios-control); }
+  body .primary-button,
+  body .secondary-button,
+  body .section-link,
+  body .filter-button,
+  body .compare-trigger { min-height: var(--ios-control); }
+  body .component-dialog { border-radius: 0; border-inline: 0; }
+  body #marketGrid .market-card:hover,
+  body #partsGrid .part-tile:hover { transform: none; }
+}
+
+/* Opaque surfaces keep content legible when glass is unavailable/unwanted. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  body .sidebar,
+  body .topbar,
+  body .component-dialog,
+  body .component-dialog header,
+  body .compare-product-heads { background: var(--ios-solid); }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  body {
+    --ios-glass: var(--ios-solid);
+    --ios-glass-strong: var(--ios-solid);
+    --ios-blur: none;
+  }
+  body .component-dialog header,
+  body .compare-product-heads { background: var(--ios-solid); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body .primary-button,
+  body .secondary-button,
+  body .section-link,
+  body .filter-button,
+  body .compare-trigger,
+  body #partsGrid .part-tile,
+  body #marketGrid .market-card { transition: none; }
+  body #marketGrid .market-card:hover,
+  body #partsGrid .part-tile:hover { transform: none; }
+  body :is(.primary-button, .secondary-button, .section-link, .filter-button, .compare-trigger):hover:not(:disabled):not([aria-disabled="true"]) { transform: none; }
+}
+
+/* Reference: Figma 1:163/36:670. Adapt the spacing and action hierarchy,
+   not its branding, login screens, artwork or absolute phone geometry. */
+body .content {
+  max-width: 1360px;
+  padding: var(--ui-space-5) var(--ui-space-4) 64px;
+}
+body .sidebar {
+  padding: var(--ui-space-3) var(--ui-space-2);
+  overflow-y: auto;
+  background: var(--bg-soft);
+  backdrop-filter: none;
+}
+body .brand { padding: 0 var(--ui-space-1) var(--ui-space-4); }
+body .nav { gap: var(--ui-space-1); flex-shrink: 0; }
+body .nav-link { min-height: 48px; padding-inline: 12px; font-weight: 550; }
+body .nav-link.active { box-shadow: none; }
+body .nav-label { font-weight: 650; letter-spacing: .08em; }
+body .coming-soon { margin-top: auto; box-shadow: none; padding: var(--ui-space-2); }
+body .sidebar-foot { line-height: 1.5; padding-inline: var(--ui-space-1); flex-shrink: 0; }
+body .topbar { gap: var(--ui-space-2); padding-inline: var(--ui-space-4); }
+body .topbar-search { background: transparent; border: 0; padding-inline: 0; }
+body .topbar-search span { color: var(--muted); font-size: 14px; }
+body .topbar-actions { gap: var(--ui-space-1); }
+body .icon-button { width: 44px; height: 44px; flex-shrink: 0; border-radius: 14px; }
+body .icon-button svg { width: 19px; height: 19px; }
+body .user-chip { min-height: 44px; padding: 6px 12px 6px 6px; gap: var(--ui-space-1); }
+body .avatar { width: 30px; height: 30px; }
+
+/* Content-led welcome: three grouped choices, aligned to one planning card. */
+body .start-heading { margin-bottom: var(--ui-space-4); max-width: 780px; }
+body .start-heading .eyebrow { display: inline-flex; margin-bottom: var(--ui-space-2); }
+body .start-heading h1 { font-size: clamp(32px, 4.2vw, 54px); font-weight: 650; line-height: 1.1; letter-spacing: -.045em; margin: 0 0 var(--ui-space-2); }
+body .start-heading p { max-width: 64ch; font-size: 16px; line-height: 1.65; }
+body .start-layout { gap: var(--ui-space-3); grid-template-columns: minmax(0, 1fr) 288px; }
+body .start-controls { display: grid; gap: var(--ui-space-3); }
+body .start-field {
+  display: flow-root;
+  margin: 0;
+  padding: var(--ui-space-3);
+  border: 1px solid var(--ios-line);
+  border-radius: var(--ios-radius-lg);
+  background: var(--surface);
+}
+body .start-field legend { float: left; width: 100%; margin: 0 0 var(--ui-space-2); line-height: 1.5; font-size: 16px; font-weight: 600; }
+body .start-field legend > span { display: inline-grid; place-items: center; width: 28px; height: 28px; background: var(--purple-faint); border-radius: 50%; margin-right: var(--ui-space-1); }
+body .start-field legend + div { clear: both; }
+body .start-uses, body .start-budgets { gap: 12px; }
+body .start-uses label > span, body .start-budgets label > span { border-radius: 14px; padding: var(--ui-space-2); background: var(--surface-2); border-color: transparent; }
+body .start-uses label > span { min-height: 112px; gap: var(--ui-space-1); }
+body .start-uses strong { font-size: 14px; line-height: 1.45; font-weight: 600; }
+body .start-uses small { font-size: 13px; line-height: 1.6; }
+body .start-budgets label > span { min-height: 50px; justify-content: center; padding: 12px var(--ui-space-1); font-size: 14px; font-weight: 550; font-variant-numeric: tabular-nums; }
+body .start-uses input:checked + span, body .start-budgets input:checked + span { background: var(--purple-soft); border-color: var(--purple); box-shadow: none; }
+body .start-hint { font-size: 13px; line-height: 1.65; margin-top: var(--ui-space-2); }
+body .start-paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+body .start-paths button { min-height: 50px; padding: 12px; font-size: 14px; border-radius: 14px; }
+body .start-summary { position: sticky; top: 96px; padding: var(--ui-space-3); background: var(--surface); box-shadow: none; }
+body .start-summary .eyebrow { font-size: 11px; margin-bottom: var(--ui-space-2); }
+body .start-summary img { height: 184px; margin: 0 0 var(--ui-space-2); }
+body .start-summary img, body .start-summary > small, body #startAdvice { display: block; }
+body .start-summary h2 { margin: var(--ui-space-3) 0 var(--ui-space-1); font-size: 16px; font-weight: 550; }
+body .start-summary .start-amount { font-size: 32px; font-weight: 650; line-height: 1.2; font-variant-numeric: tabular-nums; }
+body #startAdvice { font-size: 13px; line-height: 1.65; margin: var(--ui-space-2) 0 var(--ui-space-3); }
+body .start-summary .section-link { width: 100%; border: 1px solid var(--stroke); border-radius: 14px; }
+body #startSaveStatus { padding-top: var(--ui-space-2); margin-top: var(--ui-space-2); border-top: 1px solid var(--ios-line); line-height: 1.6; }
+
+/* One grid rhythm across independent views, without flattening their content. */
+body .section { margin-top: 0; }
+body .section-heading { align-items: center; gap: var(--ui-space-3); margin-bottom: var(--ui-space-3); }
+body .section-heading h2 { font-size: clamp(26px, 2.6vw, 36px); font-weight: 650; line-height: 1.2; letter-spacing: -.035em; }
+body .section-heading p { font-size: 14px; line-height: 1.65; max-width: 70ch; margin-top: var(--ui-space-1); }
+body .panel-header { padding: var(--ui-space-3) var(--ui-space-3) 0; }
+body .panel-body { padding: var(--ui-space-3); }
+body .panel-title { font-size: 20px; font-weight: 600; line-height: 1.35; }
+body .panel-subtitle { line-height: 1.6; margin-top: var(--ui-space-1); }
+body .builder-grid { gap: var(--ui-space-3); }
+body .choice { border-radius: 14px; }
+body .build-gallery, body .laptop-grid { gap: var(--ui-space-3); }
+body .build-card, body .laptop-card { min-width: 0; overflow: hidden; box-shadow: none; }
+body .build-card-body, body .laptop-card { padding: var(--ui-space-3); }
+body .laptop-card { display: flex; flex-direction: column; }
+body .laptop-card > img { height: 192px; margin: 0 0 var(--ui-space-3); }
+body .laptop-card h3, body .build-card h3 { font-size: 20px; font-weight: 600; line-height: 1.3; letter-spacing: -.025em; }
+body .laptop-card .source-link { margin-top: auto; padding-top: var(--ui-space-2); }
+body .build-budget-bar { padding: var(--ui-space-3); border-radius: var(--ios-radius-md); border-color: var(--ios-line); gap: var(--ui-space-2) var(--ui-space-3); }
+body .builds-toolbar { gap: var(--ui-space-2); margin-bottom: var(--ui-space-3); align-items: center; }
+body .build-use-filters { gap: var(--ui-space-1); }
+body .build-use-filters button { min-height: 44px; border-radius: 14px; padding: 10px 16px; font-size: 14px; }
+body .laptop-controls { padding: var(--ui-space-3); gap: var(--ui-space-2); background: var(--surface); border: 1px solid var(--ios-line); border-radius: var(--ios-radius-md); }
+body .laptop-controls label { gap: var(--ui-space-1); }
+body .laptop-card .secondary-button { min-height: 48px; width: 100%; }
+body .build-dialog { border-radius: var(--ios-radius-lg); border-color: var(--ios-line); }
+body .detail-intro, body .detail-body { padding: var(--ui-space-4); }
+body .component-dialog { box-shadow: -12px 0 48px rgb(0 0 0 / .18); }
+body .component-dialog header { backdrop-filter: none; background: var(--surface); }
+body .component-dialog header button { min-height: 44px; }
+body #catalogo { margin-top: var(--ui-space-3); }
+body #catalogo .catalog-controls, body #catalogo .catalog-searchbar, body #catalogo .market-filterbar { padding: var(--ui-space-2); }
+body #marketGrid { gap: var(--ui-space-2); }
+body #marketGrid .market-card { padding: var(--ui-space-3); box-shadow: none; }
+body #marketGrid .market-card h3 { font-weight: 600; line-height: 1.35; }
+body #marketGrid .product-image { height: 208px; margin-bottom: var(--ui-space-3); }
+body .catalog-card-actions { gap: 12px; }
+body .catalog-card-actions button { min-height: 48px; }
+body .my-build-header, body .pc-profile-heading { gap: var(--ui-space-3); }
+body .my-build-summary, body .my-build-budget, body .my-build-workbench,
+body .my-build-empty, body .my-build-shopping, body .my-build-clear-confirm {
+  padding: var(--ui-space-3);
+  border-radius: var(--ios-radius-md);
+  border-color: var(--ios-line);
+}
+body .my-build-row { padding-block: var(--ui-space-3); gap: var(--ui-space-2); }
+body .my-build-workbench label { gap: var(--ui-space-1); margin-block: var(--ui-space-2); }
+body .my-build-remove, body .my-build-clear, body .my-build-shopping > summary,
+body .build-dialog-top button { min-height: 44px; }
+body .build-dialog-top { padding: var(--ui-space-1) var(--ui-space-3); gap: var(--ui-space-2); }
+body .build-dialog-top button { padding-inline: var(--ui-space-2); border-radius: 12px; cursor: pointer; }
+body .build-dialog-top button:hover { background: var(--surface-2); }
+body .toast { border-radius: 14px; }
+body h1:focus-visible, body h2:focus-visible, body h3:focus-visible { outline: none; }
+
+@media (min-width: 1101px) {
+  body .laptop-grid, body .build-gallery { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  body .content { padding: var(--ui-space-4) var(--ui-space-3) var(--ui-space-5); }
+  body .start-layout { grid-template-columns: 1fr; }
+  body .start-summary { position: static; }
+  body .start-summary img { height: 144px; }
+  body .start-summary .section-link { width: auto; min-width: 200px; }
+  body .laptop-grid, body .build-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body .topbar { padding-inline: var(--ui-space-3); }
+}
+@media (max-height: 620px) and (min-width: 761px) {
+  body .sidebar { padding-block: var(--ui-space-2); }
+  body .brand { padding-bottom: var(--ui-space-2); }
+  body .nav { gap: 0; }
+  body .nav-link { min-height: 44px; }
+  body .coming-soon { margin-top: var(--ui-space-3); }
+  body .start-summary { position: static; }
+}
+@media (max-width: 760px) {
+  body .content { padding: var(--ui-space-4) var(--ui-space-2) var(--ui-space-5); }
+  body .topbar { padding-inline: var(--ui-space-2); gap: var(--ui-space-1); min-height: 64px; }
+  body .topbar-search { margin: 0; min-width: 0; }
+  body .topbar-search span { font-size: 13px; }
+  body .sidebar.menu-open { display: flex; width: min(320px, 85vw); height: 100dvh; z-index: 30; box-shadow: 0 0 0 100vmax rgb(0 0 0 / .55); }
+  body .start-heading h1 { font-size: 34px; }
+  body .start-heading p { font-size: 14px; }
+  body .start-layout { grid-template-columns: 1fr; gap: var(--ui-space-3); }
+  body .start-summary { position: static; }
+  body .start-summary img { height: 144px; }
+  body .start-field { padding: var(--ui-space-2); border-radius: var(--ios-radius-md); }
+  body .start-uses { grid-template-columns: 1fr; }
+  body .start-uses label > span { min-height: 80px; gap: 4px; }
+  body .start-budgets { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  body .start-paths { grid-template-columns: 1fr; }
+  body .section-heading { align-items: flex-start; gap: var(--ui-space-2); }
+  body .panel-header { padding: var(--ui-space-2) var(--ui-space-2) 0; }
+  body .panel-body { padding: var(--ui-space-2); }
+  body .laptop-controls { grid-template-columns: 1fr; padding: var(--ui-space-2); }
+  body .laptop-grid, body .build-gallery { grid-template-columns: 1fr; gap: var(--ui-space-2); }
+  body .build-budget-bar { padding: var(--ui-space-2); }
+  body .detail-intro, body .detail-body { padding: var(--ui-space-3); }
+  body .my-build-summary, body .my-build-budget, body .my-build-workbench,
+  body .my-build-empty, body .my-build-shopping, body .my-build-clear-confirm { padding: var(--ui-space-2); }
+  body .build-dialog-top { padding-inline: var(--ui-space-2); }
+  body .component-dialog { border-radius: 0; }
+}
+@media (hover: hover) and (pointer: fine) {
+  body .start-uses label:hover > span, body .start-budgets label:hover > span { border-color: var(--purple); }
+  body #marketGrid .market-card:hover { box-shadow: 0 4px 20px rgb(0 0 0 / .08); }
+}

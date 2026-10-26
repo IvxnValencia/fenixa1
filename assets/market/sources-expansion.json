@@ -1,0 +1,65 @@
+{
+  "images": [
+    {
+      "productIds": [
+        "ram-kingston-kf560c30bbek2-32",
+        "ram-kingston-kf560c36bbek2-64",
+        "ram-kingston-kf556c36bbek2-64",
+        "ram-kingston-kf560c30bbek2-64",
+        "ram-kingston-kf564c32bbek2-32",
+        "ram-kingston-kf552c36bbek2-32",
+        "model-ram-kf552c36bbek2-64",
+        "model-ram-kf564c32bbek2-64",
+        "model-ram-kf556c36bbe-16",
+        "model-ram-kf560c30bbe-16",
+        "model-ram-kf552c36bbe-16",
+        "model-ram-kf552c36bbe-32"
+      ],
+      "path": "assets/market/kingston-fury-beast-ddr5-family-20261018.png",
+      "imageUrl": "https://media.kingston.com/kingston/product/FURY_Beast_Black_DDR5_1-tn.png",
+      "sourcePage": "https://www.kingston.com/en/memory/search?partid=KF560C30BBEK2-32",
+      "checkedAt": "2026-10-18",
+      "sha256": "6560dac4b0ffb656d3572b247466ebb7d012814d999dc3189ff4a124b4e0d8be",
+      "sourceType": "manufacturer_family_illustration",
+      "rights": "Imagen oficial de Kingston FURY Beast DDR5 negra, derechos reservados; licencia abierta y permiso comercial específico no comprobados. Original PNG conservado sin edición ni aumento de resolución. Ilustración de familia con un módulo: no prueba etiqueta, número de módulos del kit, revisión física ni stock. Cada SKU se identifica por su propia ficha PDF; no presentar esta imagen como fotografía documental de seis etiquetas diferentes."
+    },
+    {
+      "productIds": [
+        "model-ram-kf432c16bbk2-16",
+        "model-ram-kf432c16bbk2-32",
+        "model-ram-kf432c16bbk2-64",
+        "model-ram-kf436c18bbk2-32",
+        "model-ram-kf436c18bbk2-64",
+        "model-ram-kf432c16bb-8",
+        "model-ram-kf432c16bb-16",
+        "model-ram-kf432c16bb-32",
+        "model-ram-kf436c18bb-16",
+        "model-ram-kf436c18bb-32"
+      ],
+      "path": "assets/market/kingston-fury-beast-ddr4-family-20261019.png",
+      "imageUrl": "https://media.kingston.com/kingston/product/FURY_Beast_Black_DDR4_1R_1-tn.png",
+      "sourcePage": "https://www.kingston.com/en/memory/search?partid=KF432C16BBK2/32",
+      "checkedAt": "2026-10-19",
+      "sha256": "8c350a826c1087fbd27b9d4849be63a6083da328df56da1db5dff81514839298",
+      "sourceType": "manufacturer_family_illustration",
+      "rights": "Fotografía oficial de familia Kingston, derechos reservados. Licencia abierta ni autorización comercial específica comprobadas. Archivo PNG original, sin edición ni aumento de resolución. Un módulo ilustrado no demuestra etiqueta, cantidad de módulos, capacidad, revisión o stock de un kit concreto."
+    },
+    {
+      "productIds": [
+        "model-ram-kf560c32rsk2-32",
+        "model-ram-kf560c32rsk2-64",
+        "model-ram-kf564c32rsk2-32",
+        "model-ram-kf564c32rsk2-64",
+        "model-ram-kf568c36rsk2-32",
+        "model-ram-kf572c38rsk2-32"
+      ],
+      "path": "assets/market/kingston-fury-renegade-ddr5-family-20261019.png",
+      "imageUrl": "https://media.kingston.com/kingston/product/FURY_Renegade_Silver_DDR5_1R_1-tn.png",
+      "sourcePage": "https://www.kingston.com/en/memory/search?partid=KF564C32RSK2-32",
+      "checkedAt": "2026-10-19",
+      "sha256": "50c3c69ce51a6585abcf92ee113a6432320e6b123a3a0ed1fb9e3115ae0df334",
+      "sourceType": "manufacturer_family_illustration",
+      "rights": "Fotografía oficial de familia Kingston, derechos reservados. Licencia abierta ni autorización comercial específica comprobadas. Archivo PNG original, sin edición ni aumento de resolución. Un módulo ilustrado no demuestra etiqueta, cantidad de módulos, capacidad, revisión o stock de un kit concreto."
+    }
+  ]
+}

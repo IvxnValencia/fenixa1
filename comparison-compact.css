@@ -1,0 +1,147 @@
+/* Four-way identities stay readable without turning into full catalog cards.
+   All names, prices and source labels remain in flow; nothing is clamped away. */
+body .component-dialog[open] { margin:0; inset:12px auto auto 50%; height:calc(100dvh - 24px); max-height:calc(100dvh - 24px); }
+body .component-dialog.multi-comparison .compare-scroll-body { padding:12px; }
+body .component-dialog .multi-product-heads { gap:8px; margin-bottom:12px; align-items:stretch; }
+body .component-dialog .multi-product-heads article {
+  display:grid; grid-template-columns:40px minmax(0,1fr); grid-template-rows:auto auto auto auto;
+  gap:4px 8px; padding:12px; align-content:start; align-items:start;
+}
+
+body .component-dialog .multi-product-heads article > .laptop-series-key {
+  grid-column:1; grid-row:1; width:24px; text-align:center; margin:0; padding:0;
+}
+body .component-dialog .multi-product-heads img {
+  grid-column:1; grid-row:2; width:40px; height:40px; margin:0; object-fit:contain;
+}
+body .component-dialog .multi-product-heads h3 {
+  grid-column:2; grid-row:1 / span 2; min-height:0; margin:0; font-size:13px; line-height:1.4; overflow-wrap:anywhere;
+}
+body .component-dialog .multi-product-heads h3 button { padding:0; margin:0; min-height:44px; font:inherit; }
+body .component-dialog .multi-product-heads strong { grid-column:2; grid-row:2; font-size:13px; line-height:1.4; }
+body .component-dialog .multi-product-heads small { grid-column:2; grid-row:3; font-size:11px; line-height:1.35; margin:0; }
+body .component-dialog .multi-product-heads .comparison-image-note { grid-column:1 / -1; grid-row:3; margin-top:4px; }
+body .component-dialog .compare-product-heads .comparison-image-note { grid-column:2; font-size:11px; line-height:1.3; margin:0; }
+body .multi-comparison .laptop-radar-legend { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+body .multi-comparison .laptop-radar-legend > span { display:flex; align-items:start; gap:4px; font-size:11px; line-height:1.3; min-width:0; }
+body .multi-comparison .laptop-radar-legend button { padding:0; min-width:0; }
+body .multi-comparison .laptop-radar-layout > svg { grid-column:1; grid-row:1; }
+body .multi-comparison .laptop-radar-layout > .laptop-radar-legend { grid-column:1; grid-row:2; grid-template-columns:repeat(2,minmax(0,1fr)); }
+body .multi-comparison .laptop-radar-layout > .laptop-radar-values { grid-column:2; grid-row:1 / span 2; }
+@media(max-width:600px) {
+  body .component-dialog[open] { inset:6px auto auto 50%; height:calc(100dvh - 12px); max-height:calc(100dvh - 12px); }
+  body .component-dialog.multi-comparison .compare-scroll-body { padding:8px; }
+  body .component-dialog .multi-product-heads { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+  body .component-dialog .multi-product-heads article { grid-template-columns:32px minmax(0,1fr); gap:4px; padding:8px; }
+  body .component-dialog .multi-product-heads img { width:32px; height:32px; }
+  body .component-dialog .multi-product-heads h3 { padding-left:0; font-size:12px; }
+  body .component-dialog .multi-product-heads article > .laptop-series-key { width:22px; }
+  body .component-dialog .multi-product-heads strong { font-size:12px; }
+  /* Leave clearance for long legacy titles without hiding names or missing-data notes. */
+  body .component-dialog.multi-comparison .comparison-radar .laptop-radar { height:clamp(160px,calc(100dvh - 470px),200px); }
+  body .component-dialog .multi-product-heads .comparison-image-note { font-size:10px; }
+  body .multi-comparison .laptop-radar-legend { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  body .multi-comparison .laptop-radar-layout > .laptop-radar-values { grid-column:1; grid-row:3; }
+}
+
+/* Long regional laptop names must not force four single-column headers on a phone.
+   Keep every identity/version control; place the repeated legend below the figure. */
+body .content:has(#laptopComparison:not([hidden])) { isolation:auto; }
+body .laptop-comparison { z-index:80; }
+body .laptop-comparison > .laptop-disclaimer { display:block; }
+body .laptop-comparison .laptop-radar-layout > .laptop-radar-legend { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; grid-column:1; grid-row:2; }
+body .laptop-comparison .laptop-radar-layout > .laptop-radar-legend span { max-width:none; white-space:normal; overflow:visible; text-overflow:clip; min-width:0; }
+body .laptop-comparison .laptop-radar-layout > .laptop-radar-legend button { padding:0; font-size:12px; }
+body .laptop-comparison .laptop-radar-layout > .laptop-radar-values { grid-column:2; grid-row:1 / span 2; }
+@media(min-width:601px) {
+  body .laptop-comparison .laptop-radar { height:clamp(130px,calc(100dvh - 530px),220px); }
+}
+@media(min-width:601px) and (max-height:550px) {
+  body .laptop-comparison:not([hidden]) { margin:0; inset:8px 12px; height:calc(100dvh - 16px); max-height:calc(100dvh - 16px); }
+}
+@media(max-width:600px) {
+  body .laptop-comparison:not([hidden]) { position:fixed; inset:6px; top:6px; height:calc(100dvh - 12px); max-height:calc(100dvh - 12px); margin:0; padding:10px; z-index:80; }
+  body .content:has(#laptopComparison:not([hidden])) { isolation:auto; }
+  body .laptop-comparison > .laptop-disclaimer { font-size:11px; line-height:1.3; margin:4px 0; }
+  body .laptop-compare-heads { grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; }
+  body .laptop-compare-heads .laptop-compare-identity { grid-template-columns:30px minmax(0,1fr); gap:2px 5px; padding:6px; text-align:left; align-items:start; justify-items:stretch; }
+  body .laptop-compare-heads .laptop-compare-identity h4 { grid-column:1 / -1; grid-row:1; font-size:12px; line-height:1.25; margin:0; }
+  body .laptop-compare-identity h4 button { width:100%; min-height:44px; padding:0; margin:0; text-align:left; }
+  body .laptop-compare-heads .laptop-compare-identity img { grid-column:1; grid-row:2 / span 3; width:30px; height:30px; align-self:start; }
+  body .laptop-compare-identity > .laptop-series-key { grid-column:2; grid-row:2; justify-self:start; font-size:10px; line-height:1.2; }
+  body .laptop-compare-identity > strong { grid-column:2; grid-row:3; font-size:10px; line-height:1.2; }
+  body .laptop-compare-identity > small { grid-column:2; grid-row:4; font-size:10px; line-height:1.2; }
+  body .laptop-compare-identity > small + small { grid-column:1 / -1; grid-row:5; }
+  body .laptop-compare-identity > .laptop-version-field { grid-column:1 / -1; grid-row:6; flex-direction:row; gap:4px; font-size:10px; }
+  body .laptop-version-field select { min-height:34px; padding:5px 20px 5px 5px; font-size:11px; }
+  body .laptop-comparison-body { padding:8px 0; }
+  body .laptop-comparison .comparison-radar { padding:8px; }
+  body .laptop-comparison .comparison-radar > h4 { margin:0 0 4px; font-size:14px; }
+  body .laptop-comparison .radar-coverage { font-size:11px; line-height:1.2; margin:0 0 4px; }
+  body .laptop-comparison .laptop-radar { height:clamp(140px,calc(100dvh - 490px),180px); }
+  body .laptop-comparison .laptop-radar-layout > .laptop-radar-values { grid-column:1; grid-row:3; }
+}
+
+/* Comparison workspace: stable identities, clear sections and progressive detail. */
+body .component-dialog { border:1px solid var(--stroke); border-radius:24px; background:var(--surface); box-shadow:0 24px 80px rgb(0 0 0 / .22); padding:0 20px 16px; }
+body .component-dialog > header { gap:16px; padding:16px 0 12px; align-items:center; }
+body .component-dialog > header > div > span { color:var(--purple); font-size:10px; letter-spacing:.12em; }
+body .component-dialog > header h2 { margin:4px 0 0; font-size:21px; font-weight:650; letter-spacing:-.035em; }
+body .component-dialog [data-close-comparison] { min-height:44px; border-radius:12px; }
+body .component-dialog .compare-product-heads { gap:10px; padding-bottom:12px; }
+body .component-dialog .compare-product-heads article,body .component-dialog .multi-product-heads article { border:1px solid var(--stroke-soft); border-radius:16px; background:var(--surface-2); }
+body .component-dialog .compare-side-label { color:var(--purple); font-size:10px; letter-spacing:.04em; }
+body .component-dialog .compare-product-heads article:nth-child(2) .compare-side-label { color:#269ca9; }
+body .compare-section-nav { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:4px; flex-shrink:0; border:1px solid var(--stroke-soft); border-radius:14px; background:var(--surface-2); padding:4px; margin:0 0 8px; }
+body .compare-section-nav button { min-height:44px; border:0; border-radius:10px; background:transparent; color:var(--text); font-family:inherit; font-size:12px; font-weight:600; line-height:1.4; cursor:pointer; }
+body .compare-section-nav button:hover,body .compare-section-nav button:focus-visible { color:var(--purple); background:var(--purple-faint); }
+body .compare-section-nav button:focus-visible { outline:2px solid var(--purple); outline-offset:-2px; }
+body .component-dialog .compare-scroll-body { padding:8px 4px 16px; }
+body .component-dialog .comparison-radar,body .component-dialog .radar-price-chart { border:1px solid var(--stroke-soft); border-radius:18px; background:var(--surface-2); padding:16px; }
+body .component-dialog .radar-price-chart h3 { font-size:17px; letter-spacing:-.02em; margin-top:0; }
+body .component-dialog .radar-price-chart > p { color:var(--muted); font-size:12px; line-height:1.6; }
+body .component-dialog .compare-panel-intro { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.4fr); gap:12px; margin:16px 0; padding:16px; background:var(--surface-2); border:1px solid var(--stroke-soft); border-radius:16px; }
+body .component-dialog .compare-panel-intro label,body .compare-group-choices label { display:grid; gap:6px; min-width:0; font-size:12px; font-weight:600; color:var(--text); }
+body .component-dialog .compare-panel-intro select,body .component-dialog .compare-panel-intro input,body .compare-group-choices select { width:100%; min-width:0; min-height:44px; padding:10px 12px; border:1px solid var(--stroke); border-radius:12px; color:var(--text); background:var(--surface); font:inherit; font-size:12px; }
+body .component-dialog .compare-panel-intro .compare-alternative-count { display:block; grid-column:1 / -1; margin:0; font-size:11px; color:var(--muted); line-height:1.5; }
+body .compare-group-choices { margin:16px 0; padding:16px; background:var(--surface-2); border:1px solid var(--stroke-soft); border-radius:16px; }
+body .compare-group-choices summary { min-height:32px; cursor:pointer; font-size:13px; font-weight:600; }
+body .compare-group-choices > div { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:12px; }
+body .compare-group-choices > p { color:var(--muted); font-size:12px; line-height:1.6; }
+body .compare-table-tools { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px 16px; margin:12px 0; }
+body .compare-table-tools label { display:flex; align-items:center; gap:10px; min-height:44px; font-size:13px; cursor:pointer; }
+body .compare-table-tools input { width:18px; height:18px; accent-color:var(--purple); }
+body .compare-table-tools p { margin:0; color:var(--muted); font-size:11px; line-height:1.6; }
+body .component-dialog .comparison-table [hidden] { display:none; }
+body .component-dialog .comparison-table th,body .component-dialog .comparison-table td { padding:14px 12px; font-size:13px; line-height:1.6; }
+body .component-dialog .comparison-table tbody tr:nth-child(even) { background:var(--surface-2); }
+body .component-dialog .compare-detail-identities { gap:12px; }
+body .component-dialog .compare-detail-identities article > strong { display:block; margin-top:16px; font-size:18px; letter-spacing:-.025em; }
+body .component-dialog .compare-detail-identities .price-source-note { display:block; font-size:11px; margin-top:4px; color:var(--muted); }
+body .component-dialog .compare-detail-identities [data-confirm-part] { width:100%; min-height:44px; border-radius:12px; margin-top:16px; }
+body .component-dialog .comparison-wrap > details > summary,body .component-dialog .multi-spec-details > summary,body .component-dialog .compare-explanation summary { min-height:44px; padding:12px 0; font-size:13px; font-weight:600; }
+body .laptop-comparison .laptop-chart-controls { display:flex; flex-wrap:wrap; gap:6px; padding:6px; background:var(--surface-2); border:1px solid var(--stroke-soft); border-radius:16px; }
+body .laptop-chart-controls button { min-height:44px; flex:1 1 auto; border:0; border-radius:10px; font-size:12px; }
+body .laptop-chart-controls [aria-pressed="true"] { background:var(--purple-faint); color:var(--purple); box-shadow:inset 0 0 0 1px var(--stroke); }
+body .laptop-comparison .laptop-reference-details { border:1px solid var(--stroke-soft); border-radius:14px; padding:12px; }
+body .laptop-reference-details > summary { min-height:44px; cursor:pointer; font-size:13px; }
+@media(max-width:600px) {
+  body .component-dialog { padding:0 10px 10px; border-radius:20px; }
+  body .component-dialog > header { gap:8px; padding:10px 0; }
+  body .component-dialog > header h2 { font-size:17px; }
+  body .component-dialog .compare-product-heads article { display:grid; grid-template-columns:32px minmax(0,1fr); gap:4px 6px; text-align:left; align-items:start; padding:8px; }
+  body .component-dialog .compare-product-heads img { width:32px; height:32px; grid-column:1; grid-row:2; }
+  body .component-dialog .compare-product-heads .compare-side-label { display:block; grid-column:1 / -1; font-size:9px; }
+  body .component-dialog .compare-product-heads h3 { grid-column:2; grid-row:2; font-size:12px; margin:0; }
+  body .component-dialog .compare-product-heads h3 button { min-height:44px; padding:0; margin:0; text-align:left; }
+  body .component-dialog .compare-product-heads .comparison-image-note { grid-column:1 / -1; font-size:10px; }
+  body .compare-section-nav { gap:2px; padding:3px; }
+  body .compare-section-nav button { font-size:11px; }
+  body .component-dialog .comparison-radar,body .component-dialog .radar-price-chart { padding:10px; border-radius:14px; }
+  body .component-dialog .compare-panel-intro { grid-template-columns:1fr; padding:12px; }
+  body .compare-group-choices { padding:12px; }
+  body .compare-group-choices > div { grid-template-columns:1fr; }
+  body .component-dialog .compare-detail-identities { grid-template-columns:1fr; }
+  body .component-dialog .comparison-table th,body .component-dialog .comparison-table td { padding:10px 8px; font-size:12px; }
+  body .laptop-chart-controls button { flex-basis:calc(50% - 6px); }
+}
