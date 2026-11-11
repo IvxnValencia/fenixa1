@@ -133,6 +133,16 @@
   }
 })();
 
+// The shop's title and description disagree about what is included.
+window.FENIXA_SPEC_REVIEW['market-speedlogic-54246'] = {
+  source: 'https://speedlogic.com.co/tienda/refrigeraciones/ventiladores/ventiladores-3en1-antec-infinity-matrix-blanco-360-argb/',
+  checkedAt: '2026-11-11',
+  identityConflict: true,
+  values: {},
+  warning: 'La tienda anuncia ventiladores, pero su descripción también menciona refrigeración líquida y radiador. Confirma con la tienda qué incluye y el número de parte antes de comprar.',
+  scope: 'SKU de tienda 26139. El título y la tabla describen un conjunto de ventiladores blancos; la descripción también afirma que incluye refrigeración líquida y radiador. Se requiere confirmar el producto y su presentación.'
+};
+
 // MSI's metric dimensions agree with the rounded inch values printed alongside them.
 (() => {
   const review = window.FENIXA_SPEC_REVIEW;
