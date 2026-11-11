@@ -328,3 +328,89 @@ window.FENIXA_SPEC_REVIEW['market-speedlogic-37899'] = {
     'La sección Specifications del 5700X publica Thermal Solution (PIB) «Not Included» y la nota de Product ID describe cajas sin disipador; la tabla general de AMD lo lista con Wraith Stealth. Se conserva la discrepancia en el texto. ' + evidence,
     '2026-11-11', 'Refrigeración publicada por AMD · condicional');
 })();
+
+// Lote Claude 2 · 11/11/2026: fuentes Corsair por revisión identificada, SSD Crucial E100 por capacidad, Kingston KCP556US8-16 y Trust GXT 836 ES por EAN.
+(() => {
+  'use strict';
+  const review = window.FENIXA_SPEC_REVIEW ||= {};
+  const day = '2026-11-11';
+  const put = (id, extra, values, source, scope, label, extraSources = []) => {
+    const old = review[id] || {};
+    review[id] = {
+      ...old, ...extra, source: extra.source || old.source || source, checkedAt: day,
+      values: { ...old.values, ...values },
+      fieldSources: { ...old.fieldSources, ...Object.fromEntries(Object.keys(values).map(key => [key, { source, checkedAt: day, scope }])) },
+      additionalSources: [ ...(old.additionalSources || []), { source, label }, ...extraSources ],
+      scope: [old.scope, scope].filter(Boolean).join(' ')
+    };
+  };
+  const rme = (id, pn, watts, pcie) => {
+    const source = 'https://www.corsair.com/us/en/p/psu/' + pn.toLowerCase() + '/rme-series-rm' + watts + 'e-fully-modular-low-noise-atx-power-supply-' + pn.toLowerCase();
+    put(id, { displayName: 'Corsair RM' + watts + 'e ATX 3.1 (2025) · revisión por título', modelKey: pn }, {
+      watts, format: 'ATX 3.1 · totalmente modular · cables Type 4', length: 140, dimensions: '140 × 150 × 86 mm',
+      efficiency: 'Cybenetics Gold',
+      connectors: '1 × ATX 24 · 2 × EPS 4+4 · 1 × 12V-2x6 12+4 · adaptador 12V-2x6 a 2 × PCIe 6+2 · ' + pcie + ' × PCIe 6+2 independientes · 6 × SATA · 2 × PATA',
+      protections: 'OVP / UVP / OCP / OTP / SCP / OPP', warrantyYears: 7,
+      warranty: '7 años según la ficha Corsair del SKU -NA; garantía colombiana, canal y comprobante por confirmar.'
+    }, source,
+      'El título de la tienda (RM' + watts + 'e «PCI 5.1», modular, Gold) identifica la revisión RMe 2025 ATX 3.1 con 12V-2x6; la RMe 2023 (ATX 3.0, 12VHPWR) queda descartada. La tienda no publica el sufijo regional: los valores son los de la ficha Corsair ' + pn + ', cuyas variantes regionales difieren en el cable de CA. No se intercambian cables modulares. Fondo del cuerpo sin margen de cables. Sin precio, stock ni ensayo eléctrico.',
+      'Ficha Corsair ' + pn + ' · revisión 2025 por título de tienda');
+  };
+  rme('market-speedlogic-38732', 'CP-9020296-NA', 850, 1);
+  rme('market-speedlogic-25304', 'CP-9020297-NA', 1000, 2);
+
+  const cx = 'https://www.corsair.com/us/en/p/psu/cp-9020278-na/cx-series-cx650-650-watt-80-plus-bronze-atx-power-supply-cp-9020278-na';
+  put('market-speedlogic-38728', { displayName: 'Corsair CX650 (diseño 2023) · referencia por imagen oficial', modelKey: 'CP-9020278-NA' }, {
+    watts: 650, format: 'ATX12V 2.31 · no modular', length: 125, dimensions: '125 × 150 × 86 mm (fondo × ancho × alto)',
+    efficiency: '80 PLUS Bronze', connectors: '1 × ATX 24 · 1 × EPS 4+4 · 2 × PCIe 6+2 · 3 × SATA · 2 × PATA',
+    warrantyYears: 5, warranty: '5 años según la ficha Corsair del SKU -NA; garantía colombiana, canal y comprobante por confirmar.'
+  }, cx,
+    'Las imágenes de la tienda (14245, 14245_1 y 14245_2) coinciden con las renders oficiales de Corsair «base-cx-series-2023-config/CX650» publicadas en la ficha CP-9020278-NA; se descarta el CX650 2017. El sufijo regional no se publica. Las protecciones siguen pendientes porque la ficha Corsair del PN no las enumera y el manual CX-M 2025 es otro modelo. Fondo del cuerpo sin margen de cables. Sin precio, stock ni ensayo eléctrico.',
+    'Ficha e imágenes Corsair CP-9020278-NA · 11/11/2026');
+
+  const e100 = (id, pn, capacity, read, write, tbw, storeNote) => {
+    const source = 'https://www.crucial.com/ssd/e100/' + pn.toLowerCase();
+    put(id, { displayName: 'Crucial E100 ' + (capacity >= 1000 ? '1 TB' : capacity + ' GB') + ' · ' + pn, modelKey: pn }, {
+      capacity, placement: 'Interno', format: 'M.2 2280', pcie: 'PCIe 4.0 ×4 · NVMe', read, write, tbw
+    }, source,
+      'Serie E100 y capacidad identificadas por la tienda; Crucial publica un único SKU E100 para esa capacidad (' + pn + '). Valores de la sección Specifications oficial: interfaz NVMe PCIe Gen 4 x4, M.2 2280, lectura secuencial ' + read + ' MB/s, escritura ' + write + ' MB/s, ' + tbw + ' TBW y garantía limitada de 3 años. ' + storeNote + ' Lectura y escritura son máximos secuenciales, no velocidad sostenida. Sin precio ni stock nuevos.',
+      'Ficha oficial Crucial ' + pn + ' · leída en navegador 11/11/2026');
+  };
+  e100('market-speedlogic-54711', 'CT480E100SSD8', 480, 4700, 2500, 60, 'El título de la tienda anuncia 5000 × 4500, que corresponde a la versión de 1 TB; prevalece la ficha oficial de 480 GB. El empaque fotografiado (13258_5) muestra 480GB.');
+  e100('market-speedlogic-39322', 'CT1000E100SSD8', 1000, 5000, 4500, 80, 'El título de la tienda anuncia 5000 × 3000; prevalece la ficha oficial (4500 MB/s de escritura). La foto 13232 es una render genérica de la serie.');
+
+  const kingston = 'https://www.kingston.com/en/memory/search?partid=KCP556US8-16';
+  put('market-speedlogic-49212', {}, { modules: 1, defaultRate: 5600, profiles: 'JEDEC estándar · sin perfil XMP/EXPO publicado' }, kingston,
+    'La búsqueda oficial Kingston del 11/11 describe KCP556US8-16 como un único «16GB DDR5 5600MT/s Non-ECC Unbuffered DIMM CL46 1RX8 1.1V 288-pin»; el PN no lleva sufijo de kit (K2). Es memoria de especificación de sistema sin perfil de overclock publicado, por lo que 5600 MT/s se registra como tasa estándar del módulo. La plataforma puede limitarla.',
+    'Búsqueda de parte Kingston KCP556US8-16 · 11/11/2026');
+
+  const trust = 'https://www.trust.com/en/product/24722-gxt-836-evocx-illuminated-gaming-keyboard-us';
+  put('market-clones-105409', { displayName: 'Trust GXT 836 Evocx ES · 24998', modelKey: '24998' }, {
+    format: 'Membrana · tamaño completo con teclado numérico y reposamuñecas', connection: 'Cableada · USB-A', width: 454, height: 35, weight: 798
+  }, trust,
+    'La tienda publica EAN 8713439249989, que Trust asigna a GXT 836 Evocx Illuminated Gaming Keyboard ES (artículo 24998) en la lista de versiones de la ficha oficial; la URL ES redirige a la ficha US 24722, de la que se toman los valores comunes. Trust rotula «Depth» 454 mm y «Width» 193 mm: en un teclado completo el lado largo es el ancho, por eso width = 454 mm y 193 mm es el fondo; 35 mm es la altura. Peso total 798 g. No se usa el conteo de 114 teclas, que corresponde a la distribución US. Garantía publicada de 2 años, no garantía local confirmada. Sin precio ni stock nuevos.',
+    'Ficha oficial Trust GXT 836 · EAN ES 8713439249989',
+    [{ source: 'https://clonesyperifericos.com/comprar/teclado-trust-evocx/', label: 'EAN 8713439249989 publicado por la tienda' }]);
+})();
+
+// Lote Claude 3 · 11/11/2026: ejes de teclado resueltos por plausibilidad física de la misma tabla oficial.
+(() => {
+  'use strict';
+  const review = window.FENIXA_SPEC_REVIEW ||= {};
+  const day = '2026-11-11';
+  const axes = (id, values, scope) => {
+    const old = review[id] || {}, unpublished = { ...(old.unpublished || {}) };
+    for (const key of Object.keys(values)) delete unpublished[key];
+    const source = old.fieldSources?.format?.source || old.source;
+    review[id] = {
+      ...old, unpublished,
+      values: { ...old.values, ...values },
+      fieldSources: { ...old.fieldSources, ...Object.fromEntries(Object.keys(values).map(key => [key, { source, checkedAt: day, scope }])) },
+      scope: [old.scope, scope].filter(Boolean).join(' ')
+    };
+  };
+  axes('market-speedlogic-3952', { height: 23.5 },
+    'Altura asignada el 11/11/2026 desde la misma ficha Logitech 920-007119: Width 354,3 mm, Height 139,9 mm y Depth 23,5 mm. Un teclado con touchpad de 354 mm no puede medir 139,9 mm de alto apoyado en la mesa, así que 23,5 mm es el grosor vertical y 139,9 mm el fondo. Es la altura del cuerpo publicada, no la altura con patas ni la ergonomía.');
+  axes('market-clones-104185', { width: 297, height: 35 },
+    'Ejes asignados el 11/11/2026 desde la misma tabla oficial Redragon (29,7 × 10,6 × 3,5 cm) para el K616 de 61 teclas: el lado de 297 mm es el ancho, 106 mm el fondo y 35 mm la altura. Un teclado 60% no puede tener 106 mm de ancho ni 297 mm de alto. Altura publicada con teclas según la tabla; las patas pueden modificarla.');
+})();
