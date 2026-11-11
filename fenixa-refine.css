@@ -168,6 +168,7 @@ body .product-sheet-info h2 { margin: 0 0 6px; font-size: 22px; line-height: 1.2
 body .product-sheet-info .catalog-brief { margin: 0 0 14px; font-size: 14px; color: var(--muted); }
 body .product-sheet-info .catalog-price-line { margin-bottom: 16px; }
 body .product-sheet-info .market-price { font-size: 22px; font-variant-numeric: tabular-nums; }
+body .product-sheet-identity .fit-status-details { padding: 14px 16px; }
 body .product-sheet-info .catalog-card-actions { display: grid; grid-template-columns: auto 1fr; gap: 8px; }
 body .product-sheet-info .catalog-card-actions button { min-height: 44px; justify-content: center; border-radius: 999px; }
 body .product-sheet-details { padding: 0 20px 20px; font-size: 13px; line-height: 1.55; color: var(--muted); }

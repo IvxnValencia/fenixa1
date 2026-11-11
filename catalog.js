@@ -193,9 +193,13 @@
     details.querySelector('summary')?.remove();
     const price = tmp.querySelector('.catalog-price-line').outerHTML;
     const inBuild = window.FENIXA_MY_BUILD.ids().includes(p.id), fit = window.FENIXA_MY_BUILD.check(p);
+    const reference = window.FENIXA_SPECS.facts(p);
+    const identityWarning = reference.identityConflict
+      ? `<div class="fit-status product-sheet-identity"><div class="fit-status-details"><strong>Identidad por confirmar</strong><p>${esc(reference.warning || reference.scope || 'Confirma el modelo y la referencia exacta antes de comprar.')}</p></div></div>`
+      : '';
     productSheet.innerHTML = `<div class="fx-sheet-top"><span>${esc(categoryName(p.category))}</span><button type="button" class="fx-sheet-close" data-close-product aria-label="Cerrar detalles">Cerrar</button></div>
       <div class="product-sheet-main"><figure class="product-sheet-photo"><img src="${esc(p.image)}" alt="${esc(p.name)}" width="480" height="360" decoding="async"></figure>
-      <div class="product-sheet-info"><h2 id="productSheetTitle">${esc(p.name)}</h2><p class="catalog-brief">${esc(brief(p))}</p>${price}
+      <div class="product-sheet-info"><h2 id="productSheetTitle">${esc(p.name)}</h2><p class="catalog-brief">${esc(brief(p))}</p>${price}${identityWarning}
       <div class="catalog-card-actions"><button class="compare-trigger" type="button" data-sheet-compare="${p.id}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar de comparación':'Comparar'}</button><button class="primary-button" type="button" data-add-my-build="${p.id}">${inBuild?'Ya está en Mi build':fit.status==='conflict'?'Revisar conflicto':'Añadir a Mi build'}</button></div></div></div>
       <div class="product-sheet-details">${details.innerHTML}</div>`;
   }
