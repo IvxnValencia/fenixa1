@@ -59,7 +59,7 @@
     result.setAttribute('aria-busy','false');
     const planKey=level+'|'+selectedBudget;if(planKey===lastPlanKey){if(shouldAnnounce)announce();return;}lastPlanKey=planKey;
     const previous=interactionStart||current,response=auto.generate(level,selectedBudget);current=response.proposal;
-    if(!current){details.innerHTML='';details.hidden=true;result.innerHTML='<h2 id="autoBuildTitle">Tu propuesta</h2><p>'+esc(response.reason)+'</p>';$('plannerBudgetFeedback').textContent=response.reason;lastAnnouncement=response.reason+' Objetivo '+budget.money(selectedBudget)+'.';if(shouldAnnounce)announce();return;}
+    if(!current){details.innerHTML='';details.hidden=true;const sf=response.shortfall;let actions='';if(sf){const lighter=Object.entries(auto.profiles).filter(([id,pr])=>id!==level&&pr.use===auto.profiles[level].use).find(([id])=>auto.generate(id,selectedBudget).proposal?.relation==='within-reference');actions='<div class="planner-shortfall-actions">'+(sf.canRaise&&sf.needed<=maxForProfile()?'<button type="button" class="primary-button" data-budget-set="'+sf.needed+'">Subir a '+esc(budget.money(sf.needed))+'</button>':'')+(lighter?'<button type="button" class="secondary-button" data-level="'+esc(lighter[0])+'">Probar «'+esc(lighter[1].name)+'»</button>':'')+'</div>';}result.innerHTML='<h2 id="autoBuildTitle">'+(sf?'No alcanza el presupuesto':'Tu propuesta')+'</h2><p'+(sf?' class="planner-shortfall" role="status"':'')+'>'+esc(response.reason)+'</p>'+actions;$('plannerBudgetFeedback').textContent=response.reason;lastAnnouncement=response.reason+' Objetivo '+budget.money(selectedBudget)+'.';if(shouldAnnounce)announce();return;}
     const p=current,profile=auto.profiles[level],before=new Map((previous?.rows||[]).map(r=>[r.product.category,r.product.id]));
     const changed=previous?[...new Set([...before.keys(),...p.rows.map(r=>r.product.category)])].filter(id=>before.get(id)!==p.rows.find(r=>r.product.category===id)?.product.id):[];
     const changeText=!previous?'Tu propuesta está lista.':changed.length?`${changed.length===1?'1 pieza actualizada':changed.length+' piezas actualizadas'}: ${changed.map(categoryName).join(', ')}.`:'La selección de piezas se mantiene con este presupuesto.';
@@ -85,6 +85,7 @@
   root.addEventListener('click',e=>{
     if(e.target.closest('[data-view-proposal]')){const heading=$('autoBuildTitle');heading.setAttribute('tabindex','-1');heading.focus({preventScroll:true});result.scrollIntoView({block:'start',behavior:e.detail===0||window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches?'instant':'smooth'});return;}
     const choice=e.target.closest('[data-level]');if(choice){level=choice.dataset.level;constrain(selectedBudget,true);remember();levels();update();$('startLevels').querySelector(`[data-level="${level}"]`).focus({preventScroll:true});return;}
+    const setTo=e.target.closest('[data-budget-set]');if(setTo){constrain(Number(setTo.dataset.budgetSet));remember();update();return;}
     const step=e.target.closest('[data-budget-delta]');if(step){constrain(selectedBudget+Number(step.dataset.budgetDelta)*budget.step);remember();update();return;}
     if(e.target.closest('#useAutomaticBuild')&&current){remember();window.dispatchEvent(new CustomEvent('fenixa-request-build-import',{detail:{parts:current.parts.slice()}}));location.hash='mi-build';}
   });

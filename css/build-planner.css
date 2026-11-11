@@ -98,3 +98,7 @@ body .planner-budget .planner-live-status { position:absolute; width:1px; height
   body .planner-overview dd { font-size:12px; }
   body .planner-parts { grid-template-columns:1fr; }
 }
+
+/* Presupuesto insuficiente: aviso en lugar de propuesta */
+.planner-shortfall { padding:14px 16px; margin:16px 0; border-radius:14px; border:1px solid var(--purple); background:var(--purple-faint); color:var(--text); font-size:14px; line-height:1.7; }
+.planner-shortfall-actions { display:flex; flex-wrap:wrap; gap:12px; }

@@ -57,6 +57,13 @@
     const options=plans().filter(p=>!profile.gpu||p.gpu),bucket=p=>p.high<=max?0:p.low<=max?1:2;
     const sorted=options.slice().sort((a,b)=>bucket(a)-bucket(b)||(bucket(a)===2?a.high-b.high:score(b)-score(a))||a.high-b.high||a.parts.join('|').localeCompare(b.parts.join('|')));
     if(!sorted.length)return{proposal:null,reason:'Faltan fichas o referencias de coste para componer una lista. Puedes elegir piezas manualmente.'};
+    if(bucket(sorted[0])===2){
+      // Ninguna combinación cabe ni por su referencia más baja: no se propone una build fuera del presupuesto.
+      const cheapest=options.reduce((m,o)=>o.low<m.low?o:m,options[0]),gpuRow=cheapest.rows.find(r=>r.product.category==='gpu');
+      const needed=Math.min(profile.maxBudget,1000000+Math.ceil((cheapest.low-1000000)/250000)*250000),canRaise=cheapest.low<=profile.maxBudget;
+      const money=n=>window.FENIXA_BUDGET?.money?.(n)||'$'+Math.round(n).toLocaleString('es-CO');
+      return{proposal:null,shortfall:{max,cheapest:cheapest.low,gpu:gpuRow?gpuRow.reference.low:0,needed,canRaise},reason:'No alcanza: con '+money(max)+' no hay una build de «'+profile.name+'» dentro de tu presupuesto. La opción más económica cuesta desde '+money(cheapest.low)+(gpuRow?' y solo la tarjeta gráfica ya cuesta desde '+money(gpuRow.reference.low):'')+'. '+(canRaise?'Sube el presupuesto a '+money(needed)+' o elige un perfil menos exigente.':'Elige un perfil menos exigente.')};
+    }
     const p=sorted[0],gaps=[];
     if(p.cpu.cores<profile.cores)gaps.push('Núcleos: '+p.cpu.cores+' / objetivo '+profile.cores);
     if(p.disk.capacity<profile.storage)gaps.push('SSD: '+p.disk.capacity+' / objetivo '+profile.storage+' GB');
