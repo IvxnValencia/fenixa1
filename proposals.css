@@ -12,7 +12,7 @@ body .build-photo-button,body .detail-photo { background:transparent; }
 .build-overview dd { margin:0; line-height:1.45; overflow-wrap:anywhere; }
 @media(max-width:600px) { .build-overview > div { grid-template-columns:1fr; gap:3px; } }
 .catalog-photo:has(.catalog-image-note) { height:auto; min-height:172px; padding-bottom:10px; }
-body .build-photo-button img { height:210px; aspect-ratio:auto; padding:22px; }
+body .build-photo-button img { height:210px; padding:22px; }
 .build-target { color:var(--purple); font-size:16px; font-weight:700; margin-bottom:10px; }
 .build-card-body { display:flex; flex-direction:column; height:calc(100% - 210px); }
 .build-card-body .primary-button { margin-top:auto; }

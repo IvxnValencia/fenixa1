@@ -57,17 +57,14 @@
     const visible=rows.filter(p=>(use==='all'||p.uses.includes(use))&&`${p.name} ${p.model}`.toLocaleLowerCase('es').includes(query));
     $('laptopCount').textContent=visible.length+(visible.length===1?' modelo':' modelos')+' de referencia · revisa configuración y región';
     $('laptopEmpty').hidden=visible.length>0;
-    $('laptopGrid').innerHTML=visible.map(p=>`<article class="laptop-card">
-      <img src="${esc(p.image)}" alt="${esc(imageAlt(p))}" width="800" height="800" loading="lazy" decoding="async">
-      <span class="market-category">${esc(p.model)} · ${esc(referenceKind(p))}${p.imageKind==='category'?' · foto pendiente':''}</span><h3>${esc(p.name)}</h3>
-      <button type="button" class="secondary-button" data-laptop-compare="${esc(p.id)}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar de comparación':'Comparar laptop'}</button>
-      <div class="build-tags">${p.uses.map(use=>`<span>${labels[use]}</span>`).join('')}</div><p>${esc(p.reason)}</p>
-      <dl>${p.specs.map(([label,value])=>`<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`).join('')}</dl>
-      <strong>Precio por confirmar</strong><p class="estimate-label">Sin oferta verificada en COP. No confirma disponibilidad en Colombia.</p>
-      <details><summary>Qué revisar antes de elegir</summary><ul>${p.limits.map(n=>`<li>${esc(n)}</li>`).join('')}</ul>
-      <p>Región de la ficha: ${esc(p.region||'por confirmar')}. Consultada el ${esc(checkedOn(p.checkedAt))}. ${esc(imageNote(p))}</p></details>
-      <a class="source-link" href="${esc(p.source)}" target="_blank" rel="noopener noreferrer">Ficha del fabricante</a>
-      <div class="market-searches"><a href="https://listado.mercadolibre.com.co/${encodeURIComponent(p.model.toLowerCase())}" target="_blank" rel="noopener noreferrer">Buscar en Mercado Libre</a><small>Búsqueda, no oferta verificada.</small></div>
+    if(!visible.length)$('laptopEmpty').innerHTML='No hay laptops que coincidan con este uso y modelo. Prueba un nombre más corto o vuelve a explorar todas las referencias. <button type="button" class="secondary-button" data-clear-laptop-filters>Limpiar filtros de laptops</button>';
+    const page=window.FENIXA_PAGER.paginate('laptops',visible,{anchor:$('laptopGrid'),signature:JSON.stringify([use,query]),onChange:render,label:'Páginas de laptops',scrollTarget:$('laptops')});
+    $('laptopGrid').innerHTML=page.items.map(p=>`<article class="laptop-card fx-card" data-laptop-id="${esc(p.id)}">
+      <div class="catalog-product-heading"><span class="market-category">${esc(labels[p.uses[0]]||'Laptop')} · ${esc(p.model)}</span><h3>${esc(p.name)}</h3></div>
+      <button type="button" class="catalog-photo fx-open" data-open-laptop="${esc(p.id)}" aria-label="Ver ficha de ${esc(p.name)}"><img class="product-image" src="${esc(p.image)}" alt="${esc(imageAlt(p))}" width="800" height="800" loading="lazy" decoding="async"></button>
+      <p class="catalog-brief" title="${esc(p.specs.filter(([label])=>/procesador|gráficos/i.test(label)).map(([,value])=>value).join(' · '))}">${esc(p.specs.filter(([label])=>/procesador|gráficos/i.test(label)).map(([,value])=>value).join(' · '))}</p>
+      <div class="catalog-price-line"><strong class="market-price">Precio por confirmar</strong><span class="estimate-label">Sin oferta verificada en COP</span></div>
+      <div class="catalog-card-actions"><button type="button" class="compare-trigger" data-laptop-compare="${esc(p.id)}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button type="button" class="secondary-button" data-open-laptop="${esc(p.id)}">Ver ficha</button></div>
     </article>`).join('');
     renderComparison();
   }
@@ -134,5 +131,6 @@
   $('laptopCompareClear').addEventListener('click',()=>{selected.clear();quotes.clear();versions.clear();comparisonView='all';comparisonOpen=false;render();$('laptopSearch').focus({preventScroll:true});});
   $('laptopUse').addEventListener('change',render);
   $('laptopSearch').addEventListener('input',render);
+  $('laptopEmpty').addEventListener('click',event=>{if(!event.target.closest('[data-clear-laptop-filters]'))return;$('laptopUse').value='all';$('laptopSearch').value='';render();$('laptopSearch').focus({preventScroll:true});});
   render();
 })();

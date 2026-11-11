@@ -2,11 +2,14 @@
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="FENIXA te ayuda a elegir componentes compatibles y ensamblar tu PC con confianza." />
-    <meta name="theme-color" content="#09090b" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#15171c" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f5f5f8" />
     <title>FENIXA · Construye tu PC con confianza</title>
-    <link rel="stylesheet" href="catalog.css?v=8" />
+    <script src="startup-recovery.js?v=1"></script>
+    <link rel="stylesheet" href="startup-recovery.css?v=1" />
+    <link rel="stylesheet" href="catalog.css?v=9" />
     <link rel="stylesheet" href="my-build.css?v=4" />
     <style>
       :root {
@@ -421,31 +424,33 @@
         *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
       }
     </style>
-    <link rel="stylesheet" href="clean-design.css?v=7">
-    <link rel="stylesheet" href="proposals.css?v=5">
+    <link rel="stylesheet" href="clean-design.css?v=9">
+    <link rel="stylesheet" href="proposals.css?v=6">
     <link rel="stylesheet" href="laptop-compare.css?v=3">
   <link rel="stylesheet" href="laptop-radar.css?v=10">
-  <link rel="stylesheet" href="ios-fenix.css?v=3">
-    <link rel="stylesheet" href="premium-fenix.css?v=4">
+  <link rel="stylesheet" href="ios-fenix.css?v=4">
+    <link rel="stylesheet" href="premium-fenix.css?v=5">
     <link rel="stylesheet" href="build-overview.css?v=1">
-    <link rel="stylesheet" href="storefront-fenix.css?v=1">
-    <link rel="stylesheet" href="build-quickview.css?v=1">
+    <link rel="stylesheet" href="storefront-fenix.css?v=3">
+    <link rel="stylesheet" href="build-quickview.css?v=2">
     <link rel="stylesheet" href="comparison-compact.css?v=6">
-    <link rel="stylesheet" href="build-refinement.css?v=1">
+    <link rel="stylesheet" href="build-refinement.css?v=2">
     <link rel="stylesheet" href="build-planner.css?v=3">
-    <link rel="stylesheet" href="build-library.css?v=1">
+    <link rel="stylesheet" href="build-library.css?v=2">
+    <link rel="stylesheet" href="fenixa-refine.css?v=3">
+    <link rel="stylesheet" href="hero-fenixa.css?v=1">
+    <link rel="stylesheet" href="interface-polish.css?v=7">
   </head>
   <body>
     <div class="app-shell">
       <aside class="sidebar" id="siteMenu" aria-label="Todas las secciones de FENIXA" inert>
-        <div class="nav-label">Tu espacio</div>
         <nav class="nav">
           <a class="nav-link active" href="#inicio"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path class="nav-icon-tint" d="m4 10 8-7 8 7v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="m3 11 9-8 9 8M4 10v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9M9 21v-7h6v7"/></svg>Inicio</a>
+          <a class="nav-link" href="#configurador"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 10v10"/></svg>Armar mi PC</a>
           <a class="nav-link" href="#componentes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect class="nav-icon-tint" x="6" y="6" width="12" height="12" rx="3"/><rect x="6" y="6" width="12" height="12" rx="3"/><rect x="10" y="10" width="4" height="4" rx="1"/><path d="M9 3v3m6-3v3M9 18v3m6-3v3M3 9h3m-3 6h3m12-6h3m-3 6h3"/></svg>Componentes</a>
           <a class="nav-link" href="#mi-build"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path class="nav-icon-tint" d="m12 11 8-4v10l-8 4-8-4V7z"/><path d="m12 3 8 4v10l-8 4-8-4V7zm-8 4 8 4 8-4m-8 4v10M8 5l8 4"/></svg>Mi build</a>
           <a class="nav-link" href="#builds"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect class="nav-icon-tint" x="6" y="3" width="12" height="18" rx="3"/><rect x="6" y="3" width="12" height="18" rx="3"/><circle cx="12" cy="14" r="3"/><path d="M10 7h4M12 11v6m-3-3h6"/></svg>Builds completas</a>
           <a class="nav-link" href="#laptops"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect class="nav-icon-tint" x="4" y="4" width="16" height="12" rx="2"/><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M4 16 2 20h20l-2-4M10 20h4M8 8h8"/></svg>Laptops</a>
-          <a class="nav-link" href="#configurador"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M5 3v8m0 6v4M12 3v2m0 6v10M19 3v10m0 6v2"/><rect class="nav-icon-tint" x="2" y="11" width="6" height="6" rx="2"/><rect x="2" y="11" width="6" height="6" rx="2"/><rect x="9" y="5" width="6" height="6" rx="2"/><rect x="16" y="13" width="6" height="6" rx="2"/></svg>Mi configuración</a>
           <a class="nav-link" href="#mi-pc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect class="nav-icon-tint" x="3" y="4" width="18" height="13" rx="3"/><rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21h8m-4-4v4M7 11h3l2-4 2 7 2-3h2"/></svg>Mi PC y mejoras</a>
 
           <a class="nav-link" href="#ensamblaje"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path class="nav-icon-tint" d="m4 16 7-7 4 4-7 7H4z"/><path d="m4 16 9-9m-4-4 5 5m-1-5 5 5M15 5l3-3 4 4-3 3M4 16v4h4l9-9M4 4l16 16"/></svg>Guía de ensamblaje</a>
@@ -467,26 +472,44 @@
             <span class="brand-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M7.2 3.7h6.9L19.5 8v8l-5.4 4.3H7.2L3.5 17V7z" stroke-width="2" stroke-linejoin="round"/><path d="m8.3 15.9 3.7-2.7V8.7l-3.7 2.6z" stroke-width="2" stroke-linejoin="round"/></svg></span>
             <span class="brand-name">FENIXA</span><span class="brand-beta">BETA</span>
           </a>
-          <nav class="storefront-nav" aria-label="Explorar FENIXA">
-            <a class="nav-link" href="#componentes">Componentes</a>
-            <a class="nav-link" href="#builds">Builds completas</a>
-            <a class="nav-link" href="#laptops">Laptops</a>
-          </nav>
-          <a class="primary-button header-build-link nav-link" href="#mi-build">Armar mi PC <span aria-hidden="true">↗</span></a>
           <div class="topbar-actions">
             <button class="icon-button" id="themeToggle" type="button" aria-label="Cambiar tema"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg></button>
-            <button class="icon-button" type="button" aria-label="Notificaciones" id="notifyButton"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button>
             <button class="icon-button mobile-menu" type="button" aria-label="Abrir menú" aria-controls="siteMenu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
           </div>
-          <div class="header-context"><div class="topbar-search"><span>Tu espacio / Inicio</span></div><div class="user-chip"><span class="avatar">SV</span><span>Sesión demo</span></div></div>
         </header>
 
         <div class="content" id="inicio">
-          <section id="startBuild" class="start-build" aria-labelledby="startTitle">
-            <div class="start-hero">
-            <header class="start-heading"><span class="eyebrow">TU PRÓXIMA PC</span><h1 id="startTitle">Empieza por lo que necesitas.</h1><p>Elige el uso y un presupuesto para encontrar builds completas. También puedes armar tu PC pieza a pieza.</p><div class="hero-actions"><a class="primary-button" href="#mi-build">Armar mi PC <span aria-hidden="true">↗</span></a><a class="secondary-button" href="#componentes">Explorar componentes <span aria-hidden="true">→</span></a></div></header>
-            <aside class="start-summary" aria-label="Resumen de tu plan"><span class="eyebrow">TU PUNTO DE PARTIDA</span><img src="assets/categories/case.png" width="1254" height="1254" alt="Ilustración de un gabinete vacío"><small>Ilustración de categoría · no es una build montada</small><h2 id="startUseLabel">Estudio y trabajo</h2><p class="start-amount" id="startAmount"></p><p id="startAdvice"></p><a class="section-link" href="#mi-build" id="startResume">Ver Mi build →</a><p id="startSaveStatus" role="status"></p></aside>
+          <section id="welcome" class="start-build" aria-labelledby="startTitle">
+            <div class="start-hero fenixa-hero">
+              <header class="start-heading">
+                <span class="eyebrow">DE LA IDEA AL PRIMER ENCENDIDO</span>
+                <h1 id="startTitle">Tu próxima PC.<br><span>Empieza contigo.</span></h1>
+                <p>Para ese juego, ese proyecto o todo lo que viene. Dale forma a una PC a tu medida, pieza por pieza y con un presupuesto claro.</p>
+                <div class="hero-actions"><a class="primary-button" href="#configurador">Armar mi PC</a><a class="secondary-button" href="#componentes">Explorar componentes</a></div>
+                <p class="hero-reassurance">Tu uso. Tu presupuesto. Tus decisiones.</p>
+              </header>
+              <figure class="hero-showcase" aria-labelledby="heroCaseCaption">
+                <div class="hero-plinth" aria-hidden="true"></div>
+                <img class="hero-case" src="assets/categories/case.png" width="1254" height="1254" fetchpriority="high" decoding="async" alt="Gabinete negro con panel lateral de cristal, visto en tres cuartos">
+                <figcaption id="heroCaseCaption">Gabinete ilustrativo. Tú eliges las piezas.</figcaption>
+              </figure>
             </div>
+            <ol class="hero-journey" aria-label="Cómo te acompaña FENIXA">
+              <li><span class="hero-step-number" aria-hidden="true">01</span><div><h2>Primero, lo que necesitas.</h2><p>Encuentra tu punto de partida según tu uso y presupuesto.</p></div></li>
+              <li><span class="hero-step-number" aria-hidden="true">02</span><div><h2>Cada pieza tiene su lugar.</h2><p>Compara opciones y revisa sus detalles de compatibilidad.</p></div></li>
+              <li><span class="hero-step-number" aria-hidden="true">03</span><div><h2>Una build que se siente tuya.</h2><p>Guarda tu selección y prepárate para el ensamblaje.</p></div></li>
+            </ol>
+          </section>
+          <section id="startBuild" class="start-build" aria-labelledby="builderTitle" hidden>
+            <div class="start-hero">
+            <header class="start-heading"><span class="eyebrow">ARMAR MI PC</span><h1 id="builderTitle">Tu PC, según lo que necesitas.</h1><p>Elige el uso, el perfil y el presupuesto para generar tu propuesta.</p></header>
+            <aside class="start-summary" aria-label="Resumen de tu plan" hidden><span class="eyebrow">TU PUNTO DE PARTIDA</span><img src="assets/categories/case.png" width="1254" height="1254" alt="Ilustración de un gabinete vacío"><small>Ilustración de categoría · no es una build montada</small><h2 id="startUseLabel">Estudio y trabajo</h2><p class="start-amount" id="startAmount"></p><p id="startAdvice"></p><a class="section-link" href="#mi-build" id="startResume">Ver Mi build </a><p id="startSaveStatus" role="status"></p></aside>
+            </div>
+            <nav class="builder-progress" id="builderProgress" aria-label="Pasos del armado">
+              <button type="button" data-builder-step="plannerUse" aria-current="step"><span>1</span> Uso</button>
+              <button type="button" data-builder-step="plannerProfile"><span>2</span> Perfil</button>
+              <button type="button" data-builder-step="plannerBudget"><span>3</span> Presupuesto y propuesta</button>
+            </nav>
             <div class="start-layout">
               <div class="start-controls">
                 <fieldset class="start-field"><legend><span>1</span> ¿Para qué la vas a usar?</legend><div class="start-uses">
@@ -495,7 +518,7 @@
                   <label><input type="radio" name="startUse" value="creativo"><span><strong>Diseño y creación</strong><small>Edición, diseño y producción</small></span></label>
                 </div></fieldset>
                 <fieldset class="start-field"><legend><span>2</span> Presupuesto para buscar builds completas</legend><div id="startBudgets" class="start-budgets"></div><p class="start-hint">COP · de $1.000.000 a $18.000.000, en pasos de $250.000; el máximo depende del perfil. Busca propuestas por presupuesto objetivo; también muestra las que tienen precios pendientes. En Mi build sirve para planificar. No es una cotización.</p></fieldset>
-                <fieldset class="start-field"><legend><span>3</span> ¿Cómo quieres armarla?</legend><div class="start-paths"><button type="button" class="primary-button" id="startParts">Elegir mis componentes <span aria-hidden="true">→</span></button><button type="button" class="secondary-button" id="startProposals">Buscar builds completas</button></div></fieldset>
+                <fieldset class="start-field"><legend><span>3</span> ¿Cómo quieres armarla?</legend><div class="start-paths"><button type="button" class="primary-button" id="startParts">Elegir mis componentes </button><button type="button" class="secondary-button" id="startProposals">Buscar builds completas</button></div></fieldset>
               </div>
             </div>
           </section>
@@ -509,13 +532,13 @@
           </section>
 
           <section class="home-shortcuts" id="homeShortcuts" aria-label="Elige por dónde empezar">
-            <a href="#configurador"><span>01 / EMPEZAR</span><h2>Quiero armar una PC</h2><p>Elige tu uso y presupuesto para encontrar una base.</p><strong>Abrir configurador →</strong></a>
-            <a href="#builds"><span>02 / INSPIRARME</span><h2>Explorar builds completas</h2><p>Revisa cada pieza y encuentra dónde comprarla.</p><strong>Ver builds →</strong></a>
-            <a href="#mi-pc"><span>03 / MEJORAR</span><h2>Actualizar mi equipo</h2><p>Registra tus componentes y planea el siguiente paso.</p><strong>Ir a Mi PC →</strong></a>
-            <a href="#componentes"><span>04 / EXPLORAR</span><h2>Buscar componentes</h2><p>Fotos, modelos y filtros de presupuesto por categoría.</p><strong>Ver componentes →</strong></a>
+            <a href="#configurador"><span>01 / EMPEZAR</span><h2>Quiero armar una PC</h2><p>Elige tu uso y presupuesto para encontrar una base.</p><strong>Abrir configurador </strong></a>
+            <a href="#builds"><span>02 / INSPIRARME</span><h2>Explorar builds completas</h2><p>Revisa cada pieza y encuentra dónde comprarla.</p><strong>Ver builds </strong></a>
+            <a href="#mi-pc"><span>03 / MEJORAR</span><h2>Actualizar mi equipo</h2><p>Registra tus componentes y planea el siguiente paso.</p><strong>Ir a Mi PC </strong></a>
+            <a href="#componentes"><span>04 / EXPLORAR</span><h2>Buscar componentes</h2><p>Fotos, modelos y filtros de presupuesto por categoría.</p><strong>Ver componentes </strong></a>
           </section>
           <section class="section visual-catalog" id="componentes" aria-labelledby="parts-title" hidden>
-            <div class="section-heading"><div><h2 id="parts-title">Elige una categoría</h2><p>Fotos de referencia sin fondo para orientarte; debajo encontrarás los modelos exactos y sus fuentes.</p></div><a class="section-link" href="#catalogo">Ir a modelos →</a></div>
+            <div class="section-heading"><div><h2 id="parts-title">Elige una categoría</h2><p>Fotos de referencia sin fondo para orientarte; debajo encontrarás los modelos exactos y sus fuentes.</p></div><a class="section-link" href="#catalogo">Ir a modelos </a></div>
             <div class="parts-grid" id="partsGrid"></div>
           </section>
           <section class="section complete-builds" id="builds" aria-labelledby="builds-title" hidden>
@@ -529,9 +552,9 @@
             <div class="laptop-controls"><label>Uso<select id="laptopUse"><option value="all">Todos</option><option value="estudio">Estudio</option><option value="trabajo">Trabajo</option><option value="gaming">Gaming</option><option value="creativo">Creación</option></select></label><label>Buscar modelo<input type="search" id="laptopSearch" placeholder="Zenbook, TUF, ProArt…"></label></div>
             <p class="laptop-disclaimer">Cada ficha indica si describe una familia variable o una configuración regional documentada. No es una oferta de tienda: no hay precios verificados en COP ni disponibilidad local confirmada todavía.</p>
             <p id="laptopCount" role="status"></p>
-            <aside class="laptop-compare-toolbar comparison-dock" id="laptopCompareToolbar" aria-label="Lista de comparaciones de laptops" hidden><button class="comparison-dock-toggle" id="laptopQueueToggle" type="button" aria-controls="laptopQueueBody" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><path d="M8 4v16M16 4v16M4 8l4-4 4 4m0 8 4 4 4-4"/></svg><strong>Comparaciones</strong><span id="laptopQueueCount">0</span><span class="dock-chevron" aria-hidden="true">⌃</span></button><div class="comparison-dock-body" id="laptopQueueBody" hidden><div id="laptopQueueList"></div><p id="laptopCompareStatus" role="status"></p><div class="comparison-dock-actions"><button type="button" class="secondary-button" id="laptopCompareClear">Vaciar</button><button type="button" class="primary-button" id="laptopCompareToggle" aria-controls="laptopComparison" aria-expanded="false" disabled>Comparar</button></div></div></aside>
-            <section id="laptopComparison" class="laptop-comparison" aria-labelledby="laptopCompareTitle" hidden><div class="laptop-compare-top"><h3 id="laptopCompareTitle">Comparación de laptops</h3><button type="button" class="secondary-button" id="laptopCompareClose" aria-label="Cerrar comparación de laptops">Cerrar ✕</button></div><p class="laptop-disclaimer">Datos del fabricante; una familia no identifica un SKU exacto. Sin pruebas comparables de rendimiento.</p><div id="laptopComparisonGrid" class="laptop-comparison-grid"></div></section>
-            <div id="laptopGrid" class="laptop-grid"></div><p id="laptopEmpty" hidden>No hay laptops para estos filtros.</p>
+            <aside class="laptop-compare-toolbar comparison-dock" id="laptopCompareToolbar" aria-label="Lista de comparaciones de laptops" hidden><button class="comparison-dock-toggle" id="laptopQueueToggle" type="button" aria-controls="laptopQueueBody" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/></svg><strong>Comparaciones</strong><span id="laptopQueueCount">0</span></button><div class="comparison-dock-body" id="laptopQueueBody" hidden><div id="laptopQueueList"></div><p id="laptopCompareStatus" role="status"></p><div class="comparison-dock-actions"><button type="button" class="secondary-button" id="laptopCompareClear">Vaciar</button><button type="button" class="primary-button" id="laptopCompareToggle" aria-controls="laptopComparison" aria-expanded="false" disabled>Comparar</button></div></div></aside>
+            <section id="laptopComparison" class="laptop-comparison" aria-labelledby="laptopCompareTitle" hidden><div class="laptop-compare-top"><h3 id="laptopCompareTitle">Comparación de laptops</h3><button type="button" class="secondary-button" id="laptopCompareClose" aria-label="Cerrar comparación de laptops">Cerrar</button></div><p class="laptop-disclaimer">Datos del fabricante; una familia no identifica un SKU exacto. Sin pruebas comparables de rendimiento.</p><div id="laptopComparisonGrid" class="laptop-comparison-grid"></div></section>
+            <div id="laptopGrid" class="laptop-grid"></div><dialog id="laptopDetailDialog" class="fx-sheet laptop-detail-dialog" aria-labelledby="laptopDetailTitle"></dialog><p id="laptopEmpty" hidden>No hay laptops para estos filtros.</p>
           </section>
           <section class="section" id="mi-build" aria-labelledby="myBuildTitle" hidden></section>
           <section class="builder-grid" id="configurador" aria-label="Configurador de PC" hidden>
@@ -606,7 +629,7 @@
           <section class="section" id="catalogo" aria-labelledby="catalog-title" hidden>
             <div class="section-heading"><div><h2 id="catalog-title">Modelos para tu build</h2><p>Busca, compara y revisa la compatibilidad antes de añadir cada pieza.</p></div><button class="section-link" id="clearFilters" type="button">Limpiar filtros</button></div>
             <div class="catalog-panel">
-              <div class="catalog-controls"><div><span class="field-label" style="margin-bottom:7px">Rango de inversión</span><div class="filter-group" id="priceFilters" role="group" aria-label="Filtrar por rango de inversión"><button class="filter-button active" type="button" data-price-filter="all">Todos</button><button class="filter-button" type="button" data-price-filter="bajo">Hasta $500 mil</button><button class="filter-button" type="button" data-price-filter="medio">$500 mil – $1,2 M</button><button class="filter-button" type="button" data-price-filter="alto">Más de $1,2 M</button></div></div><div><label class="field-label sr-only" for="categoryFilter">Filtrar por categoría</label><select class="catalog-select" id="categoryFilter"><option value="all">Todas las categorías</option><option value="cpu">Procesadores</option><option value="gpu">Gráficas</option><option value="ram">Memoria</option><option value="storage">Almacenamiento</option><option value="board">Placas madre</option><option value="power">Fuentes</option></select></div><span class="catalog-count" id="catalogCount" aria-live="polite">6 piezas</span></div>
+              <section class="catalog-filter-panel" id="catalogFilters" aria-label="Buscar y filtrar componentes"><div class="catalog-filter-heading"><strong>Encuentra tu pieza</strong></div><div class="catalog-filter-main"><label class="catalog-category">Categoría<select class="catalog-select" id="categoryFilter"><option value="all">Todas las categorías</option></select></label></div><div class="catalog-filter-footer"><span class="catalog-count" id="catalogCount" role="status">582 piezas</span></div></section>
               <div class="market-grid" id="marketGrid">
                 <article class="market-card" data-market-price="bajo" data-market-category="storage"><span class="market-category">Almacenamiento</span><h3>SSD NVMe 1 TB</h3><p>Lectura rápida para sistema y proyectos.</p><strong class="market-price">$250.000 – $420.000</strong><div class="market-note"><span class="sample-label">Dato de muestra</span><span>Oferta pendiente</span></div><button class="compare-trigger" type="button">Comparar pieza</button></article>
                 <article class="market-card" data-market-price="medio" data-market-category="ram"><span class="market-category">Memoria</span><h3>Kit 32 GB DDR5</h3><p>Más margen para crear y hacer multitarea.</p><strong class="market-price">$450.000 – $720.000</strong><div class="market-note"><span class="sample-label">Dato de muestra</span><span>Oferta pendiente</span></div><button class="compare-trigger" type="button">Comparar pieza</button></article>
@@ -615,14 +638,14 @@
                 <article class="market-card" data-market-price="medio" data-market-category="board"><span class="market-category">Placa madre</span><h3>B650 · AM5</h3><p>Compatibilidad con la plataforma Ryzen actual.</p><strong class="market-price">$700.000 – $1.000.000</strong><div class="market-note"><span class="sample-label">Dato de muestra</span><span>Oferta pendiente</span></div><button class="compare-trigger" type="button">Comparar pieza</button></article>
                 <article class="market-card" data-market-price="bajo" data-market-category="power"><span class="market-category">Fuente</span><h3>650 W · 80+ Bronze</h3><p>Potencia estable para una configuración media.</p><strong class="market-price">$300.000 – $520.000</strong><div class="market-note"><span class="sample-label">Dato de muestra</span><span>Oferta pendiente</span></div><button class="compare-trigger" type="button">Comparar pieza</button></article>
               </div>
-              <aside class="compare-tray comparison-dock" id="compareTray" aria-label="Lista de comparaciones de componentes" hidden><button class="comparison-dock-toggle" id="compareTrayToggle" type="button" aria-expanded="false" aria-controls="compareTrayBody"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><path d="M8 4v16M16 4v16M4 8l4-4 4 4m0 8 4 4 4-4"/></svg><strong>Comparaciones</strong><span id="compareTrayCount">0</span><span class="dock-chevron" aria-hidden="true">⌃</span></button><div id="compareTrayBody" class="comparison-dock-body" hidden><div class="compare-list" id="compareList"></div><p id="compareTrayMessage" role="status">Elige dos piezas de la misma categoría.</p><div class="comparison-dock-actions"><button class="secondary-button" id="clearCompare" type="button">Vaciar</button><button class="primary-button" id="openRealComparison" type="button" disabled>Comparar</button></div></div></aside>
+              <aside class="compare-tray comparison-dock" id="compareTray" aria-label="Lista de comparaciones de componentes" hidden><button class="comparison-dock-toggle" id="compareTrayToggle" type="button" aria-expanded="false" aria-controls="compareTrayBody"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/></svg><strong>Comparaciones</strong><span id="compareTrayCount">0</span></button><div id="compareTrayBody" class="comparison-dock-body" hidden><div class="compare-list" id="compareList"></div><p id="compareTrayMessage" role="status">Elige dos piezas de la misma categoría.</p><div class="comparison-dock-actions"><button class="secondary-button" id="clearCompare" type="button">Vaciar</button><button class="primary-button" id="openRealComparison" type="button" disabled>Comparar</button></div></div></aside>
               <div class="catalog-empty" id="catalogEmpty">No hay piezas en este cruce de filtros. Prueba otro rango o categoría.</div>
               <p class="catalog-footnote">Los rangos son datos de muestra para probar la experiencia. La conexión de ofertas y vendedores verificados se incorporará después.</p>
             </div>
           </section>
 
-          <section class="section" aria-labelledby="resolution-title">
-            <div class="section-heading"><div><h2 id="resolution-title">Lo que FENIXA resuelve</h2><p>Una sola ruta para las dudas que hoy hacen más lenta e insegura la compra.</p></div><button class="section-link" type="button" id="howButton">Cómo funciona →</button></div>
+          <section class="section" id="resolution" aria-labelledby="resolution-title">
+            <div class="section-heading"><div><h2 id="resolution-title">Lo que FENIXA resuelve</h2><p>Una sola ruta para las dudas que hoy hacen más lenta e insegura la compra.</p></div><button class="section-link" type="button" id="howButton">Cómo funciona </button></div>
             <div class="feature-grid">
               <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M5 4h14v16H5zM8 8h8M8 12h5M8 16h8"/><path d="m16 11 2 2 3-3"/></svg></div><h3>Compatibilidad explicada</h3><p>Detecta combinaciones de riesgo y entiende qué se revisó antes de comprar.</p></article>
               <article class="feature-card"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19V5M4 19h16M8 15v-3M12 15V8M16 15v-6M20 15V4"/></svg></div><h3>Recomendaciones con contexto</h3><p>Equilibra el uso real y el nivel de conocimiento para no pagar por potencia innecesaria.</p></article>
@@ -651,8 +674,8 @@
       </main>
     </div>
     <aside class="build-quick-dock" id="buildQuickDock" aria-label="Vista rápida de Mi build">
-      <button class="build-quick-toggle" id="buildQuickToggle" type="button" aria-expanded="false" aria-controls="buildQuickBody"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m12 3 8 4v10l-8 4-8-4V7zm-8 4 8 4 8-4m-8 4v10"/></svg><strong>Mi build</strong><span id="buildQuickCount">0 piezas</span><span aria-hidden="true">⌃</span></button>
-      <div id="buildQuickBody" class="build-quick-body" hidden><div id="buildQuickList"></div><p id="buildQuickSubtotal"></p><p id="buildQuickSave"></p><div class="build-quick-actions"><a class="primary-button" href="#mi-build">Revisar Mi build →</a><a class="secondary-button" href="#componentes">Añadir piezas</a></div></div>
+      <button class="build-quick-toggle" id="buildQuickToggle" type="button" aria-expanded="false" aria-controls="buildQuickBody"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m12 3 8 4v10l-8 4-8-4V7zm-8 4 8 4 8-4m-8 4v10"/></svg><strong>Mi build</strong><span id="buildQuickCount">0 piezas</span></button>
+      <div id="buildQuickBody" class="build-quick-body" hidden><div id="buildQuickList"></div><p id="buildQuickSubtotal"></p><p id="buildQuickSave"></p><div class="build-quick-actions"><a class="primary-button" href="#mi-build">Revisar Mi build</a><a class="secondary-button" href="#componentes">Añadir piezas</a></div></div>
     </aside>
     <p class="build-add-status" id="buildAddStatus" role="status" aria-live="polite"></p>
     <dialog class="build-add-dialog" id="buildAddDialog" aria-labelledby="buildAddTitle"></dialog>
@@ -663,7 +686,10 @@
       const root = document.body;
       const toast = document.getElementById('toast');
       let toastTimer;
-      function persistBuilder() { localStorage.setItem('fenixa-builder', JSON.stringify({ profile: state.profile, use: state.use, budget: state.budget })); }
+      function persistBuilder() {
+        try { localStorage.setItem('fenixa-builder', JSON.stringify({ profile: state.profile, use: state.use, budget: state.budget })); }
+        catch { showToast('Tu selección se conserva en esta pestaña; no se pudo guardar en el navegador.'); }
+      }
 
       function showToast(message) {
         document.getElementById('toastText').textContent = message;
@@ -755,7 +781,6 @@
       document.getElementById('guideButton').addEventListener('click', () => { location.hash = 'builds'; });
       document.getElementById('explainButton').addEventListener('click', () => showToast('La base prioriza compatibilidad, equilibrio y una ruta fácil de ampliar.'));
       document.getElementById('howButton').addEventListener('click', () => { location.hash = 'configurador'; });
-      document.getElementById('notifyButton').addEventListener('click', () => showToast('No tienes alertas nuevas por ahora.'));
       document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', () => { document.querySelectorAll('.nav-link').forEach(item => item.classList.remove('active')); link.classList.add('active'); }));
 
       document.querySelectorAll('[data-price-filter]').forEach(button => button.addEventListener('click', () => {
@@ -804,12 +829,14 @@
 
       function applyTheme(theme) {
         root.classList.toggle('light', theme === 'light');
-        localStorage.setItem('fenixa-theme', theme);
+        try { localStorage.setItem('fenixa-theme', theme); } catch { /* el tema sigue funcionando sin almacenamiento */ }
         document.getElementById('themeIcon').innerHTML = theme === 'light' ? '<path d="M21 12.8A8.5 8.5 0 1 1 11.2 3 6.5 6.5 0 0 0 21 12.8z"/>' : '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/>';
         document.getElementById('themeToggle').setAttribute('aria-label', theme === 'light' ? 'Activar modo oscuro' : 'Activar modo claro');
       }
       document.getElementById('themeToggle').addEventListener('click', () => applyTheme(root.classList.contains('light') ? 'dark' : 'light'));
-      applyTheme(localStorage.getItem('fenixa-theme') || 'dark');
+      let initialTheme = 'dark';
+      try { initialTheme = localStorage.getItem('fenixa-theme') || 'dark'; } catch { /* usa el tema inicial */ }
+      applyTheme(initialTheme);
       try {
         const savedBuilder = JSON.parse(localStorage.getItem('fenixa-builder') || '{}');
         if (Object.hasOwn(profiles, savedBuilder.profile)) state.profile = savedBuilder.profile;
@@ -830,8 +857,8 @@
     <script src="market-evidence.js"></script>
   <script src="purchase-fit.js?v=17"></script>
     <script src="fit-status.js?v=1"></script>
-    <script src="price-review-data.js?v=2"></script>
-    <script src="market.js?v=5"></script>
+    <script src="price-review-data.js?v=4"></script>
+    <script src="market.js?v=6"></script>
   <script src="catalog-goal30-data.js?v=4"></script>
   <script src="catalog-goal30-extra.js?v=1"></script>
   <script src="catalog-goal30-cases.js?v=1"></script>
@@ -843,11 +870,12 @@
   <script src="catalog-goal50-cooling.js?v=1"></script>
   <script src="catalog-goal50-setup.js?v=1"></script>
   <script src="catalog-goal50.js?v=4"></script>
+  <script src="fenixa-pager.js?v=1"></script>
   <script src="build-proposals.js?v=6"></script>
     <script src="platform-data.js?v=2"></script>
     <script src="build-editor.js?v=7"></script>
   <script src="spec-review-data.js?v=3"></script>
-  <script src="spec-review-cpu-data.js?v=2"></script>
+  <script src="spec-review-cpu-data.js?v=4"></script>
   <script src="spec-review-gpu-data.js?v=1"></script>
   <script src="spec-review-board-data.js?v=1"></script>
   <script src="spec-review-fan-data.js?v=1"></script>
@@ -855,26 +883,31 @@
   <script src="spec-review-storage-data.js?v=1"></script>
   <script src="spec-review-case-data.js?v=1"></script>
   <script src="spec-review-target80-data.js?v=1"></script>
-  <script src="component-specs.js?v=30"></script>
-    <script src="my-build-state.js?v=3"></script>
+  <script src="spec-review-followup-data.js?v=8"></script>
+  <script src="component-specs.js?v=31"></script>
+    <script src="my-build-state.js?v=4"></script>
     <script src="budget-settings.js?v=3"></script>
-    <script src="build-library-state.js?v=1"></script>
-    <script src="build-library.js?v=1"></script>
+    <script src="build-library-state.js?v=2"></script>
+    <script src="build-library.js?v=2"></script>
   <script src="comparison-radar.js?v=15"></script>
-  <script src="comparison-dialog.js?v=20"></script>
-    <script src="catalog.js?v=23"></script>
+  <script src="comparison-dialog.js?v=21"></script>
+    <script src="catalog.js?v=29"></script>
     <script src="laptops-data.js?v=5"></script>
     <script src="laptops-goal30.js?v=1"></script>
   <script src="laptops-goal50.js?v=1"></script>
   <script src="laptop-compare.js?v=9"></script>
-    <script src="laptops.js?v=13"></script>
-    <script src="my-build.js?v=13"></script>
+    <script src="laptops.js?v=16"></script>
+    <script src="laptop-details.js?v=1"></script>
+    <script src="my-build.js?v=14"></script>
     <script src="build-quickview.js?v=2"></script>
     <script src="radar-highlight.js?v=1"></script>
     <script src="pc-advice.js"></script>
     <script src="pc-profile.js"></script>
     <script src="auto-build.js?v=3"></script>
-    <script src="build-planner.js?v=4"></script>
-    <script src="navigation.js?v=11"></script>
+    <script src="build-planner.js?v=9"></script>
+    <script src="builder-journey.js?v=3"></script>
+    <script src="navigation.js?v=13"></script>
   </body>
 </html>
+
+

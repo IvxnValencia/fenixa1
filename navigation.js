@@ -1,17 +1,18 @@
 (() => {
   const routes = {
-    inicio: { title: 'Armar mi PC', sections: ['#startBuild'] },
+    inicio: { title: 'Inicio', sections: ['#welcome'] },
     componentes: { title: 'Componentes', sections: ['#componentes', '#catalogo'] },
     'mi-build': { title: 'Mi build', sections: ['#mi-build'] },
     builds: { title: 'Builds completas', sections: ['#builds'] },
     laptops: { title: 'Laptops', sections: ['#laptops'] },
-    configurador: { title: 'Mi configuración', sections: ['#startBuild'] },
+    configurador: { title: 'Armar mi PC', sections: ['#startBuild'] },
     'mi-pc': { title: 'Mi PC y mejoras', sections: ['#mi-pc'] },
     ensamblaje: { title: 'Guía de ensamblaje', sections: ['#ensamblaje'] }
   };
   let previousPage;
   function navigate() {
     let hash = location.hash.slice(1);
+    if (hash === 'configuradorc') { history.replaceState(null, '', '#configurador'); hash = 'configurador'; }
     if (hash === 'catalogo') { history.replaceState(null, '', '#componentes'); hash = 'componentes'; }
     if (hash === 'compatibilidad') { history.replaceState(null, '', '#builds'); hash = 'builds'; }
     const requested = hash.startsWith('build/') ? 'builds' : hash === 'recomendacion' ? 'configurador' : hash === 'precios' ? 'inicio' : hash;

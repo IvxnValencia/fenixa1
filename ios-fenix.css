@@ -184,7 +184,6 @@ body .start-heading h1 {
 }
 
 body #partsGrid .part-tile {
-  border: 1px solid transparent;
   border-radius: var(--ios-radius-md);
   background: color-mix(in srgb, var(--surface) 64%, transparent);
   transition: transform .18s ease, border-color .18s ease, background-color .18s ease;
@@ -192,7 +191,6 @@ body #partsGrid .part-tile {
 
 body #partsGrid .part-tile[aria-pressed="true"] {
   border-color: color-mix(in srgb, var(--purple) 62%, transparent);
-  background: var(--purple-soft);
 }
 
 body #catalogo .catalog-controls,
@@ -346,7 +344,6 @@ body .content {
 }
 body .sidebar {
   padding: var(--ui-space-3) var(--ui-space-2);
-  overflow-y: auto;
   background: var(--bg-soft);
   backdrop-filter: none;
 }
@@ -369,8 +366,8 @@ body .avatar { width: 30px; height: 30px; }
 /* Content-led welcome: three grouped choices, aligned to one planning card. */
 body .start-heading { margin-bottom: var(--ui-space-4); max-width: 780px; }
 body .start-heading .eyebrow { display: inline-flex; margin-bottom: var(--ui-space-2); }
-body .start-heading h1 { font-size: clamp(32px, 4.2vw, 54px); font-weight: 650; line-height: 1.1; letter-spacing: -.045em; margin: 0 0 var(--ui-space-2); }
-body .start-heading p { max-width: 64ch; font-size: 16px; line-height: 1.65; }
+body .start-heading h1 { font-size: clamp(32px, 4.2vw, 54px); line-height: 1.1; letter-spacing: -.045em; margin: 0 0 var(--ui-space-2); }
+body .start-heading p { max-width: 64ch; }
 body .start-layout { gap: var(--ui-space-3); grid-template-columns: minmax(0, 1fr) 288px; }
 body .start-controls { display: grid; gap: var(--ui-space-3); }
 body .start-field {
@@ -379,9 +376,8 @@ body .start-field {
   padding: var(--ui-space-3);
   border: 1px solid var(--ios-line);
   border-radius: var(--ios-radius-lg);
-  background: var(--surface);
 }
-body .start-field legend { float: left; width: 100%; margin: 0 0 var(--ui-space-2); line-height: 1.5; font-size: 16px; font-weight: 600; }
+body .start-field legend { float: left; width: 100%; margin: 0 0 var(--ui-space-2); line-height: 1.5; font-weight: 600; }
 body .start-field legend > span { display: inline-grid; place-items: center; width: 28px; height: 28px; background: var(--purple-faint); border-radius: 50%; margin-right: var(--ui-space-1); }
 body .start-field legend + div { clear: both; }
 body .start-uses, body .start-budgets { gap: 12px; }
@@ -398,7 +394,7 @@ body .start-summary { position: sticky; top: 96px; padding: var(--ui-space-3); b
 body .start-summary .eyebrow { font-size: 11px; margin-bottom: var(--ui-space-2); }
 body .start-summary img { height: 184px; margin: 0 0 var(--ui-space-2); }
 body .start-summary img, body .start-summary > small, body #startAdvice { display: block; }
-body .start-summary h2 { margin: var(--ui-space-3) 0 var(--ui-space-1); font-size: 16px; font-weight: 550; }
+body .start-summary h2 { margin: var(--ui-space-3) 0 var(--ui-space-1); font-weight: 550; }
 body .start-summary .start-amount { font-size: 32px; font-weight: 650; line-height: 1.2; font-variant-numeric: tabular-nums; }
 body #startAdvice { font-size: 13px; line-height: 1.65; margin: var(--ui-space-2) 0 var(--ui-space-3); }
 body .start-summary .section-link { width: 100%; border: 1px solid var(--stroke); border-radius: 14px; }
@@ -408,7 +404,7 @@ body #startSaveStatus { padding-top: var(--ui-space-2); margin-top: var(--ui-spa
 body .section { margin-top: 0; }
 body .section-heading { align-items: center; gap: var(--ui-space-3); margin-bottom: var(--ui-space-3); }
 body .section-heading h2 { font-size: clamp(26px, 2.6vw, 36px); font-weight: 650; line-height: 1.2; letter-spacing: -.035em; }
-body .section-heading p { font-size: 14px; line-height: 1.65; max-width: 70ch; margin-top: var(--ui-space-1); }
+body .section-heading p { max-width: 70ch; margin-top: var(--ui-space-1); }
 body .panel-header { padding: var(--ui-space-3) var(--ui-space-3) 0; }
 body .panel-body { padding: var(--ui-space-3); }
 body .panel-title { font-size: 20px; font-weight: 600; line-height: 1.35; }
@@ -437,8 +433,8 @@ body .component-dialog header button { min-height: 44px; }
 body #catalogo { margin-top: var(--ui-space-3); }
 body #catalogo .catalog-controls, body #catalogo .catalog-searchbar, body #catalogo .market-filterbar { padding: var(--ui-space-2); }
 body #marketGrid { gap: var(--ui-space-2); }
-body #marketGrid .market-card { padding: var(--ui-space-3); box-shadow: none; }
-body #marketGrid .market-card h3 { font-weight: 600; line-height: 1.35; }
+body #marketGrid .market-card { padding: var(--ui-space-3); }
+body #marketGrid .market-card h3 { line-height: 1.35; }
 body #marketGrid .product-image { height: 208px; margin-bottom: var(--ui-space-3); }
 body .catalog-card-actions { gap: 12px; }
 body .catalog-card-actions button { min-height: 48px; }
@@ -481,12 +477,11 @@ body h1:focus-visible, body h2:focus-visible, body h3:focus-visible { outline: n
 }
 @media (max-width: 760px) {
   body .content { padding: var(--ui-space-4) var(--ui-space-2) var(--ui-space-5); }
-  body .topbar { padding-inline: var(--ui-space-2); gap: var(--ui-space-1); min-height: 64px; }
+  body .topbar { padding-inline: var(--ui-space-2); gap: var(--ui-space-1); }
   body .topbar-search { margin: 0; min-width: 0; }
   body .topbar-search span { font-size: 13px; }
   body .sidebar.menu-open { display: flex; width: min(320px, 85vw); height: 100dvh; z-index: 30; box-shadow: 0 0 0 100vmax rgb(0 0 0 / .55); }
   body .start-heading h1 { font-size: 34px; }
-  body .start-heading p { font-size: 14px; }
   body .start-layout { grid-template-columns: 1fr; gap: var(--ui-space-3); }
   body .start-summary { position: static; }
   body .start-summary img { height: 144px; }

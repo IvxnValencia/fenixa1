@@ -62,3 +62,134 @@ body .catalog-card-details .fit-status { margin-block:12px; }
 }
 @media(prefers-reduced-motion:reduce) { body .fit-status-chevron { transition:none; } }
 @media(prefers-reduced-transparency:reduce) { body .build-add-dialog::backdrop { backdrop-filter:none; background:rgb(9 9 11 / .8); } }
+
+/* Build detail uses the catalogue's compact surfaces and disclosure controls. */
+body .build-dialog { background:var(--bg); overflow-x:hidden; overscroll-behavior:contain; }
+body .build-dialog details:not([open]) > :not(summary) { display:none; }
+body .build-dialog .build-dialog-top { padding:12px 24px; gap:16px; border-color:var(--stroke-soft); font-size:12px; color:var(--muted); }
+body .build-dialog .build-dialog-top button { min-height:44px; padding:8px 16px; border:1px solid var(--stroke-soft); border-radius:24px; background:var(--surface-2); color:var(--text); font:inherit; font-size:13px; }
+body .build-dialog .build-detail-hero { grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); background:var(--surface); border-color:var(--stroke-soft); }
+body .build-dialog .detail-photo { min-width:0; padding:24px; background:transparent; }
+body .build-dialog .detail-photo img { height:224px; padding:0; background:transparent; }
+body .build-dialog .detail-photo figcaption { font-size:12px; line-height:1.5; color:var(--muted); overflow-wrap:anywhere; }
+body .build-dialog .detail-intro { min-width:0; padding:24px; }
+body .build-dialog .detail-intro .eyebrow { font-size:11px; }
+body .build-dialog .detail-intro h2 { margin:8px 0 12px; font-size:28px; line-height:1.2; letter-spacing:-.04em; }
+body .build-dialog .detail-intro > p { margin:8px 0; font-size:14px; line-height:1.6; }
+body .build-dialog .detail-intro > .build-target { margin:0 0 12px; font-size:12px; color:var(--purple); }
+body .build-dialog .build-tags { gap:8px; }
+body .build-dialog .build-tags span { padding:4px 8px; font-size:11px; }
+body .build-dialog .detail-intro .build-estimate { margin-top:16px; color:var(--text); font-size:18px; line-height:1.5; }
+body .build-dialog .detail-intro .estimate-label { font-size:12px; line-height:1.5; }
+body .build-dialog .detail-actions { margin-top:16px; gap:8px; }
+body .build-dialog :is(.primary-button,.secondary-button) { min-height:44px; max-width:100%; padding:8px 16px; border-radius:24px; font-family:inherit; font-size:13px; line-height:1.5; white-space:normal; overflow-wrap:anywhere; }
+body .build-dialog .detail-body { padding:24px; }
+body .build-dialog .build-customization { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px 16px; margin:0 0 24px; padding:16px; border:1px solid var(--stroke-soft); border-radius:16px; background:var(--surface); }
+body .build-dialog .build-customization > strong { align-self:end; font-size:14px; font-weight:600; color:var(--text); }
+body .build-dialog .build-customization > p { grid-column:1; margin:0; color:var(--muted); font-size:13px; line-height:1.5; }
+body .build-dialog .build-customization > .build-editor-status { grid-column:1 / -1; grid-row:3; font-size:12px; }
+body .build-dialog .build-customization > button { grid-column:2; grid-row:1 / 3; align-self:center; }
+body .build-dialog .detail-tabs { gap:24px; margin-bottom:16px; border-color:var(--stroke-soft); }
+body .build-dialog .detail-tabs button { min-height:44px; padding:8px 0; font-size:14px; }
+body .build-dialog .detail-subheading { gap:8px 16px; margin:24px 0 12px; font-size:12px; }
+body .build-dialog .build-shopping-plan { margin:0; padding:16px; border:1px solid var(--stroke-soft); border-radius:16px; background:var(--surface); color:var(--text); }
+body .build-dialog .shopping-plan-heading { display:flex; flex-wrap:wrap; justify-content:space-between; align-items:start; gap:16px; }
+body .build-dialog .shopping-plan-heading > div { min-width:0; }
+body .build-dialog .build-shopping-plan h3 { margin:0; color:var(--text); font-size:18px; font-weight:600; line-height:1.4; letter-spacing:-.02em; }
+body .build-dialog .build-shopping-plan p { margin:8px 0; font-size:13px; line-height:1.6; color:var(--muted); }
+body .build-dialog .shopping-plan-heading p { margin:4px 0 0; }
+body .build-dialog .shopping-plan-total { display:grid; gap:4px; text-align:right; }
+body .build-dialog .shopping-plan-total > span { color:var(--muted); font-size:12px; }
+body .build-dialog .shopping-plan-total > strong { color:var(--text); font-size:18px; font-weight:600; line-height:1.4; font-variant-numeric:tabular-nums; }
+body .build-dialog .build-shopping-plan .shopping-plan-caveat { margin:12px 0; font-size:12px; }
+body .build-dialog .shopping-compatibility { margin-top:12px; border:1px solid var(--stroke-soft); border-radius:12px; background:var(--surface-2); }
+body .build-dialog .shopping-compatibility > summary { padding:12px 16px; color:var(--text); font-size:13px; font-weight:600; cursor:pointer; }
+body .build-dialog .shopping-compatibility > div { padding:0 16px 12px; }
+body .build-dialog .shopping-compatibility.is-conflict { border-color:var(--red); }
+body .build-dialog .shopping-compatibility.is-conflict > summary { color:var(--red); }
+body .build-dialog .build-shopping-plan .shopping-plan-warning { margin:8px 0 12px; font-size:12px; }
+body .build-dialog .shopping-plan-details { border-top:1px solid var(--stroke-soft); }
+body .build-dialog .shopping-plan-details > summary { min-height:44px; padding:12px 0; cursor:pointer; color:var(--text); font-size:13px; font-weight:500; }
+body .build-dialog .shopping-plan-details > div { padding-bottom:8px; }
+body .build-dialog .build-shopping-plan ul { margin:0; }
+body .build-dialog .build-shopping-plan li { padding:12px 0; gap:8px 16px; border-color:var(--stroke-soft); font-size:13px; overflow-wrap:anywhere; }
+body .build-dialog .build-shopping-plan li > span { flex:1 1 240px; min-width:0; }
+body .build-dialog .build-shopping-plan small { margin-top:4px; font-size:12px; line-height:1.5; }
+body .build-dialog .shopping-compatibility li { display:block; }
+body .build-dialog .shopping-compatibility li:last-child { border-bottom:0; }
+body .build-dialog .build-shopping-plan .missing-prices { color:var(--text); }
+body .build-dialog .build-shopping-plan .missing-prices li { display:list-item; padding:4px 0; margin-left:16px; border:0; list-style:disc; }
+body .build-dialog .build-part, body .build-dialog .build-part:has(.store-options[open]) { display:block; margin:0 0 12px; padding:16px; border:1px solid var(--stroke-soft); border-radius:16px; background:var(--surface); }
+body .build-dialog .build-part-identity { display:grid; grid-template-columns:80px minmax(0,1fr) minmax(120px,auto); gap:16px; align-items:start; }
+body .build-dialog .build-part-photo { min-width:0; margin:0; background:transparent; }
+body .build-dialog .build-part-photo img { display:block; width:80px; height:80px; padding:0; background:transparent; object-fit:contain; border-radius:8px; }
+body .build-dialog .build-part-photo .catalog-image-note { display:block; margin-top:8px; color:var(--muted); font-size:11px; line-height:1.5; overflow-wrap:anywhere; }
+body .build-dialog .build-part-copy { min-width:0; }
+body .build-dialog .build-part-category { display:block; margin:0 0 4px; color:var(--muted); font-size:11px; font-weight:600; }
+body .build-dialog .build-part h3 { margin:0 0 8px; font-size:16px; font-weight:600; line-height:1.4; letter-spacing:-.02em; }
+body .build-dialog .build-part p { margin:0 0 8px; font-size:13px; line-height:1.6; color:var(--muted); overflow-wrap:anywhere; }
+body .build-dialog .build-part .product-sku { margin-bottom:4px; font-size:11px; line-height:1.5; overflow-wrap:anywhere; }
+body .build-dialog .build-part .source-link { font-size:12px; line-height:1.5; }
+body .build-dialog .build-part-price { min-width:0; max-width:200px; text-align:right; }
+body .build-dialog .build-part-price strong { font-size:14px; line-height:1.5; font-weight:600; font-variant-numeric:tabular-nums; }
+body .build-dialog .build-part-price small { display:block; margin-top:4px; color:var(--muted); font-size:11px; line-height:1.5; }
+body .build-dialog .build-part-purchase { display:block; margin-top:16px; width:100%; }
+body .build-dialog .build-part-purchase > .fit-status { margin:0; }
+body .build-dialog .build-part-purchase .fit-status > summary { min-height:64px; padding:12px 16px; }
+body .build-dialog .build-part-platform-source { margin:8px 0 12px; }
+body .build-dialog .replace-part, body .build-dialog .store-options { display:block; width:100%; min-width:0; margin:12px 0 0; border:1px solid var(--stroke-soft); border-radius:12px; background:var(--surface); }
+body .build-dialog .replace-part > summary, body .build-dialog .store-options > summary { min-height:48px; padding:12px 16px; color:var(--text); font-size:13px; font-weight:500; line-height:1.6; cursor:pointer; }
+body .build-dialog .replace-part > summary > span { display:inline; margin-left:8px; color:var(--muted); font-size:12px; font-weight:400; }
+body .build-dialog .replace-part[open] > summary, body .build-dialog .store-options[open] > summary { border-bottom:1px solid var(--stroke-soft); }
+body .build-dialog .replace-part-content { display:grid; gap:16px; min-width:0; padding:16px; }
+body .build-dialog .part-budget-field, body .build-dialog .part-replacement-field { display:grid; gap:8px; min-width:0; }
+body .build-dialog .replace-part label { color:var(--text); font-size:13px; font-weight:500; line-height:1.5; }
+body .build-dialog .part-budget-controls { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:8px; min-width:0; }
+body .build-dialog .replace-part :is(input[type=number],select) { width:100%; max-width:100%; min-width:0; min-height:44px; padding:8px 16px; border:1px solid var(--stroke); border-radius:12px; background:var(--surface-2); color:var(--text); font:inherit; font-size:14px; line-height:1.5; }
+body .build-dialog .replace-part input::placeholder { color:var(--muted); }
+body .build-dialog .replace-part select { padding-right:32px; white-space:nowrap; text-overflow:ellipsis; overflow:hidden; }
+body .build-dialog .replace-part option { font:inherit; color:var(--text); background:var(--surface); }
+body .build-dialog .part-filter-options { display:flex; flex-wrap:wrap; gap:8px 24px; min-width:0; margin:0; padding:0; border:0; }
+body .build-dialog .replace-part .part-check { display:flex; align-items:center; gap:8px; min-width:0; min-height:44px; color:var(--muted); font-size:13px; font-weight:400; }
+body .build-dialog .replace-part .part-check input { flex:0 0 16px; width:16px; height:16px; margin:0; accent-color:var(--purple); }
+body .build-dialog .replace-part small { display:block; color:var(--muted); font-size:12px; line-height:1.6; overflow-wrap:anywhere; }
+body .build-dialog .part-suggestions { display:block; padding:0; border-top:1px solid var(--stroke-soft); }
+body .build-dialog .part-suggestions > summary { padding:12px 0; min-height:44px; color:var(--text); font-size:13px; cursor:pointer; }
+body .build-dialog .part-suggestions-content { display:grid; gap:12px; padding:0 0 8px; }
+body .build-dialog .part-suggestions button { width:100%; text-align:left; }
+body .build-dialog .store-offers { padding:16px; gap:16px; }
+body .build-dialog .store-offers .fit-status { margin:0; }
+body .build-dialog .build-notes { font-size:14px; line-height:1.6; }
+body .build-dialog .build-notes h3 { font-size:18px; color:var(--text); }
+body .build-dialog .catalog-footnote { margin:16px 0 0; font-size:12px; line-height:1.6; color:var(--muted); }
+body .build-dialog :is(input,select,button,summary):focus-visible { outline:2px solid var(--purple); outline-offset:3px; }
+@media(max-width:800px) {
+  body .build-dialog .build-detail-hero { grid-template-columns:minmax(0,1fr); }
+  body .build-dialog .detail-photo { padding:16px 24px 0; }
+  body .build-dialog .detail-photo img { height:168px; }
+  body .build-dialog .detail-intro h2 { font-size:24px; }
+  body .build-dialog .build-part-identity { grid-template-columns:64px minmax(0,1fr); gap:12px; }
+  body .build-dialog .build-part-photo { grid-column:1; grid-row:1 / 3; }
+  body .build-dialog .build-part-photo img { width:64px; height:64px; }
+  body .build-dialog .build-part-price { grid-column:2; max-width:100%; text-align:left; }
+  body .build-dialog .build-customization { grid-template-columns:minmax(0,1fr); }
+  body .build-dialog .build-customization > button { grid-column:1; grid-row:auto; justify-self:start; }
+}
+@media(max-width:600px) {
+  body .build-dialog { width:calc(100% - 16px); max-height:calc(100dvh - 16px); }
+  body .build-dialog .build-dialog-top { padding:8px 16px; }
+  body .build-dialog .detail-intro, body .build-dialog .detail-body { padding:16px; }
+  body .build-dialog .detail-actions { display:grid; grid-template-columns:minmax(0,1fr); }
+  body .build-dialog .shopping-plan-total { text-align:left; }
+  body .build-dialog .shopping-plan-heading { flex-direction:column; gap:12px; }
+  body .build-dialog .build-shopping-plan, body .build-dialog .build-part { padding:12px; }
+  body .build-dialog .build-part-identity { grid-template-columns:56px minmax(0,1fr); }
+  body .build-dialog .build-part-photo img { width:56px; height:56px; }
+  body .build-dialog .build-part-photo .catalog-image-note { font-size:10px; }
+  body .build-dialog .build-part-purchase .fit-status > summary { padding:12px; gap:8px; }
+  body .build-dialog .replace-part-content, body .build-dialog .store-offers { padding:12px; }
+  body .build-dialog .part-budget-controls { grid-template-columns:minmax(0,1fr); }
+  body .build-dialog .part-budget-controls button { justify-self:start; }
+  body .build-dialog .part-filter-options { display:grid; gap:4px; }
+  body .build-dialog .detail-subheading { flex-direction:column; }
+}

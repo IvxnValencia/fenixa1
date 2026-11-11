@@ -1,6 +1,6 @@
-// Public listing observations; availability is explicitly unconfirmed.
+// Public retailer observations; availability is explicitly unconfirmed.
 window.FENIXA_PRICE_REVIEW = {
-  "checkedAt": "2026-10-22T19:23:28.083Z",
+  "checkedAt": "2026-11-06T03:18:04.813Z",
   "offers": {
     "ssd-kingston-nv3-500gb": [
       {
@@ -86,6 +86,40 @@ window.FENIXA_PRICE_REVIEW = {
         "listingName": "PROCESADOR AMD RYZEN 5 8500G",
         "retailerReference": null,
         "note": "Precio publicado en la categoría de la tienda; no se verificó stock en la ficha individual. Confirma presentación, pago, envío, impuestos y garantía."
+      },
+      {
+        "store": "Speed Logic",
+        "storeId": "speedlogic",
+        "url": "https://speedlogic.com.co/tienda/procesadores/amd/procesador-amd-ryzen-5-8500g-35-6cores-radeon-am5/",
+        "sourceUrl": "https://speedlogic.com.co/tienda/procesadores/amd/procesador-amd-ryzen-5-8500g-35-6cores-radeon-am5/",
+        "productUrl": "https://speedlogic.com.co/tienda/procesadores/amd/procesador-amd-ryzen-5-8500g-35-6cores-radeon-am5/",
+        "price": 699000,
+        "currency": "COP",
+        "status": "listed",
+        "priceVerified": true,
+        "sourceKind": "retailer-product-page",
+        "checkedAt": "2026-11-04T01:00:06.3472301Z",
+        "listingName": "Procesador AMD Ryzen 5 8500G 3,5 6cores Radeon AM5",
+        "retailerReference": "2094",
+        "availabilityText": "La ficha indica 10 disponibles",
+        "note": "Consulta manual de la ficha individual del mismo modelo Ryzen 5 8500G. Referencia de tienda 2094; precio vigente publicado 699.000 COP, distinto del precio anterior tachado. La ficha declara existencias al consultar; FENIXA conserva stock por confirmar y no certifica inventario físico. Confirma BOX/OEM, accesorios, condiciones de pago, envío, impuestos y garantía antes de pagar."
+      },
+      {
+        "store": "Clones y Periféricos",
+        "storeId": "clones",
+        "url": "https://clonesyperifericos.com/comprar/procesador-amd-ryzen-5-8500g-de-6-nucleos-12-hilos/",
+        "sourceUrl": "https://clonesyperifericos.com/comprar/procesador-amd-ryzen-5-8500g-de-6-nucleos-12-hilos/",
+        "productUrl": "https://clonesyperifericos.com/comprar/procesador-amd-ryzen-5-8500g-de-6-nucleos-12-hilos/",
+        "price": 679000,
+        "currency": "COP",
+        "status": "listed",
+        "priceVerified": true,
+        "sourceKind": "retailer-product-page",
+        "checkedAt": "2026-11-04T01:00:07.0057041Z",
+        "listingName": "PROCESADOR AMD RYZEN 5 8500G",
+        "retailerReference": "2PA09",
+        "availabilityText": "La ficha indica Hay existencias",
+        "note": "Consulta manual de la ficha individual del mismo modelo Ryzen 5 8500G. Referencia de tienda 2PA09; EAN publicado 730143316439; precio vigente publicado 679.000 COP, distinto del precio anterior tachado. La ficha declara existencias al consultar; FENIXA conserva stock por confirmar y no certifica inventario físico. Confirma BOX/OEM, accesorios, condiciones de pago, envío, impuestos y garantía antes de pagar."
       }
     ],
     "market-ryzen-8600g": [
@@ -1768,6 +1802,23 @@ window.FENIXA_PRICE_REVIEW = {
         "listingName": "KITx4 VENTIL XPG HURRICANE MAGNETICOS 120 ARGB PWM BLANCO",
         "retailerReference": "26129",
         "note": "Lista oficial de precios. Descuento para pago en efectivo y/o transferencia. Precios sujetos a disponibilidad y cambio; stock, envío, impuestos adicionales y presentación exacta por confirmar."
+      },
+      {
+        "store": "Speed Logic",
+        "storeId": "speedlogic",
+        "url": "https://speedlogic.com.co/tienda/refrigeraciones/ventiladores/kit-x-4-ventiladores-hurricane-magneticos-120-argb-pwm-blanco/",
+        "sourceUrl": "https://speedlogic.com.co/tienda/refrigeraciones/ventiladores/kit-x-4-ventiladores-hurricane-magneticos-120-argb-pwm-blanco/",
+        "productUrl": "https://speedlogic.com.co/tienda/refrigeraciones/ventiladores/kit-x-4-ventiladores-hurricane-magneticos-120-argb-pwm-blanco/",
+        "price": 329000,
+        "currency": "COP",
+        "status": "listed",
+        "priceVerified": true,
+        "sourceKind": "retailer-product-page",
+        "checkedAt": "2026-11-05T18:32:07.180Z",
+        "listingName": "Kit x 4 Ventiladores Hurricane Magneticos 120 Argb Pwm Blanco",
+        "retailerReference": "26129",
+        "availabilityText": "La ficha declara InStock; no se verificó inventario físico.",
+        "note": "Consulta manual de la ficha individual: XPG HURRICANE MAG blanco, kit de cuatro ventiladores, referencia de tienda 26129. Precio publicado del kit completo (no por ventilador), 329.000 COP; no se utiliza el precio anterior tachado. Stock por confirmar. Confirma PN, revisión, accesorios, condiciones de pago, envío, impuestos y garantía antes de pagar."
       }
     ],
     "market-speedlogic-43224": [
@@ -1786,6 +1837,23 @@ window.FENIXA_PRICE_REVIEW = {
         "listingName": "KITx4 VENTIL XPG HURRICANE MAGNETICOS 120 ARGB PWM NEGRO",
         "retailerReference": "26128",
         "note": "Lista oficial de precios. Descuento para pago en efectivo y/o transferencia. Precios sujetos a disponibilidad y cambio; stock, envío, impuestos adicionales y presentación exacta por confirmar."
+      },
+      {
+        "store": "Speed Logic",
+        "storeId": "speedlogic",
+        "url": "https://speedlogic.com.co/tienda/refrigeraciones/ventiladores/kit-x-4-ventiladores-hurricane-magneticos-120-argb-pwm-negro/",
+        "sourceUrl": "https://speedlogic.com.co/tienda/refrigeraciones/ventiladores/kit-x-4-ventiladores-hurricane-magneticos-120-argb-pwm-negro/",
+        "productUrl": "https://speedlogic.com.co/tienda/refrigeraciones/ventiladores/kit-x-4-ventiladores-hurricane-magneticos-120-argb-pwm-negro/",
+        "price": 329000,
+        "currency": "COP",
+        "status": "listed",
+        "priceVerified": true,
+        "sourceKind": "retailer-product-page",
+        "checkedAt": "2026-11-05T18:32:07.158Z",
+        "listingName": "Kit x 4 Ventiladores Hurricane Magneticos 120 Argb Pwm Negro",
+        "retailerReference": "26128",
+        "availabilityText": "La ficha declara InStock; no se verificó inventario físico.",
+        "note": "Consulta manual de la ficha individual: XPG HURRICANE MAG negro, kit de cuatro ventiladores, referencia de tienda 26128. Precio publicado del kit completo (no por ventilador), 329.000 COP; no se utiliza el precio anterior tachado. Stock por confirmar. Confirma PN, revisión, accesorios, condiciones de pago, envío, impuestos y garantía antes de pagar."
       }
     ],
     "market-speedlogic-3278": [

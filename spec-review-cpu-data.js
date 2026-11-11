@@ -28,6 +28,17 @@
   for(const id of ['market-speedlogic-28866','market-clones-55872'])add(id,{thermal:'Intel Laminar RM1 en presentación BOX · confirmar contenido local'},intelBox,boxed+' Intel enumera de forma explícita i7-14700 e i3-12100F entre los modelos BOX con RM1. No extrapolar a K/KF ni a unidades tray.');
 })();
 
+// Follow-up 03/11/2026: published CPU PCIe interface, independent of local packaging.
+(() => {
+  const review=window.FENIXA_SPEC_REVIEW||={};
+  const scope='Versión PCIe publicada para el procesador exacto por AMD; la placa, su BIOS y el dispositivo conectado determinan los enlaces efectivos. No confirma accesorios, presentación BOX/OEM ni stock de la oferta local.';
+  for(const [id,model] of [['cpu-amd-ryzen-7-7700','7-7700'],['cpu-amd-ryzen-9-7900','9-7900']]) {
+    const source=`https://www.amd.com/en/products/processors/desktops/ryzen/7000-series/amd-ryzen-${model}.html`;
+    const old=review[id]||{};
+    review[id]={...old,values:{...old.values,pcie:'PCIe 5.0'},fieldSources:{...old.fieldSources,pcie:{source,checkedAt:'2026-11-03',scope}},additionalSources:[...(old.additionalSources||[]),{source,label:'Interfaz PCIe del procesador · 03/11/2026'}],scope:[old.scope,scope].filter(Boolean).join(' ')};
+  }
+})();
+
 
 // Iteration 05: ten existing AMD cards; do not infer missing usable lanes.
 (() => {
@@ -124,4 +135,14 @@
     const old=review[id]||{};
     review[id]={...old,values:{...old.values,...values},fieldSources:{...old.fieldSources,...Object.fromEntries(Object.keys(values).map(key=>[key,{source,checkedAt:"2026-10-25",scope}]))},additionalSources:[...(old.additionalSources||[]),{source,label:"Ampliación oficial CPU · 25/10/2026"}],scope:(old.scope?old.scope+" ":"")+scope};
   }
+})();
+
+// CPU follow-up 5700X, 03/11/2026: exact processor facts, no local packaging claim.
+(() => {
+  const review=window.FENIXA_SPEC_REVIEW||={};
+  const id='model-cpu-amd-ryzen-7-5700x',old=review[id]||{};
+  const source='https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-5000-series/amd-ryzen-7-5700x.html';
+  const values={architecture:'Zen 3',pcie:'PCIe 4.0'};
+  const scope='Arquitectura e interfaz publicadas para Ryzen 7 5700X en la ficha individual AMD. No se trasladan de 5700, 5700G ni 5700X3D. Placa, BIOS y dispositivo determinan enlaces efectivos. La presentación y los accesorios de la unidad local siguen por confirmar; esta revisión no completa refrigeración, precios ni stock.';
+  review[id]={...old,values:{...old.values,...values},fieldSources:{...old.fieldSources,...Object.fromEntries(Object.keys(values).map(key=>[key,{source,checkedAt:'2026-11-03',scope}]))},additionalSources:[...(old.additionalSources||[]),{source,label:'Arquitectura e interfaz del 5700X · 03/11/2026'}],scope:[old.scope,scope].filter(Boolean).join(' ')};
 })();

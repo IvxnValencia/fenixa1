@@ -6,12 +6,12 @@
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const identity=p=>window.FENIXA_SPECS.facts(p).displayName||p.name;
   const dialog=document.createElement('dialog');dialog.className='component-dialog';dialog.id='componentCompareDialog';dialog.setAttribute('aria-labelledby','componentCompareTitle');
-  const restore=document.createElement('button');restore.type='button';restore.className='compare-restore';restore.hidden=true;restore.textContent='Reabrir comparación';restore.setAttribute('aria-label','Reabrir comparación de componentes');
+  const restore=document.createElement('button');restore.type='button';restore.className='secondary-button compare-restore';restore.hidden=true;restore.textContent='Reabrir comparación';restore.setAttribute('aria-label','Reabrir comparación de componentes');
   document.body.append(dialog);
-  // Keep the restore action in the page flow: a bottom overlay can intercept
-  // Mi build's next comparison button on mobile and reopen an unrelated pair.
-  const content=document.querySelector('.content');
-  if(content)content.before(restore);else document.body.append(restore);
+  // Keep the last comparison beside its catalog, within that route's flow.
+  // It must neither overlay Mi build nor become a global header action.
+  const catalog=document.querySelector('#catalogo');
+  if(catalog)catalog.querySelector('.section-heading').after(restore);
   let left=null,right=null,opener=null,group=null,differencesOnly=false;
   const sameCategory=p=>products.filter(other=>other.category===p.category);
   function polishComparison(ps,result){

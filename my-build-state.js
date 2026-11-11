@@ -39,7 +39,7 @@
       return {category:'gpu',reason:`${cpu.name} requiere una gráfica dedicada según su ficha. Las salidas de vídeo de la placa no sustituyen esa gráfica.`};
     }
     if(facts?.verified && /sin disipador incluido/i.test(facts.values.thermal||'') && !has('cooler')) {
-      return {category:'cooler',reason:`${cpu.name} se publica sin disipador incluido. Elige refrigeración y comprueba montaje, espacio y capacidad para tu carga.`};
+      return {category:'cooler',reason:`Refrigeración publicada para ${cpu.name}: «${facts.values.thermal}». Confirma el PN y el contenido local antes de elegir refrigeración; comprueba montaje, espacio y capacidad para tu carga.`};
     }
     return null;
   }

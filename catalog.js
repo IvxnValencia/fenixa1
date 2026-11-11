@@ -9,7 +9,7 @@
   const range = item => `${money(item.min)} – ${money(item.max)}`;
   const categoryName = id => categories.find(c => c.id === id)?.name || id;
 
-  const external = (url, label, cls = 'source-link') => `<a class="${cls}" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${label} ↗</a>`;
+  const external = (url, label, cls = 'source-link') => `<a class="${cls}" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${label} </a>`;
   const photo = (p, cls = '', lazy = true) => `<img class="${cls}" src="${esc(p.image)}" alt="${esc(p.name)}" width="480" height="360" ${lazy ? 'loading="lazy"' : ''} decoding="async">${p.imageNote?`<small class="catalog-image-note">${esc(p.imageNote)}</small>`:''}`;
   const selected = new Set();
   let saved;
@@ -18,7 +18,6 @@
   let activeBuild = null;
   const partFilters = new Map();
   let opener = null;
-  let pageLimit = 24;
   function currentOffer(p) {
     const store = $('storeFilter')?.value || 'all';
     return market.available(p).find(o => store === 'all' || o.storeId === store) || null;
@@ -37,20 +36,20 @@
   function card(p) {
     const offer = catalogOffer(p);
     const fit=window.FENIXA_MY_BUILD.check(p), inBuild=window.FENIXA_MY_BUILD.ids().includes(p.id);
-    return `<article class="market-card" data-product-id="${p.id}" data-market-category="${p.category}">
+    return `<article class="market-card fx-card" data-product-id="${p.id}" data-market-category="${p.category}">
       <div class="catalog-product-heading"><span class="market-category">${esc(categoryName(p.category))}${p.imageKind==='category'?' · ilustración de categoría':''}</span><h3>${esc(p.name)}</h3></div>
-      <div class="catalog-photo"><img class="product-image" src="${esc(p.image)}" alt="${esc(p.name)}" width="480" height="360" loading="lazy" decoding="async"></div>
+      <button class="catalog-photo fx-open" type="button" data-open-product="${p.id}" aria-label="Ver detalles de ${esc(p.name)}"><img class="product-image" src="${esc(p.image)}" alt="${esc(p.name)}" width="480" height="360" loading="lazy" decoding="async"></button>
       <p class="catalog-brief" title="${esc(brief(p))}">${esc(brief(p))}</p>
       <div class="catalog-price-line"><strong class="market-price">${offer?money(offer.price):'Precio por confirmar'}</strong><span class="estimate-label">${offer?(offer.status==='listed'?'Precio publicado · COP':market.recent(offer)?'Precio consultado · COP':'Última consulta · COP'):'Sin oferta exacta'}</span></div>
-      <div class="catalog-card-actions"><button class="compare-trigger" type="button" data-compare="${p.id}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar de comparación':'Comparar pieza'}</button><button class="primary-button" type="button" data-add-my-build="${p.id}">${inBuild?'Ya está en Mi build':fit.status==='conflict'?'Revisar conflicto':'Añadir a Mi build'}</button></div>
-      <details class="catalog-card-details"><summary>Detalles y fuentes${fit.status==='conflict'?' · conflicto':''}</summary><div class="product-sku">${esc(p.sku)}</div><p>${esc(p.summary)}</p>${p.imageNote?`<small class="catalog-image-note">${esc(p.imageNote)}</small>`:''}<p class="catalog-price-evidence">${esc(offer?`${offer.store} · ${new Date(offer.checkedAt).toLocaleString('es-CO',{timeZone:'America/Bogota'})} · ${offer.status==='listed'?'precio publicado; stock, presentación y condiciones por confirmar':market.recent(offer)?'consultado hace menos de 72 horas':'consulta vencida; precio y stock pueden cambiar'}`:'Precio pendiente: el rango del catálogo no es una oferta.')}</p>${window.FENIXA_FIT_STATUS.render(fit,{hasParts:window.FENIXA_MY_BUILD.ids().some(id=>byId[id].category!==p.category)})}${market.purchase(p,window.FENIXA_MY_BUILD.ids().map(id=>byId[id]).filter(other=>other.category!==p.category))}<div class="product-links">${external(p.source,p.sourceType==='retailer'?'Ficha de la tienda':'Ficha del fabricante')}</div></details>
+      <div class="catalog-card-actions"><button class="compare-trigger" type="button" data-compare="${p.id}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button class="primary-button" type="button" data-add-my-build="${p.id}">${inBuild?'En Mi build ':fit.status==='conflict'?'Revisar conflicto':'Añadir'}</button></div>
+      <details class="catalog-card-details" hidden><summary>Detalles y fuentes${fit.status==='conflict'?' · conflicto':''}</summary><div class="product-sku">${esc(p.sku)}</div><p>${esc(p.summary)}</p>${p.imageNote?`<small class="catalog-image-note">${esc(p.imageNote)}</small>`:''}<p class="catalog-price-evidence">${esc(offer?`${offer.store} · ${new Date(offer.checkedAt).toLocaleString('es-CO',{timeZone:'America/Bogota'})} · ${offer.status==='listed'?'precio publicado; stock, presentación y condiciones por confirmar':market.recent(offer)?'consultado hace menos de 72 horas':'consulta vencida; precio y stock pueden cambiar'}`:'Precio pendiente: el rango del catálogo no es una oferta.')}</p>${window.FENIXA_FIT_STATUS.render(fit,{hasParts:window.FENIXA_MY_BUILD.ids().some(id=>byId[id].category!==p.category)})}${market.purchase(p,window.FENIXA_MY_BUILD.ids().map(id=>byId[id]).filter(other=>other.category!==p.category))}<div class="product-links">${external(p.source,p.sourceType==='retailer'?'Ficha de la tienda':'Ficha del fabricante')}</div></details>
     </article>`;
 
   }
 
   $('partsGrid').innerHTML = categories.map(c => {
     const p = {name:`Ilustración de ${c.name}`,image:`assets/categories/${c.id}.png`};
-    return `<button class="part-tile" type="button" data-category="${c.id}" aria-pressed="false">${photo(p,'',false)}<strong>${esc(c.name)}</strong><span>${products.filter(p => p.category === c.id).length} modelo${products.filter(p => p.category === c.id).length === 1 ? '' : 's'}</span></button>`;
+    return `<button class="part-tile" type="button" data-category="${c.id}" aria-pressed="false">${photo(p,'',true)}<strong>${esc(c.name)}</strong><span>${products.filter(p => p.category === c.id).length} modelo${products.filter(p => p.category === c.id).length === 1 ? '' : 's'}</span></button>`;
   }).join('');
   $('categoryFilter').innerHTML = '<option value="all">Todas las categorías</option>' + categories.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
   $('partsGrid').addEventListener('click', event => {
@@ -60,18 +59,35 @@
     location.hash = 'componentes';
     $('catalogSearch').focus();
   });
+  const panel = $('catalogFilters');
+  panel.querySelector('.catalog-filter-heading').append($('clearFilters'));
   const searchbar = document.createElement('div');
   searchbar.className = 'catalog-searchbar';
-  searchbar.innerHTML = '<label>Buscar modelo o referencia<input id="catalogSearch" type="search" placeholder="Ryzen, RTX 4060, Kingston…"></label><label>Desde (COP)<input id="catalogMin" type="number" min="0" step="10000" inputmode="numeric" placeholder="0"></label><label>Hasta (COP)<input id="catalogMax" type="number" min="0" step="10000" inputmode="numeric" placeholder="Sin límite"></label><label>Ordenar<select id="catalogSort"><option value="featured">Destacados</option><option value="price-asc">Menor precio consultado</option><option value="price-desc">Mayor precio consultado</option><option value="name">Nombre A–Z</option></select></label>';
-  $('marketGrid').before(searchbar);
-  const storebar = document.createElement('div');
-  storebar.className = 'market-filterbar';
-  storebar.innerHTML = '<label for="storeFilter">Tiendas consultadas<select id="storeFilter"><option value="all">Todas las tiendas</option><option value="speedlogic">Speed Logic</option><option value="clones">Clones y Periféricos</option></select></label><label class="market-check"><input type="checkbox" id="pricedOnly"> Solo con precio reciente disponible</label><details class="catalog-price-help"><summary>Sobre los precios</summary><p>Importes exactos de ofertas consultadas, no aproximados. Una consulta vencida puede haber cambiado. Tienda y fecha en Detalles y fuentes; no incluye envío.</p></details>';
-  searchbar.after(storebar);
-  const more = document.createElement('button');
-  more.id = 'catalogMore'; more.type = 'button'; more.className = 'secondary-button catalog-more'; more.textContent = 'Mostrar 24 más';
-  $('marketGrid').after(more);
-  more.addEventListener('click', () => { pageLimit += 24; window.renderProductCatalog(true); });
+  searchbar.innerHTML = '<label>Buscar modelo o referencia<input id="catalogSearch" type="search" placeholder="Ryzen, RTX 4060, Kingston…"></label><label>Ordenar<select id="catalogSort"><option value="featured">Destacados</option><option value="price-asc">Menor precio consultado</option><option value="price-desc">Mayor precio consultado</option><option value="name">Nombre A–Z</option></select></label>';
+  panel.querySelector('.catalog-filter-main').prepend(searchbar);
+  const pricebar = document.createElement('div');
+  pricebar.className = 'catalog-price-control';
+  pricebar.innerHTML = '<div class="catalog-price-heading"><label for="catalogPriceSlider">Precio máximo por pieza</label><label class="sr-only" for="catalogMax">Precio máximo exacto en pesos colombianos</label><input id="catalogMax" type="number" min="0" step="10000" inputmode="numeric" placeholder="Sin límite" aria-describedby="catalogPriceNote"></div><input id="catalogPriceSlider" type="range" min="0" step="10000" aria-describedby="catalogPriceNote"><div class="catalog-price-scale"><span>$0</span><span>Sin límite</span></div><p id="catalogPriceNote">COP · Al limitar el precio se excluyen las piezas sin un importe consultado.</p>';
+  searchbar.parentElement.after(pricebar);
+  const storebar = document.createElement('details');
+  storebar.className = 'catalog-filter-options';
+  storebar.innerHTML = '<summary>Tiendas y disponibilidad</summary><div class="market-filterbar"><label for="storeFilter">Tienda<select id="storeFilter"><option value="all">Todas las tiendas</option><option value="speedlogic">Speed Logic</option><option value="clones">Clones y Periféricos</option></select></label><label class="market-check"><input type="checkbox" id="pricedOnly"> Solo precios consultados en las últimas 72 horas</label><p>Los precios consultados pueden cambiar. Confirma disponibilidad, condiciones y envío en la tienda.</p></div>';
+  pricebar.after(storebar);
+  const slider = $('catalogPriceSlider');
+  const priceCeiling = Math.max(1000000, Math.ceil(Math.max(0,...products.map(p=>catalogOffer(p)?.price||0))/10000)*10000+10000);
+  slider.max = String(priceCeiling);
+  function syncPriceControl() {
+    const raw = $('catalogMax').value;
+    const value = raw === '' ? null : Math.max(0,Number(raw)||0);
+    slider.max = String(Math.max(priceCeiling,value===null?0:Math.ceil(value/10000)*10000+10000));
+    slider.value = value === null ? slider.max : String(value);
+    slider.setAttribute('aria-valuetext',value===null?'Sin límite':money(value));
+  }
+  syncPriceControl();
+  slider.addEventListener('input',()=>{
+    $('catalogMax').value = Number(slider.value)>=Number(slider.max)?'':slider.value;
+    syncPriceControl(); window.renderProductCatalog();
+  });
   $('catalog-title').textContent = 'Modelos para tu build';
   document.querySelector('.catalog-footnote').textContent = 'Sin precios en vivo. Las consultas de más de 72 horas se marcan como vencidas. Búsquedas no equivalen a ofertas. Fotografías de fabricantes y tiendas: derechos de sus titulares; confirma modelo, presentación, impuestos, envío y garantía.';
 
@@ -79,21 +95,17 @@
   compareTable.className = 'comparison-wrap'; compareTable.id = 'productComparison';
   $('compareTray').after(compareTable);
   function resetCatalogFilters() {
-    document.querySelectorAll('[data-price-filter]').forEach(b => b.classList.toggle('active', b.dataset.priceFilter === 'all'));
-    $('categoryFilter').value = 'all'; $('catalogSearch').value = ''; $('catalogMin').value = ''; $('catalogMax').value = ''; $('catalogSort').value = 'featured'; $('storeFilter').value = 'all'; $('pricedOnly').checked = false;
+    $('categoryFilter').value = 'all'; $('catalogSearch').value = ''; $('catalogMax').value = ''; $('catalogSort').value = 'featured'; $('storeFilter').value = 'all'; $('pricedOnly').checked = false; syncPriceControl();
   }
-  window.renderProductCatalog = (keepPage = false) => {
-    if (keepPage !== true) pageLimit = 24;
-    const preset = document.querySelector('[data-price-filter].active')?.dataset.priceFilter || 'all';
-    const bounds = { all: [0, Infinity], bajo: [0, 500000], medio: [500001, 1200000], alto: [1200001, Infinity] }[preset];
-    const low = Math.max(bounds[0], Math.max(0, Number($('catalogMin').value) || 0));
-    const high = Math.min(bounds[1], $('catalogMax').value === '' ? Infinity : Number($('catalogMax').value));
+  window.renderProductCatalog = () => {
+    const low = 0;
+    const high = $('catalogMax').value === '' ? Infinity : Math.max(0,Number($('catalogMax').value)||0);
     const query = $('catalogSearch').value.trim().toLocaleLowerCase('es');
     const category = $('categoryFilter').value;
-    const needPrice = $('pricedOnly').checked || preset !== 'all' || $('catalogMin').value !== '' || $('catalogMax').value !== '' || $('storeFilter').value !== 'all';
+    const needPrice = $('pricedOnly').checked || $('catalogMax').value !== '' || $('storeFilter').value !== 'all';
     const visible = products.filter(p => {
       const offer = catalogOffer(p);
-      return (!$('pricedOnly').checked || Boolean(currentOffer(p))) && low <= high && (offer ? offer.price >= low && offer.price <= high : !needPrice) && (category === 'all' || p.category === category) && `${p.name} ${p.sku} ${p.summary}`.toLocaleLowerCase('es').includes(query);
+      return (!$('pricedOnly').checked || Boolean(offer && market.recent(offer))) && low <= high && (offer ? offer.price >= low && offer.price <= high : !needPrice) && (category === 'all' || p.category === category) && `${p.name} ${p.sku} ${p.summary}`.toLocaleLowerCase('es').includes(query);
     });
     const order = $('catalogSort').value;
     if (order === 'featured') visible.sort((a,b) => Number(Boolean(catalogOffer(b))) - Number(Boolean(catalogOffer(a))) || market.available(b).length - market.available(a).length);
@@ -103,9 +115,10 @@
       return order==='price-asc'?ap-bp:bp-ap;
     });
     if (order === 'name') visible.sort((a,b)=>a.name.localeCompare(b.name,'es'));
-    $('marketGrid').innerHTML = visible.slice(0,pageLimit).map(card).join('');
-    $('catalogMore').hidden = visible.length <= pageLimit;
-    $('catalogCount').textContent = `${visible.length} ${visible.length===1?'pieza':'piezas'} · mostrando ${Math.min(visible.length,pageLimit)}`;
+    const signature = JSON.stringify([$('catalogMax').value, query, category, $('pricedOnly').checked, $('storeFilter').value, order]);
+    const page = window.FENIXA_PAGER.paginate('catalog', visible, { anchor: $('marketGrid'), signature, onChange: window.renderProductCatalog, label: 'Páginas de componentes', scrollTarget: $('catalogo') });
+    $('marketGrid').innerHTML = page.items.map(card).join('');
+    $('catalogCount').textContent = `${visible.length} ${visible.length===1?'pieza':'piezas'}${page.total>1?` · página ${page.page} de ${page.total}`:''}`;
     $('catalogEmpty').classList.toggle('show', !visible.length);
     $('catalogEmpty').textContent = low > high ? 'El mínimo supera el máximo o no coincide con el rango seleccionado.' : 'No hay resultados con estos filtros. Un filtro de precio excluye las piezas sin una oferta exacta consultada.';
     $('partsGrid').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category===category)));
@@ -132,7 +145,7 @@
   window.addEventListener('hashchange', () => { if(location.hash === '#catalogo') window.renderProductCatalog(); });
   window.addEventListener('fenixa-build-changed', () => window.renderProductCatalog(true));
   window.addEventListener('fenixa-profile-changed', () => window.renderProductCatalog());
-  ['catalogSearch', 'catalogMin', 'catalogMax'].forEach(id => $(id).addEventListener('input', window.renderProductCatalog));
+  ['catalogSearch', 'catalogMax'].forEach(id => $(id).addEventListener('input', () => { syncPriceControl(); window.renderProductCatalog(); }));
   $('catalogSort').addEventListener('change', window.renderProductCatalog);
   $('clearFilters').addEventListener('click', () => { resetCatalogFilters(); window.renderProductCatalog(); });
   function renderComparison() {
@@ -142,7 +155,7 @@
     $('compareTrayMessage').textContent = selected.size < 2 ? 'Elige otra pieza de la misma categoría. No se añade nada a Mi build.' : 'Tu build no cambia hasta que confirmes añadir o reemplazar una pieza.';
     $('openRealComparison').disabled = selected.size < 2;
     if (!selected.size) { $('compareTrayBody').hidden=true; $('compareTrayToggle').setAttribute('aria-expanded','false'); }
-    document.querySelectorAll('[data-compare]').forEach(button => { const on = selected.has(button.dataset.compare); button.setAttribute('aria-pressed', String(on)); button.textContent = on ? 'Quitar de comparación' : 'Comparar pieza'; button.closest('article').classList.toggle('selected', on); });
+    document.querySelectorAll('[data-compare]').forEach(button => { const on = selected.has(button.dataset.compare); button.setAttribute('aria-pressed', String(on)); button.textContent = on ? 'Quitar' : 'Comparar'; button.closest('article').classList.toggle('selected', on); });
   }
   $('compareTrayToggle').addEventListener('click',()=>{
     const expanded=$('compareTrayBody').hidden;
@@ -157,7 +170,7 @@
     selected.delete(button.dataset.removeCompare);renderComparison();
     if(selected.size)$('compareTrayToggle').focus();else document.querySelector('[data-compare]')?.focus({preventScroll:true});
   });
-  $('openRealComparison').addEventListener('click',()=>{if(selected.size>=2){$('compareTrayBody').hidden=true;$('compareTrayToggle').setAttribute('aria-expanded','false');window.FENIXA_COMPARE.openMany([...selected]);}});
+  $('openRealComparison').addEventListener('click',()=>{if(selected.size>=2){$('compareTrayBody').hidden=true;$('compareTrayToggle').setAttribute('aria-expanded','false');$('compareTrayToggle').focus();window.FENIXA_COMPARE.openMany([...selected]);}});
   $('marketGrid').addEventListener('click', event => {
     const b = event.target.closest('[data-compare]'); if (!b) return;
     const id = b.dataset.compare;
@@ -166,6 +179,50 @@
     else if (selected.size && byId[[...selected][0]].category !== byId[id].category) return showToast('Elige piezas de la misma categoría para compararlas.');
     else selected.add(id);
     renderComparison();
+  });
+  // Ficha emergente de componente: toda la tarjeta abre los detalles.
+  const productSheet = document.createElement('dialog');
+  productSheet.className = 'fx-sheet product-sheet'; productSheet.id = 'productSheet';
+  productSheet.setAttribute('aria-labelledby', 'productSheetTitle');
+  document.body.append(productSheet);
+  let sheetOpener = null, sheetId = null;
+  function renderProductSheet(id) {
+    const p = byId[id]; if (!p) return;
+    const tmp = document.createElement('div'); tmp.innerHTML = card(p);
+    const details = tmp.querySelector('.catalog-card-details');
+    details.querySelector('summary')?.remove();
+    const price = tmp.querySelector('.catalog-price-line').outerHTML;
+    const inBuild = window.FENIXA_MY_BUILD.ids().includes(p.id), fit = window.FENIXA_MY_BUILD.check(p);
+    productSheet.innerHTML = `<div class="fx-sheet-top"><span>${esc(categoryName(p.category))}</span><button type="button" class="fx-sheet-close" data-close-product aria-label="Cerrar detalles">Cerrar</button></div>
+      <div class="product-sheet-main"><figure class="product-sheet-photo"><img src="${esc(p.image)}" alt="${esc(p.name)}" width="480" height="360" decoding="async"></figure>
+      <div class="product-sheet-info"><h2 id="productSheetTitle">${esc(p.name)}</h2><p class="catalog-brief">${esc(brief(p))}</p>${price}
+      <div class="catalog-card-actions"><button class="compare-trigger" type="button" data-sheet-compare="${p.id}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar de comparación':'Comparar'}</button><button class="primary-button" type="button" data-add-my-build="${p.id}">${inBuild?'Ya está en Mi build':fit.status==='conflict'?'Revisar conflicto':'Añadir a Mi build'}</button></div></div></div>
+      <div class="product-sheet-details">${details.innerHTML}</div>`;
+  }
+  function openProductSheet(id, from) {
+    sheetId = id; sheetOpener = from || document.activeElement;
+    renderProductSheet(id);
+    if (!productSheet.open) { productSheet.showModal(); document.body.style.overflow = 'hidden'; }
+    productSheet.querySelector('[data-close-product]').focus({ preventScroll: true });
+  }
+  productSheet.addEventListener('click', event => {
+    if (event.target === productSheet || event.target.closest('[data-close-product]')) { productSheet.close(); return; }
+    const cmp = event.target.closest('[data-sheet-compare]');
+    if (cmp) { $('marketGrid').querySelector(`[data-compare="${cmp.dataset.sheetCompare}"]`)?.click(); renderProductSheet(sheetId); }
+  });
+  productSheet.addEventListener('close', () => {
+    document.body.style.overflow = '';
+    const card = sheetOpener?.isConnected ? sheetOpener : $('marketGrid').querySelector(`[data-open-product="${sheetId}"]`);
+    card?.focus?.({ preventScroll: true }); sheetOpener = null; sheetId = null;
+  });
+  window.addEventListener('fenixa-build-changed', () => { if (productSheet.open && sheetId) renderProductSheet(sheetId); });
+  window.addEventListener('hashchange', () => { if (productSheet.open) productSheet.close(); });
+  $('marketGrid').addEventListener('click', event => {
+    const opener = event.target.closest('[data-open-product]');
+    if (opener) { openProductSheet(opener.dataset.openProduct, opener); return; }
+    if (event.target.closest('button, a, input, select, label, details')) return;
+    const cardEl = event.target.closest('.market-card[data-product-id]');
+    if (cardEl) openProductSheet(cardEl.dataset.productId, cardEl.querySelector('[data-open-product]'));
   });
   $('clearCompare').addEventListener('click', () => { selected.clear(); renderComparison(); document.querySelector('[data-compare]')?.focus({preventScroll:true}); });
   const budgetBar=document.createElement('div');
@@ -194,11 +251,23 @@
     if (sort === 'featured') visible.sort((a,b)=>Number(Boolean(b.targetBudget))-Number(Boolean(a.targetBudget))||(a.targetBudget||Infinity)-(b.targetBudget||Infinity));
     if (sort === 'price-asc') visible.sort((a,b)=>(a.targetBudget??Infinity)-(b.targetBudget??Infinity));
     if (sort === 'price-desc') visible.sort((a,b)=>(b.targetBudget??-Infinity)-(a.targetBudget??-Infinity));
-    $('buildGallery').innerHTML = visible.map(b => `<article class="build-card"><button class="build-photo-button" type="button" data-open-build="${b.id}" aria-label="Ver piezas de ${esc(b.name)}">${photo(byId[b.caseId])}<span class="build-photo-label">Foto del gabinete</span></button><div class="build-card-body"><div class="build-target">${b.targetBudget?'Objetivo '+money(b.targetBudget):'Propuesta original · sin objetivo asignado'}</div><h3>${esc(b.name)}</h3><dl class="build-overview" aria-label="Piezas principales de ${esc(b.name)}">${window.FENIXA_BUILD_DISCOVERY.overview(b).map(p=>`<div><dt>${esc(p.label)}</dt><dd>${esc(p.name)}</dd></div>`).join('')}</dl><p class="build-rationale">${esc(b.description)}</p><div class="build-tags">${b.tags.map(tag => `<span>${esc(tag)}</span>`).join('')}</div><div class="build-estimate">${buildPrice(b)}</div><span class="estimate-label">${buildTotal(b).count}/${b.parts.length} piezas con precio reciente · cotización ${buildTotal(b).complete?'completa':'pendiente'}</span><button class="primary-button" type="button" data-open-build="${b.id}">Ver piezas y personalizar</button></div></article>`).join('');
+    const signature = JSON.stringify([activeUse, limit, quotedOnly, sort]);
+    const page = window.FENIXA_PAGER.paginate('builds', visible, { anchor: $('buildGallery'), signature, onChange: renderGallery, label: 'Páginas de builds', scrollTarget: $('builds') });
+    const shortPart = p => p.label === 'Gráfica' && /sin gráfica dedicada/i.test(p.name) ? 'Gráficos integrados' : p.name;
+    $('buildGallery').innerHTML = page.items.map(b => {
+      const parts = window.FENIXA_BUILD_DISCOVERY.overview(b).filter(p => p.label === 'Procesador' || p.label === 'Gráfica');
+      const total = buildTotal(b);
+      return `<article class="build-card fx-card" data-open-build="${b.id}"><button class="build-photo-button" type="button" data-open-build="${b.id}" aria-label="Ver piezas de ${esc(b.name)}"><img src="${esc(byId[b.caseId].image)}" alt="" width="480" height="360" loading="lazy" decoding="async"></button><div class="build-card-body"><div class="build-target">${b.targetBudget?'Objetivo '+money(b.targetBudget):'Sin objetivo asignado'}</div><h3>${esc(b.name)}</h3><ul class="build-mini-specs">${parts.map(p=>`<li><span>${esc(p.label==='Procesador'?'CPU':'GPU')}</span>${esc(shortPart(p))}</li>`).join('')}</ul><div class="build-card-foot"><span class="build-estimate">${total.count?money(total.sum)+(total.complete?'':' parcial'):'Precio por confirmar'}</span><span class="build-card-more" aria-hidden="true">Ver detalles</span></div></div></article>`;
+    }).join('');
     $('buildResults').textContent=visible.length+(visible.length===1?' propuesta':' propuestas')+' · presupuesto objetivo, no precio de venta'+(limit&&visible.some(b=>!b.targetBudget)?' · las originales sin objetivo se conservan visibles':'');
     $('buildsEmpty').hidden = visible.length > 0;
     $('buildsEmpty').textContent = activeUse==='saved' ? 'Todavía no tienes builds guardadas. Abre una propuesta y pulsa Guardar build original.' : quotedOnly ? 'No hay cotizaciones completas y recientes con estos filtros. Desmarca Solo builds totalmente cotizadas para explorar propuestas con precios pendientes.' : 'No hay propuestas para estos filtros. Amplía el presupuesto objetivo o cambia de uso.';
     document.querySelectorAll('[data-build-use]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.buildUse === activeUse)));
+    if(!visible.length) {
+      const clear=document.createElement('button');clear.type='button';clear.className='secondary-button';clear.textContent='Ver todas las propuestas';
+      clear.addEventListener('click',()=>{activeUse='all';$('buildMaxPrice').value='';$('buildQuotedOnly').checked=false;renderGallery();document.querySelector('[data-build-use="all"]').focus();});
+      $('buildsEmpty').append(document.createTextNode(' '),clear);
+    }
   }
   document.querySelectorAll('[data-build-use]').forEach(b => b.addEventListener('click', () => { activeUse = b.dataset.buildUse; renderGallery(); }));
   $('buildSort').addEventListener('change', renderGallery);
@@ -206,16 +275,16 @@
   function renderDetail(original) {
     const build = window.FENIXA_BUILD_EDITOR.get(original.id);
     const caseProduct = byId[build.caseId];
-    dialog.innerHTML = `<div class="build-dialog-top"><span>FENIXA / Builds completas</span><button type="button" data-close-build aria-label="Cerrar detalle de build">Cerrar ✕</button></div><div class="build-detail-hero"><figure class="detail-photo">${photo(caseProduct, '', false)}<figcaption>Imagen publicada del gabinete ${esc(caseProduct.name)}. La configuración propuesta corresponde a la lista de piezas.</figcaption></figure><div class="detail-intro"><div class="eyebrow">CONFIGURACIÓN DE REFERENCIA</div><h2 id="detailTitle">${esc(build.name)}</h2><p>${esc(build.description)}</p><div class="build-tags">${build.tags.map(t => `<span>${esc(t)}</span>`).join('')}</div><div class="build-estimate">${buildPrice(build)}</div><div class="estimate-label">${buildTotal(build).count}/${build.parts.length} piezas con precio · COP · sin envío ni ensamblaje</div><div class="detail-actions"><button type="button" class="primary-button" data-copy-my-build="${build.id}">Usar selección en Mi build</button><button type="button" class="primary-button" id="saveBuild" aria-pressed="${saved.has(build.id)}">${saved.has(build.id) ? 'Build guardada ✓' : 'Guardar build original'}</button><button type="button" class="secondary-button" id="shareBuild">Copiar enlace original</button></div><input id="buildShareUrl" class="share-field" aria-label="Enlace para compartir esta build" readonly hidden></div></div><div class="detail-body"><section class="build-customization" aria-label="Personalizar build"><strong>${build.modified ? 'Tu variante · piezas modificadas' : 'Personaliza esta build'}</strong><p>Cambia una pieza desde su selector. El subtotal y las advertencias se recalculan con el resto de la lista. No todos los cambios son compatibles.</p><p class="build-editor-status" role="status">${build.modified ? 'Hay cambios en esta pestaña.' : 'Estás viendo las piezas originales.'} Los cambios se conservan al navegar, pero se pierden al recargar. Guardar y copiar enlace se refieren a la build original.</p><button type="button" class="secondary-button" data-reset-build ${build.modified ? '' : 'disabled'}>Restaurar piezas originales</button></section><div class="detail-tabs" role="tablist" aria-label="Detalle de build"><button type="button" role="tab" id="partsTab" data-detail-tab="parts" aria-controls="detailParts" aria-selected="true">Piezas y compra</button><button type="button" role="tab" id="checksTab" data-detail-tab="checks" aria-controls="detailChecks" aria-selected="false" tabindex="-1">Qué revisar</button></div><div role="tabpanel" id="detailParts" aria-labelledby="partsTab">${market.plan(build.parts,byId)}<div class="detail-subheading"><span>${build.parts.length} componentes · modelos exactos</span><span>Precio y stock: consultar en la tienda</span></div>${build.parts.map((id, index) => { const p = byId[id]; return `<article class="build-part"><span class="build-part-category">${esc(categoryName(p.category))}</span>${photo(p)}<div><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p><div class="product-sku">${esc(p.sku)}</div>${external(p.source,p.sourceType==='retailer'?'Ficha de tienda':'Ficha del fabricante')}</div><div class="build-part-purchase">${replacementControl(build.id,index)}${market.purchase(p,build.parts.map(id=>byId[id]))}</div></article>`; }).join('')}<p class="catalog-footnote">Cada tienda conserva sus condiciones. La disponibilidad corresponde al momento de consulta; confirma modelo exacto, presentación, envío e impuestos antes de pagar.</p></div><div role="tabpanel" id="detailChecks" aria-labelledby="checksTab" hidden><div class="build-notes"><h3>Revisa la configuración actual</h3><p>Revisa las piezas de esta lista y confirma BIOS, memoria, dimensiones, conectores y refrigeración antes de comprar. Coincidir en plataforma no garantiza compatibilidad completa.</p><p>Las siguientes notas pertenecen a la propuesta original; si cambias piezas, consulta las fichas de los nuevos modelos.</p><ul>${build.notes.map(n => `<li>${esc(n)}</li>`).join('')}<li>Revisa los conectores y el espacio de la gráfica, la fuente y la refrigeración en los manuales de los modelos exactos.</li><li>El subtotal usa las ofertas consultadas y puede estar incompleto. Esta configuración no representa un montaje físico probado ni incluye mediciones de FPS.</li></ul><button class="secondary-button" type="button" data-detail-tab="parts">Volver a elegir piezas →</button></div></div></div>`;
+    dialog.innerHTML = `<div class="build-dialog-top"><span>FENIXA / Builds completas</span><button type="button" data-close-build aria-label="Cerrar detalle de build">Cerrar</button></div><div class="build-detail-hero"><figure class="detail-photo">${photo(caseProduct, '', false)}<figcaption>Imagen publicada del gabinete ${esc(caseProduct.name)}. La configuración propuesta corresponde a la lista de piezas.</figcaption></figure><div class="detail-intro"><div class="eyebrow">CONFIGURACIÓN DE REFERENCIA</div><h2 id="detailTitle">${esc(build.name)}</h2><p>${esc(build.description)}</p><div class="build-tags">${build.tags.map(t => `<span>${esc(t)}</span>`).join('')}</div><div class="build-estimate">${buildPrice(build)}</div><div class="estimate-label">${buildTotal(build).count}/${build.parts.length} piezas con precio · COP · sin envío ni ensamblaje</div><div class="detail-actions"><button type="button" class="primary-button" data-copy-my-build="${build.id}">Usar selección en Mi build</button><button type="button" class="primary-button" id="saveBuild" aria-pressed="${saved.has(build.id)}">${saved.has(build.id) ? 'Build guardada ' : 'Guardar build original'}</button><button type="button" class="secondary-button" id="shareBuild">Copiar enlace original</button></div><input id="buildShareUrl" class="share-field" aria-label="Enlace para compartir esta build" readonly hidden></div></div><div class="detail-body"><section class="build-customization" aria-label="Personalizar build"><strong>${build.modified ? 'Tu variante · piezas modificadas' : 'Personaliza esta build'}</strong><p>Abre «Personalizar pieza» para filtrar y cambiar cada componente. El subtotal y las advertencias se recalculan; no todos los cambios son compatibles.</p><p class="build-editor-status" role="status">${build.modified ? 'Hay cambios en esta pestaña.' : 'Estás viendo las piezas originales.'} Los cambios se conservan al navegar, pero se pierden al recargar. Guardar y copiar enlace se refieren a la build original.</p><button type="button" class="secondary-button" data-reset-build ${build.modified ? '' : 'disabled'}>Restaurar piezas originales</button></section><div class="detail-tabs" role="tablist" aria-label="Detalle de build"><button type="button" role="tab" id="partsTab" data-detail-tab="parts" aria-controls="detailParts" aria-selected="true">Piezas y compra</button><button type="button" role="tab" id="checksTab" data-detail-tab="checks" aria-controls="detailChecks" aria-selected="false" tabindex="-1">Qué revisar</button></div><div role="tabpanel" id="detailParts" aria-labelledby="partsTab">${market.plan(build.parts,byId)}<div class="detail-subheading"><span>${build.parts.length} componentes · modelos exactos</span><span>Precio y stock: consultar en la tienda</span></div>${build.parts.map((id, index) => { const p = byId[id]; return `<article class="build-part"><div class="build-part-identity"><figure class="build-part-photo">${photo(p)}</figure><div class="build-part-copy"><span class="build-part-category">${esc(categoryName(p.category))}</span><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p><div class="product-sku">${esc(p.sku)}</div>${external(p.source,p.sourceType==='retailer'?'Ficha de tienda':'Ficha del fabricante')}</div><div class="build-part-price"><strong>${market.price(p)===null?'Precio por confirmar':money(market.price(p))}</strong><small>${market.price(p)===null?'Sin oferta reciente disponible':'Oferta reciente · COP'}</small></div></div><div class="build-part-purchase">${replacementControl(build.id,index)}${market.purchase(p,build.parts.map(id=>byId[id]))}</div></article>`; }).join('')}<p class="catalog-footnote">Cada tienda conserva sus condiciones. La disponibilidad corresponde al momento de consulta; confirma modelo exacto, presentación, envío e impuestos antes de pagar.</p></div><div role="tabpanel" id="detailChecks" aria-labelledby="checksTab" hidden><div class="build-notes"><h3>Revisa la configuración actual</h3><p>Revisa las piezas de esta lista y confirma BIOS, memoria, dimensiones, conectores y refrigeración antes de comprar. Coincidir en plataforma no garantiza compatibilidad completa.</p><p>Las siguientes notas pertenecen a la propuesta original; si cambias piezas, consulta las fichas de los nuevos modelos.</p><ul>${build.notes.map(n => `<li>${esc(n)}</li>`).join('')}<li>Revisa los conectores y el espacio de la gráfica, la fuente y la refrigeración en los manuales de los modelos exactos.</li><li>El subtotal usa las ofertas consultadas y puede estar incompleto. Esta configuración no representa un montaje físico probado ni incluye mediciones de FPS.</li></ul><button class="secondary-button" type="button" data-detail-tab="parts">Volver a elegir piezas </button></div></div></div>`;
     if(build.targetBudget){const info=document.createElement('p');info.className='build-target';info.textContent='Objetivo '+money(build.targetBudget)+' · no es una cotización'+(build.modified?' · corresponde a la propuesta original':'');dialog.querySelector('.detail-intro').prepend(info);}
     if(build.sources?.length){const links=document.createElement('div');links.className='product-links';links.innerHTML=build.sources.map(s=>external(s.url,esc(s.label))).join('');dialog.querySelector('.build-notes').append(links);}
     $('saveBuild').addEventListener('click', () => {
       const next = new Set(saved); next.has(build.id) ? next.delete(build.id) : next.add(build.id);
       try { localStorage.setItem('fenixa-saved-builds', JSON.stringify([...next])); saved = next; } catch { return showToast('No se pudo guardar en este navegador.'); }
-      $('saveBuild').textContent = saved.has(build.id) ? 'Build guardada ✓' : 'Guardar build original'; $('saveBuild').setAttribute('aria-pressed', String(saved.has(build.id))); renderGallery();
+      $('saveBuild').textContent = saved.has(build.id) ? 'Build guardada ' : 'Guardar build original'; $('saveBuild').setAttribute('aria-pressed', String(saved.has(build.id))); renderGallery();
     });
     $('shareBuild').addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(location.href); $('shareBuild').textContent = 'Enlace copiado ✓'; } catch { $('buildShareUrl').hidden = false; $('buildShareUrl').value = location.href; $('buildShareUrl').select(); }
+      try { await navigator.clipboard.writeText(location.href); $('shareBuild').textContent = 'Enlace copiado '; } catch { $('buildShareUrl').hidden = false; $('buildShareUrl').value = location.href; $('buildShareUrl').select(); }
     });
 
   }
@@ -227,21 +296,30 @@
     const fit = window.FENIXA_FIT.check(current,build.parts.map(id=>byId[id]));
     const options = choices.some(c=>c.product.id===current.id) ? choices : [{product:current,fit,price:market.price(current)},...choices];
     const suggested = choices.filter(c=>c.fit.matched && c.product.id!==current.id && c.price!==null).slice(0,3);
-    return `<div class="replace-part">
-      <div class="purchase-fit ${fit.status}"><strong>${esc(fit.label)}</strong><p>${esc(fit.reason)}</p>${current.platform?external(current.platform.source,'Fuente de plataforma'):''}</div>
-      <label for="partBudget${index}">Máximo para esta pieza (COP)</label>
-      <input id="partBudget${index}" type="number" min="0" step="1000" inputmode="numeric" placeholder="Sin límite" value="${esc(filter.max)}" data-part-filter="max" data-slot="${index}">
-      <button type="button" class="secondary-button" data-apply-budget="${index}">Aplicar presupuesto</button>
-      <label class="part-check"><input type="checkbox" data-part-filter="hideConflicts" data-slot="${index}" ${filter.hideConflicts?'checked':''}> Ocultar conflictos detectados</label>
-      <label class="part-check"><input type="checkbox" data-part-filter="matchesOnly" data-slot="${index}" ${filter.matchesOnly?'checked':''}> Solo coincidencias de plataforma</label>
-      <small>${choices.length} opciones en el filtro. Con presupuesto se excluyen precios no confirmados. La selección actual se conserva aunque quede fuera.</small>
-      <label for="replacePart${index}">Cambiar esta pieza</label><select id="replacePart${index}" data-replace-part="${index}">${options.map(({product:p,fit,price}) => `<option value="${esc(p.id)}" ${p.id===current.id?'selected':''}>${esc(p.name)} · ${price===null?'Sin precio reciente':money(price)} · ${fit.status==='conflict'?'CONFLICTO':fit.matched?'Coincide plataforma · revisar BIOS':'Faltan datos'}${p.id===current.id?' · Actual':''}</option>`).join('')}</select>
-      <div class="part-suggestions"><strong>Alternativas con coincidencias · menor precio primero</strong>${suggested.length?suggested.map(({product:p,fit,price})=>`<div><button type="button" class="secondary-button" data-suggest-part="${esc(p.id)}" data-slot="${index}">Elegir ${esc(p.name)} · ${money(price)}</button><small>${esc(fit.reason)}</small></div>`).join(''):'<p>No hay alternativas con coincidencias comprobadas y precio reciente en este rango. Puedes ampliar el presupuesto o revisar los modelos con datos pendientes.</p>'}<small>Coincidir en socket o memoria no confirma todo el montaje. No es una clasificación de rendimiento.</small></div>
-    </div>`;
+    return `${window.FENIXA_FIT_STATUS.render(fit,{context:'Esta configuración',hasParts:build.parts.length>1})}${current.platform?`<div class="build-part-platform-source">${external(current.platform.source,'Fuente de plataforma')}</div>`:''}
+    <details class="replace-part" data-part-editor="${index}"><summary>Personalizar pieza <span>${choices.length} opciones</span></summary><div class="replace-part-content">
+      <div class="part-budget-field"><label for="partBudget${index}">Máximo para esta pieza (COP)</label><div class="part-budget-controls">
+        <input id="partBudget${index}" type="number" min="0" step="1000" inputmode="numeric" placeholder="Sin límite" value="${esc(filter.max)}" data-part-filter="max" data-slot="${index}">
+        <button type="button" class="secondary-button" data-apply-budget="${index}">Aplicar presupuesto</button>
+      </div></div>
+      <fieldset class="part-filter-options"><legend class="sr-only">Filtros de alternativas</legend>
+        <label class="part-check"><input type="checkbox" data-part-filter="hideConflicts" data-slot="${index}" ${filter.hideConflicts?'checked':''}> Ocultar conflictos detectados</label>
+        <label class="part-check"><input type="checkbox" data-part-filter="matchesOnly" data-slot="${index}" ${filter.matchesOnly?'checked':''}> Solo coincidencias de plataforma</label>
+      </fieldset>
+      <small id="partOptionsHelp${index}">${choices.length} opciones en el filtro. Con presupuesto se excluyen precios no confirmados. La selección actual se conserva aunque quede fuera.</small>
+      <div class="part-replacement-field"><label for="replacePart${index}">Cambiar esta pieza</label><select id="replacePart${index}" data-replace-part="${index}" aria-describedby="partOptionsHelp${index} partCurrentChoice${index}" title="${esc(current.name)}">${options.map(({product:p,fit,price}) => `<option value="${esc(p.id)}" ${p.id===current.id?'selected':''}>${esc(p.name)} · ${price===null?'Sin precio reciente':money(price)} · ${fit.status==='conflict'?'CONFLICTO':fit.matched?'Coincide plataforma · revisar BIOS':'Faltan datos'}${p.id===current.id?' · Actual':''}</option>`).join('')}</select><small id="partCurrentChoice${index}">Selección actual: ${esc(current.name)} · ${market.price(current)===null?'Sin precio reciente':money(market.price(current))} · ${esc(fit.label)}</small></div>
+      <details class="part-suggestions" data-part-suggestions="${index}"><summary>Ver alternativas con coincidencias</summary><div class="part-suggestions-content"><p>Menor precio primero</p>${suggested.length?suggested.map(({product:p,fit,price})=>`<div><button type="button" class="secondary-button" data-suggest-part="${esc(p.id)}" data-slot="${index}">Elegir ${esc(p.name)} · ${money(price)}</button><small>${esc(fit.reason)}</small></div>`).join(''):'<p>No hay alternativas con coincidencias comprobadas y precio reciente en este rango. Puedes ampliar el presupuesto o revisar los modelos con datos pendientes.</p>'}<small>Coincidir en socket o memoria no confirma todo el montaje. No es una clasificación de rendimiento.</small></div></details>
+    </div></details>`;
   }
   function refreshDraft(index) {
     const scroll = dialog.scrollTop;
+    const openEditors = [...dialog.querySelectorAll('[data-part-editor][open]')].map(node=>node.dataset.partEditor);
+    const openSuggestions = [...dialog.querySelectorAll('[data-part-suggestions][open]')].map(node=>node.dataset.partSuggestions);
+    const openDisclosures = ['.fit-status','.store-options','.shopping-plan-details','.shopping-compatibility'].flatMap(selector=>[...dialog.querySelectorAll(`${selector}[open]`)].map(node=>({selector,position:[...dialog.querySelectorAll(selector)].indexOf(node)})));
     renderDetail(completeBuilds.find(b => b.id === activeBuild));
+    openEditors.forEach(slot=>{ const editor=dialog.querySelector(`[data-part-editor="${slot}"]`); if(editor) editor.open=true; });
+    openSuggestions.forEach(slot=>{ const suggestions=dialog.querySelector(`[data-part-suggestions="${slot}"]`); if(suggestions) suggestions.open=true; });
+    openDisclosures.forEach(({selector,position})=>{ const disclosure=dialog.querySelectorAll(selector)[position]; if(disclosure) disclosure.open=true; });
     dialog.scrollTop = scroll;
     if (Number.isInteger(index)) $(`replacePart${index}`)?.focus({preventScroll:true});
     else dialog.querySelector('[data-reset-build]')?.focus({preventScroll:true});
@@ -292,7 +370,7 @@
     if (build) { if (activeBuild !== build.id) { activeBuild = build.id; renderDetail(build); } if (!dialog.open) { opener = document.activeElement; dialog.showModal(); document.body.style.overflow = 'hidden'; } }
     else if (dialog.open) dialog.close();
   }
-  $('buildGallery').addEventListener('click', event => { const button = event.target.closest('[data-open-build]'); if (button) { opener = button; location.hash = `build/${button.dataset.openBuild}`; } });
+  $('buildGallery').addEventListener('click', event => { const button = event.target.closest('[data-open-build]'); if (button) { opener = button.matches('article') ? button.querySelector('button[data-open-build]') : button; location.hash = `build/${button.dataset.openBuild}`; } });
   window.addEventListener('hashchange', routeBuild);
   const menu = document.querySelector('.mobile-menu');
   const sidebar = document.querySelector('.sidebar'), scrim = document.querySelector('.menu-scrim');

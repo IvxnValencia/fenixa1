@@ -1,0 +1,250 @@
+/* FENIXA · ajuste 02/11/2026
+   Menos redundancia, tarjetas más ligeras, paginación de 12 y fichas emergentes.
+   Criterios de las notas «Emil Kowalski Skills»: ease-out fuerte, animaciones < 300 ms,
+   feedback en :active, hover solo con puntero fino, objetivos de 44 px, safe areas
+   y respeto por prefers-reduced-motion. */
+body {
+  --fx-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --fx-ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+html { -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
+body button, body a, body [role="button"] { touch-action: manipulation; }
+
+/* ---------- Cabecera conservada; Armar mi PC abre su propia vista ---------- */
+body .topbar {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center; align-content: center; gap: 0 16px;
+  min-height: var(--storefront-header);
+  padding: 10px max(20px, calc((100vw - 1280px) / 2));
+}
+body .content { padding-top: 28px; }
+
+/* ---------- Inicio de presentación y armado en una vista independiente ---------- */
+body .start-hero { display: block; margin: 0 0 20px; padding: 0; min-height: 0; }
+body .start-heading { margin: 0; max-width: 720px; }
+body .start-heading .eyebrow { margin-bottom: 8px; }
+body .start-heading h1 { font-size: clamp(30px, 3.6vw, 44px); line-height: 1.08; letter-spacing: -.035em; margin: 0 0 8px; }
+body .start-heading p { margin: 0; max-width: 60ch; font-size: 15px; line-height: 1.55; }
+body .start-heading .hero-actions { margin-top: 16px; }
+body .start-summary[hidden] { display: none !important; }
+body .planner-paths { display: none !important; }   /* «También puedes explorar a tu ritmo» */
+body .start-layout { grid-template-columns: minmax(0, 1fr); }
+body #welcome .start-hero { padding-block: clamp(24px, 6vw, 80px); }
+body #welcome .start-heading h1 { max-width: 16ch; font-size: clamp(36px, 5.7vw, 64px); }
+
+@media (max-width: 900px) {
+  body { --storefront-header: calc(108px + env(safe-area-inset-top, 0px)); }
+  body .topbar {
+    grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px;
+    padding: 8px 16px; padding-top: calc(8px + env(safe-area-inset-top, 0px));
+  }
+  body .topbar .brand { grid-column: 1 / 3; grid-row: 1; }
+  body .topbar-actions { grid-column: 3 / 5; grid-row: 1; justify-self: end; }
+  body .storefront-nav { display: contents; }
+  body .storefront-nav .nav-link { grid-row: 2; padding-inline: 4px; font-size: 11px; white-space: normal; justify-content: center; text-align: center; }
+  body .storefront-nav .nav-link:nth-child(1) { grid-column: 1; }
+  body .storefront-nav .nav-link:nth-child(2) { grid-column: 2; }
+  body .storefront-nav .nav-link:nth-child(3) { grid-column: 3; }
+  body .header-build-link { grid-column: 4; grid-row: 2; min-height: 44px; padding-inline: 8px; font-size: 11px; gap: 4px; white-space: normal; text-align: center; }
+}
+
+/* ---------- Mi build más compacto ---------- */
+body #mi-build .section-heading { margin-bottom: 16px; gap: 12px; }
+body #mi-build .section-heading h2 { font-size: clamp(26px, 3vw, 34px); }
+body #mi-build .section-heading p { margin-top: 4px; }
+body #mi-build .saved-builds { padding: 14px 16px; margin-bottom: 12px; border-radius: 14px; }
+body #mi-build .saved-builds .eyebrow { margin-bottom: 4px; }
+body #mi-build .saved-builds > p { margin: 6px 0 4px; font-size: 13px; }
+body #mi-build .saved-builds summary { min-height: 36px; }
+body #mi-build .my-build-storage { margin: 0 0 12px; font-size: 12px; }
+body #mi-build .build-studio { gap: 20px; }
+body #mi-build .build-studio-summary { padding: 16px; top: calc(var(--storefront-header) + 12px); }
+body #mi-build .build-overview-heading { padding: 0; gap: 12px; }
+body #mi-build .build-overview-heading h3 { font-size: 15px; line-height: 1.35; }
+body #mi-build .build-overview-progress { margin: 10px 0 0; }
+/* La lista del resumen repetía las mismas categorías que ya están en «Tus piezas». */
+body #mi-build #buildOverviewHelp, body #mi-build .build-overview-grid { display: none; }
+body #mi-build .my-build-summary, body #mi-build .my-build-budget { padding-top: 14px; }
+body #mi-build .my-build-summary p { margin: 6px 0; font-size: 13px; }
+body #mi-build .my-build-layout { gap: 20px; }
+body #mi-build .my-build-layout h3 { margin: 0 0 10px; }
+body #mi-build .my-build-empty { padding: 14px 16px; margin-bottom: 10px; }
+body #mi-build .my-build-empty h3 { margin: 0 0 4px; font-size: 16px; }
+body #mi-build .my-build-empty p { margin: 0 0 6px; font-size: 13px; }
+body #mi-build .my-build-parts { gap: 8px; }
+body #mi-build .my-build-row { padding: 12px 14px; gap: 12px; border-radius: 12px; align-items: center; }
+body #mi-build .my-build-row img, body #mi-build .my-build-placeholder { width: 44px; height: 44px; font-size: 20px; flex-shrink: 0; }
+body #mi-build .my-build-row small { font-size: 11px; }
+body #mi-build .my-build-row h3 { margin: 2px 0 0; font-size: 14px; line-height: 1.3; }
+body #mi-build .my-build-row p { margin: 2px 0 0; font-size: 12px; line-height: 1.45; }
+body #mi-build .my-build-row .my-build-actions { margin-top: 8px; gap: 6px; }
+body #mi-build .my-build-row .secondary-button, body #mi-build .my-build-row .text-button { min-height: 36px; padding: 0 12px; font-size: 12px; }
+body #mi-build .panel, body #mi-build .build-piece-picker, body #mi-build .my-build-next { padding: 16px; }
+/* En la página Mi build el dock flotante repetía el mismo contenido. */
+body:has(#mi-build:not([hidden])) .build-quick-dock { display: none; }
+
+/* ---------- Tarjetas clicables ---------- */
+body .fx-card { cursor: pointer; transition: border-color 160ms ease, transform 160ms var(--fx-ease-out); }
+body .fx-card:active { transform: scale(0.985); }
+body .fx-card:has(button:active, a:active, input:active, select:active) { transform: none; }
+body .fx-open { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; color: inherit; }
+body .fx-open:focus-visible, body .build-photo-button:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; border-radius: 10px; }
+
+/* Builds completas: foto, objetivo, nombre, CPU/GPU y precio. */
+body .build-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+body .build-card.fx-card { display: flex; flex-direction: column; border-radius: 16px; }
+body .build-card .build-photo-button { display: grid; place-items: center; width: 100%; height: 168px; padding: 14px; border: 0; background: var(--surface-2); cursor: pointer; }
+body .build-card .build-photo-button { overflow: hidden; }
+body .build-card .build-photo-button img { display: block; width: 100%; height: 140px; max-height: 100%; min-height: 0; padding: 0; aspect-ratio: auto; object-fit: contain; }
+body .build-card .build-card-body { display: flex; flex: 1; flex-direction: column; gap: 6px; padding: 14px 16px 16px; }
+body .build-card .build-target { margin: 0; font-size: 12px; font-weight: 600; color: var(--purple); }
+body .build-card h3 { margin: 0; font-size: 17px; line-height: 1.3; letter-spacing: -.02em; }
+body .build-mini-specs { display: grid; gap: 4px; margin: 4px 0 0; padding: 0; list-style: none; }
+body .build-mini-specs li { display: flex; gap: 8px; min-width: 0; font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body .build-mini-specs li span { flex-shrink: 0; width: 32px; font-size: 11px; font-weight: 600; letter-spacing: .02em; color: var(--muted-2, var(--muted)); }
+body .build-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 10px; border-top: 1px solid var(--stroke-soft, var(--stroke)); }
+body .build-card .build-estimate { margin: 0; font-size: 14px; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+body .build-card-more { font-size: 12px; font-weight: 600; color: var(--purple); }
+body .build-card .catalog-image-note, body .build-card .build-photo-label { display: none; }
+
+/* Componentes: tarjeta más ligera, detalles en la ficha emergente. */
+body #marketGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+body #marketGrid .market-card { display: flex; flex-direction: column; grid-row: auto; grid-template-rows: none; padding: 14px; gap: 0; }
+body #marketGrid { grid-template-rows: none; grid-auto-rows: auto; }
+body #marketGrid .catalog-product-heading { min-height: 0; height: auto; display: block; }
+body #marketGrid .catalog-brief { min-height: 0; height: auto; }
+body #marketGrid .catalog-price-line { min-height: 0; height: auto; gap: 2px; }
+body #marketGrid .catalog-price-line .estimate-label { font-size: 11px; margin: 0; }
+body #marketGrid .catalog-card-actions { padding-top: 0; }
+body #marketGrid .market-category { font-size: 10px; }
+body #marketGrid .market-card h3 { font-size: 15px; min-height: 2.6em; margin: 4px 0 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+body #marketGrid .catalog-photo { --catalog-photo-height: 136px; height: var(--catalog-photo-height); margin: 6px 0 8px; padding: 4px; border: 0; border-radius: 10px; }
+body #marketGrid .catalog-photo .product-image { height: calc(var(--catalog-photo-height) - 8px); max-height: calc(var(--catalog-photo-height) - 8px); padding: 0; }
+body #marketGrid .catalog-brief { margin: 6px 0 8px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body #marketGrid .catalog-price-line { margin: 0 0 10px; }
+body #marketGrid .catalog-price-line .market-price { font-size: 17px; }
+body #marketGrid .catalog-card-actions { display: grid; grid-template-columns: auto 1fr; gap: 8px; margin-top: auto; }
+body #marketGrid .catalog-card-actions button { min-height: 40px; padding: 0 12px; font-size: 13px; border-radius: 999px; justify-content: center; }
+body #marketGrid .catalog-card-details[hidden] { display: none; }
+
+/* ---------- Paginación numerada ---------- */
+body .fx-pager { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; margin: 20px 0 4px; grid-column: 1 / -1; }
+body .fx-pager[hidden] { display: none; }
+body .fx-page {
+  min-width: 44px; height: 44px; padding: 0 10px; border: 1px solid var(--stroke); border-radius: 12px;
+  background: var(--surface); color: var(--text); font: inherit; font-size: 14px; font-weight: 600;
+  font-variant-numeric: tabular-nums; cursor: pointer; user-select: none; -webkit-user-select: none;
+  transition: transform 120ms var(--fx-ease-out), background-color 160ms ease, border-color 160ms ease;
+}
+body .fx-page:active { transform: scale(0.96); }
+body .fx-page[aria-current="page"] { background: var(--purple-strong, var(--purple)); border-color: transparent; color: #fff; }
+body .fx-page:disabled { opacity: .4; cursor: default; }
+body .fx-page-step { font-size: 18px; }
+body .fx-page-gap { min-width: 20px; text-align: center; color: var(--muted); }
+body .fx-page-range { flex-basis: 100%; text-align: center; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+body #catalogo .fx-pager { grid-column: 1 / -1; }
+
+/* ---------- Ficha emergente de componente ---------- */
+body .fx-sheet {
+  width: min(760px, calc(100vw - 32px)); max-height: min(86dvh, 860px); padding: 0; overflow: auto;
+  border: 1px solid var(--stroke); border-radius: 20px; background: var(--surface); color: var(--text);
+  overscroll-behavior: contain;
+  opacity: 1; transform: none;
+  transition: opacity 200ms var(--fx-ease-out), transform 200ms var(--fx-ease-out), overlay 200ms allow-discrete, display 200ms allow-discrete;
+}
+body .fx-sheet::backdrop { background: rgb(0 0 0 / .55); transition: opacity 200ms ease; }
+@starting-style {
+  body .fx-sheet[open] { opacity: 0; transform: translateY(8px) scale(.98); }
+  body .fx-sheet[open]::backdrop { opacity: 0; }
+}
+body .fx-sheet-top { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 12px 12px 20px; background: var(--surface); border-bottom: 1px solid var(--stroke-soft, var(--stroke)); }
+body .fx-sheet-top span { font-size: 12px; font-weight: 600; color: var(--muted); }
+body .fx-sheet-close { display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: 50%; background: var(--surface-2); color: var(--text); font-size: 16px; cursor: pointer; transition: transform 120ms var(--fx-ease-out); }
+body .fx-sheet-close:active { transform: scale(0.94); }
+body .product-sheet-main { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 20px; padding: 20px; }
+body .product-sheet-photo { display: grid; place-items: center; margin: 0; padding: 12px; border-radius: 14px; background: var(--surface-2); }
+body .product-sheet-photo img { width: 100%; height: 200px; object-fit: contain; }
+body .product-sheet-info h2 { margin: 0 0 6px; font-size: 22px; line-height: 1.25; letter-spacing: -.02em; }
+body .product-sheet-info .catalog-brief { margin: 0 0 14px; font-size: 14px; color: var(--muted); }
+body .product-sheet-info .catalog-price-line { margin-bottom: 16px; }
+body .product-sheet-info .market-price { font-size: 22px; font-variant-numeric: tabular-nums; }
+body .product-sheet-info .catalog-card-actions { display: grid; grid-template-columns: auto 1fr; gap: 8px; }
+body .product-sheet-info .catalog-card-actions button { min-height: 44px; justify-content: center; border-radius: 999px; }
+body .product-sheet-details { padding: 0 20px 20px; font-size: 13px; line-height: 1.55; color: var(--muted); }
+body .product-sheet-details > * + * { margin-top: 10px; }
+
+/* ---------- Ajustes táctiles e iOS ---------- */
+@media (hover: hover) and (pointer: fine) {
+  body .fx-card:hover { border-color: var(--purple); }
+  body .fx-page:not(:disabled):not([aria-current="page"]):hover { border-color: var(--purple); }
+  body .fx-sheet-close:hover { background: var(--surface-3, var(--surface-2)); }
+}
+@media (hover: none) {
+  body .fx-card:hover, body #marketGrid .market-card:hover { border-color: var(--stroke); box-shadow: none; transform: none; }
+}
+@media (max-width: 1100px) {
+  body .build-gallery, body #marketGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  body .content { padding: 20px 16px calc(96px + env(safe-area-inset-bottom, 0px)); }
+  body .build-gallery { grid-template-columns: 1fr; gap: 10px; }
+  body .build-card.fx-card { flex-direction: row; }
+  body .build-card .build-photo-button { width: 104px; height: auto; min-height: 112px; flex-shrink: 0; padding: 8px; }
+  body .build-card .build-photo-button img { height: 96px; }
+  body .build-card .build-card-body { padding: 12px; }
+  body .build-card h3 { font-size: 15px; }
+  body #marketGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  body #marketGrid .market-card { padding: 10px; }
+  body #marketGrid .catalog-photo { --catalog-photo-height: 104px; }
+  body #marketGrid .catalog-card-actions { grid-template-columns: 1fr; gap: 6px; }
+  body #mi-build .build-studio { gap: 14px; }
+  body .fx-page { min-width: 40px; height: 44px; }
+  /* Ficha como hoja inferior en el teléfono */
+  body .fx-sheet { width: 100vw; max-width: none; max-height: 88dvh; margin: auto 0 0; border-radius: 20px 20px 0 0; border-bottom: 0; padding-bottom: env(safe-area-inset-bottom, 0px); transition-timing-function: var(--fx-ease-drawer); transition-duration: 280ms; }
+  @starting-style { body .fx-sheet[open] { opacity: 1; transform: translateY(100%); } }
+  body .product-sheet-main { grid-template-columns: 1fr; gap: 14px; padding: 16px; }
+  body .product-sheet-photo img { height: 160px; }
+  body .product-sheet-details { padding: 0 16px 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  body .fx-card, body .fx-page, body .fx-sheet, body .fx-sheet::backdrop, body .fx-sheet-close { transition: none; }
+  body .fx-card:active, body .fx-page:active { transform: none; }
+}
+
+/* ---------- Dock «Mi build» compacto ---------- */
+body .build-quick-dock:not(:has([aria-expanded="true"])) { width: auto; right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(20px, env(safe-area-inset-bottom, 0px)); border-radius: 999px; }
+body .build-quick-dock:not(:has([aria-expanded="true"])) .build-quick-toggle { min-height: 44px; gap: 8px; padding: 8px 16px; }
+body .build-quick-dock:not(:has([aria-expanded="true"])) .build-quick-toggle svg { width: 18px; height: 18px; }
+body .build-quick-dock:not(:has([aria-expanded="true"])) .build-quick-toggle strong { flex: 0 0 auto; font-size: 13px; }
+body .build-quick-dock:not(:has([aria-expanded="true"])) #buildQuickCount { font-size: 12px; color: var(--muted); }
+body .build-quick-toggle:active { transform: scale(0.98); }
+
+/* ---------- Filtros de builds en una sola franja ---------- */
+body .build-budget-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 20px; padding: 14px 16px; margin-bottom: 14px; }
+body .build-budget-bar > label:first-child select { min-height: 44px; }
+body .build-budget-bar p { flex-basis: 100%; order: 3; margin: 0; font-size: 12px; line-height: 1.5; color: var(--muted); max-width: 90ch; }
+body .build-budget-bar #buildResults { margin-left: auto; font-size: 13px; color: var(--muted); align-self: center; }
+
+/* ---------- Mi build: filas vacías en una sola línea ---------- */
+body #mi-build .my-build-row:has(.my-build-placeholder) > div:last-child { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; }
+body #mi-build .my-build-row:has(.my-build-placeholder) small { grid-column: 1; }
+body #mi-build .my-build-row:has(.my-build-placeholder) h3 { grid-column: 1; font-weight: 500; color: var(--muted); }
+body #mi-build .my-build-row:has(.my-build-placeholder) p { display: none; }
+body #mi-build .my-build-row:has(.my-build-placeholder) .my-build-actions { grid-column: 2; grid-row: 1 / span 2; margin: 0; }
+body #mi-build .build-overview-heading { display: flex; flex-wrap: wrap; align-items: baseline; }
+body #mi-build .build-overview-heading > div { flex: 1 1 160px; }
+body #mi-build .build-overview-heading .eyebrow { display: block; }
+/* El foco programático al cambiar de página no debe pintar un recuadro. */
+body [tabindex="-1"]:focus:not(:focus-visible) { outline: none; box-shadow: none; }
+
+/* ---------- Mi build: «Elige tu pieza» y «Tu siguiente pieza» compactos ---------- */
+body #mi-build .my-build-workbench { padding: 16px; margin-top: 12px; border-radius: 14px; }
+body #mi-build .my-build-workbench > p { margin: 0 0 10px; font-size: 13px; }
+body #mi-build #myBuildFilters { gap: 10px 12px; margin-bottom: 10px; }
+body #mi-build #myBuildFilters label { gap: 4px; font-size: 12px; }
+body #mi-build #myBuildFilters small { font-size: 11px; align-self: end; }
+body #mi-build #myBuildFilters select, body #mi-build #myBuildFilters input:not([type="checkbox"]), body #mi-build #myBuildAlternative { min-height: 44px; }
+body #mi-build #myBuildFilters .secondary-button { min-height: 40px; }
+body #mi-build .my-build-choice { margin-bottom: 8px; }
+body #mi-build .build-recommendations { padding: 16px; margin-bottom: 12px; border-radius: 14px; }
+body #mi-build .build-recommendations h3 { font-size: 16px; margin-bottom: 4px; }

@@ -10,7 +10,6 @@ body .content > .section[data-page-active="true"] ~ .section[data-page-active="t
 .home-shortcuts h2 { font-size: 22px; line-height: 1.2; margin: 12px 0; }
 .home-shortcuts p { font-size: 16px; color: var(--muted); }
 .home-shortcuts strong { font-size: 14px; color: var(--purple); }
-@media (max-width: 600px) { .home-shortcuts { grid-template-columns: 1fr; } }
 .parts-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
 .part-tile { background: var(--surface); color: var(--text); border: 1px solid var(--stroke); border-radius: 14px; padding: 12px; text-align: center; transition: border-color .18s, transform .18s; }
 .part-tile:hover, .part-tile[aria-pressed="true"] { border-color: var(--purple); transform: translateY(-2px); }
@@ -85,7 +84,6 @@ body .catalog-footnote { font-size: 14px; }
 .build-notes { font-size: 16px; color: var(--muted); }
 .build-notes li { padding: 8px 0; }
 .share-field { width: 100%; padding: 10px; background: var(--surface); color: var(--text); border: 1px solid var(--stroke); border-radius: 6px; margin-top: 12px; }
-body .sidebar { overflow-y: auto; }
 body .pc-edit-form[hidden], body .compare-tray[hidden] { display: none; }
 :focus-visible { outline: 3px solid var(--purple); outline-offset: 4px; }
 @media (max-width: 1150px) { .parts-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; } .part-tile { padding: 8px; } .part-tile img { height: 90px; } .build-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
