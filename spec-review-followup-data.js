@@ -282,3 +282,49 @@ window.FENIXA_SPEC_REVIEW['market-speedlogic-37899'] = {
     ]
   }
 ]; for(const row of rows){const {id,...entry}=row,old=review[id]||{}; const unpublished={...old.unpublished,...entry.unpublished}; for(const key of Object.keys(entry.values))delete unpublished[key]; review[id]={...old,...entry,values:{...old.values,...entry.values},unpublished,fieldSources:{...old.fieldSources,...Object.fromEntries(Object.keys(entry.values).map(key=>[key,{source:entry.source,checkedAt:entry.checkedAt,scope:entry.scope}]))},additionalSources:[...(old.additionalSources||[]),...(entry.additionalSources||[])]};}})();
+
+// Lote Claude 11/11/2026: RAM con PN exacto cotejado en ficha oficial y refrigeración CPU condicional ya documentada por AMD.
+(() => {
+  'use strict';
+  const review = window.FENIXA_SPEC_REVIEW ||= {};
+  const put = (id, extra, values, source, scope, checkedAt = '2026-11-11', label) => {
+    const old = review[id] || {};
+    review[id] = {
+      ...old, ...extra, source: extra.source || old.source || source, checkedAt,
+      values: { ...old.values, ...values },
+      fieldSources: { ...old.fieldSources, ...Object.fromEntries(Object.keys(values).map(key => [key, { source, checkedAt, scope }])) },
+      additionalSources: [ ...(old.additionalSources || []), { source, label } ],
+      scope: [old.scope, scope].filter(Boolean).join(' ')
+    };
+  };
+
+  const crucial = 'https://www.crucial.com/memory/ddr5/ct16g48c40s5';
+  put('market-speedlogic-51795', { displayName: 'Crucial CT16G48C40S5 · referencia publicada', modelKey: 'CT16G48C40S5', source: crucial },
+    { capacity: 16, memory: 'DDR5', rate: 4800, defaultRate: 4800, cl: 40, modules: 1, format: 'SO-DIMM · sin búfer', voltage: 1.1, profiles: 'Solo JEDEC predeterminado · 40-39-39' },
+    crucial,
+    'PN CT16G48C40S5 anunciado por la tienda y cotejado con la ficha oficial Crucial (Technology DDR5, Module Type SODIMM, Density 16GB, Kit Quantity 1, Voltage 1.1V, Unbuffered, Speed DDR5-4800, CAS 40, perfil Default (JEDEC) 40-39-39, garantía limitada de por vida). La ficha no publica perfil XMP/EXPO: la tasa predeterminada coincide con la nominal. Confirmar PN y revisión de la unidad local; la foto no certifica SKU. Sin precio, stock ni compatibilidad con un portátil concreto atribuidos.',
+    '2026-11-11', 'Ficha oficial Crucial CT16G48C40S5 · leída en navegador 11/11/2026');
+
+  const lexar = 'https://www.lexar.com/global/products/Lexar-DDR5-SODIMM-Laptop-Memory/';
+  put('market-speedlogic-51796', { displayName: 'Lexar LD5S16G56C46ST-BGS · referencia publicada', modelKey: 'LD5S16G56C46ST-BGS', source: lexar },
+    { capacity: 16, memory: 'DDR5', rate: 5600, defaultRate: 5600, cl: 46, modules: 1, format: 'SO-DIMM · 262 pines', voltage: 1.1, profiles: 'JEDEC JESD79-5A · sin perfil XMP/EXPO publicado' },
+    lexar,
+    'PN LD5S16G56C46ST-BGS legible en el empaque fotografiado por la tienda (UPC 843367132454) y listado por Lexar Global como 5600/16GB; el kit LD5S16G56C46ST-BGD (16GBx2) es otra referencia. Lexar publica interfaz 262 PIN, DDR5, estándar JESD79-5A, CL46-45-45-90 a 5600MT/s, 1,1V, módulo 69,6 × 30 × 1,2 mm y garantía limitada de por vida (10 años donde no se reconoce). No publica perfil de overclock: 5600MT/s se registra como tasa JEDEC del módulo; la plataforma puede limitarla. Velocidad según pruebas internas del fabricante. Sin precio, stock ni compatibilidad con un portátil concreto atribuidos.',
+    '2026-11-11', 'Ficha oficial Lexar Global y tabla Product Numbers · 11/11/2026');
+
+  const evidence = 'Evidencia AMD registrada el 03/11/2026 en Datos/cpu-thermal-presentations-20261103.json; implementada como referencia condicional, no como contenido garantizado de la caja local.';
+  const cpu = (id, model, text, note) => {
+    const source = `https://www.amd.com/en/products/processors/desktops/ryzen/${model}.html`;
+    put(id, {}, { thermal: text }, source, note + ' ' + evidence, '2026-11-11', 'Refrigeración publicada por AMD · condicional');
+  };
+  cpu('cpu-amd-ryzen-9-7900', '7000-series/amd-ryzen-9-7900', 'Caja actualizada sin disipador desde 01/08/2025 (antes Wraith Prism) · confirmar PN y contenido local',
+    'AMD anota en Product ID Boxed (100-100000590WOF/WOZ) que las cajas seleccionadas dejan de incluir el disipador SR4 desde el 1 de agosto de 2025. Unidades anteriores pueden traer Wraith Prism; la oferta local no identifica su revisión.');
+  cpu('market-ryzen-5800xt', '5000-series/amd-ryzen-7-5800xt', 'Caja actualizada sin disipador desde 01/08/2025 (antes Wraith Prism) · confirmar PN y contenido local',
+    'AMD anota en Product ID Boxed (100-100001582WOF/WOZ) el retiro del disipador SR4 de cajas seleccionadas desde el 1 de agosto de 2025. Unidades anteriores pueden traer Wraith Prism; la oferta local no identifica su revisión.');
+  cpu('cpu-amd-ryzen-7-7700', '7000-series/amd-ryzen-7-7700', 'Variable según caja: AMD cita Wraith Prism, Wraith Stealth y cajas sin disipador desde 01/08/2025 · confirmar contenido local',
+    'Las fuentes AMD no coinciden: la introducción nombra Wraith Prism, la tabla general de refrigeración cita Wraith Stealth y la nota de Product ID (100-100000592SBX/WOZ) describe cajas actualizadas sin disipador. Se muestra el conflicto en lugar de elegir un disipador.');
+  put('model-cpu-amd-ryzen-7-5700x', {}, { thermal: 'Sin disipador incluido según la ficha individual AMD · la tabla general cita Wraith Stealth; confirmar contenido local' },
+    'https://www.amd.com/en/support/downloads/drivers.html/processors/ryzen/ryzen-5000-series/amd-ryzen-7-5700x.html',
+    'La sección Specifications del 5700X publica Thermal Solution (PIB) «Not Included» y la nota de Product ID describe cajas sin disipador; la tabla general de AMD lo lista con Wraith Stealth. Se conserva la discrepancia en el texto. ' + evidence,
+    '2026-11-11', 'Refrigeración publicada por AMD · condicional');
+})();
