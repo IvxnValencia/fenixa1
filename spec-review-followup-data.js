@@ -414,3 +414,57 @@ window.FENIXA_SPEC_REVIEW['market-speedlogic-37899'] = {
   axes('market-clones-104185', { width: 297, height: 35 },
     'Ejes asignados el 11/11/2026 desde la misma tabla oficial Redragon (29,7 × 10,6 × 3,5 cm) para el K616 de 61 teclas: el lado de 297 mm es el ancho, 106 mm el fondo y 35 mm la altura. Un teclado 60% no puede tener 106 mm de ancho ni 297 mm de alto. Altura publicada con teclas según la tabla; las patas pueden modificarla.');
 })();
+
+// Lote Claude 4 · 11/11/2026 (criterios aprobados por el usuario): ruido declarado en lugar de máximo y TGP de referencia NVIDIA para GPU sin potencia de tarjeta publicada.
+(() => {
+  'use strict';
+  const review = window.FENIXA_SPEC_REVIEW ||= {};
+  const day = '2026-11-11';
+  const put = (id, values, source, scope, label, notApplicable) => {
+    const old = review[id] || {}, unpublished = { ...(old.unpublished || {}) };
+    for (const key of [...Object.keys(values), ...Object.keys(notApplicable || {})]) delete unpublished[key];
+    review[id] = {
+      ...old, unpublished,
+      notApplicable: { ...(old.notApplicable || {}), ...(notApplicable || {}) },
+      values: { ...old.values, ...values },
+      fieldSources: { ...old.fieldSources, ...Object.fromEntries(Object.keys(values).map(key => [key, { source, checkedAt: day, scope }])) },
+      additionalSources: [ ...(old.additionalSources || []), ...(source ? [{ source, label }] : []) ],
+      scope: [old.scope, scope].filter(Boolean).join(' ')
+    };
+  };
+  const src = id => review[id]?.fieldSources?.rpm?.source || review[id]?.fieldSources?.format?.source || review[id]?.source;
+  const noise = (id, value, note, source) => put(id, { noise: value }, source || src(id),
+    'Ruido declarado por el fabricante: ' + note + ' Criterio aprobado el 11/11/2026: el campo muestra la cifra publicada, no un máximo medido por FENIXA. Cifras con métodos distintos no se comparan como ventaja acústica.',
+    'Ruido declarado · 11/11/2026');
+
+  noise('market-speedlogic-29053', 23.2, 'Antec publica 23,2 dB(A) ±20% sin llamarlo máximo.');
+  noise('market-speedlogic-54243', 21.44, 'XPG publica 21,44 dB(A) como PROMEDIO.');
+  noise('market-speedlogic-54811', 21.44, 'XPG publica 21,44 dB(A) como PROMEDIO por ventilador; no se suma entre los dos ventiladores.');
+  noise('market-speedlogic-28636', 33.5, 'Cougar publica 33,5 dBA de ruido acústico sin llamarlo máximo.');
+  noise('market-speedlogic-5469', 21, 'XPG publica «21 dBA (avg.)», un promedio.', 'https://www.xpg.com/index.php/mx/xpg/671?tab=spec');
+  noise('market-speedlogic-39904', 32, 'XPG publica «Fan Noise Level 32 dB(A)» en la tabla web oficial.', 'https://www.xpg.com/index.php/za/xpg/pc-component-vento-r-120-argb-pwm?tab=spec');
+  noise('market-speedlogic-54809', 32, 'XPG publica «Fan Noise Level 32 dB(A)» en la tabla web oficial.', 'https://www.xpg.com/index.php/za/xpg/pc-component-vento-r-120-argb-pwm?tab=spec');
+  noise('market-speedlogic-54245', 32, 'Antec publica un rango de 10,8–32 dB para el ventilador de 120 mm; se muestra el extremo superior. La ponderación A no se confirma en la ficha.');
+  noise('market-speedlogic-54247', 32.8, 'Antec publica un rango de 19,7–32,8 dB para el conjunto de 360 mm; se muestra el extremo superior. La ponderación A no se confirma en la ficha.');
+  for (const id of ['market-speedlogic-43225', 'market-speedlogic-43224'])
+    noise(id, 31.36, 'XPG publica promedios de 23,36 y 31,36 dBA según el modo; se muestra el promedio del modo de mayor velocidad, por ventilador.', 'https://www.xpg.com/nz/xpg/pc-component-hurricane-mag?tab=spec');
+  noise('market-clones-99531', 26.8, 'Thermaltake publica 26,8 dBA de «Acoustical Noise» sin llamarlo máximo.');
+  noise('market-clones-91851', 26.8, 'Thermaltake publica 26,8 dBA de «Acoustical Noise» sin llamarlo máximo.');
+
+  const arctic = 'ARCTIC no publica el ruido en dBA en las fichas consultadas: usa sones u omite la cifra, y los sones no se convierten a dBA.';
+  for (const id of ['market-speedlogic-45349', 'market-speedlogic-55867', 'market-speedlogic-55873', 'market-speedlogic-55878', 'market-speedlogic-55890', 'market-speedlogic-40913', 'market-speedlogic-40936',
+    'model-fan-acfan00120a', 'model-fan-acfan00125a', 'model-fan-acfan00280a', 'model-fan-arctic-p14-max', 'model-fan-acfan00187a', 'model-fan-acfan00268a', 'model-fan-acfan00305a', 'model-fan-acfan00313a'])
+    put(id, {}, null, 'Ruido sin cifra en dBA del fabricante (criterio del 11/11/2026).', '', { noise: arctic });
+
+  const tgp = (id, watts, chip, source) => put(id, { power: watts + ' W · TGP de referencia NVIDIA' }, source,
+    'Potencia de referencia que NVIDIA publica para ' + chip + ' (' + watts + ' W). El fabricante de la tarjeta no publica la potencia de esta edición: una versión OC puede consumir más. No es medición de FENIXA ni sustituye la fuente recomendada por el fabricante de la tarjeta. Criterio aprobado el 11/11/2026.',
+    'Especificaciones NVIDIA ' + chip + ' · 11/11/2026');
+  const n50 = 'https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/';
+  tgp('market-speedlogic-30152', 70, 'GeForce RTX 3050 6 GB (Graphics Card Power)', 'https://www.nvidia.com/en-us/geforce/graphics-cards/30-series/rtx-3050/');
+  tgp('market-speedlogic-56045', 130, 'GeForce RTX 5050', n50 + 'rtx-5050/');
+  tgp('market-speedlogic-46922', 130, 'GeForce RTX 5050', n50 + 'rtx-5050/');
+  tgp('market-speedlogic-45467', 145, 'GeForce RTX 5060', n50 + 'rtx-5060-family/');
+  tgp('market-speedlogic-48384', 145, 'GeForce RTX 5060', n50 + 'rtx-5060-family/');
+  tgp('market-clones-108975', 145, 'GeForce RTX 5060', n50 + 'rtx-5060-family/');
+  tgp('market-clones-108404', 180, 'GeForce RTX 5060 Ti (8 GB y 16 GB comparten la cifra)', n50 + 'rtx-5060-family/');
+})();
