@@ -6,7 +6,7 @@
   const defaults={estudio:'estudio-esencial',gaming:'gaming-casual',creativo:'creativo-2d'};
   let use='estudio',level=defaults.estudio,selectedBudget=budget.get()||4500000,contextSaved=true,current=null,timer,budgetAdjustment='',lastPlanKey='';
   try{const old=JSON.parse(localStorage.getItem('fenixa-builder')||'{}');if(useNames[old.use])use=old.use;level=auto.profiles[old.level]?.use===use?old.level:defaults[use];}catch{contextSaved=false;}
-  const maxForProfile=()=>Math.min(budget.max,auto.profiles[level].maxBudget);
+  const maxForProfile=()=>Math.min(budget.max,auto.ceiling?auto.ceiling(level):auto.profiles[level].maxBudget);
   const clamp=value=>Math.max(budget.min,Math.min(maxForProfile(),Math.round(value/budget.step)*budget.step));
   function constrain(value,notify=false){selectedBudget=clamp(value);budgetAdjustment=notify&&selectedBudget<value?'Tu objetivo se ajustó al máximo de este perfil. ':'';}
   constrain(selectedBudget);
@@ -30,8 +30,8 @@
   }
   function labels(){
     const text=budget.money(selectedBudget),slider=$('startBudgetRange'),profileMax=maxForProfile();slider.max=profileMax;slider.value=selectedBudget;slider.setAttribute('aria-valuetext',text+' pesos colombianos');slider.style.setProperty('--range-progress',((selectedBudget-budget.min)/(profileMax-budget.min)*100)+'%');
-    $('startBudgetMax').textContent='$'+(profileMax/1000000)+' millones';
-    const limitText=budgetAdjustment+'Hasta '+budget.money(profileMax)+' para '+auto.profiles[level].name+'. Puedes elegir un presupuesto menor.';
+    $('startBudgetMax').textContent='$'+(profileMax/1000000).toLocaleString('es-CO')+' millones';
+    const limitText=budgetAdjustment+'Hasta '+budget.money(profileMax)+' para '+auto.profiles[level].name+': es lo que cuesta su build más completa, así que más presupuesto no cambia la propuesta. Puedes elegir un presupuesto menor.';
     if($('startBudgetLimit').textContent!==limitText)$('startBudgetLimit').textContent=limitText;
     $('startBudgetOutput').textContent=text;$('startAmount').textContent=text;$('startUseLabel').textContent=auto.profiles[level].name;
     $('startAdvice').textContent=useNames[use]+' · propuesta según tus prioridades y referencias disponibles.';

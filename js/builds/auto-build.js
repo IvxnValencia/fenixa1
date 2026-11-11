@@ -70,5 +70,15 @@
     if(profile.gpu&&(p.gpu?.vram||0)<profile.vram)gaps.push('VRAM: '+(p.gpu?.vram||0)+' / objetivo '+profile.vram+' GB');
     return{proposal:{...p,parts:p.parts.slice(),profileId,max,gaps,relation:['within-reference','range-crosses-budget','over-reference'][bucket(p)]},profile,considered:options.length};
   }
-  window.FENIXA_AUTO_BUILD={profiles,generate,reference};
+  // Tope útil del presupuesto: lo que cuesta (referencia alta) la mejor build del perfil. Más dinero ya no cambia la propuesta.
+  const ceilings=new Map();
+  function ceiling(profileId){
+    const profile=profiles[profileId];if(!profile)return null;
+    if(!ceilings.has(profileId)){
+      const top=generate(profileId,profile.maxBudget).proposal;
+      ceilings.set(profileId,top&&top.relation==='within-reference'?Math.min(profile.maxBudget,1000000+Math.ceil((top.high-1000000)/250000)*250000):profile.maxBudget);
+    }
+    return ceilings.get(profileId);
+  }
+  window.FENIXA_AUTO_BUILD={profiles,generate,reference,ceiling};
 })();
