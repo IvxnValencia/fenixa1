@@ -28,11 +28,19 @@
   function budgetSummary() {
     const prices=state.ids().map(id=>market.price(byId[id])), known=prices.filter(p=>p!==null);
     const sum=known.reduce((s,p)=>s+p,0);
-    let message=known.length ? `Subtotal de precios recientes: ${market.money(sum)} · ${known.length}/${prices.length} piezas con precio.` : 'Aún no hay un subtotal con precios recientes.';
-    if(totalBudget&&sum>totalBudget)message+=` Ya supera tu objetivo en ${market.money(sum-totalBudget)}.`;
-    else if(totalBudget&&prices.length&&known.length===prices.length)message+=` Margen frente a las piezas elegidas: ${market.money(totalBudget-sum)}. No incluye piezas pendientes, envío ni montaje.`;
-    else if(totalBudget)message+=' Con precios o piezas pendientes no podemos confirmar si tu build cabe en el presupuesto.';
-    return message+(budgetSaved?'':' No se pudo guardar el presupuesto; solo se conserva en esta pestaña.');
+    let message=known.length ? `Subtotal reciente: ${market.money(sum)} · ${known.length}/${prices.length} piezas.` : 'Sin precios recientes para el subtotal.';
+    if(totalBudget&&sum>totalBudget)message+=` Supera el objetivo en ${market.money(sum-totalBudget)}.`;
+    else if(totalBudget&&prices.length&&known.length===prices.length)message+=` Margen: ${market.money(totalBudget-sum)}.`;
+    return message;
+  }
+  function costReference(parts) {
+    if(!parts.length||!window.FENIXA_AUTO_BUILD?.reference)return null;
+    const refs=parts.map(p=>window.FENIXA_AUTO_BUILD.reference(p)).filter(ref=>Number.isFinite(ref?.low)&&ref.low>0&&Number.isFinite(ref.high)&&ref.high>=ref.low);
+    const low=refs.reduce((sum,ref)=>sum+ref.low,0), high=refs.reduce((sum,ref)=>sum+ref.high,0);
+    return {count:refs.length,total:parts.length,low,high,partial:refs.length<parts.length,older:refs.some(ref=>ref.kind!=='recent')};
+  }
+  function moreInfo(reference) {
+    return `<p>${state.saved()&&budgetSaved?'Guardado solo en este navegador.':'No se pudo guardar todo; la selección actual puede perderse al cerrar.'}</p><p>Con precios o piezas pendientes no podemos confirmar el coste total ni el ajuste al presupuesto.</p>${reference?.older?'<p>La referencia incluye precios publicados, históricos o de catálogo; confirma el precio actual.</p>':''}${reference?.partial?`<p>Sin referencia: ${reference.total-reference.count} ${reference.total-reference.count===1?'pieza':'piezas'}; el importe mostrado es parcial.</p>`:''}<p>Los importes no incluyen envío ni montaje; revisa precio, disponibilidad y compatibilidad.</p>`;
   }
   // Short summary of key facts, used when a piece has no stored reason.
   const num = n => new Intl.NumberFormat('es-CO').format(n);
@@ -58,8 +66,10 @@
   function storeLine(p) {
     const o = market.fixed(p);
     if (!o) return 'Precio por confirmar';
+    let store=String(o.store||'');
+    if(store.length>28){try{store=new URL(o.url).hostname.replace(/^www\./,'');}catch{}}
     const old = market.recent(o) ? '' : ' · consulta vencida';
-    return [esc(o.store), market.money(o.price), esc(day(o)) + old].filter(Boolean).join(' · ') + (o.url ? ` · <a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">Ver en tienda</a>` : '');
+    return `<span title="${esc(o.store)}">${esc(store)} ·</span> `+[market.money(o.price), esc(day(o)) + old].filter(Boolean).join(' · ') + (o.url ? ` · <a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">Ver en tienda</a>` : '');
   }
   function recommendations(parts) {
     if (!parts.length) return '';
@@ -83,15 +93,16 @@
   function render() {
     const ids = state.ids(), parts = ids.map(id=>byId[id]);
     const conflicts = parts.filter(p=>window.FENIXA_FIT.check(p,parts.filter(other=>other.id!==p.id)).status==='conflict');
+    const reference=costReference(parts), info=moreInfo(reference);
     root.innerHTML = `<div class="section-heading"><div><h2 tabindex="-1" id="myBuildTitle">Mi build</h2></div><a class="secondary-button" href="#componentes">Explorar componentes </a></div>
-      ${window.FENIXA_LIBRARY_UI?.render()||''}
-      <p class="my-build-storage" role="status">${state.saved()?'Guardado en este navegador.':'No se pudo guardar: la selección solo dura mientras esta pestaña siga abierta.'}</p>
+      ${window.FENIXA_LIBRARY_UI?.render(info)||`<details><summary>Más info</summary>${info}</details>`}
+      <p class="my-build-storage" role="status">${state.saved()&&budgetSaved?'Guardado en este navegador.':'Sin guardar · solo en esta pestaña.'}</p>
       <div class="build-studio"><aside class="build-studio-summary" aria-label="Resumen y presupuesto de Mi build" tabindex="0">
       ${overview(parts, conflicts)}
       ${pendingImport?`<div class="build-customization"><strong>¿Reemplazar Mi build con esta selección?</strong><p>Se sustituirán las piezas actuales por las ${pendingImport.length} de la build elegida.</p><button type="button" class="primary-button" data-confirm-import>Reemplazar Mi build</button> <button type="button" class="secondary-button" data-cancel-import>Conservar la actual</button></div>`:''}
       <div class="my-build-summary"><strong>${parts.length} ${parts.length===1?'pieza':'piezas'}</strong>${conflicts.length?`<span>${conflicts.length} con conflictos detectados</span>`:''}${parts.length?'<button type="button" class="my-build-clear" data-request-clear>Vaciar Mi build</button>':''}</div>
       ${pendingClear?'<div class="my-build-clear-confirm" role="group" aria-label="Confirmar vaciar Mi build"><strong>¿Vaciar la build actual?</strong><p>Tu presupuesto objetivo se conserva.</p><button type="button" class="primary-button" data-confirm-clear>Sí, vaciar piezas</button> <button type="button" class="secondary-button" data-cancel-clear>Cancelar</button></div>':''}
-      <div class="my-build-budget"><label for="myBuildTotalBudget">Tu presupuesto para la build · <output id="myBuildBudgetLabel" for="myBuildTotalBudget">${totalBudget?market.money(totalBudget):'Sin objetivo'}</output></label><input id="myBuildTotalBudget" type="range" min="1000000" max="18000000" step="250000" value="${totalBudget||1000000}" aria-describedby="myBuildBudgetSummary"><button type="button" class="text-button" data-clear-budget>Sin objetivo</button><p id="myBuildBudgetSummary" role="status">${budgetSummary()}</p></div>
+      <div class="my-build-budget">${reference?`<p class="my-build-reference"><strong>Referencia de coste${reference.partial?' parcial':''}: ${reference.count?(reference.low===reference.high?market.money(reference.low):`${market.money(reference.low)} – ${market.money(reference.high)}`):'por confirmar'}</strong>${reference.partial?` · ${reference.count}/${reference.total} piezas`:''}</p>`:''}<label for="myBuildTotalBudget">Objetivo de presupuesto · <output id="myBuildBudgetLabel" for="myBuildTotalBudget">${totalBudget?market.money(totalBudget):'Sin objetivo'}</output></label><input id="myBuildTotalBudget" type="range" min="1000000" max="18000000" step="250000" value="${totalBudget||1000000}" aria-describedby="myBuildBudgetSummary"><button type="button" class="text-button" data-clear-budget>Sin objetivo</button><p id="myBuildBudgetSummary" role="status">${budgetSummary()}</p></div>
       </aside><div class="build-studio-main"><div class="my-build-layout"><div><h3>Tus piezas</h3>${!parts.length?'<div class="my-build-empty"><h3>Tu próxima PC empieza aquí</h3><div class="my-build-actions"><a class="primary-button" href="#configurador">Armar mi PC</a><a class="secondary-button" href="#componentes">Explorar componentes</a></div></div>':`<div class="my-build-parts">${categories.map(c=>partCard(c,parts)).join('')}</div>`}</div></div>
       ${recommendations(parts)}
       ${parts.length?`<details class="my-build-shopping"><summary>Opciones de compra de Mi build</summary>${market.plan(ids,byId)}${parts.map(p=>`<article><h3>${esc(p.name)}</h3>${market.purchase(p,parts)}</article>`).join('')}</details>`:''}</div></div>`;
@@ -106,6 +117,7 @@
   });
   window.addEventListener('fenixa-budget-changed',()=>{totalBudget=window.FENIXA_BUDGET.get();budgetSaved=window.FENIXA_BUDGET.saved();render();});
   window.addEventListener('hashchange',()=>{if(location.hash==='#mi-build')render();});
+  window.addEventListener('load',render,{once:true});
   root.addEventListener('input',event=>{
     if(event.target.id==='myBuildTotalBudget'){
       totalBudget=Number(event.target.value);

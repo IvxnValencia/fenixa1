@@ -337,3 +337,22 @@ body #componentes .fx-pager { margin: 24px 0 0; }
   body #componentes #catalogo #marketGrid .catalog-photo { --catalog-photo-height: 96px; }
   body #componentes #catalogo #marketGrid .catalog-card-actions { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* P6: ficha compacta, espaciado simétrico de 8 px. */
+body .product-sheet-main { grid-template-columns: 160px minmax(0, 1fr); gap: 16px; padding: 16px; }
+body .product-sheet-photo { padding: 8px; border-radius: 16px; }
+body .product-sheet-photo img { height: 144px; }
+body .product-sheet-info h2, body .product-sheet-info .catalog-brief { margin: 0 0 8px; }
+body .product-sheet-info .catalog-card-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+body .product-sheet-info .catalog-card-actions button { width: 100%; min-width: 0; height: 40px; min-height: 40px; padding: 0 8px; border-radius: 12px; }
+body .product-sheet-details { padding: 0 16px 16px; }
+body .product-sheet-details > * + * { margin-top: 16px; }
+body .product-sheet-specs { margin: 0; padding: 16px; border-radius: 16px; }
+body .product-sheet-specs > div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 8px 0; line-height: 24px; }
+body .product-sheet-specs dt, body .product-sheet-specs dd { margin: 0; overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  body .product-sheet-main { grid-template-columns: 96px minmax(0, 1fr); }
+  body .product-sheet-photo img { height: 96px; }
+  body .product-sheet-info h2 { font-size: 16px; }
+  body .product-sheet-info .catalog-card-actions { grid-template-columns: minmax(0, 1fr); }
+}
