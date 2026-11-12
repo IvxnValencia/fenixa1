@@ -63,6 +63,23 @@
     else t='Complementa la lista y su compatibilidad.';
     return t+(old&&old.product.id!==row.product.id?' Antes: '+old.product.name+'.':'');
   }
+  function shortName(product){
+    const d=window.FENIXA_SPECS?.facts?.(product)?.displayName;if(d)return d;
+    const n=String(product.name||'').trim().replace(/\s+/g,' ');
+    const letters=n.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ]/g,''),upper=letters.replace(/[^A-ZÁÉÍÓÚÑ]/g,'').length;
+    if(upper/Math.max(letters.length,1)<.6)return n;
+    return n.split(' ').map((w,i)=>/\d/.test(w)||(w.length<=4&&i>0&&/^[A-Z]+$/.test(w))?w:(i===0?w.charAt(0)+w.slice(1).toLowerCase():w.toLowerCase())).join(' ');
+  }
+  function keyFact(product,p){
+    const v=window.FENIXA_SPECS?.facts?.(product)?.values||{},c=product.category,gb=n=>n>=1000&&n%1000===0?n/1000+' TB':n+' GB';
+    if(c==='cpu'){const n=v.cores||p.cpu?.cores;return n?n+' núcleos':'';}
+    if(c==='gpu'){if(product.name==='Gráficos integrados')return 'En el procesador';const n=v.vram||p.gpu?.vram;return n?n+' GB VRAM':'';}
+    if(c==='ram'){const cap=v.capacity||p.ram?.capacity;return cap?cap+' GB'+(v.memory?' '+v.memory:''):'';}
+    if(c==='storage'){const cap=v.capacity||p.disk?.capacity;return cap?gb(cap)+(/nvme/i.test(v.pcie||'')?' NVMe':''):'';}
+    if(c==='power'){const eff=/80 PLUS (\w+)/i.exec(v.efficiency||'');return v.watts?v.watts+' W'+(eff?' '+eff[1]:''):'';}
+    if(c==='board')return [v.socket,v.memory].filter(Boolean).join(' · ');
+    return v.format||'';
+  }
   function generate(shouldAnnounce=true){
     result.setAttribute('aria-busy','false');
     const planKey=level+'|'+selectedBudget;if(planKey===lastPlanKey){if(shouldAnnounce)announce();return;}lastPlanKey=planKey;
@@ -78,18 +95,22 @@
     }).join('');
     result.classList.remove('is-empty');
     const prevRows=new Map((previous?.rows||[]).map(r=>[r.product.category,r]));
-    const rowsHtml=order.map(category=>{
-      const row=p.rows.find(r=>r.product.category===category);
-      if(!row)return category==='gpu'?`<li data-preview-category="gpu"><span class="planner-row-cat">Gráficos</span><strong class="planner-row-name">Integrados en el procesador</strong><span class="planner-row-price">Incluido</span><p class="planner-row-why">Suficiente para este perfil, sin tarjeta dedicada.</p></li>`:'';
-      const upd=changed.includes(category);
-      return `<li class="${upd?'is-updated':''}" data-preview-category="${category}"><span class="planner-row-cat">${esc(categoryName(category))}${upd?'<span class="planner-change-badge">Cambio</span>':''}</span><strong class="planner-row-name">${esc(row.product.name)}</strong><span class="planner-row-price">${price(row.reference)}</span><p class="planner-row-why">${esc(why(row,p,profile,upd?prevRows.get(category):null))}</p></li>`;
+    const gpuRow={product:{category:'gpu',name:'Gráficos integrados',image:'assets/categories/gpu.png'},reference:null};
+    const shown=order.map(category=>p.rows.find(r=>r.product.category===category)||(category==='gpu'?gpuRow:null)).filter(Boolean);
+    const rowsHtml=shown.map(row=>{
+      const category=row.product.category,upd=changed.includes(category),label=categoryName(category),short=shortName(row.product),ref=row.reference;
+      const priceHtml=!ref?'<b>Incluido</b>':ref.low===ref.high?'<b>'+esc(budget.money(ref.low))+'</b>':'<b>'+esc(budget.money(ref.low))+'</b><small>– '+esc(budget.money(ref.high))+'</small>';
+      return `<li class="${upd?'is-updated':''}" data-preview-category="${category}" aria-label="${esc(label+': '+short)}"><img class="planner-row-photo" src="${esc(row.product.image||'')}" alt="${esc(label+': '+short)}" width="56" height="56" loading="lazy" decoding="async"><span class="planner-row-text"><strong class="planner-row-name">${esc(short)}</strong><small class="planner-row-key">${esc(keyFact(row.product,p))}${upd?'<span class="planner-change-badge">Cambio</span>':''}</small></span><span class="planner-row-price">${priceHtml}</span></li>`;
     }).join('');
+    const whyHtml=shown.map(row=>{const category=row.product.category;return '<li class="planner-why-item"><strong>'+esc(shortName(row.product))+'</strong> '+esc(row.reference?why(row,p,profile,changed.includes(category)?prevRows.get(category):null):'Suficiente para este perfil, sin tarjeta dedicada.')+'</li>';}).join('');
     const sources=p.rows.map(({product,reference:r})=>`<li>${esc(product.name)} · ${r.kind==='recent'?'consulta reciente':r.kind==='published'?'precio publicado, stock por confirmar':r.kind==='historical'?'consulta histórica':'rango de catálogo'} · ${esc(r.date.slice(0,10))} · <a href="${esc(r.source)}" target="_blank" rel="noopener noreferrer">Fuente del importe</a></li>`).join('');
-    result.innerHTML=`<header class="planner-result-heading"><div><h2 id="autoBuildTitle">Tu propuesta</h2><p>${esc(profile.name)} · ${p.parts.length} piezas · objetivo ${budget.money(selectedBudget)}</p></div><div class="planner-total"><small>${p.allRecent?'Subtotal consultado':'Referencia de coste'}</small><strong>${price(p)}</strong></div></header>
-      <p class="planner-update">${esc(changeText)}</p><ul class="planner-rows">${rowsHtml}</ul>
-      <p class="planner-budget-status">${status}</p>
-      <div class="planner-result-actions"><button type="button" class="primary-button" id="useAutomaticBuild">Usar esta propuesta en Mi build</button><span>Podrás cambiar sus piezas después.</span></div><p id="automaticImportStatus" role="status"></p>
+    result.innerHTML=`<header class="planner-result-heading"><h2 id="autoBuildTitle">Tu propuesta</h2><p class="planner-total"><strong title="${p.allRecent?'Subtotal consultado':'Referencia de coste'}">${price(p)}</strong></p><ul class="planner-chips"><li>${esc(profile.name)}</li><li>${p.parts.length} piezas</li><li>objetivo ${budget.money(selectedBudget)}</li></ul></header>
+      <ul class="planner-rows">${rowsHtml}</ul>
+      ${p.relation==='within-reference'?'':'<p class="planner-budget-status">'+status+'</p>'}
+      <div class="planner-result-actions"><button type="button" class="primary-button" id="useAutomaticBuild">Usar esta propuesta en Mi build</button></div><p id="automaticImportStatus" role="status"></p>
+      <details id="plannerWhy" class="planner-notes planner-why"${keepOpen('plannerWhy')}><summary>¿Por qué estas piezas?</summary><ul>${whyHtml}</ul></details>
       <details id="plannerNotes" class="planner-notes"${keepOpen('plannerNotes')}><summary>Más info</summary>
+      ${previous?"<p>"+esc(changeText)+"</p>":""}
       ${!p.allRecent?'<p>Confirma el precio actual antes de comprar.</p>':''}
       <section class="planner-note"><h3>Fuentes de los importes</h3><ul>${sources}</ul></section>
       ${p.gaps.length?`<section class="planner-note"><h3>Prioridades que aún no cubre</h3><ul>${p.gaps.map(g=>'<li>'+esc(g)+'</li>').join('')}</ul></section>`:''}
