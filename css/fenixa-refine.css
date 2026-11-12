@@ -356,3 +356,32 @@ body .product-sheet-specs dt, body .product-sheet-specs dd { margin: 0; overflow
   body .product-sheet-info h2 { font-size: 16px; }
   body .product-sheet-info .catalog-card-actions { grid-template-columns: minmax(0, 1fr); }
 }
+
+/* P11 · Componentes aprovecha el ancho y separa controles de resultados. */
+@media (min-width: 1101px) {
+  body .content:has(#componentes:not([hidden])) { max-width: 1600px; }
+  body #componentes #catalogo[data-view="grid"] .cmp-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  body #componentes #catalogo[data-view="list"] {
+    display: grid; grid-template-columns: minmax(224px, 256px) minmax(0, 1fr); align-items: start; gap: 8px 24px;
+  }
+  body #componentes #catalogo[data-view="list"] > .cmp-bar {
+    grid-column: 1; grid-row: 1; display: grid; align-content: start; justify-content: stretch; gap: 12px; min-height: 0;
+    margin: 0; padding: 16px; border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface);
+  }
+  body #componentes #catalogo[data-view="list"] .cmp-bar-left,
+  body #componentes #catalogo[data-view="list"] .cmp-bar-left > .cmp-deep { align-items: flex-start; flex-wrap: wrap; gap: 8px; }
+  body #componentes #catalogo[data-view="list"] .cmp-bar h2 { white-space: normal; }
+  body #componentes #catalogo[data-view="list"] .cmp-bar-right { display: grid; grid-template-columns: minmax(0, 1fr); justify-content: stretch; gap: 8px; }
+  body #componentes #catalogo[data-view="list"] .cmp-search,
+  body #componentes #catalogo[data-view="list"] .cmp-bar-right > label.cmp-deep:not(.cmp-search) { width: 100%; max-width: none; flex: none; }
+  body #componentes #catalogo[data-view="list"] .cmp-more { justify-self: start; }
+  body #componentes #catalogo[data-view="list"] > .cmp-results { grid-column: 2; grid-row: 1; min-width: 0; }
+  body #componentes #catalogo[data-view="list"] #marketGrid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  body #componentes #catalogo[data-view="list"] .cmp-info { grid-column: 1 / -1; }
+}
+@media (max-width: 1100px) and (min-width: 561px) {
+  body #componentes #catalogo[data-view="grid"] .cmp-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 800px) and (min-width: 561px) {
+  body #componentes #catalogo[data-view="grid"] .cmp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
