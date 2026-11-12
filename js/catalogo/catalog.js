@@ -380,7 +380,7 @@
   const sidebar = document.querySelector('.sidebar'), scrim = document.querySelector('.menu-scrim');
   function setMenu(open, restoreFocus = false) {
     sidebar.classList.toggle('menu-open', open);
-    sidebar.inert = !open;
+    sidebar.inert = !open && !(typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(min-width: 1024px)').matches);
     menu.setAttribute('aria-expanded', String(open));
     menu.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
     if (scrim) scrim.hidden = !open;

@@ -1,0 +1,29 @@
+/* Barra lateral fija en escritorio (>=1024px), contraíble a solo íconos. */
+.sidebar-toggle { display: none; }
+@media (min-width: 1024px) {
+  body { --sidebar-width: 232px; }
+  body.sidebar-collapsed { --sidebar-width: 64px; }
+  body .main { margin-left: var(--sidebar-width); }
+  body .sidebar {
+    display: flex; flex-direction: column; position: fixed; inset: 0 auto 0 0; width: var(--sidebar-width); height: 100dvh; max-height: none;
+    padding: 12px 8px; border: 0; border-right: 1px solid var(--stroke); border-radius: 0; box-shadow: none;
+    background: var(--surface); z-index: 31; overflow-x: hidden; overflow-y: auto; transition: width .18s ease;
+  }
+  body .menu-scrim { display: none; }
+  body .sidebar .nav { display: grid; gap: 4px; }
+  body .sidebar .nav-link { min-height: 44px; padding-inline: 12px; font-size: 14px; gap: 12px; white-space: nowrap; }
+  body .sidebar-toggle {
+    display: grid; place-items: center; width: 40px; height: 40px; margin: 0 0 12px 4px; padding: 0;
+    border: 1px solid var(--stroke); border-radius: 10px; background: transparent; color: var(--purple); cursor: pointer;
+  }
+  body .sidebar-toggle:hover { background: var(--purple-faint); }
+  body .sidebar-toggle svg { width: 20px; height: 20px; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; color: var(--purple); }
+  body .sidebar a:focus-visible, body .sidebar-toggle:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+  body.sidebar-collapsed .sidebar .nav-link { justify-content: center; padding-inline: 0; }
+  body.sidebar-collapsed .sidebar-toggle { margin-left: 8px; }
+  body.sidebar-collapsed .sidebar .nav-text {
+    position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  body .topbar .icon-button.mobile-menu { display: none; }
+  body .topbar { padding-inline: 32px; }
+}
