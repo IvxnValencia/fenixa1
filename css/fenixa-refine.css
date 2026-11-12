@@ -265,7 +265,7 @@ body #componentes .cmp-bar .cmp-field > select {
   width: 100%; min-width: 0; height: 40px; min-height: 40px; margin: 0; padding: 0 16px; border: 1px solid var(--stroke); border-radius: 12px;
   background: var(--surface-2); color: var(--text); font: inherit; font-size: 14px;
 }
-body #componentes .cmp-search { flex: 1 1 200px; max-width: 280px; }
+body #componentes .cmp-search { flex: 1 1 200px; max-width: none; }
 body #componentes .cmp-bar-right > label.cmp-deep:not(.cmp-search) { flex: 0 1 148px; }
 body #componentes .cmp-more { position: relative; flex: none; }
 body #componentes .cmp-more summary {
