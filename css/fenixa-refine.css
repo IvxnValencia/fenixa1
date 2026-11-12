@@ -249,3 +249,91 @@ body #mi-build #myBuildFilters .secondary-button { min-height: 40px; }
 body #mi-build .my-build-choice { margin-bottom: 8px; }
 body #mi-build .build-recommendations { padding: 16px; margin-bottom: 12px; border-radius: 14px; }
 body #mi-build .build-recommendations h3 { font-size: 16px; margin-bottom: 4px; }
+
+/* ---------- Componentes: una vista en dos niveles (rejilla de 8 px, tarjetas 16 px, controles 12 px) ---------- */
+body #componentes #catalogo { display: block; margin: 0; min-width: 0; }
+body #componentes .cmp-bar { display: flex; flex-direction: row; text-align: left; padding: 0; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 24px; min-height: 40px; }
+body #componentes .cmp-bar-left { display: flex; align-items: center; gap: 16px; min-width: 0; flex: 0 1 auto; }
+body #componentes .cmp-bar-left > .cmp-deep { display: flex; align-items: center; gap: 16px; min-width: 0; }
+body #componentes .cmp-bar h2 { margin: 0; font-size: 18px; font-weight: 650; line-height: 1.2; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+body #componentes .cmp-bar .catalog-count { width: auto; margin: 0; flex: none; font-size: 13px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+body #componentes .cmp-back { flex: none; min-height: 40px; height: 40px; padding: 0 16px; border-radius: 12px; font-size: 14px; color: var(--purple); }
+body #componentes .cmp-bar-right { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; min-width: 0; flex: 1 1 auto; }
+body #componentes .cmp-field { display: block; margin: 0; min-width: 0; font-size: 14px; color: var(--text); }
+body #componentes .cmp-bar .cmp-field > input:not([type=range]):not([type=checkbox]),
+body #componentes .cmp-bar .cmp-field > select {
+  width: 100%; min-width: 0; height: 40px; min-height: 40px; margin: 0; padding: 0 16px; border: 1px solid var(--stroke); border-radius: 12px;
+  background: var(--surface-2); color: var(--text); font: inherit; font-size: 14px;
+}
+body #componentes .cmp-search { flex: 1 1 200px; max-width: 280px; }
+body #componentes .cmp-bar-right > label.cmp-deep:not(.cmp-search) { flex: 0 1 148px; }
+body #componentes .cmp-more { position: relative; flex: none; }
+body #componentes .cmp-more summary {
+  display: flex; align-items: center; justify-content: center; height: 40px; padding: 0 16px; border: 1px solid var(--stroke); border-radius: 12px;
+  background: var(--surface-2); color: var(--purple); font-size: 14px; font-weight: 600; white-space: nowrap; cursor: pointer; list-style: none;
+}
+body #componentes .cmp-more summary::-webkit-details-marker { display: none; }
+body #componentes .cmp-more[open] summary { border-color: var(--purple); }
+body #componentes .cmp-more-body {
+  position: absolute; z-index: 5; top: calc(100% + 8px); right: 0; display: grid; gap: 16px; width: min(320px, calc(100vw - 32px)); padding: 16px;
+  border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface); box-shadow: 0 16px 40px rgb(0 0 0 / .18);
+}
+body #componentes .cmp-more-body .cmp-field { display: grid; gap: 8px; font-size: 12px; color: var(--muted); }
+body #componentes .cmp-more-body .cmp-field select { height: 40px; padding: 0 16px; border: 1px solid var(--stroke); border-radius: 12px; background: var(--surface-2); color: var(--text); font: inherit; font-size: 14px; width: 100%; }
+body #componentes .cmp-more-body .market-check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text); }
+body #componentes .cmp-more-body input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--purple); }
+body #componentes .cmp-more-body .secondary-button { min-height: 40px; border-radius: 12px; justify-content: center; }
+
+body #componentes .cmp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); grid-auto-rows: 1fr; gap: 16px; overflow: visible; padding: 0; }
+body #componentes .cmp-tile {
+  display: grid; grid-template-rows: 80px auto auto; align-content: center; justify-items: center; gap: 8px; min-width: 0; padding: 16px;
+  border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface); color: var(--text); text-align: center; font: inherit; cursor: pointer;
+  transition: border-color 160ms ease, background-color 160ms ease;
+}
+body #componentes .cmp-tile img { width: 100%; height: 80px; padding: 0; margin: 0; object-fit: contain; background: transparent; border-radius: 0; }
+body #componentes .cmp-tile strong { font-size: 13px; font-weight: 600; line-height: 1.3; color: var(--text); overflow-wrap: anywhere; }
+body #componentes .cmp-tile span { font-size: 13px; line-height: 1.3; color: var(--muted); margin: 0; }
+body #componentes .cmp-tile:active { background: var(--purple-soft); }
+@media (hover: hover) and (pointer: fine) { body #componentes .cmp-tile:hover { border-color: var(--purple); } }
+
+body #componentes .cmp-results { display: block; min-width: 0; }
+body #componentes .cmp-info { margin-top: 8px; font-size: 12px; color: var(--muted); }
+body #componentes .cmp-info summary { display: inline-flex; align-items: center; min-height: 40px; cursor: pointer; color: var(--purple); font-size: 13px; }
+body #componentes .cmp-info p { margin: 0 0 8px; font-size: 12px; line-height: 1.5; }
+body #componentes .catalog-empty { margin-top: 16px; padding: 24px 16px; border-radius: 16px; }
+body #componentes .comparison-wrap { margin-top: 16px; }
+
+body #componentes #catalogo #marketGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); grid-auto-rows: 1fr; gap: 16px; }
+body #componentes #catalogo #marketGrid .market-card { min-width: 0; padding: 16px; gap: 8px; border-radius: 16px; background: var(--surface); overflow: hidden; }
+body #componentes #catalogo #marketGrid .catalog-photo { --catalog-photo-height: 120px; height: var(--catalog-photo-height); margin: 0; padding: 0; border-radius: 12px; }
+body #componentes #catalogo #marketGrid .catalog-photo .product-image { height: var(--catalog-photo-height); max-height: var(--catalog-photo-height); padding: 0; margin: 0; }
+body #componentes #catalogo #marketGrid .catalog-product-heading { min-height: 0; }
+body #componentes #catalogo #marketGrid .market-card h3 { margin: 0; min-height: 2.6em; font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--text); }
+body #componentes #catalogo #marketGrid .catalog-brief { margin: 0; font-size: 12px; color: var(--muted); }
+body #componentes #catalogo #marketGrid .catalog-price-line { min-height: 0; margin: 0; gap: 0; }
+body #componentes #catalogo #marketGrid .catalog-price-line .market-price { font-size: 15px; font-weight: 700; color: var(--purple); }
+body #componentes #catalogo #marketGrid .catalog-price-line .estimate-label { display: block; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body #componentes #catalogo #marketGrid .catalog-card-actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; margin-top: auto; padding: 0; width: 100%; }
+body #componentes #catalogo #marketGrid .catalog-card-actions button { width: 100%; min-width: 0; height: 40px; min-height: 40px; margin: 0; padding: 0 8px; border-radius: 12px; font-size: 13px; line-height: 1.15; white-space: normal; justify-content: center; text-align: center; }
+body #componentes #catalogo[data-level="cat"] #marketGrid .market-category { display: none; }
+body #componentes #catalogo #marketGrid .market-category { margin: 0; font-size: 11px; color: var(--muted); }
+body #componentes .fx-pager { margin: 24px 0 0; }
+@media (max-width: 1100px) {
+  body #componentes .cmp-bar-right { flex-basis: 100%; }
+}
+@media (max-width: 560px) {
+  body #componentes .cmp-bar { gap: 8px; margin-bottom: 16px; }
+  body #componentes .cmp-bar h2 { font-size: 17px; }
+  body #componentes .cmp-bar-left, body #componentes .cmp-bar-left > .cmp-deep { gap: 8px; }
+  body #componentes #catalogo[data-view="grid"] .cmp-bar-left { flex: 0 0 auto; }
+  body #componentes #catalogo[data-view="grid"] .cmp-bar-right { flex: 1 1 0; }
+  body #componentes #catalogo[data-view="grid"] .cmp-search { max-width: none; }
+  body #componentes #catalogo[data-view="list"] .cmp-search { flex-basis: 100%; max-width: none; }
+  body #componentes #catalogo[data-view="list"] .cmp-bar-right > label.cmp-deep:not(.cmp-search) { flex: 1 1 0; }
+  body #componentes .cmp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  body #componentes .cmp-tile { grid-template-rows: 64px auto auto; padding: 16px 8px; }
+  body #componentes .cmp-tile img { height: 64px; }
+  body #componentes #catalogo #marketGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  body #componentes #catalogo #marketGrid .catalog-photo { --catalog-photo-height: 96px; }
+  body #componentes #catalogo #marketGrid .catalog-card-actions { grid-template-columns: minmax(0, 1fr); }
+}

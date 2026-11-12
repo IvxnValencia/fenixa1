@@ -437,7 +437,7 @@
     <link rel="stylesheet" href="css/build-refinement.css?v=2">
     <link rel="stylesheet" href="css/build-planner.css?v=4">
     <link rel="stylesheet" href="css/build-library.css?v=2">
-    <link rel="stylesheet" href="css/fenixa-refine.css?v=4">
+    <link rel="stylesheet" href="css/fenixa-refine.css?v=8">
     <link rel="stylesheet" href="css/hero-fenixa.css?v=1">
     <link rel="stylesheet" href="css/interface-polish.css?v=8">
     <link rel="stylesheet" href="css/sidebar-desktop.css?v=1">
@@ -529,8 +529,24 @@
             <a href="#componentes"><span>04 / EXPLORAR</span><h2>Buscar componentes</h2><p>Fotos, modelos y filtros de presupuesto por categoría.</p><strong>Ver componentes </strong></a>
           </section>
           <section class="section visual-catalog" id="componentes" aria-labelledby="parts-title" hidden>
-            <div class="section-heading"><div><h2 id="parts-title">Elige una categoría</h2><p>Fotos de referencia sin fondo para orientarte; debajo encontrarás los modelos exactos y sus fuentes.</p></div><a class="section-link" href="#catalogo">Ir a modelos </a></div>
-            <div class="parts-grid" id="partsGrid"></div>
+            <div class="cmp-view" id="catalogo" data-view="grid">
+              <div class="section-heading cmp-bar">
+                <div class="cmp-bar-left"><h2 id="parts-title">Elige una categoría</h2><span class="cmp-deep" hidden><button class="secondary-button cmp-back" id="catalogBack" type="button">← Categorías</button><h2 id="catalog-title" tabindex="-1">Modelos</h2><span class="catalog-count" id="catalogCount" role="status">0 modelos</span></span></div>
+                <div class="cmp-bar-right" id="catalogFilters" role="group" aria-label="Buscar y filtrar">
+                  <label class="cmp-field cmp-search"><span class="sr-only">Buscar modelo o referencia</span><input id="catalogSearch" type="search" placeholder="Buscar modelo o referencia" autocomplete="off"></label>
+                  <label class="cmp-field cmp-deep" hidden><span class="sr-only">Orden</span><select id="catalogSort"><option value="featured">Destacados</option><option value="price-asc">Menor precio</option><option value="price-desc">Mayor precio</option><option value="name">Nombre A–Z</option></select></label>
+                  <label class="cmp-field cmp-deep" hidden><span class="sr-only">Precio máximo en pesos colombianos</span><input id="catalogMax" type="number" min="0" step="10000" inputmode="numeric" placeholder="Precio máx."></label>
+                  <details class="cmp-more cmp-deep" id="catalogMore" hidden><summary>Más filtros</summary><div class="cmp-more-body"><label class="cmp-field">Categoría<select id="categoryFilter"><option value="all">Todas las categorías</option></select></label><label class="cmp-field">Tienda<select id="storeFilter"><option value="all">Todas las tiendas</option><option value="speedlogic">Speed Logic</option><option value="clones">Clones y Periféricos</option></select></label><label class="cmp-field">Precio máximo<input id="catalogPriceSlider" type="range" min="0" step="10000"></label><label class="market-check"><input type="checkbox" id="pricedOnly"> Precio de las últimas 72 h</label><button class="secondary-button" id="clearFilters" type="button">Limpiar filtros</button></div></details>
+                </div>
+              </div>
+              <div class="cmp-grid" id="partsGrid"></div>
+              <div class="cmp-results" id="catalogResults" hidden>
+              <div class="market-grid" id="marketGrid"></div>
+              <aside class="compare-tray comparison-dock" id="compareTray" aria-label="Lista de comparaciones de componentes" hidden><button class="comparison-dock-toggle" id="compareTrayToggle" type="button" aria-expanded="false" aria-controls="compareTrayBody"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/></svg><strong>Comparaciones</strong><span id="compareTrayCount">0</span></button><div id="compareTrayBody" class="comparison-dock-body" hidden><div class="compare-list" id="compareList"></div><p id="compareTrayMessage" role="status">Elige dos piezas de la misma categoría.</p><div class="comparison-dock-actions"><button class="secondary-button" id="clearCompare" type="button">Vaciar</button><button class="primary-button" id="openRealComparison" type="button" disabled>Comparar</button></div></div></aside>
+              <div class="catalog-empty" id="catalogEmpty">Sin resultados con estos filtros.</div>
+              <details class="cmp-info"><summary>Más info</summary><p class="catalog-footnote">Sin precios en vivo. Las consultas de más de 72 horas se marcan como vencidas. Fotografías de fabricantes y tiendas: derechos de sus titulares; confirma modelo, presentación, impuestos, envío y garantía.</p></details>
+              </div>
+            </div>
           </section>
           <section class="section complete-builds" id="builds" aria-labelledby="builds-title" hidden>
             <div class="section-heading"><div><h2 id="builds-title">Builds completas</h2><p>Configuraciones de referencia con modelos reales y una lista de compra por pieza.</p></div></div>
@@ -615,24 +631,6 @@
           <section class="section" id="mi-pc" aria-labelledby="pc-title" hidden>
             <h2 id="pc-title">Mi PC y mejoras</h2>
             <noscript>Activa JavaScript para registrar tu equipo y consultar la orientación de mejoras.</noscript>
-          </section>
-
-          <section class="section" id="catalogo" aria-labelledby="catalog-title" hidden>
-            <div class="section-heading"><div><h2 id="catalog-title">Modelos para tu build</h2><p>Busca, compara y revisa la compatibilidad antes de añadir cada pieza.</p></div><button class="section-link" id="clearFilters" type="button">Limpiar filtros</button></div>
-            <div class="catalog-panel">
-              <section class="catalog-filter-panel" id="catalogFilters" aria-label="Buscar y filtrar componentes"><div class="catalog-filter-heading"><strong>Encuentra tu pieza</strong></div><div class="catalog-filter-main"><label class="catalog-category">Categoría<select class="catalog-select" id="categoryFilter"><option value="all">Todas las categorías</option></select></label></div><div class="catalog-filter-footer"><span class="catalog-count" id="catalogCount" role="status">582 piezas</span></div></section>
-              <div class="market-grid" id="marketGrid">
-                <article class="market-card" data-market-price="bajo" data-market-category="storage"><span class="market-category">Almacenamiento</span><h3>SSD NVMe 1 TB</h3><p>Lectura rápida para sistema y proyectos.</p><strong class="market-price">$250.000 – $420.000</strong><div class="market-note"><span class="sample-label">Dato de muestra</span><span>Oferta pendiente</span></div><button class="compare-trigger" type="button">Comparar pieza</button></article>
-                <article class="market-card" data-market-price="medio" data-market-category="ram"><span class="market-category">Memoria</span><h3>Kit 32 GB DDR5</h3><p>Más margen para crear y hacer multitarea.</p><strong class="market-price">$450.000 – $720.000</strong><div class="market-note"><span class="sample-label">Dato de muestra</span><span>Oferta pendiente</span></div><button class="compare-trigger" type="button">Comparar pieza</button></article>
-                <article class="market-card" data-market-price="medio" data-market-category="cpu"><span class="market-category">Procesador</span><h3>Ryzen 5 7600</h3><p>Base equilibrada para crecer sin cambiar todo.</p><strong class="market-price">$850.000 – $1.100.000</strong><div class="market-note"><span class="sample-label">Dato de muestra</span><span>Oferta pendiente</span></div><button class="compare-trigger" type="button">Comparar pieza</button></article>
-                <article class="market-card" data-market-price="alto" data-market-category="gpu"><span class="market-category">Gráfica</span><h3>RTX 4060</h3><p>Un salto para jugar y acelerar renderizados.</p><strong class="market-price">$1.450.000 – $1.900.000</strong><div class="market-note"><span class="sample-label">Dato de muestra</span><span>Oferta pendiente</span></div><button class="compare-trigger" type="button">Comparar pieza</button></article>
-                <article class="market-card" data-market-price="medio" data-market-category="board"><span class="market-category">Placa madre</span><h3>B650 · AM5</h3><p>Compatibilidad con la plataforma Ryzen actual.</p><strong class="market-price">$700.000 – $1.000.000</strong><div class="market-note"><span class="sample-label">Dato de muestra</span><span>Oferta pendiente</span></div><button class="compare-trigger" type="button">Comparar pieza</button></article>
-                <article class="market-card" data-market-price="bajo" data-market-category="power"><span class="market-category">Fuente</span><h3>650 W · 80+ Bronze</h3><p>Potencia estable para una configuración media.</p><strong class="market-price">$300.000 – $520.000</strong><div class="market-note"><span class="sample-label">Dato de muestra</span><span>Oferta pendiente</span></div><button class="compare-trigger" type="button">Comparar pieza</button></article>
-              </div>
-              <aside class="compare-tray comparison-dock" id="compareTray" aria-label="Lista de comparaciones de componentes" hidden><button class="comparison-dock-toggle" id="compareTrayToggle" type="button" aria-expanded="false" aria-controls="compareTrayBody"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/></svg><strong>Comparaciones</strong><span id="compareTrayCount">0</span></button><div id="compareTrayBody" class="comparison-dock-body" hidden><div class="compare-list" id="compareList"></div><p id="compareTrayMessage" role="status">Elige dos piezas de la misma categoría.</p><div class="comparison-dock-actions"><button class="secondary-button" id="clearCompare" type="button">Vaciar</button><button class="primary-button" id="openRealComparison" type="button" disabled>Comparar</button></div></div></aside>
-              <div class="catalog-empty" id="catalogEmpty">No hay piezas en este cruce de filtros. Prueba otro rango o categoría.</div>
-              <p class="catalog-footnote">Los rangos son datos de muestra para probar la experiencia. La conexión de ofertas y vendedores verificados se incorporará después.</p>
-            </div>
           </section>
 
           <section class="section" id="resolution" aria-labelledby="resolution-title">
@@ -778,11 +776,6 @@
         document.querySelectorAll('[data-price-filter]').forEach(item => item.classList.remove('active'));
         button.classList.add('active'); renderMarket();
       }));
-      document.getElementById('categoryFilter').addEventListener('change', renderMarket);
-      document.getElementById('clearFilters').addEventListener('click', () => {
-        document.querySelectorAll('[data-price-filter]').forEach(item => item.classList.toggle('active', item.dataset.priceFilter === 'all'));
-        document.getElementById('categoryFilter').value = 'all'; renderMarket(); showToast('Filtros limpiados.');
-      });
       const compareSelection = [];
       function updateCompareTray() {
         const tray = document.getElementById('compareTray');
@@ -861,7 +854,7 @@
   <script src="js/catalogo/catalog-goal50-cooling.js?v=1"></script>
   <script src="js/catalogo/catalog-goal50-setup.js?v=1"></script>
   <script src="js/catalogo/catalog-goal50.js?v=4"></script>
-  <script src="js/interfaz/fenixa-pager.js?v=1"></script>
+  <script src="js/interfaz/fenixa-pager.js?v=2"></script>
   <script src="js/builds/build-proposals.js?v=6"></script>
     <script src="js/fichas/platform-data.js?v=2"></script>
     <script src="js/builds/build-editor.js?v=7"></script>
@@ -882,7 +875,7 @@
     <script src="js/builds/build-library.js?v=2"></script>
   <script src="js/interfaz/comparison-radar.js?v=15"></script>
   <script src="js/interfaz/comparison-dialog.js?v=21"></script>
-    <script src="js/catalogo/catalog.js?v=32"></script>
+    <script src="js/catalogo/catalog.js?v=35"></script>
     <script src="js/portatiles/laptops-data.js?v=5"></script>
     <script src="js/portatiles/laptops-goal30.js?v=1"></script>
   <script src="js/portatiles/laptops-goal50.js?v=1"></script>
@@ -893,11 +886,11 @@
     <script src="js/builds/build-quickview.js?v=2"></script>
     <script src="js/interfaz/radar-highlight.js?v=1"></script>
     <script src="js/builds/pc-advice.js"></script>
-    <script src="js/builds/pc-profile.js"></script>
+    <script src="js/builds/pc-profile.js?v=2"></script>
     <script src="js/builds/auto-build.js?v=5"></script>
     <script src="js/builds/build-planner.js?v=13"></script>
     <script src="js/builds/builder-journey.js?v=4"></script>
-    <script src="js/interfaz/navigation.js?v=13"></script>
+    <script src="js/interfaz/navigation.js?v=14"></script>
     <script src="js/interfaz/sidebar.js?v=1"></script>
     <script src="js/interfaz/home-continue.js?v=3"></script>
   </body>

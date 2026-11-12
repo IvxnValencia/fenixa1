@@ -71,9 +71,8 @@
     if (!button) return;
     $('categoryFilter').value = button.dataset.pcCategory;
     $('catalogSearch').value = button.dataset.pcQuery;
-    $('catalogMin').value = ''; $('catalogMax').value = '';
-    document.querySelectorAll('[data-price-filter]').forEach(b => b.classList.toggle('active', b.dataset.priceFilter === 'all'));
-    window.renderProductCatalog(); location.hash = 'catalogo';
+    $('catalogMax').value = '';
+    location.hash = 'componentes/' + (button.dataset.pcCategory || 'todo');
   });
   setForm(saved); render();
 })();

@@ -33,12 +33,13 @@
     const bits=(fields[p.category]||[]).filter(([key])=>v[key]!=null).map(([key,unit])=>String(v[key])+(unit?' '+unit:''));
     return bits.length?bits.join(' · '):p.summary;
   }
+  const shortName = p => window.FENIXA_SPECS.facts(p).displayName || p.name;
   function card(p) {
     const offer = catalogOffer(p);
     const fit=window.FENIXA_MY_BUILD.check(p), inBuild=window.FENIXA_MY_BUILD.ids().includes(p.id);
     return `<article class="market-card fx-card" data-product-id="${p.id}" data-market-category="${p.category}">
-      <div class="catalog-product-heading"><span class="market-category">${esc(categoryName(p.category))}${p.imageKind==='category'?' · ilustración de categoría':''}</span><h3>${esc(p.name)}</h3></div>
-      <button class="catalog-photo fx-open" type="button" data-open-product="${p.id}" aria-label="Ver detalles de ${esc(p.name)}"><img class="product-image" src="${esc(p.image)}" alt="${esc(p.name)}" width="480" height="360" loading="lazy" decoding="async"></button>
+      <div class="catalog-product-heading"><span class="market-category">${esc(categoryName(p.category))}${p.imageKind==='category'?' · ilustración de categoría':''}</span><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3></div>
+      <button class="catalog-photo fx-open" type="button" data-open-product="${p.id}" aria-label="Ver detalles de ${esc(p.name)}"><img class="product-image" src="${esc(p.image)}" alt="${esc(p.name)}" width="480" height="360" loading="eager" decoding="async"></button>
       <p class="catalog-brief" title="${esc(brief(p))}">${esc(brief(p))}</p>
       <div class="catalog-price-line"><strong class="market-price">${offer?money(offer.price):'Precio por confirmar'}</strong><span class="estimate-label">${offer?(offer.status==='listed'?'Precio publicado · COP':market.recent(offer)?'Precio consultado · COP':'Consulta vencida · COP'):'Sin oferta exacta'}</span></div>
       <div class="catalog-card-actions"><button class="compare-trigger" type="button" data-compare="${p.id}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button class="primary-button" type="button" data-add-my-build="${p.id}">${inBuild?'En Mi build ':fit.status==='conflict'?'Revisar conflicto':'Añadir'}</button></div>
@@ -49,30 +50,18 @@
 
   $('partsGrid').innerHTML = categories.map(c => {
     const p = {name:`Ilustración de ${c.name}`,image:`assets/categories/${c.id}.png`};
-    return `<button class="part-tile" type="button" data-category="${c.id}" aria-pressed="false">${photo(p,'',true)}<strong>${esc(c.name)}</strong><span>${products.filter(p => p.category === c.id).length} modelo${products.filter(p => p.category === c.id).length === 1 ? '' : 's'}</span></button>`;
+    const n = products.filter(p => p.category === c.id).length;
+    return `<button class="cmp-tile" type="button" data-category="${c.id}">${photo(p,'',true)}<strong>${esc(c.name)}</strong><span>${n} modelo${n === 1 ? '' : 's'}</span></button>`;
   }).join('');
   $('categoryFilter').innerHTML = '<option value="all">Todas las categorías</option>' + categories.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
+  // Una sola vista en dos niveles; la categoría vive en el hash (#componentes/<id> o #componentes/todo).
+  const level = { cat: null };
+  const goLevel = cat => { location.hash = cat ? 'componentes/' + cat : 'componentes'; };
   $('partsGrid').addEventListener('click', event => {
     const tile = event.target.closest('[data-category]'); if (!tile) return;
-    $('categoryFilter').value = tile.dataset.category;
-    window.renderProductCatalog();
-    location.hash = 'componentes';
-    $('catalogSearch').focus();
+    goLevel(tile.dataset.category);
   });
-  const panel = $('catalogFilters');
-  panel.querySelector('.catalog-filter-heading').append($('clearFilters'));
-  const searchbar = document.createElement('div');
-  searchbar.className = 'catalog-searchbar';
-  searchbar.innerHTML = '<label>Buscar modelo o referencia<input id="catalogSearch" type="search" placeholder="Ryzen, RTX 4060, Kingston…"></label><label>Ordenar<select id="catalogSort"><option value="featured">Destacados</option><option value="price-asc">Menor precio consultado</option><option value="price-desc">Mayor precio consultado</option><option value="name">Nombre A–Z</option></select></label>';
-  panel.querySelector('.catalog-filter-main').prepend(searchbar);
-  const pricebar = document.createElement('div');
-  pricebar.className = 'catalog-price-control';
-  pricebar.innerHTML = '<div class="catalog-price-heading"><label for="catalogPriceSlider">Precio máximo por pieza</label><label class="sr-only" for="catalogMax">Precio máximo exacto en pesos colombianos</label><input id="catalogMax" type="number" min="0" step="10000" inputmode="numeric" placeholder="Sin límite" aria-describedby="catalogPriceNote"></div><input id="catalogPriceSlider" type="range" min="0" step="10000" aria-describedby="catalogPriceNote"><div class="catalog-price-scale"><span>$0</span><span>Sin límite</span></div><p id="catalogPriceNote">COP · Al limitar el precio se excluyen las piezas sin un importe consultado.</p>';
-  searchbar.parentElement.after(pricebar);
-  const storebar = document.createElement('details');
-  storebar.className = 'catalog-filter-options';
-  storebar.innerHTML = '<summary>Tiendas y disponibilidad</summary><div class="market-filterbar"><label for="storeFilter">Tienda<select id="storeFilter"><option value="all">Todas las tiendas</option><option value="speedlogic">Speed Logic</option><option value="clones">Clones y Periféricos</option></select></label><label class="market-check"><input type="checkbox" id="pricedOnly"> Solo precios consultados en las últimas 72 horas</label><p>Los precios consultados pueden cambiar. Confirma disponibilidad, condiciones y envío en la tienda.</p></div>';
-  pricebar.after(storebar);
+  $('catalogBack').addEventListener('click', () => goLevel(null));
   const slider = $('catalogPriceSlider');
   const priceCeiling = Math.max(1000000, Math.ceil(Math.max(0,...products.map(p=>catalogOffer(p)?.price||0))/10000)*10000+10000);
   slider.max = String(priceCeiling);
@@ -88,8 +77,6 @@
     $('catalogMax').value = Number(slider.value)>=Number(slider.max)?'':slider.value;
     syncPriceControl(); window.renderProductCatalog();
   });
-  $('catalog-title').textContent = 'Modelos para tu build';
-  document.querySelector('.catalog-footnote').textContent = 'Sin precios en vivo. Las consultas de más de 72 horas se marcan como vencidas. Búsquedas no equivalen a ofertas. Fotografías de fabricantes y tiendas: derechos de sus titulares; confirma modelo, presentación, impuestos, envío y garantía.';
 
   const compareTable = document.createElement('div');
   compareTable.className = 'comparison-wrap'; compareTable.id = 'productComparison';
@@ -115,39 +102,80 @@
       return order==='price-asc'?ap-bp:bp-ap;
     });
     if (order === 'name') visible.sort((a,b)=>a.name.localeCompare(b.name,'es'));
-    const signature = JSON.stringify([$('catalogMax').value, query, category, $('pricedOnly').checked, $('storeFilter').value, order]);
-    const page = window.FENIXA_PAGER.paginate('catalog', visible, { anchor: $('marketGrid'), signature, onChange: window.renderProductCatalog, label: 'Páginas de componentes', scrollTarget: $('catalogo') });
+    // Filas completas según las columnas reales (auto-fill de 240 px; 2 en móvil). Si la lista aún está oculta se usa 8 y se recalcula al mostrarse.
+    const gridWidth = $('marketGrid').clientWidth, cols = window.innerWidth <= 560 ? 2 : gridWidth ? Math.max(1, Math.floor((gridWidth + 16) / 256)) : 0;
+    const size = !cols ? 8 : cols >= 4 ? cols * 2 : cols === 3 ? 9 : cols * 4;
+    if (!cols) requestAnimationFrame(() => { if ($('marketGrid').clientWidth) window.renderProductCatalog(); });
+    const signature = JSON.stringify([size, $('catalogMax').value, query, category, $('pricedOnly').checked, $('storeFilter').value, order]);
+    const page = window.FENIXA_PAGER.paginate('catalog', visible, { anchor: $('marketGrid'), signature, onChange: window.renderProductCatalog, label: 'Páginas de componentes', scrollTarget: $('catalogo'), size });
     $('marketGrid').innerHTML = page.items.map(card).join('');
-    $('catalogCount').textContent = `${visible.length} ${visible.length===1?'pieza':'piezas'}${page.total>1?` · página ${page.page} de ${page.total}`:''}`;
+    $('catalogCount').textContent = `${visible.length} ${visible.length===1?'modelo':'modelos'}`;
     $('catalogEmpty').classList.toggle('show', !visible.length);
-    $('catalogEmpty').textContent = low > high ? 'El mínimo supera el máximo o no coincide con el rango seleccionado.' : 'No hay resultados con estos filtros. Un filtro de precio excluye las piezas sin una oferta exacta consultada.';
-    $('partsGrid').querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.category===category)));
+    $('catalogEmpty').textContent = 'Sin resultados. Un filtro de precio excluye las piezas sin precio consultado.';
     renderComparison();
   };
+  function applyLevel() {
+    const deep = level.cat !== null;
+    $('partsGrid').hidden = deep; $('parts-title').hidden = deep; $('catalogResults').hidden = !deep;
+    document.querySelectorAll('#catalogo .cmp-deep').forEach(node => { node.hidden = !deep; });
+    $('catalogo').dataset.view = deep ? 'list' : 'grid';
+    $('catalogo').dataset.level = level.cat === 'todo' ? 'todo' : 'cat';
+    if (deep) $('catalog-title').textContent = level.cat === 'todo' ? 'Resultados' : categoryName(level.cat);
+  }
+  function syncFromHash() {
+    if (location.hash === '#catalogo') { const c = $('categoryFilter').value; history.replaceState(null, '', '#componentes/' + (c === 'all' ? 'todo' : c)); }
+    const m = /^#componentes\/([\w-]+)$/.exec(location.hash);
+    if (!m && location.hash !== '#componentes') return;
+    let cat = m ? m[1] : null;
+    if (cat !== null && cat !== 'todo' && !categories.some(c => c.id === cat)) { cat = null; history.replaceState(null, '', '#componentes'); }
+    const prev = level.cat, typing = document.activeElement === $('catalogSearch');
+    level.cat = cat;
+    if (cat === null) { if (prev !== null) resetCatalogFilters(); }
+    else $('categoryFilter').value = cat === 'todo' ? 'all' : cat;
+    applyLevel(); window.renderProductCatalog();
+    if (prev === cat || typing) return;
+    requestAnimationFrame(() => {
+      if (!/^#componentes(\/|$)/.test(location.hash)) return;
+      if (cat === null) ($('partsGrid').querySelector(`[data-category="${prev}"]`) || $('catalogSearch')).focus({ preventScroll: true });
+      else $('catalog-title').focus({ preventScroll: true });
+      $('componentes').scrollIntoView({ block: 'start', behavior: 'instant' });
+    });
+  }
   window.FENIXA_BROWSE_CATEGORY = category => {
     if (!categories.some(c => c.id === category)) return;
     resetCatalogFilters();
     $('categoryFilter').value = category;
     window.renderProductCatalog();
+    const target = '#componentes/' + category;
     const reveal = () => {
-      if (location.hash !== '#componentes') return;
+      if (location.hash !== target) return;
       $('catalog-title').tabIndex = -1;
       $('catalog-title').focus({preventScroll:true});
       $('catalogo').scrollIntoView({block:'start',behavior:'instant'});
     };
-    if (location.hash === '#componentes') reveal();
+    if (location.hash === target) reveal();
     else {
       window.addEventListener('hashchange', () => requestAnimationFrame(reveal), {once:true});
-      location.hash = 'componentes';
+      location.hash = 'componentes/' + category;
     }
   };
   ['storeFilter','pricedOnly'].forEach(id=>$(id).addEventListener('change',window.renderProductCatalog));
-  window.addEventListener('hashchange', () => { if(location.hash === '#catalogo') window.renderProductCatalog(); });
+  window.addEventListener('hashchange', syncFromHash);
   window.addEventListener('fenixa-build-changed', () => window.renderProductCatalog(true));
   window.addEventListener('fenixa-profile-changed', () => window.renderProductCatalog());
-  ['catalogSearch', 'catalogMax'].forEach(id => $(id).addEventListener('input', () => { syncPriceControl(); window.renderProductCatalog(); }));
+  $('catalogMax').addEventListener('input', () => { syncPriceControl(); window.renderProductCatalog(); });
+  $('catalogSearch').addEventListener('input', () => {
+    const query = $('catalogSearch').value.trim();
+    if (level.cat === null && query) goLevel('todo');
+    else if (level.cat === 'todo' && !query) { history.replaceState(null, '', '#componentes'); syncFromHash(); }
+    else window.renderProductCatalog();
+  });
+  $('categoryFilter').addEventListener('change', () => goLevel($('categoryFilter').value === 'all' ? 'todo' : $('categoryFilter').value));
   $('catalogSort').addEventListener('change', window.renderProductCatalog);
-  $('clearFilters').addEventListener('click', () => { resetCatalogFilters(); window.renderProductCatalog(); });
+  // «Más filtros» se cierra con Escape (devolviendo el foco) o al pulsar fuera.
+  $('catalogMore').addEventListener('keydown', event => { if (event.key === 'Escape' && $('catalogMore').open) { event.preventDefault(); $('catalogMore').open = false; $('catalogMore').querySelector('summary').focus(); } });
+  document.addEventListener('click', event => { if ($('catalogMore').open && !$('catalogMore').contains(event.target)) $('catalogMore').open = false; });
+  $('clearFilters').addEventListener('click', () => { resetCatalogFilters(); if (level.cat && level.cat !== 'todo') $('categoryFilter').value = level.cat; window.renderProductCatalog(); });
   function renderComparison() {
     $('compareTray').hidden = !selected.size;
     $('compareTrayCount').textContent = `${selected.size}/4`;
@@ -400,5 +428,5 @@
   document.addEventListener('focusin', event => {
     if (sidebar.classList.contains('menu-open') && !sidebar.contains(event.target) && event.target !== menu) setMenu(false);
   });
-  window.renderProductCatalog(); renderGallery(); routeBuild();
+  window.renderProductCatalog(); renderGallery(); routeBuild(); syncFromHash();
 })();

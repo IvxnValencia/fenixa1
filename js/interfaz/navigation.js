@@ -1,7 +1,7 @@
 (() => {
   const routes = {
     inicio: { title: 'Inicio', sections: ['#welcome'] },
-    componentes: { title: 'Componentes', sections: ['#componentes', '#catalogo'] },
+    componentes: { title: 'Componentes', sections: ['#componentes'] },
     'mi-build': { title: 'Mi build', sections: ['#mi-build'] },
     builds: { title: 'Builds completas', sections: ['#builds'] },
     laptops: { title: 'Laptops', sections: ['#laptops'] },
@@ -15,7 +15,7 @@
     if (hash === 'configuradorc') { history.replaceState(null, '', '#configurador'); hash = 'configurador'; }
     if (hash === 'catalogo') { history.replaceState(null, '', '#componentes'); hash = 'componentes'; }
     if (hash === 'compatibilidad') { history.replaceState(null, '', '#builds'); hash = 'builds'; }
-    const requested = hash.startsWith('build/') ? 'builds' : hash === 'recomendacion' ? 'configurador' : hash === 'precios' ? 'inicio' : hash;
+    const requested = hash.startsWith('build/') ? 'builds' : hash.startsWith('componentes/') ? 'componentes' : hash === 'recomendacion' ? 'configurador' : hash === 'precios' ? 'inicio' : hash;
     const key = Object.hasOwn(routes, requested) ? requested : 'inicio';
     const page = routes[key];
     const visible = new Set(page.sections.map(selector => document.querySelector(selector)));

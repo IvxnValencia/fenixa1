@@ -18,13 +18,13 @@
     return out;
   }
 
-  function paginate(key, items, { anchor, signature = '', onChange, label = 'Páginas', scrollTarget }) {
+  function paginate(key, items, { anchor, signature = '', onChange, label = 'Páginas', scrollTarget, size = SIZE }) {
     let s = state.get(key);
     if (!s) { s = { page: 1, signature, onChange }; state.set(key, s); }
     s.onChange = onChange;
     s.scrollTarget = scrollTarget || anchor;
     if (s.signature !== signature) { s.page = 1; s.signature = signature; }
-    const total = Math.max(1, Math.ceil(items.length / SIZE));
+    const total = Math.max(1, Math.ceil(items.length / size));
     s.page = Math.min(Math.max(1, s.page), total);
 
     let nav = document.getElementById(`${key}Pager`);
@@ -51,8 +51,8 @@
     }
     nav.hidden = total <= 1;
     const p = s.page;
-    const from = items.length ? (p - 1) * SIZE + 1 : 0;
-    const to = Math.min(items.length, p * SIZE);
+    const from = items.length ? (p - 1) * size + 1 : 0;
+    const to = Math.min(items.length, p * size);
     nav.innerHTML = total <= 1 ? '' :
       `<button type="button" class="fx-page fx-page-step" data-page="${p - 1}" ${p === 1 ? 'disabled' : ''} aria-label="Página anterior">‹</button>` +
       pagesFor(p, total).map(n => n === '…'
@@ -60,7 +60,7 @@
         : `<button type="button" class="fx-page" data-page="${n}" ${n === p ? 'aria-current="page"' : ''} aria-label="Página ${n} de ${total}">${n}</button>`).join('') +
       `<button type="button" class="fx-page fx-page-step" data-page="${p + 1}" ${p === total ? 'disabled' : ''} aria-label="Página siguiente">›</button>` +
       `<span class="fx-page-range">${from}–${to} de ${items.length}</span>`;
-    return { items: items.slice((p - 1) * SIZE, p * SIZE), page: p, total, from, to };
+    return { items: items.slice((p - 1) * size, p * size), page: p, total, from, to };
   }
 
   window.FENIXA_PAGER = { paginate, SIZE };
