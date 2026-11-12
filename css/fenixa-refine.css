@@ -436,3 +436,25 @@ body #mi-build > .section-heading .secondary-button, body #mi-build .saved-build
 body #builds .build-use-filters button { height: 40px; min-height: 40px; box-sizing: border-box; }
 body #laptops #laptopGrid, body #builds #buildGallery { gap: 16px; }
 body #startBuild .builder-nav button, body #mi-build .my-build-actions .primary-button, body #mi-build .my-build-actions .secondary-button { height: 40px; min-height: 40px; }
+
+/* P12 · Ficha: foto grande, Datos clave en tabla de 2 columnas y un único «Fuentes y notas». Rejilla de 8 px. */
+body .product-sheet-main { grid-template-columns: 240px minmax(0, 1fr); gap: 16px; padding: 16px; align-items: center; }
+body .product-sheet-photo { padding: 8px; }
+body .product-sheet-photo img { height: 208px; }
+body .product-sheet-info h2 { font-size: 20px; overflow-wrap: anywhere; }
+body .product-sheet-price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; margin: 0 0 16px; }
+body .product-sheet-price .market-price { font-size: 20px; }
+body .product-sheet-price .estimate-label { font-size: 12px; color: var(--muted); }
+body .product-sheet-warning { margin: 0; padding: 8px 16px; border: 1px solid var(--stroke); border-left: 4px solid var(--purple); border-radius: 12px; background: var(--purple-faint, var(--surface-2)); color: var(--text); font-size: 13px; line-height: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body .product-sheet-key h3 { margin: 0 0 8px; font-size: 13px; color: var(--text); }
+body .product-sheet-table { width: 100%; border-collapse: collapse; border: 1px solid var(--stroke); border-radius: 16px; overflow: hidden; background: var(--surface-2); table-layout: fixed; }
+body .product-sheet-table th, body .product-sheet-table td { width: 50%; padding: 8px 16px; text-align: left; font-size: 13px; font-weight: 400; line-height: 24px; vertical-align: top; overflow-wrap: anywhere; border-top: 1px solid var(--stroke); }
+body .product-sheet-table tr:first-child > * { border-top: 0; }
+body .product-sheet-table th { color: var(--muted); }
+body .product-sheet-table td { color: var(--text); font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) {
+  body .product-sheet-main { grid-template-columns: minmax(0, 1fr); }
+  body .product-sheet-photo img { height: 192px; }
+  body .product-sheet-info h2 { font-size: 18px; }
+  body .product-sheet-info .catalog-card-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

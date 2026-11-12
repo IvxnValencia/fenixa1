@@ -217,22 +217,20 @@
   let sheetOpener = null, sheetId = null;
   function renderProductSheet(id) {
     const p = byId[id]; if (!p) return;
-    const tmp = document.createElement('div'); tmp.innerHTML = card(p);
-    const price = tmp.querySelector('.catalog-price-line').outerHTML;
     const inBuild = window.FENIXA_MY_BUILD.ids().includes(p.id), fit = window.FENIXA_MY_BUILD.check(p);
     const reference = window.FENIXA_SPECS.facts(p);
-    // Reuse the public comparison schema for its labels and units; only show known facts.
+    // Reuse the public comparison schema for its labels and units; show only known facts or an explicit "No aplica".
     const priority = {cpu:['socket','cores','threads','memory','graphics','boost','tdp','basePower'],gpu:['chip','vram','memory','length','connectors','recommendedPsu','power','outputs'],ram:['capacity','memory','rate','modules','format','cl','voltage','profiles'],storage:['capacity','placement','format','pcie','read','write','tbw'],board:['socket','memory','format','slots','maxRam','m2Slots','chipset','dimensions'],power:['watts','format','connectors','efficiency','length','dimensions','protections','warrantyYears'],case:['format','gpuMax','coolerMax','width','height','depth','clearanceNotes'],cooler:['format','sockets','height','rpm','noise'],fan:['format','connection','rpm','airflow','pressure','noise'],setup:['format','connection','width','height','weight']}[p.category] || [];
-    const fields = reference.verified ? (window.FENIXA_SPECS.compareMany([p,p])?.rows || []).filter(field => {
-      const value = reference.values[field.key];
-      return value != null && value !== '' && (typeof value !== 'number' || Number.isFinite(value));
-    }).sort((a,b) => (priority.includes(a.key)?priority.indexOf(a.key):priority.length) - (priority.includes(b.key)?priority.indexOf(b.key):priority.length)) : [];
-    const valueText = value => Array.isArray(value) ? value.join(' · ') : typeof value === 'number' ? value.toLocaleString('es-CO') : String(value);
-    const specList = (rows,label) => `<dl class="build-overview product-sheet-specs" aria-label="${label}">${rows.map(field => `<div><dt>${esc(field.label)}</dt><dd>${esc(valueText(reference.values[field.key]))}${field.unit?' '+esc(field.unit):''}</dd></div>`).join('')}</dl>`;
+    const known = value => value != null && value !== '' && (typeof value !== 'number' || Number.isFinite(value));
+    const fields = reference.verified ? (window.FENIXA_SPECS.compareMany([p,p])?.rows || []).filter(field => known(reference.values[field.key]) || reference.notApplicable?.[field.key]).sort((a,b) => (priority.includes(a.key)?priority.indexOf(a.key):priority.length) - (priority.includes(b.key)?priority.indexOf(b.key):priority.length)) : [];
+    const number = new Intl.NumberFormat('es-CO', { useGrouping: 'always', maximumFractionDigits: 2 });
+    const valueText = value => Array.isArray(value) ? value.join(' · ') : typeof value === 'number' ? number.format(value) : String(value);
+    const cell = field => known(reference.values[field.key])
+      ? `${esc(valueText(reference.values[field.key]))}${field.unit?' '+esc(field.unit):''}`
+      : `<span title="${esc(reference.notApplicable[field.key])}">No aplica</span>`;
     const specs = fields.length
-      ? specList(fields.slice(0,8),'Especificaciones verificadas')
+      ? `<section class="product-sheet-key" aria-labelledby="productSheetKey"><h3 id="productSheetKey">Datos clave</h3><table class="product-sheet-table"><tbody>${fields.map(field => `<tr><th scope="row">${esc(field.label)}</th><td>${cell(field)}</td></tr>`).join('')}</tbody></table></section>`
       : '<p class="catalog-brief">Sin especificaciones verificadas para esta referencia.</p>';
-    const moreSpecs = fields.length > 8 ? specList(fields.slice(8),'Más especificaciones verificadas') : '';
     const sources = new Map();
     const addSource = (url, label) => { if (url && !sources.has(url)) sources.set(url,label); };
     addSource(reference.source, reference.verified?'Fuente de especificaciones':'Fuente de la referencia');
@@ -247,12 +245,14 @@
     const purchaseContent = purchase.querySelector('.store-offers')?.innerHTML || purchase.innerHTML;
     const status = [reference.identityConflict?'Identidad por confirmar':'',fit.status==='conflict'?fit.label:fit.matched?'Coincidencias encontradas':'Faltan datos de compatibilidad'].filter(Boolean).join(' · ');
     const offer = catalogOffer(p);
-    const notes = [...new Set([p.summary,reference.warning,reference.scope].filter(Boolean))];
+    const warning = reference.warning || (reference.identityConflict ? 'Confirma el modelo y la referencia exacta antes de comprar.' : '');
+    const notes = [...new Set([/^Consulta las especificaciones y variantes/.test(p.summary||'')?'':p.summary,warning,reference.scope].filter(Boolean))];
+    const priceNote = offer ? `${offer.status==='listed'?'Publicado':market.recent(offer)?'Consultado':'Consulta vencida'} · ${new Date(offer.checkedAt).toLocaleDateString('es-CO',{timeZone:'America/Bogota',day:'numeric',month:'short',year:'numeric'})}` : 'Sin oferta exacta';
     productSheet.innerHTML = `<div class="fx-sheet-top"><span>${esc(categoryName(p.category))}</span><button type="button" class="fx-sheet-close" data-close-product aria-label="Cerrar detalles">Cerrar</button></div>
       <div class="product-sheet-main"><figure class="product-sheet-photo"><img src="${esc(p.image)}" alt="${esc(p.name)}" width="480" height="360" decoding="async"></figure>
-      <div class="product-sheet-info"><h2 id="productSheetTitle">${esc(p.name)}</h2><p class="catalog-brief">${esc(status)}</p>${price}
+      <div class="product-sheet-info"><h2 id="productSheetTitle" title="${esc(p.name)}">${esc(shortName(p))}</h2><p class="catalog-brief">${esc(status)}</p><p class="product-sheet-price"><strong class="market-price">${offer?money(offer.price):'Precio por confirmar'}</strong><span class="estimate-label">${esc(priceNote)}</span></p>
       <div class="catalog-card-actions"><button class="compare-trigger" type="button" data-sheet-compare="${p.id}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar de comparación':'Comparar'}</button><button class="primary-button" type="button" data-add-my-build="${p.id}">${inBuild?'Ya está en Mi build':fit.status==='conflict'?'Revisar conflicto':'Añadir a Mi build'}</button></div></div></div>
-      <div class="product-sheet-details">${specs}<details class="store-options"><summary>Más info</summary><div class="store-offers"><div class="product-sku">${esc(p.sku)}</div>${moreSpecs}${notes.map(note=>`<p>${esc(note)}</p>`).join('')}${p.imageNote?`<small class="catalog-image-note">${esc(p.imageNote)}</small>`:''}<p>${esc(fit.reason || 'Añade otras piezas para revisar los datos disponibles.')}</p><p class="fit-status-limit">La revisión es parcial: no certifica el montaje completo.</p><p class="catalog-price-evidence">${esc(offer?`${offer.store} · ${new Date(offer.checkedAt).toLocaleString('es-CO',{timeZone:'America/Bogota'})} · ${offer.status==='listed'?'precio publicado; stock por confirmar':market.recent(offer)?'consulta reciente':'consulta vencida; confirma precio y stock'}`:'Precio pendiente: el rango del catálogo no es una oferta.')}</p><div class="product-links">${[...sources].map(([url,label])=>external(url,esc(label))).join('')}</div>${purchaseContent}</div></details></div>`;
+      <div class="product-sheet-details">${warning?`<p class="product-sheet-warning" role="note" title="${esc(warning)}">${esc(warning)}</p>`:''}${specs}<details class="store-options"><summary>Fuentes y notas</summary><div class="store-offers"><div class="product-sku">${esc(p.sku)}</div>${notes.map(note=>`<p>${esc(note)}</p>`).join('')}${p.imageNote?`<small class="catalog-image-note">${esc(p.imageNote)}</small>`:''}<p>${esc(fit.reason || 'Añade otras piezas para revisar los datos disponibles.')}</p><p class="fit-status-limit">La revisión es parcial: no certifica el montaje completo.</p><p class="catalog-price-evidence">${esc(offer?`${offer.store} · ${new Date(offer.checkedAt).toLocaleString('es-CO',{timeZone:'America/Bogota'})} · ${offer.status==='listed'?'precio publicado; stock por confirmar':market.recent(offer)?'consulta reciente':'consulta vencida; confirma precio y stock'}`:'Precio pendiente: el rango del catálogo no es una oferta.')}</p><div class="product-links">${[...sources].map(([url,label])=>external(url,esc(label))).join('')}</div>${purchaseContent}</div></details></div>`;
   }
   function openProductSheet(id, from) {
     sheetId = id; sheetOpener = from || document.activeElement;
