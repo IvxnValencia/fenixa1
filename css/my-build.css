@@ -53,7 +53,7 @@
 .my-build-row.is-empty { padding:10px 0; align-items:center; }
 .my-build-row.is-empty .my-build-placeholder { height:44px; font-size:22px; }
 .my-build-row.is-empty .my-build-actions { margin-top:6px; }
-.my-build-row .my-build-why,.my-build-row .my-build-store { margin:2px 0; font-size:13px; line-height:1.45; overflow-wrap:anywhere; }
+.my-build-row .my-build-why,.my-build-row .my-build-store { margin:2px 0; font-size:13px; line-height:1.45; overflow-wrap:anywhere; min-height:2.9em; }
 .my-build-row .my-build-store { color:var(--muted); }
 .my-build-row .my-build-store a { color:var(--purple); font-weight:600; }
 .my-build-row .my-build-actions { margin-top:8px; gap:8px; }

@@ -176,5 +176,33 @@
     const rows=(schemas[ps[0].category]||[]).map(f=>({...f,values:sources.map(s=>comparableValue(s,f.key))}));
     return {sources,rows,known:rows.filter(r=>r.values.every(v=>v!==null)).length};
   }
+  const SHORT_WORDS={msi:'MSI',rtx:'RTX',gtx:'GTX',rx:'RX',amd:'AMD',asus:'ASUS',tuf:'TUF',aorus:'AORUS',nvidia:'NVIDIA',geforce:'GeForce',radeon:'Radeon',intel:'Intel',gigabyte:'Gigabyte',asrock:'ASRock',palit:'Palit',kingston:'Kingston',fury:'FURY',corsair:'Corsair',crucial:'Crucial',patriot:'Patriot',samsung:'Samsung',antec:'Antec',logitech:'Logitech',razer:'Razer',redragon:'Redragon',adata:'ADATA',xpg:'XPG',thermaltake:'Thermaltake',cougar:'Cougar',arctic:'ARCTIC',ddr3:'DDR3',ddr4:'DDR4',ddr5:'DDR5',gddr6:'GDDR6',gddr7:'GDDR7',nvme:'NVMe',ssd:'SSD',hdd:'HDD',m2:'M.2',argb:'ARGB',rgb:'RGB',usb:'USB','usb-c':'USB-C',pcie:'PCIe',sata:'SATA',oc:'OC',led:'LED',atx:'ATX',wifi:'WiFi',wifi6e:'WiFi 6E',wifi7:'WiFi 7',pc:'PC',gb:'GB',tb:'TB',mhz:'MHz',rpm:'RPM','80p':'80+',plus:'Plus',gold:'Gold',bronze:'Bronze',platinum:'Platinum',titanium:'Titanium',negro:'negro',blanco:'blanco',para:'para',con:'con',sin:'sin',semi:'semi',modular:'modular',de:'de',y:'y',x:'x'};
+  const SHORT_PREFIXES=[/^tarjeta\s+de\s+v[ií]deo\b/i,/^unidad\s+de\s+estado\s+s[oó]lido\b/i,/^memorias?\s+ram\b/i,/^memorias?\b/i,/^fuentes?(\s+de\s+poder)?\b/i,/^disipadores?\b/i,/^ventiladores?(\s+para\s+torre)?\b/i,/^teclado\s+(gamer|gaming)\b/i,/^teclado\b/i,/^placa\s+(madre|base)\b/i,/^board\b/i,/^procesador\b/i,/^para\s+(pc|port[aá]til)\b/i,/^(externo|3\s?en\s?1|kitx\d)\b/i];
+  function shortName(product){
+    const shown=facts(product)?.displayName;if(shown)return shown;
+    const raw=String(product?.name||'').trim().replace(/\s+/g,' ');if(!raw)return '';
+    let n=raw,portable=false,external=false,kit=false,heatsink=false,changed=true;
+    while(changed){changed=false;for(const re of SHORT_PREFIXES){const m=re.exec(n);if(m){const t=m[0].toLowerCase();if(/port[aá]til/.test(t))portable=true;if(/externo/.test(t))external=true;if(/3\s?en\s?1|kitx/.test(t))kit=true;n=n.slice(m[0].length).trim();changed=true;}}}
+    if(/\bport[aá]til\b/i.test(n)){portable=true;n=n.replace(/(\bpara\s+)?\bport[aá]til\b/ig,'').replace(/\s+/g,' ').trim();}
+    if(/\bexterno\b/i.test(n)){external=true;n=n.replace(/\bexterno\b/ig,'').replace(/\s+/g,' ').trim();}
+    if(/\bdisipador$/i.test(n)){heatsink=true;n=n.replace(/\s*\bdisipador$/i,'');}
+    n=n.replace(/\(?\b\d{3,5}\s*[x×]\s*\d{3,5}\b\)?/ig,' ').replace(/[()]/g,'').replace(/\s+/g,' ').trim();
+    if(!n)return raw;
+    const letters=n.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ]/g,''),allCaps=letters.replace(/[^A-ZÁÉÍÓÚÑ]/g,'').length/Math.max(letters.length,1)>=.6;
+    const out=n.split(' ').map(w=>{
+      const known=SHORT_WORDS[w.toLowerCase()];if(known)return known;
+      const m=/^(\d+(?:[.,]\d+)?)(gb|g|tb|t|mhz|w|v)$/i.exec(w);
+      if(m){const u=m[2].toLowerCase();return m[1]+' '+(u==='g'||u==='gb'?'GB':u==='t'||u==='tb'?'TB':u==='mhz'?'MHz':u.toUpperCase());}
+      if(/^(xi{1,3}|xiv|xv)$/i.test(w))return w.toUpperCase();
+      if(/^gen\d$/i.test(w))return 'Gen '+w.slice(3);
+      if(/^[A-Z][a-z]*\d[A-Za-z0-9-]*$/.test(w)&&!/[A-Z]/.test(w.slice(1)))return w.toUpperCase();
+      if(/\d/.test(w))return w;
+      if(allCaps&&w.length>3&&/^[A-ZÁÉÍÓÚÑ]+$/.test(w))return w.charAt(0)+w.slice(1).toLowerCase();
+      return w;
+    }).join(' ');
+    const extra=[portable&&'portátil',external&&'externo',kit&&'kit de 3',heatsink&&'con disipador'].filter(Boolean);
+    return out.charAt(0).toUpperCase()+out.slice(1)+(extra.length?' · '+extra.join(' · '):'');
+  }
+  window.FENIXA_SHORT_NAME=shortName;
   window.FENIXA_SPECS={facts,compare,compareMany};
 })();

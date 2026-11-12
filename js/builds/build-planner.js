@@ -64,11 +64,7 @@
     return t+(old&&old.product.id!==row.product.id?' Antes: '+old.product.name+'.':'');
   }
   function shortName(product){
-    const d=window.FENIXA_SPECS?.facts?.(product)?.displayName;if(d)return d;
-    const n=String(product.name||'').trim().replace(/\s+/g,' ');
-    const letters=n.replace(/[^A-Za-zÁÉÍÓÚÑáéíóúñ]/g,''),upper=letters.replace(/[^A-ZÁÉÍÓÚÑ]/g,'').length;
-    if(upper/Math.max(letters.length,1)<.6)return n;
-    return n.split(' ').map((w,i)=>/\d/.test(w)||(w.length<=4&&i>0&&/^[A-Z]+$/.test(w))?w:(i===0?w.charAt(0)+w.slice(1).toLowerCase():w.toLowerCase())).join(' ');
+    return window.FENIXA_SHORT_NAME?window.FENIXA_SHORT_NAME(product):String(product.name||'').trim().replace(/\s+/g,' ');
   }
   const thumb=src=>window.FENIXA_THUMB?window.FENIXA_THUMB(src):src;
   function keyFact(product,p){

@@ -2,6 +2,7 @@
 (() => {
   'use strict';
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const shortName=p=>window.FENIXA_SHORT_NAME?window.FENIXA_SHORT_NAME(p):window.FENIXA_SPECS.facts(p).displayName||p.name;
   const number=v=>new Intl.NumberFormat('es-CO',{maximumFractionDigits:2}).format(v);
   const money=v=>new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(v);
   const clean=v=>(Array.isArray(v)?v:[v]).filter(n=>typeof n==='number'&&Number.isFinite(n)&&n>=0);
@@ -69,7 +70,7 @@
   function component(a,b) {
     const result=window.FENIXA_SPECS.compare(a,b);
     if(!result)return '';
-    return render({names:[result.sources[0].displayName||a.name,result.sources[1].displayName||b.name],axes:componentAxes(a,b),sources:result.sources});
+    return render({names:[shortName(a),shortName(b)],axes:componentAxes(a,b),sources:result.sources});
   }
   function pricesMany(ps) {
     const market=window.FENIXA_MARKET, offers=ps.map(p=>market.fixed(p)), prices=offers.map(o=>o?.price??null);
@@ -80,7 +81,7 @@
   const prices=(a,b)=>pricesMany([a,b]);
   function componentMany(ps) {
     const axes=componentAxes(ps[0],ps[1]).map(axis=>({...axis,sets:ps.map(p=>window.FENIXA_SPECS.facts(p).values[axis.key])}));
-    return render({names:ps.map(p=>window.FENIXA_SPECS.facts(p).displayName||p.name),axes,sources:ps.map(window.FENIXA_SPECS.facts)});
+    return render({names:ps.map(shortName),axes,sources:ps.map(window.FENIXA_SPECS.facts)});
   }
   function reveal(event) {
     const trigger=event.target.closest?.('[data-radar-axis]');

@@ -297,9 +297,9 @@ body #componentes .cmp-tile:active { background: var(--purple-soft); }
 @media (hover: hover) and (pointer: fine) { body #componentes .cmp-tile:hover { border-color: var(--purple); } }
 
 body #componentes .cmp-results { display: block; min-width: 0; }
-body #componentes .cmp-info { margin-top: 8px; font-size: 12px; color: var(--muted); }
-body #componentes .cmp-info summary { display: inline-flex; align-items: center; min-height: 40px; cursor: pointer; color: var(--purple); font-size: 13px; }
-body #componentes .cmp-info p { margin: 0 0 8px; font-size: 12px; line-height: 1.5; }
+body :is(#componentes,#builds,#laptops) .cmp-info { margin-top: 8px; font-size: 12px; color: var(--muted); }
+body :is(#componentes,#builds,#laptops) .cmp-info summary { display: inline-flex; align-items: center; min-height: 40px; cursor: pointer; color: var(--purple); font-size: 13px; }
+body :is(#componentes,#builds,#laptops) .cmp-info p { margin: 0 0 8px; font-size: 12px; line-height: 1.5; }
 body #componentes .catalog-empty { margin-top: 16px; padding: 24px 16px; border-radius: 16px; }
 body #componentes .comparison-wrap { margin-top: 16px; }
 

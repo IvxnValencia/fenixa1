@@ -4,7 +4,7 @@
   const byId=new Map(products.map(p=>[p.id,p]));
   const state=window.FENIXA_MY_BUILD, market=window.FENIXA_MARKET;
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const identity=p=>window.FENIXA_SPECS.facts(p).displayName||p.name;
+  const identity=p=>window.FENIXA_SHORT_NAME?window.FENIXA_SHORT_NAME(p):window.FENIXA_SPECS.facts(p).displayName||p.name;
   const dialog=document.createElement('dialog');dialog.className='component-dialog';dialog.id='componentCompareDialog';dialog.setAttribute('aria-labelledby','componentCompareTitle');
   const restore=document.createElement('button');restore.type='button';restore.className='secondary-button compare-restore';restore.hidden=true;restore.textContent='Reabrir comparación';restore.setAttribute('aria-label','Reabrir comparación de componentes');
   document.body.append(dialog);
@@ -92,7 +92,7 @@
     if(explanation)explanation.innerHTML='<details><summary>Ventajas, límites y diferencias explicadas</summary>'+explanation.innerHTML+'</details>';
     const table=body.querySelector('.comparison-wrap');
     if(table)table.innerHTML='<details><summary>Ficha técnica completa y fuentes</summary>'+table.innerHTML+'</details>';
-    body.insertAdjacentHTML('beforeend',`<div class="compare-detail-identities">${ps.filter(Boolean).map(p=>`<article><h3>${esc(p.name)}</h3><p>${esc(p.summary)}</p>${window.FENIXA_FIT_STATUS.render(fit(p),{hasParts:state.ids().some(id=>byId.get(id).category!==p.category)})}</article>`).join('')}</div>`);
+    body.insertAdjacentHTML('beforeend',`<div class="compare-detail-identities">${ps.filter(Boolean).map(p=>`<article><h3 title="${esc(p.name)}">${esc(identity(p))}</h3><p>${esc(p.summary)}</p>${window.FENIXA_FIT_STATUS.render(fit(p),{hasParts:state.ids().some(id=>byId.get(id).category!==p.category)})}</article>`).join('')}</div>`);
     const detailIdentities=body.querySelectorAll('.compare-detail-identities article');
     dialog.querySelectorAll('.compare-product-heads article').forEach((identity,i)=>{
       const reference=window.FENIXA_SPECS.facts(ps[i]);
@@ -162,7 +162,7 @@
     dialog.querySelector('#comparisonStatus').textContent=ok?(state.saved()?'Selección actualizada y guardada en este navegador.':'Selección actualizada, pero no se pudo guardar en este navegador.'):'No se añadió: hay un conflicto con Mi build.';
     dialog.querySelector('[data-close-comparison]').focus();
   });
-  dialog.addEventListener('close',()=>{restore.hidden=!left;if(left){const names=group?group.map(id=>identity(byId.get(id))).join(' vs '):`${identity(byId.get(left))}${right?' vs '+identity(byId.get(right)):''}`;restore.textContent='Reabrir última comparación';restore.title=names;restore.setAttribute('aria-label',`Reabrir comparación: ${names}`);}if(opener?.isConnected)opener.focus();});
+  dialog.addEventListener('close',()=>{restore.hidden=!left;if(left){const names=group?group.map(id=>identity(byId.get(id))).join(' vs '):`${identity(byId.get(left))}${right?' vs '+identity(byId.get(right)):''}`;restore.textContent='Reabrir última comparación';restore.title=(group?group.map(id=>byId.get(id).name):[byId.get(left).name,...(right?[byId.get(right).name]:[])]).join(' vs ');restore.setAttribute('aria-label',`Reabrir comparación: ${names}`);}if(opener?.isConnected)opener.focus();});
   dialog.addEventListener('keydown',e=>{if(e.key==='Escape'&&dialog.open){e.preventDefault();dialog.close();}});
   restore.addEventListener('click',()=>group?openMany(group):open(left,right));
   window.addEventListener('hashchange',()=>{if(dialog.open)dialog.close();});

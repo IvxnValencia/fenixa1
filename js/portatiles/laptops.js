@@ -63,7 +63,7 @@
       <div class="catalog-product-heading"><span class="market-category">${esc(labels[p.uses[0]]||'Laptop')} · ${esc(p.model)}</span><h3>${esc(p.name)}</h3></div>
       <button type="button" class="catalog-photo fx-open" data-open-laptop="${esc(p.id)}" aria-label="Ver ficha de ${esc(p.name)}"><img class="product-image" src="${esc(window.FENIXA_THUMB?window.FENIXA_THUMB(p.image):p.image)}" alt="${esc(imageAlt(p))}" width="800" height="800" loading="lazy" decoding="async"></button>
       <p class="catalog-brief" title="${esc(p.specs.filter(([label])=>/procesador|gráficos/i.test(label)).map(([,value])=>value).join(' · '))}">${esc(p.specs.filter(([label])=>/procesador|gráficos/i.test(label)).map(([,value])=>value).join(' · '))}</p>
-      <div class="catalog-price-line"><strong class="market-price">Precio por confirmar</strong><span class="estimate-label">Sin oferta verificada en COP</span></div>
+      <div class="catalog-price-line"><strong class="market-price">Precio por confirmar</strong><span class="estimate-label" title="Sin oferta verificada en COP">Sin precio</span></div>
       <div class="catalog-card-actions"><button type="button" class="compare-trigger" data-laptop-compare="${esc(p.id)}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button type="button" class="secondary-button" data-open-laptop="${esc(p.id)}">Ver ficha</button></div>
     </article>`).join('');
     renderComparison();

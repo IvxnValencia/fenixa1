@@ -12,7 +12,7 @@
     <script src="js/interfaz/thumbs.js?v=1"></script>
     <link rel="stylesheet" href="css/startup-recovery.css?v=1" />
     <link rel="stylesheet" href="css/catalog.css?v=9" />
-    <link rel="stylesheet" href="css/my-build.css?v=5" />
+    <link rel="stylesheet" href="css/my-build.css?v=6" />
     <style>
       :root {
         color-scheme: dark;
@@ -439,7 +439,7 @@
     <link rel="stylesheet" href="css/build-refinement.css?v=2">
     <link rel="stylesheet" href="css/build-planner.css?v=4">
     <link rel="stylesheet" href="css/build-library.css?v=2">
-    <link rel="stylesheet" href="css/fenixa-refine.css?v=13">
+    <link rel="stylesheet" href="css/fenixa-refine.css?v=14">
     <link rel="stylesheet" href="css/hero-fenixa.css?v=1">
     <link rel="stylesheet" href="css/interface-polish.css?v=12">
     <link rel="stylesheet" href="css/sidebar-desktop.css?v=1">
@@ -546,7 +546,7 @@
               <div class="market-grid" id="marketGrid"></div>
               <aside class="compare-tray comparison-dock" id="compareTray" aria-label="Lista de comparaciones de componentes" hidden><button class="comparison-dock-toggle" id="compareTrayToggle" type="button" aria-expanded="false" aria-controls="compareTrayBody"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/></svg><strong>Comparaciones</strong><span id="compareTrayCount">0</span></button><div id="compareTrayBody" class="comparison-dock-body" hidden><div class="compare-list" id="compareList"></div><p id="compareTrayMessage" role="status">Elige dos piezas de la misma categoría.</p><div class="comparison-dock-actions"><button class="secondary-button" id="clearCompare" type="button">Vaciar</button><button class="primary-button" id="openRealComparison" type="button" disabled>Comparar</button></div></div></aside>
               <div class="catalog-empty" id="catalogEmpty">Sin resultados con estos filtros.</div>
-              <details class="cmp-info"><summary>Más info</summary><p class="catalog-footnote">Sin precios en vivo. Las consultas de más de 72 horas se marcan como vencidas. Fotografías de fabricantes y tiendas: derechos de sus titulares; confirma modelo, presentación, impuestos, envío y garantía.</p></details>
+              <details class="cmp-info"><summary>Más info</summary><p class="catalog-footnote">Precios de referencia observados en tiendas colombianas; confirma precio y stock antes de comprar. Sin precios en vivo. Las consultas de más de 72 horas se marcan como vencidas. Fotografías de fabricantes y tiendas: derechos de sus titulares; confirma modelo, presentación, impuestos, envío y garantía.</p></details>
               </div>
             </div>
           </section>
@@ -554,6 +554,7 @@
             <div class="section-heading"><div><h2 id="builds-title">Builds completas</h2><p>Configuraciones de referencia con modelos reales y una lista de compra por pieza.</p></div></div>
             <div class="builds-toolbar"><div class="build-use-filters" role="group" aria-label="Filtrar builds"><button type="button" data-build-use="all" aria-pressed="true">Todas</button><button type="button" data-build-use="estudio" aria-pressed="false">Estudio</button><button type="button" data-build-use="trabajo" aria-pressed="false">Trabajo</button><button type="button" data-build-use="gaming" aria-pressed="false">Gaming</button><button type="button" data-build-use="creativo" aria-pressed="false">Creación</button><button type="button" data-build-use="saved" aria-pressed="false">Guardadas</button></div><label>Ordenar <select id="buildSort"><option value="featured">Destacadas</option><option value="price-asc">Objetivo: menor a mayor</option><option value="price-desc">Objetivo: mayor a menor</option></select></label></div>
             <div class="build-gallery" id="buildGallery"></div>
+            <details class="cmp-info"><summary>Más info</summary><p class="catalog-footnote">Precios de referencia observados en tiendas colombianas; confirma precio y stock antes de comprar.</p></details>
             <p id="buildsEmpty" hidden>No tienes builds guardadas. Abre una y pulsa «Guardar build».</p>
           </section>
           <section class="section" id="laptops" aria-labelledby="laptopsTitle" hidden>
@@ -563,6 +564,7 @@
             <p id="laptopCount" role="status"></p>
             <aside class="laptop-compare-toolbar comparison-dock" id="laptopCompareToolbar" aria-label="Lista de comparaciones de laptops" hidden><button class="comparison-dock-toggle" id="laptopQueueToggle" type="button" aria-controls="laptopQueueBody" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/></svg><strong>Comparaciones</strong><span id="laptopQueueCount">0</span></button><div class="comparison-dock-body" id="laptopQueueBody" hidden><div id="laptopQueueList"></div><p id="laptopCompareStatus" role="status"></p><div class="comparison-dock-actions"><button type="button" class="secondary-button" id="laptopCompareClear">Vaciar</button><button type="button" class="primary-button" id="laptopCompareToggle" aria-controls="laptopComparison" aria-expanded="false" disabled>Comparar</button></div></div></aside>
             <section id="laptopComparison" class="laptop-comparison" aria-labelledby="laptopCompareTitle" hidden><div class="laptop-compare-top"><h3 id="laptopCompareTitle">Comparación de laptops</h3><button type="button" class="secondary-button" id="laptopCompareClose" aria-label="Cerrar comparación de laptops">Cerrar</button></div><p class="laptop-disclaimer">Datos del fabricante; una familia no identifica un SKU exacto. Sin pruebas comparables de rendimiento.</p><div id="laptopComparisonGrid" class="laptop-comparison-grid"></div></section>
+            <details class="cmp-info"><summary>Más info</summary><p class="catalog-footnote">Precios de referencia observados en tiendas colombianas; confirma precio y stock antes de comprar.</p></details>
             <div id="laptopGrid" class="laptop-grid"></div><dialog id="laptopDetailDialog" class="fx-sheet laptop-detail-dialog" aria-labelledby="laptopDetailTitle"></dialog><p id="laptopEmpty" hidden>No hay laptops para estos filtros.</p>
           </section>
           <section class="section" id="mi-build" aria-labelledby="myBuildTitle" hidden></section>
@@ -844,7 +846,7 @@
   <script src="js/mercado/purchase-fit.js?v=17"></script>
     <script src="js/builds/fit-status.js?v=3"></script>
     <script src="js/mercado/price-review-data.js?v=4"></script>
-    <script src="js/mercado/market.js?v=7"></script>
+    <script src="js/mercado/market.js?v=8"></script>
   <script src="js/catalogo/catalog-goal30-data.js?v=4"></script>
   <script src="js/catalogo/catalog-goal30-extra.js?v=1"></script>
   <script src="js/catalogo/catalog-goal30-cases.js?v=1"></script>
@@ -870,28 +872,28 @@
   <script src="js/fichas/spec-review-case-data.js?v=1"></script>
   <script src="js/fichas/spec-review-target80-data.js?v=1"></script>
   <script src="js/fichas/spec-review-followup-data.js?v=12"></script>
-  <script src="js/fichas/component-specs.js?v=32"></script>
+  <script src="js/fichas/component-specs.js?v=33"></script>
     <script src="js/builds/my-build-state.js?v=5"></script>
     <script src="js/builds/budget-settings.js?v=3"></script>
     <script src="js/builds/build-library-state.js?v=2"></script>
     <script src="js/builds/build-library.js?v=3"></script>
-  <script src="js/interfaz/comparison-radar.js?v=15"></script>
-  <script src="js/interfaz/comparison-dialog.js?v=22"></script>
-    <script src="js/catalogo/catalog.js?v=39"></script>
+  <script src="js/interfaz/comparison-radar.js?v=16"></script>
+  <script src="js/interfaz/comparison-dialog.js?v=23"></script>
+    <script src="js/catalogo/catalog.js?v=40"></script>
     <script src="js/portatiles/laptops-data.js?v=5"></script>
     <script src="js/portatiles/laptops-photos.js?v=1"></script>
     <script src="js/portatiles/laptops-goal30.js?v=2"></script>
   <script src="js/portatiles/laptops-goal50.js?v=2"></script>
   <script src="js/portatiles/laptop-compare.js?v=9"></script>
-    <script src="js/portatiles/laptops.js?v=17"></script>
+    <script src="js/portatiles/laptops.js?v=18"></script>
     <script src="js/portatiles/laptop-details.js?v=1"></script>
-    <script src="js/builds/my-build.js?v=17"></script>
-    <script src="js/builds/build-quickview.js?v=2"></script>
+    <script src="js/builds/my-build.js?v=18"></script>
+    <script src="js/builds/build-quickview.js?v=3"></script>
     <script src="js/interfaz/radar-highlight.js?v=1"></script>
     <script src="js/builds/pc-advice.js"></script>
     <script src="js/builds/pc-profile.js?v=2"></script>
     <script src="js/builds/auto-build.js?v=5"></script>
-    <script src="js/builds/build-planner.js?v=16"></script>
+    <script src="js/builds/build-planner.js?v=17"></script>
     <script src="js/builds/builder-journey.js?v=4"></script>
     <script src="js/interfaz/navigation.js?v=14"></script>
     <script src="js/interfaz/sidebar.js?v=1"></script>

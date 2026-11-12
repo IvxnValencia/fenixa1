@@ -18,7 +18,7 @@
       <ul class="build-overview-grid">${baseCategories.map(id=>{
         const p=parts.find(p=>p.category===id), name=categories.find(c=>c.id===id).name;
         const status=!p?'Pendiente':conflicting.has(p.id)?'Revisar conflicto':'Elegida';
-        return `<li><button type="button" class="build-overview-item${p?' is-chosen':''}${p&&conflicting.has(p.id)?' has-conflict':''}" data-edit-category="${id}" aria-label="${esc(name)}: ${esc(p?p.name:'sin elegir')}. ${status}. ${p?'Cambiar pieza':'Elegir pieza'}"><span class="build-overview-photo" aria-hidden="true">${p?`<img src="${esc(p.image)}" alt="" width="64" height="64" loading="lazy">`:'<span>＋</span>'}</span><span class="build-overview-copy"><strong>${esc(name)}</strong><span>${p?esc(p.name):'Elige tu modelo'}</span><small>${status}</small></span></button></li>`;
+        return `<li><button type="button" class="build-overview-item${p?' is-chosen':''}${p&&conflicting.has(p.id)?' has-conflict':''}" data-edit-category="${id}" aria-label="${esc(name)}: ${esc(p?shortName(p):'sin elegir')}. ${status}. ${p?'Cambiar pieza':'Elegir pieza'}"><span class="build-overview-photo" aria-hidden="true">${p?`<img src="${esc(p.image)}" alt="" width="64" height="64" loading="lazy">`:'<span>＋</span>'}</span><span class="build-overview-copy"><strong>${esc(name)}</strong><span${p?` title="${esc(p.name)}"`:''}>${p?esc(shortName(p)):'Elige tu modelo'}</span><small>${status}</small></span></button></li>`;
       }).join('')}</ul>
     </section>`;
   }
@@ -40,7 +40,7 @@
     return {count:refs.length,total:parts.length,low,high,partial:refs.length<parts.length,older:refs.some(ref=>ref.kind!=='recent')};
   }
   function moreInfo(reference) {
-    return `<p>${state.saved()&&budgetSaved?'Guardado solo en este navegador.':'No se pudo guardar todo; la selección actual puede perderse al cerrar.'}</p><p>Con precios o piezas pendientes no podemos confirmar el coste total ni el ajuste al presupuesto.</p>${reference?.older?'<p>La referencia incluye precios publicados, históricos o de catálogo; confirma el precio actual.</p>':''}${reference?.partial?`<p>Sin referencia: ${reference.total-reference.count} ${reference.total-reference.count===1?'pieza':'piezas'}; el importe mostrado es parcial.</p>`:''}<p>Los importes no incluyen envío ni montaje; revisa precio, disponibilidad y compatibilidad.</p>`;
+    return `<p>${state.saved()&&budgetSaved?'Guardado solo en este navegador.':'No se pudo guardar todo; la selección actual puede perderse al cerrar.'}</p><p>Precios de referencia observados en tiendas colombianas; confirma precio y stock antes de comprar.</p><p>Con precios o piezas pendientes no podemos confirmar el coste total ni el ajuste al presupuesto.</p>${reference?.older?'<p>La referencia incluye precios publicados, históricos o de catálogo; confirma el precio actual.</p>':''}${reference?.partial?`<p>Sin referencia: ${reference.total-reference.count} ${reference.total-reference.count===1?'pieza':'piezas'}; el importe mostrado es parcial.</p>`:''}<p>Los importes no incluyen envío ni montaje; revisa precio, disponibilidad y compatibilidad.</p>`;
   }
   // Short summary of key facts, used when a piece has no stored reason.
   const num = n => new Intl.NumberFormat('es-CO').format(n);
@@ -63,13 +63,15 @@
     return parts.filter(Boolean).join(' · ');
   }
   const day = o => { const t = Date.parse(o.checkedAt); return Number.isFinite(t) ? new Date(t).toLocaleDateString('es-CO', {timeZone: 'America/Bogota', dateStyle: 'short'}) : ''; };
+  const refDay = o => { const t = Date.parse(o.checkedAt); return Number.isFinite(t) ? new Date(t).toLocaleDateString('es-CO', {timeZone: 'America/Bogota', day: 'numeric', month: 'numeric'}).split('/').map(x => x.padStart(2, '0')).join('/') : '—'; };
+  const shortName = p => window.FENIXA_SHORT_NAME ? window.FENIXA_SHORT_NAME(p) : p.name;
   function storeLine(p) {
     const o = market.fixed(p);
     if (!o) return 'Precio por confirmar';
     let store=String(o.store||'');
     if(store.length>28){try{store=new URL(o.url).hostname.replace(/^www\./,'');}catch{}}
-    const old = market.recent(o) ? '' : ' · consulta vencida';
-    return `<span title="${esc(o.store)}">${esc(store)} ·</span> `+[market.money(o.price), esc(day(o)) + old].filter(Boolean).join(' · ') + (o.url ? ` · <a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">Ver en tienda</a>` : '');
+    const detail = (o.status==='listed'?'Precio publicado':market.recent(o)?'Precio consultado':'Consulta vencida')+' · COP';
+    return `<span title="${esc(o.store)}">${esc(store)} ·</span> `+[market.money(o.price), `<span title="${esc(detail)}">Ref. ${esc(refDay(o))}</span>`].join(' · ') + (o.url ? ` · <a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">Ver en tienda</a>` : '');
   }
   function recommendations(parts) {
     if (!parts.length) return '';
@@ -81,14 +83,14 @@
     const remaining=totalBudget&&priced?totalBudget-known.reduce((sum,price)=>sum+price,0):null;
     const options=state.candidates(next,{hideConflicts:true}).filter(candidate=>remaining===null || (candidate.price!==null&&candidate.price<=remaining)).slice(0,3);
     const budgetNote=(step.reason?`${esc(step.reason)} `:'')+(remaining===null?'':`Margen provisional: ${market.money(Math.max(0,remaining))}.`);
-    return `<section class="build-recommendations" aria-labelledby="buildRecommendationsTitle"><div><h3 id="buildRecommendationsTitle">Siguiente paso: ${esc(name)}</h3>${budgetNote?`<p>${budgetNote}</p>`:''}</div><div class="build-recommendation-list">${options.length?options.map(({product,fit,price})=>`<article>${image(product)}<div><strong>${esc(product.name)}</strong><small>${esc(fit.label)} · ${price===null?'Sin precio reciente':market.money(price)}</small></div><button class="secondary-button" type="button" data-suggest-id="${esc(product.id)}">Añadir</button></article>`).join(''):'<p>Sin opciones comprobables dentro del margen.</p>'}</div></section>`;
+    return `<section class="build-recommendations" aria-labelledby="buildRecommendationsTitle"><div><h3 id="buildRecommendationsTitle">Siguiente paso: ${esc(name)}</h3>${budgetNote?`<p>${budgetNote}</p>`:''}</div><div class="build-recommendation-list">${options.length?options.map(({product,fit,price})=>`<article>${image(product)}<div><strong title="${esc(product.name)}">${esc(shortName(product))}</strong><small>${esc(fit.label)} · ${price===null?'Sin precio reciente':market.money(price)}</small></div><button class="secondary-button" type="button" data-suggest-id="${esc(product.id)}">Añadir</button></article>`).join(''):'<p>Sin opciones comprobables dentro del margen.</p>'}</div></section>`;
   }
   function partCard(c, parts) {
     const p = parts.find(p => p.category === c.id);
     if (!p) return `<article class="my-build-row is-empty"><div><span class="my-build-placeholder" aria-hidden="true">＋</span></div><div><small>${esc(c.name)}</small><div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">Elegir pieza</button></div></div></article>`;
     const fit = window.FENIXA_FIT.check(p, parts.filter(other => other.id !== p.id));
     const why = state.reason?.(p.id) || keyFacts(p) || 'Sin datos clave verificados';
-    return `<article class="my-build-row"><div>${image(p)}</div><div><small>${esc(c.name)} ${window.FENIXA_FIT_STATUS.tag(fit,{hasParts:parts.some(other=>other.category!==p.category)})}</small><h3>${esc(p.name)}</h3><p class="my-build-why">${esc(why)}</p><p class="my-build-store">${storeLine(p)}</p>${fit.status==='conflict'?`<p class="my-build-conflict">${esc(fit.reason)}</p>`:''}<div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">Cambiar pieza</button><button type="button" class="my-build-remove" data-remove-part="${p.id}" aria-label="Quitar ${esc(p.name)}">Quitar</button></div></div></article>`;
+    return `<article class="my-build-row"><div>${image(p)}</div><div><small>${esc(c.name)} ${window.FENIXA_FIT_STATUS.tag(fit,{hasParts:parts.some(other=>other.category!==p.category)})}</small><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3><p class="my-build-why">${esc(why)}</p><p class="my-build-store">${storeLine(p)}</p>${fit.status==='conflict'?`<p class="my-build-conflict">${esc(fit.reason)}</p>`:''}<div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">Cambiar pieza</button><button type="button" class="my-build-remove" data-remove-part="${p.id}" aria-label="Quitar ${esc(shortName(p))}">Quitar</button></div></div></article>`;
   }
   function render() {
     const ids = state.ids(), parts = ids.map(id=>byId[id]);
@@ -105,7 +107,7 @@
       <div class="my-build-budget">${reference?`<p class="my-build-reference"><strong>Referencia de coste${reference.partial?' parcial':''}: ${reference.count?(reference.low===reference.high?market.money(reference.low):`${market.money(reference.low)} – ${market.money(reference.high)}`):'por confirmar'}</strong>${reference.partial?` · ${reference.count}/${reference.total} piezas`:''}</p>`:''}<label for="myBuildTotalBudget">Objetivo de presupuesto · <output id="myBuildBudgetLabel" for="myBuildTotalBudget">${totalBudget?market.money(totalBudget):'Sin objetivo'}</output></label><input id="myBuildTotalBudget" type="range" min="1000000" max="18000000" step="250000" value="${totalBudget||1000000}" aria-describedby="myBuildBudgetSummary"><button type="button" class="text-button" data-clear-budget>Sin objetivo</button><p id="myBuildBudgetSummary" role="status">${budgetSummary()}</p></div>
       </aside><div class="build-studio-main"><div class="my-build-layout"><div><h3>Tus piezas</h3>${!parts.length?'<div class="my-build-empty"><h3>Tu próxima PC empieza aquí</h3><div class="my-build-actions"><a class="primary-button" href="#configurador">Armar mi PC</a><a class="secondary-button" href="#componentes">Explorar componentes</a></div></div>':`<div class="my-build-parts">${categories.map(c=>partCard(c,parts)).join('')}</div>`}</div></div>
       ${recommendations(parts)}
-      ${parts.length?`<details class="my-build-shopping"><summary>Opciones de compra de Mi build</summary>${market.plan(ids,byId)}${parts.map(p=>`<article><h3>${esc(p.name)}</h3>${market.purchase(p,parts)}</article>`).join('')}</details>`:''}</div></div>`;
+      ${parts.length?`<details class="my-build-shopping"><summary>Opciones de compra de Mi build</summary>${market.plan(ids,byId)}${parts.map(p=>`<article><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3>${market.purchase(p,parts)}</article>`).join('')}</details>`:''}</div></div>`;
   }
   window.addEventListener('fenixa-library-changed',render);
   window.addEventListener('fenixa-build-changed',()=>{pendingClear=false;render();});
