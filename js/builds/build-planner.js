@@ -70,6 +70,7 @@
     if(upper/Math.max(letters.length,1)<.6)return n;
     return n.split(' ').map((w,i)=>/\d/.test(w)||(w.length<=4&&i>0&&/^[A-Z]+$/.test(w))?w:(i===0?w.charAt(0)+w.slice(1).toLowerCase():w.toLowerCase())).join(' ');
   }
+  const thumb=src=>window.FENIXA_THUMB?window.FENIXA_THUMB(src):src;
   function keyFact(product,p){
     const v=window.FENIXA_SPECS?.facts?.(product)?.values||{},c=product.category,gb=n=>n>=1000&&n%1000===0?n/1000+' TB':n+' GB';
     if(c==='cpu'){const n=v.cores||p.cpu?.cores;return n?n+' núcleos':'';}
@@ -78,7 +79,13 @@
     if(c==='storage'){const cap=v.capacity||p.disk?.capacity;return cap?gb(cap)+(/nvme/i.test(v.pcie||'')?' NVMe':''):'';}
     if(c==='power'){const eff=/80 PLUS (\w+)/i.exec(v.efficiency||'');return v.watts?v.watts+' W'+(eff?' '+eff[1]:''):'';}
     if(c==='board')return [v.socket,v.memory].filter(Boolean).join(' · ');
+    if(c==='case')return caseReach(v.format);
     return v.format||'';
+  }
+  function caseReach(format){
+    const order=['mini-itx','micro-atx','atx','e-atx'],names={'mini-itx':'Mini-ITX','micro-atx':'Micro-ATX','atx':'ATX','e-atx':'E-ATX'};
+    const best=String(format||'').toLowerCase().split(/[\/,]/).map(t=>t.trim()).filter(t=>order.includes(t)).sort((a,b)=>order.indexOf(b)-order.indexOf(a))[0];
+    return best?'Hasta '+names[best]:format||'';
   }
   function generate(shouldAnnounce=true){
     result.setAttribute('aria-busy','false');
@@ -100,7 +107,7 @@
     const rowsHtml=shown.map(row=>{
       const category=row.product.category,upd=changed.includes(category),label=categoryName(category),short=shortName(row.product),ref=row.reference;
       const priceHtml=!ref?'<b>Incluido</b>':ref.low===ref.high?'<b>'+esc(budget.money(ref.low))+'</b>':'<b>'+esc(budget.money(ref.low))+'</b><small>– '+esc(budget.money(ref.high))+'</small>';
-      return `<li class="${upd?'is-updated':''}" data-preview-category="${category}" aria-label="${esc(label+': '+short)}"><img class="planner-row-photo" src="${esc(row.product.image||'')}" alt="${esc(label+': '+short)}" width="56" height="56" loading="lazy" decoding="async"><span class="planner-row-text"><strong class="planner-row-name">${esc(short)}</strong><small class="planner-row-key">${esc(keyFact(row.product,p))}${upd?'<span class="planner-change-badge">Cambio</span>':''}</small></span><span class="planner-row-price">${priceHtml}</span></li>`;
+      return `<li class="${upd?'is-updated':''}" data-preview-category="${category}" aria-label="${esc(label+': '+short)}"><span class="planner-row-frame" style="--category-photo:url('${esc(thumb('assets/categories/'+category+'.png'))}')"><img class="planner-row-photo" src="${esc(thumb(row.product.image||''))}" alt="${esc(label+': '+short)}" width="56" height="56" loading="eager" decoding="async"></span><span class="planner-row-text"><strong class="planner-row-name">${esc(short)}</strong><small class="planner-row-key">${esc(keyFact(row.product,p))}${upd?'<span class="planner-change-badge">Cambio</span>':''}</small></span><span class="planner-row-price">${priceHtml}</span></li>`;
     }).join('');
     const whyHtml=shown.map(row=>{const category=row.product.category;return '<li class="planner-why-item"><strong>'+esc(shortName(row.product))+'</strong> '+esc(row.reference?why(row,p,profile,changed.includes(category)?prevRows.get(category):null):'Suficiente para este perfil, sin tarjeta dedicada.')+'</li>';}).join('');
     const sources=p.rows.map(({product,reference:r})=>`<li>${esc(product.name)} · ${r.kind==='recent'?'consulta reciente':r.kind==='published'?'precio publicado, stock por confirmar':r.kind==='historical'?'consulta histórica':'rango de catálogo'} · ${esc(r.date.slice(0,10))} · <a href="${esc(r.source)}" target="_blank" rel="noopener noreferrer">Fuente del importe</a></li>`).join('');

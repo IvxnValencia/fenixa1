@@ -6,7 +6,7 @@
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const count=n=>`${n} ${n===1?'pieza':'piezas'}`;
   const main=ids=>{const parts=ids.map(id=>byId.get(id)).filter(Boolean);return parts.find(p=>p.category==='gpu')||parts.find(p=>p.category==='cpu')||parts[0];};
-  const thumb=ids=>{const p=main(ids);return p&&p.image?`<img src="${esc(p.image)}" alt="" width="48" height="48" loading="lazy">`:'<span class="home-continue-icon" aria-hidden="true">▣</span>';};
+  const thumb=ids=>{const p=main(ids);return p&&p.image?`<img src="${esc(window.FENIXA_THUMB?window.FENIXA_THUMB(p.image):p.image)}" alt="" width="48" height="48" loading="lazy">`:'<span class="home-continue-icon" aria-hidden="true">▣</span>';};
   let status='';
   function render() {
     const ids=state.ids(), saved=library.list().slice(0,library.limit);

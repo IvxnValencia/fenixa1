@@ -10,7 +10,8 @@
   const categoryName = id => categories.find(c => c.id === id)?.name || id;
 
   const external = (url, label, cls = 'source-link') => `<a class="${cls}" href="${esc(url)}" target="_blank" rel="noopener noreferrer">${label} </a>`;
-  const photo = (p, cls = '', lazy = true) => `<img class="${cls}" src="${esc(p.image)}" alt="${esc(p.name)}" width="480" height="360" ${lazy ? 'loading="lazy"' : ''} decoding="async">${p.imageNote?`<small class="catalog-image-note">${esc(p.imageNote)}</small>`:''}`;
+  const thumb = src => window.FENIXA_THUMB ? window.FENIXA_THUMB(src) : src;
+  const photo = (p, cls = '', lazy = true) => `<img class="${cls}" src="${esc(thumb(p.image))}" alt="${esc(p.name)}" width="480" height="360" ${lazy ? 'loading="lazy"' : ''} decoding="async">${p.imageNote?`<small class="catalog-image-note">${esc(p.imageNote)}</small>`:''}`;
   const selected = new Set();
   let saved;
   try { const value = JSON.parse(localStorage.getItem('fenixa-saved-builds') || '[]'); saved = new Set(Array.isArray(value) ? value.filter(id => completeBuilds.some(b => b.id === id)) : []); } catch { saved = new Set(); }
@@ -39,7 +40,7 @@
     const fit=window.FENIXA_MY_BUILD.check(p), inBuild=window.FENIXA_MY_BUILD.ids().includes(p.id);
     return `<article class="market-card fx-card" data-product-id="${p.id}" data-market-category="${p.category}">
       <div class="catalog-product-heading"><span class="market-category">${esc(categoryName(p.category))}${p.imageKind==='category'?' · ilustración de categoría':''}</span><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3></div>
-      <button class="catalog-photo fx-open" type="button" data-open-product="${p.id}" aria-label="Ver detalles de ${esc(p.name)}"><img class="product-image" src="${esc(p.image)}" alt="${esc(p.name)}" width="480" height="360" loading="eager" decoding="async"></button>
+      <button class="catalog-photo fx-open" type="button" data-open-product="${p.id}" aria-label="Ver detalles de ${esc(p.name)}"><img class="product-image" src="${esc(thumb(p.image))}" alt="${esc(p.name)}" width="480" height="360" loading="eager" decoding="async"></button>
       <p class="catalog-brief" title="${esc(brief(p))}">${esc(brief(p))}</p>
       <div class="catalog-price-line"><strong class="market-price">${offer?money(offer.price):'Precio por confirmar'}</strong><span class="estimate-label">${offer?(offer.status==='listed'?'Precio publicado · COP':market.recent(offer)?'Precio consultado · COP':'Consulta vencida · COP'):'Sin oferta exacta'}</span></div>
       <div class="catalog-card-actions"><button class="compare-trigger" type="button" data-compare="${p.id}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button class="primary-button" type="button" data-add-my-build="${p.id}">${inBuild?'En Mi build ':fit.status==='conflict'?'Revisar conflicto':'Añadir'}</button></div>
@@ -179,7 +180,7 @@
   function renderComparison() {
     $('compareTray').hidden = !selected.size;
     $('compareTrayCount').textContent = `${selected.size}/4`;
-    $('compareList').innerHTML = [...selected].map(id => `<div class="comparison-dock-item"><img src="${esc(byId[id].image)}" alt="" width="56" height="56"><span>${esc(byId[id].name)}</span><button type="button" class="dock-remove" data-remove-compare="${esc(id)}" aria-label="Quitar ${esc(byId[id].name)} de comparaciones">×</button></div>`).join('');
+    $('compareList').innerHTML = [...selected].map(id => `<div class="comparison-dock-item"><img src="${esc(thumb(byId[id].image))}" alt="" width="56" height="56"><span>${esc(byId[id].name)}</span><button type="button" class="dock-remove" data-remove-compare="${esc(id)}" aria-label="Quitar ${esc(byId[id].name)} de comparaciones">×</button></div>`).join('');
     $('compareTrayMessage').textContent = selected.size < 2 ? 'Elige otra pieza de la misma categoría. No se añade nada a Mi build.' : 'Tu build no cambia hasta que confirmes añadir o reemplazar una pieza.';
     $('openRealComparison').disabled = selected.size < 2;
     if (!selected.size) { $('compareTrayBody').hidden=true; $('compareTrayToggle').setAttribute('aria-expanded','false'); }
@@ -311,7 +312,7 @@
     $('buildGallery').innerHTML = page.items.map(b => {
       const parts = window.FENIXA_BUILD_DISCOVERY.overview(b).filter(p => p.label === 'Procesador' || p.label === 'Gráfica');
       const total = buildTotal(b);
-      return `<article class="build-card fx-card" data-open-build="${b.id}"><button class="build-photo-button" type="button" data-open-build="${b.id}" aria-label="Ver piezas de ${esc(b.name)}"><img src="${esc(byId[b.caseId].image)}" alt="" width="480" height="360" loading="lazy" decoding="async"></button><div class="build-card-body"><div class="build-target">${b.targetBudget?'Objetivo '+money(b.targetBudget):'Sin objetivo asignado'}</div><h3>${esc(b.name)}</h3><ul class="build-mini-specs">${parts.map(p=>`<li><span>${esc(p.label==='Procesador'?'CPU':'GPU')}</span>${esc(shortPart(p))}</li>`).join('')}</ul><div class="build-card-foot"><span class="build-estimate">${total.count?money(total.sum)+(total.complete?'':' parcial'):'Precio por confirmar'}</span><span class="build-card-more" aria-hidden="true">Ver detalles</span></div></div></article>`;
+      return `<article class="build-card fx-card" data-open-build="${b.id}"><button class="build-photo-button" type="button" data-open-build="${b.id}" aria-label="Ver piezas de ${esc(b.name)}"><img src="${esc(thumb(byId[b.caseId].image))}" alt="" width="480" height="360" loading="lazy" decoding="async"></button><div class="build-card-body"><div class="build-target">${b.targetBudget?'Objetivo '+money(b.targetBudget):'Sin objetivo asignado'}</div><h3>${esc(b.name)}</h3><ul class="build-mini-specs">${parts.map(p=>`<li><span>${esc(p.label==='Procesador'?'CPU':'GPU')}</span>${esc(shortPart(p))}</li>`).join('')}</ul><div class="build-card-foot"><span class="build-estimate">${total.count?money(total.sum)+(total.complete?'':' parcial'):'Precio por confirmar'}</span><span class="build-card-more" aria-hidden="true">Ver detalles</span></div></div></article>`;
     }).join('');
     $('buildResults').textContent=visible.length+(visible.length===1?' propuesta':' propuestas')+' · presupuesto objetivo, no precio de venta'+(limit&&visible.some(b=>!b.targetBudget)?' · las originales sin objetivo se conservan visibles':'');
     $('buildsEmpty').hidden = visible.length > 0;

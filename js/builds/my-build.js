@@ -6,7 +6,7 @@
   const root = document.getElementById('mi-build');
   const esc = v => String(v ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const link = p => `<a href="${esc(p.source)}" target="_blank" rel="noopener noreferrer">Consultar ficha </a>`;
-  const image = p => `<img src="${esc(p.image)}" alt="${esc(p.name)}" width="100" height="80" loading="lazy">`;
+  const image = p => `<img src="${esc(window.FENIXA_THUMB ? window.FENIXA_THUMB(p.image) : p.image)}" alt="${esc(p.name)}" width="100" height="80" loading="lazy">`;
   const baseCategories = ['cpu','board','ram','storage','power','case'];
   function overview(parts, conflicts) {
     const chosen = baseCategories.filter(id=>parts.some(p=>p.category===id)).length;
