@@ -458,3 +458,6 @@ body .product-sheet-table td { color: var(--text); font-variant-numeric: tabular
   body .product-sheet-info h2 { font-size: 18px; }
   body .product-sheet-info .catalog-card-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+body #mi-build .my-build-budget [data-clear-budget] { height: 40px; min-height: 40px; margin: 8px 0 0; padding: 0 16px; border-radius: 12px; font-size: 14px; }
+body #mi-build .my-build-budget #myBuildBudgetAdjusted { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+body #mi-build .my-build-budget #myBuildBudgetAdjusted[hidden] { display: none; }

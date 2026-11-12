@@ -30,15 +30,18 @@
     const reference=costReference(state.ids().map(id=>byId[id]));
     if(!state.ids().length)return '';
     if(!reference||reference.partial||!reference.count)return 'Faltan precios';
-    if(!totalBudget)return 'Elige un objetivo para comparar';
-    if(reference.high<=totalBudget)return 'Cabe en tu presupuesto';
-    return reference.low>totalBudget||reference.low===reference.high?`Se pasa por ${market.money((reference.low>totalBudget?reference.low:reference.high)-totalBudget)}`:`Se pasa por hasta ${market.money(reference.high-totalBudget)}`;
+    const target=effectiveBudget();
+    if(!target)return 'Elige un objetivo para comparar';
+    if(reference.high<=target)return 'Cabe en tu presupuesto';
+    return reference.low>target||reference.low===reference.high?`Se pasa por ${market.money((reference.low>target?reference.low:reference.high)-target)}`:`Se pasa por hasta ${market.money(reference.high-target)}`;
   }
   // Tope del slider: el del perfil de Armar mi PC solo si la build se importó desde una propuesta (tiene razones por pieza).
   function budgetMax() {
     const level=window.FENIXA_BUDGET.profileLevel?.();
     return level&&state.ids().some(id=>state.reason?.(id))?window.FENIXA_BUDGET.limit(level):window.FENIXA_BUDGET.max;
   }
+  // Valor único para etiqueta, slider y comparación: el guardado ajustado al tope del perfil (el guardado no se modifica).
+  function effectiveBudget() { return totalBudget?window.FENIXA_BUDGET.clamp(totalBudget,budgetMax()):0; }
   function costReference(parts) {
     if(!parts.length||!window.FENIXA_AUTO_BUILD?.reference)return null;
     const refs=parts.map(p=>window.FENIXA_AUTO_BUILD.reference(p)).filter(ref=>Number.isFinite(ref?.low)&&ref.low>0&&Number.isFinite(ref.high)&&ref.high>=ref.low);
@@ -110,7 +113,7 @@
       ${pendingImport?`<div class="build-customization"><strong>¿Reemplazar Mi build con esta selección?</strong><p>Se sustituirán las piezas actuales por las ${pendingImport.length} de la build elegida.</p><button type="button" class="primary-button" data-confirm-import>Reemplazar Mi build</button> <button type="button" class="secondary-button" data-cancel-import>Conservar la actual</button></div>`:''}
       <div class="my-build-summary"><strong>${parts.length} ${parts.length===1?'pieza':'piezas'}</strong>${conflicts.length?`<span>${conflicts.length} con conflictos detectados</span>`:''}${parts.length?'<button type="button" class="my-build-clear" data-request-clear>Vaciar Mi build</button>':''}</div>
       ${pendingClear?'<div class="my-build-clear-confirm" role="group" aria-label="Confirmar vaciar Mi build"><strong>¿Vaciar la build actual?</strong><p>Tu presupuesto objetivo se conserva.</p><button type="button" class="primary-button" data-confirm-clear>Sí, vaciar piezas</button> <button type="button" class="secondary-button" data-cancel-clear>Cancelar</button></div>':''}
-      <div class="my-build-budget">${reference?`<p class="my-build-reference"><strong>Referencia de coste: ${reference.count?(reference.low===reference.high?market.money(reference.low):`${market.money(reference.low)} – ${market.money(reference.high)}`):'por confirmar'}</strong></p>${reference.total>reference.count?`<p class="my-build-missing">${reference.total-reference.count} ${reference.total-reference.count===1?'pieza sin precio':'piezas sin precio'}</p>`:''}`:''}<label for="myBuildTotalBudget">Objetivo de presupuesto · <output id="myBuildBudgetLabel" for="myBuildTotalBudget">${totalBudget?market.money(totalBudget):'Sin objetivo'}</output></label><small class="my-build-range" id="myBuildBudgetRange">De $1 a ${num(cap/1000000)} millones</small><input id="myBuildTotalBudget" type="range" min="1000000" max="${cap}" step="250000" value="${Math.min(totalBudget||1000000,cap)}" aria-describedby="myBuildBudgetRange myBuildBudgetSummary"><button type="button" class="text-button" data-clear-budget>Sin objetivo</button><p id="myBuildBudgetSummary" role="status">${budgetSummary()}</p></div>
+      <div class="my-build-budget">${reference?`<p class="my-build-reference"><strong>Referencia de coste: ${reference.count?(reference.low===reference.high?market.money(reference.low):`${market.money(reference.low)} – ${market.money(reference.high)}`):'por confirmar'}</strong></p>${reference.total>reference.count?`<p class="my-build-missing">${reference.total-reference.count} ${reference.total-reference.count===1?'pieza sin precio':'piezas sin precio'}</p>`:''}`:''}<label for="myBuildTotalBudget">Objetivo de presupuesto · <output id="myBuildBudgetLabel" for="myBuildTotalBudget">${totalBudget?market.money(effectiveBudget()):'Sin objetivo'}</output></label><small class="my-build-range" id="myBuildBudgetRange">De $1 a ${num(cap/1000000)} millones</small><input id="myBuildTotalBudget" type="range" min="1000000" max="${cap}" step="250000" value="${effectiveBudget()||1000000}" aria-describedby="myBuildBudgetRange myBuildBudgetSummary"><small id="myBuildBudgetAdjusted" role="status"${totalBudget&&totalBudget>cap?'':' hidden'}>Ajustado al máximo de este perfil</small><button type="button" class="secondary-button" data-clear-budget>Sin objetivo</button><p id="myBuildBudgetSummary" role="status">${budgetSummary()}</p></div>
       </aside><div class="build-studio-main"><div class="my-build-layout"><div><h3>Tus piezas</h3>${!parts.length?'<div class="my-build-empty"><h3>Tu próxima PC empieza aquí</h3><div class="my-build-actions"><a class="primary-button" href="#configurador">Armar mi PC</a><a class="secondary-button" href="#componentes">Explorar componentes</a></div></div>':`<div class="my-build-parts">${categories.map(c=>partCard(c,parts)).join('')}</div>`}</div></div>
       ${recommendations(parts)}
       ${parts.length?`<details class="my-build-shopping"><summary>Opciones de compra de Mi build</summary>${market.plan(ids,byId)}${parts.map(p=>`<article><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3>${market.purchase(p,parts)}</article>`).join('')}</details>`:''}</div></div>`;
@@ -129,7 +132,8 @@
   root.addEventListener('input',event=>{
     if(event.target.id==='myBuildTotalBudget'){
       totalBudget=Number(event.target.value);
-      document.getElementById('myBuildBudgetLabel').textContent=market.money(totalBudget);
+      document.getElementById('myBuildBudgetLabel').textContent=market.money(effectiveBudget());
+      document.getElementById('myBuildBudgetAdjusted').hidden=true;
       document.getElementById('myBuildBudgetSummary').textContent=budgetSummary();
     }
   });

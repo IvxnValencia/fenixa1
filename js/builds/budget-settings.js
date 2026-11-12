@@ -32,5 +32,7 @@
     const top = level && window.FENIXA_AUTO_BUILD?.ceiling?.(level);
     return Number.isFinite(top) && top >= min ? Math.min(max, top) : max;
   }
-  window.FENIXA_BUDGET = {min,max,step,amounts, get:() => value, saved:() => saved, set, options, money, profileLevel, limit};
+  // Valor mostrado: el guardado ajustado al tope (0 = sin objetivo). No modifica lo guardado.
+  const clamp = (v, cap = limit()) => v ? Math.min(v, cap) : 0;
+  window.FENIXA_BUDGET = {min,max,step,amounts, get:() => value, saved:() => saved, set, options, money, profileLevel, limit, clamp};
 })();
