@@ -11,7 +11,7 @@
   function render() {
     const ids=state.ids(), saved=library.list().slice(0,library.limit);
     if(!ids.length&&!saved.length){root.hidden=true;root.innerHTML='';return;}
-    const active=ids.length?`<article class="home-continue-card home-continue-main">${thumb(ids)}<div><strong>Continuar tu build</strong><small>${count(ids.length)}</small></div><a class="primary-button" href="#mi-build">Continuar</a></article>`:'';
+    const active=ids.length?`<section aria-labelledby="homeActiveTitle"><h2 id="homeActiveTitle">Tu build actual</h2><ul class="home-continue-row"><li class="home-continue-card home-continue-main">${thumb(ids)}<div><strong>Mi build</strong><small>${count(ids.length)}</small></div><a class="primary-button" href="#mi-build">Continuar</a></li></ul></section>`:'';
     const row=saved.length?`<section aria-labelledby="homeSavedTitle"><h2 id="homeSavedTitle">Tus builds guardadas</h2><ul class="home-continue-row">${saved.map(e=>`<li class="home-continue-card">${thumb(e.parts)}<div><strong>${esc(e.name)}</strong><small>${count(e.parts.length)}</small></div><button type="button" class="secondary-button" data-home-load="${esc(e.id)}" aria-label="Continuar ${esc(e.name)}">Continuar</button></li>`).join('')}</ul></section>`:'';
     root.innerHTML=active+row+`<p class="home-continue-status" role="status">${esc(status)}</p>`;
     root.hidden=false;

@@ -50,3 +50,17 @@
 @media(max-width:600px) { .component-dialog { padding:12px; } .compare-product-heads { gap:8px; } .compare-product-heads article { padding:9px; } .component-dialog h3 { font-size:16px; overflow-wrap:anywhere; } .component-dialog th,.component-dialog td { padding:6px; } .component-dialog header { flex-wrap:wrap; } }
 @media(max-width:1000px) { .my-build-layout { grid-template-columns:minmax(0,1fr); } .my-build-workbench { order:-1; } }
 @media(max-width:480px) { .my-build-workbench { padding:12px; } .my-build-row { grid-template-columns:60px minmax(0,1fr); gap:10px; } .my-build-row img { width:60px; } .my-build-comparison td,.my-build-comparison th { padding:6px; } }
+.my-build-row.is-empty { padding:10px 0; align-items:center; }
+.my-build-row.is-empty .my-build-placeholder { height:44px; font-size:22px; }
+.my-build-row.is-empty .my-build-actions { margin-top:6px; }
+.my-build-row .my-build-why,.my-build-row .my-build-store { margin:2px 0; font-size:13px; line-height:1.45; overflow-wrap:anywhere; }
+.my-build-row .my-build-store { color:var(--muted); }
+.my-build-row .my-build-store a { color:var(--purple); font-weight:600; }
+.my-build-row .my-build-actions { margin-top:8px; gap:8px; }
+.my-build-summary { display:flex; flex-wrap:wrap; align-items:center; gap:6px 14px; padding:14px 20px; }
+.my-build-summary > strong { font-size:18px; margin:0; }
+.my-build-summary > span { color:var(--muted); font-size:13px; }
+.my-build-empty .my-build-actions a { text-decoration:none; }
+.fit-tag { display:inline-block; margin-left:6px; padding:1px 8px; border:1px solid var(--stroke); border-radius:999px; font-size:11px; font-weight:700; line-height:1.5; vertical-align:middle; cursor:help; color:var(--muted); background:var(--surface); }
+.fit-tag--matched { color:var(--purple); background:var(--purple-faint); }
+.fit-tag--conflict { color:var(--red); border-color:var(--red); }

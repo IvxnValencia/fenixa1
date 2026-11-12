@@ -105,7 +105,7 @@
     const choice=e.target.closest('[data-level]');if(choice){level=choice.dataset.level;constrain(selectedBudget,true);remember();levels();update();$('startLevels').querySelector(`[data-level="${level}"]`).focus({preventScroll:true});return;}
     const setTo=e.target.closest('[data-budget-set]');if(setTo){constrain(Number(setTo.dataset.budgetSet));remember();update();return;}
     const step=e.target.closest('[data-budget-delta]');if(step){constrain(selectedBudget+Number(step.dataset.budgetDelta)*budget.step);remember();update();return;}
-    if(e.target.closest('#useAutomaticBuild')&&current){remember();window.dispatchEvent(new CustomEvent('fenixa-request-build-import',{detail:{parts:current.parts.slice()}}));location.hash='mi-build';}
+    if(e.target.closest('#useAutomaticBuild')&&current){remember();const reasons=Object.fromEntries(current.rows.map(r=>[r.product.id,why(r,current,auto.profiles[level],null)]));window.dispatchEvent(new CustomEvent('fenixa-request-build-import',{detail:{parts:current.parts.slice(),reasons}}));location.hash='mi-build';}
   });
   $('startParts').addEventListener('click',()=>{remember();location.hash='componentes';});
   $('startProposals').addEventListener('click',()=>{remember();window.dispatchEvent(new CustomEvent('fenixa-find-builds',{detail:{use,max:selectedBudget}}));location.hash='builds';});

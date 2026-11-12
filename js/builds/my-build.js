@@ -12,9 +12,9 @@
     const chosen = baseCategories.filter(id=>parts.some(p=>p.category===id)).length;
     const conflicting = new Set(conflicts.map(p=>p.id));
     return `<section class="build-overview" aria-labelledby="buildOverviewTitle">
-      <div class="build-overview-heading"><div><span class="eyebrow">TU BUILD DE UN VISTAZO</span><h3 id="buildOverviewTitle">${chosen} de ${baseCategories.length} categorías de la base elegidas</h3></div><span class="build-overview-count" aria-hidden="true">${chosen}<small> / ${baseCategories.length}</small></span></div>
-      <progress class="build-overview-progress" value="${chosen}" max="${baseCategories.length}" aria-labelledby="buildOverviewTitle" aria-describedby="buildOverviewHelp">${chosen} de ${baseCategories.length}</progress>
-      <p id="buildOverviewHelp">Este avance cuenta elecciones, no compatibilidad ni presupuesto. Revisa también gráficos y refrigeración. Pulsa una categoría para elegir o cambiar su pieza.</p>
+      <div class="build-overview-heading"><div><h3 id="buildOverviewTitle">${chosen} de ${baseCategories.length} categorías de la base elegidas</h3></div><span class="build-overview-count" aria-hidden="true">${chosen}<small> / ${baseCategories.length}</small></span></div>
+      <progress class="build-overview-progress" value="${chosen}" max="${baseCategories.length}" aria-labelledby="buildOverviewTitle">${chosen} de ${baseCategories.length}</progress>
+      
       <ul class="build-overview-grid">${baseCategories.map(id=>{
         const p=parts.find(p=>p.category===id), name=categories.find(c=>c.id===id).name;
         const status=!p?'Pendiente':conflicting.has(p.id)?'Revisar conflicto':'Elegida';
@@ -22,18 +22,7 @@
       }).join('')}</ul>
     </section>`;
   }
-  let category = 'cpu', query = '', max = '', hideConflicts = true, alternative = '', pendingImport = null, pendingClear = false;
-  let draft = {category, query, max, hideConflicts};
-  const filtersPending = () => draft.category !== category || draft.query !== query || draft.max !== max || draft.hideConflicts !== hideConflicts;
-  function readFilters(form) {
-    return {category: form.elements.category.value, query: form.elements.query.value, max: form.elements.max.value === '0' ? '' : form.elements.max.value, hideConflicts: form.elements.hideConflicts.checked};
-  }
-  function retainFilters(event) {
-    if (event.target.form?.id !== 'myBuildFilters') return;
-    draft = readFilters(event.target.form);
-    document.getElementById('myBuildMaxLabel').textContent = draft.max ? market.money(Number(draft.max)) : 'Sin límite';
-    document.getElementById('myBuildFiltersPending').hidden = !filtersPending();
-  }
+  let pendingImport = null, pendingReasons = {}, pendingClear = false;
   let totalBudget = 0, budgetSaved = true;
   totalBudget=window.FENIXA_BUDGET.get();budgetSaved=window.FENIXA_BUDGET.saved();
   function budgetSummary() {
@@ -45,87 +34,103 @@
     else if(totalBudget)message+=' Con precios o piezas pendientes no podemos confirmar si tu build cabe en el presupuesto.';
     return message+(budgetSaved?'':' No se pudo guardar el presupuesto; solo se conserva en esta pestaña.');
   }
+  // Short summary of key facts, used when a piece has no stored reason.
+  const num = n => new Intl.NumberFormat('es-CO').format(n);
+  function keyFacts(p) {
+    const v = window.FENIXA_SPECS?.facts(p).values || {};
+    const has = x => x !== undefined && x !== null && x !== '';
+    const size = n => n >= 1000 ? `${num(n / 1000)} TB` : `${num(n)} GB`;
+    const parts = {
+      cpu: [has(v.cores) && `${v.cores} núcleos`, v.socket],
+      gpu: [has(v.vram) && `${v.vram} GB${v.memory ? ' ' + v.memory : ''}`],
+      ram: [has(v.capacity) && `${v.capacity} GB${v.memory ? ' ' + v.memory : ''}`, has(v.rate) && `${num(v.rate)} MT/s`],
+      storage: [has(v.capacity) && size(v.capacity), v.pcie],
+      board: [v.socket, v.chipset],
+      power: [has(v.watts) && `${v.watts} W`, v.efficiency && String(v.efficiency).replace(/^Cybenetics\s+/i, '')],
+      case: [has(v.gpuMax) && `GPU hasta ${v.gpuMax} mm`],
+      cooler: [v.format],
+      fan: [v.format, has(v.rpm) && `${num(v.rpm)} RPM`],
+      setup: [v.format]
+    }[p.category] || [];
+    return parts.filter(Boolean).join(' · ');
+  }
+  const day = o => { const t = Date.parse(o.checkedAt); return Number.isFinite(t) ? new Date(t).toLocaleDateString('es-CO', {timeZone: 'America/Bogota', dateStyle: 'short'}) : ''; };
+  function storeLine(p) {
+    const o = market.fixed(p);
+    if (!o) return 'Precio por confirmar';
+    const old = market.recent(o) ? '' : ' · consulta vencida';
+    return [esc(o.store), market.money(o.price), esc(day(o)) + old].filter(Boolean).join(' · ') + (o.url ? ` · <a href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">Ver en tienda</a>` : '');
+  }
   function recommendations(parts) {
-    if (!parts.length) return '<section class="build-recommendations"><h3>Tu siguiente pieza</h3><p>Añade una pieza para sugerirte opciones según lo que ya elegiste. Nunca se añaden automáticamente.</p></section>';
+    if (!parts.length) return '';
     const step=state.nextStep(), next=step?.category;
-    if (!next) return '<section class="build-recommendations"><h3>Base elegida</h3><p>Ya tienes las seis categorías esenciales. Revisa refrigeración, gráficos, conectores, potencia y montaje antes de comprar; no hay una compatibilidad completa certificada.</p></section>';
+    if (!next) return '<section class="build-recommendations"><h3>Base elegida</h3><p>Revisa gráficos, refrigeración y montaje antes de comprar.</p></section>';
     const name=categories.find(c=>c.id===next)?.name || next;
     const known=parts.map(p=>market.price(p));
     const priced=known.every(price=>price!==null);
     const remaining=totalBudget&&priced?totalBudget-known.reduce((sum,price)=>sum+price,0):null;
     const options=state.candidates(next,{hideConflicts:true}).filter(candidate=>remaining===null || (candidate.price!==null&&candidate.price<=remaining)).slice(0,3);
-    const budgetNote=(step.reason?`${esc(step.reason)} `:'')+(remaining===null?'No podemos calcular aún un margen completo con los precios disponibles.':`Margen provisional: ${market.money(Math.max(0,remaining))}. Faltan otras piezas, envío y montaje.`);
-    return `<section class="build-recommendations" aria-labelledby="buildRecommendationsTitle"><div><span class="eyebrow">SEGÚN TUS PIEZAS Y PRESUPUESTO</span><h3 id="buildRecommendationsTitle">Siguiente paso: ${esc(name)}</h3><p>Opciones sin conflictos detectados, ordenadas por coincidencias conocidas y precio reciente; no significa mayor rendimiento ni montaje garantizado. ${budgetNote}</p></div><div class="build-recommendation-list">${options.length?options.map(({product,fit,price})=>`<article>${image(product)}<div><strong>${esc(product.name)}</strong><small>${esc(fit.label)} · ${price===null?'Sin precio reciente':market.money(price)}</small></div><button class="secondary-button" type="button" data-suggest-id="${esc(product.id)}">Añadir a Mi build</button></article>`).join(''):'<p>No hay una opción comprobable dentro del margen provisional. Ajusta tu objetivo o revisa más modelos sin filtro de presupuesto.</p>'}</div></section>`;
+    const budgetNote=(step.reason?`${esc(step.reason)} `:'')+(remaining===null?'':`Margen provisional: ${market.money(Math.max(0,remaining))}.`);
+    return `<section class="build-recommendations" aria-labelledby="buildRecommendationsTitle"><div><h3 id="buildRecommendationsTitle">Siguiente paso: ${esc(name)}</h3>${budgetNote?`<p>${budgetNote}</p>`:''}</div><div class="build-recommendation-list">${options.length?options.map(({product,fit,price})=>`<article>${image(product)}<div><strong>${esc(product.name)}</strong><small>${esc(fit.label)} · ${price===null?'Sin precio reciente':market.money(price)}</small></div><button class="secondary-button" type="button" data-suggest-id="${esc(product.id)}">Añadir</button></article>`).join(''):'<p>Sin opciones comprobables dentro del margen.</p>'}</div></section>`;
+  }
+  function partCard(c, parts) {
+    const p = parts.find(p => p.category === c.id);
+    if (!p) return `<article class="my-build-row is-empty"><div><span class="my-build-placeholder" aria-hidden="true">＋</span></div><div><small>${esc(c.name)}</small><div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">Elegir pieza</button></div></div></article>`;
+    const fit = window.FENIXA_FIT.check(p, parts.filter(other => other.id !== p.id));
+    const why = state.reason?.(p.id) || keyFacts(p) || 'Sin datos clave verificados';
+    return `<article class="my-build-row"><div>${image(p)}</div><div><small>${esc(c.name)} ${window.FENIXA_FIT_STATUS.tag(fit,{hasParts:parts.some(other=>other.category!==p.category)})}</small><h3>${esc(p.name)}</h3><p class="my-build-why">${esc(why)}</p><p class="my-build-store">${storeLine(p)}</p>${fit.status==='conflict'?`<p class="my-build-conflict">${esc(fit.reason)}</p>`:''}<div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">Cambiar pieza</button><button type="button" class="my-build-remove" data-remove-part="${p.id}" aria-label="Quitar ${esc(p.name)}">Quitar</button></div></div></article>`;
   }
   function render() {
     const ids = state.ids(), parts = ids.map(id=>byId[id]);
-    const current = parts.find(p=>p.category===category);
-    const choices = state.candidates(category,{query,max,hideConflicts});
-    if (!choices.some(c=>c.product.id===alternative)) alternative='';
-    const missing = baseCategories.filter(c=>!parts.some(p=>p.category===c));
     const conflicts = parts.filter(p=>window.FENIXA_FIT.check(p,parts.filter(other=>other.id!==p.id)).status==='conflict');
-    const selected = byId[alternative];
-    root.innerHTML = `<div class="section-heading"><div><div class="eyebrow">TU CONFIGURACIÓN, PIEZA A PIEZA</div><h2 tabindex="-1" id="myBuildTitle">Mi build</h2><p>Reúne tus piezas y ajusta tu configuración, a tu ritmo.</p></div><a class="secondary-button" href="#catalogo">Explorar componentes </a></div>
+    root.innerHTML = `<div class="section-heading"><div><h2 tabindex="-1" id="myBuildTitle">Mi build</h2></div><a class="secondary-button" href="#componentes">Explorar componentes </a></div>
       ${window.FENIXA_LIBRARY_UI?.render()||''}
-      <p class="my-build-storage" role="status">${state.saved()?'Guardado en este navegador · se conserva al recargar. No se sincroniza con otros dispositivos.':'No se pudo guardar en este navegador. La selección solo se conservará mientras esta pestaña siga abierta.'}</p>
+      <p class="my-build-storage" role="status">${state.saved()?'Guardado en este navegador.':'No se pudo guardar: la selección solo dura mientras esta pestaña siga abierta.'}</p>
       <div class="build-studio"><aside class="build-studio-summary" aria-label="Resumen y presupuesto de Mi build" tabindex="0">
       ${overview(parts, conflicts)}
-      ${pendingImport?`<div class="build-customization"><strong>¿Reemplazar Mi build con esta selección?</strong><p>Se sustituirán las piezas actuales por las ${pendingImport.length} piezas de la build elegida.</p><button type="button" class="primary-button" data-confirm-import>Reemplazar Mi build</button> <button type="button" class="secondary-button" data-cancel-import>Conservar la actual</button></div>`:''}
-      <div class="my-build-summary"><strong>${parts.length} categorías elegidas</strong><span>${conflicts.length?`${conflicts.length} piezas con conflictos detectados`:'Revisión parcial · no garantiza compatibilidad'}</span><p>${missing.length?`Por elegir en la base: ${missing.map(c=>esc(categories.find(x=>x.id===c).name)).join(', ')}.`:'Categorías de la base elegidas. Todavía debes comprobar el montaje.'} Verifica también gráficos integrados o dedicados y refrigeración incluida o adicional.</p><small>Una referencia por categoría; un kit de RAM cuenta como un producto. Varias unidades y múltiples discos se añadirán en una próxima etapa.</small>${parts.length?'<button type="button" class="my-build-clear" data-request-clear>Vaciar Mi build</button>':''}</div>
-      ${pendingClear?'<div class="my-build-clear-confirm" role="group" aria-label="Confirmar vaciar Mi build"><strong>¿Vaciar la build actual?</strong><p>Se quitarán todas las piezas guardadas en este navegador. Tu presupuesto objetivo se conserva.</p><button type="button" class="primary-button" data-confirm-clear>Sí, vaciar piezas</button> <button type="button" class="secondary-button" data-cancel-clear>Cancelar</button></div>':''}
-      <div class="my-build-budget"><label for="myBuildTotalBudget">Tu presupuesto para la build · <output id="myBuildBudgetLabel" for="myBuildTotalBudget">${totalBudget?market.money(totalBudget):'Sin objetivo'}</output></label><input id="myBuildTotalBudget" type="range" min="1000000" max="18000000" step="250000" value="${totalBudget||1000000}" aria-describedby="myBuildBudgetSummary"><small>De $1 a $18 millones COP · pasos de $250.000. Objetivo de planificación, no precio de venta.</small><button type="button" class="text-button" data-clear-budget>Sin objetivo</button><p id="myBuildBudgetSummary" role="status">${budgetSummary()}</p></div>
-      </aside><div class="build-studio-main"><div class="my-build-layout"><div><h3>Tus piezas</h3>${!parts.length?'<div class="my-build-empty"><h3>Tu próxima PC empieza aquí</h3><p>Añade una pieza desde el catálogo, elige abajo o usa una build completa como punto de partida.</p><a href="#builds">Ver builds de referencia </a></div>':''}
-      <div class="my-build-parts">${categories.map(c=>{const p=parts.find(p=>p.category===c.id);const fit=p&&window.FENIXA_FIT.check(p,parts.filter(other=>other.id!==p.id));return `<article class="my-build-row"><div>${p?image(p):'<span class="my-build-placeholder" aria-hidden="true">＋</span>'}</div><div><small>${esc(c.name)}</small><h3>${p?esc(p.name):'Sin elegir'}</h3>${p?`<p>${market.priceText(p)}</p>${window.FENIXA_FIT_STATUS.render(fit,{hasParts:parts.some(other=>other.category!==p.category)})}`:'<p>Puedes elegir una pieza cuando la necesites.</p>'}<div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">${p?'Cambiar pieza':'Elegir pieza'}</button>${p?`<button type="button" class="my-build-remove" data-remove-part="${p.id}" aria-label="Quitar ${esc(p.name)}">Quitar</button>`:''}</div></div></article>`;}).join('')}</div></div>
-      <div class="my-build-workbench" id="myBuildWorkbench"><h3 tabindex="-1" id="myBuildCompareTitle">Elige tu pieza</h3><p>Busca un modelo y añádelo directamente. Si ya tienes uno de esa categoría, podrás cambiarlo aquí.</p><form id="myBuildFilters"><label>Categoría<select name="category">${categories.map(c=>`<option value="${c.id}" ${draft.category===c.id?'selected':''}>${esc(c.name)}</option>`).join('')}</select></label><label>Buscar modelo<input name="query" type="search" value="${esc(draft.query)}" placeholder="Nombre o referencia"></label><label for="myBuildMax">Máximo por pieza · <output id="myBuildMaxLabel" for="myBuildMax">${draft.max?market.money(Number(draft.max)):'Sin límite'}</output><input id="myBuildMax" name="max" type="number" min="0" max="15000000" step="10000" inputmode="numeric" value="${esc(draft.max||'')}" placeholder="Sin límite"></label><small>Escribe un máximo por pieza o deja el campo vacío. Solo filtra piezas con precio reciente; no es el presupuesto total.</small><label class="my-build-check"><input name="hideConflicts" type="checkbox" ${draft.hideConflicts?'checked':''}> Ocultar conflictos detectados</label><button class="secondary-button" type="submit">Aplicar filtros</button></form><p id="myBuildFiltersPending" role="status" ${filtersPending()?'':'hidden'}>Tienes filtros sin aplicar. Las alternativas todavía corresponden a la búsqueda anterior.</p>
-      <label class="my-build-choice">Modelo · ${esc(categories.find(c=>c.id===category).name)} (${choices.length})<select id="myBuildAlternative"><option value="">Selecciona un modelo</option>${choices.map(c=>`<option value="${c.product.id}" ${alternative===c.product.id?'selected':''}>${esc(c.product.name)} · ${c.price===null?'Sin precio reciente':market.money(c.price)}${c.fit.status==='conflict'?' · Conflicto':c.fit.matched?' · Coincidencia parcial':''}</option>`).join('')}</select></label>${!choices.length?'<p role="status">No hay opciones con estos filtros. Amplía el máximo o elimina la búsqueda; el límite de precio excluye piezas sin una oferta reciente.</p>':''}
-      ${selected?comparison(current,selected,parts):'<p>Selecciona un modelo para añadirlo o cambiar tu pieza actual.</p>'}</div></div>
+      ${pendingImport?`<div class="build-customization"><strong>¿Reemplazar Mi build con esta selección?</strong><p>Se sustituirán las piezas actuales por las ${pendingImport.length} de la build elegida.</p><button type="button" class="primary-button" data-confirm-import>Reemplazar Mi build</button> <button type="button" class="secondary-button" data-cancel-import>Conservar la actual</button></div>`:''}
+      <div class="my-build-summary"><strong>${parts.length} ${parts.length===1?'pieza':'piezas'}</strong>${conflicts.length?`<span>${conflicts.length} con conflictos detectados</span>`:''}${parts.length?'<button type="button" class="my-build-clear" data-request-clear>Vaciar Mi build</button>':''}</div>
+      ${pendingClear?'<div class="my-build-clear-confirm" role="group" aria-label="Confirmar vaciar Mi build"><strong>¿Vaciar la build actual?</strong><p>Tu presupuesto objetivo se conserva.</p><button type="button" class="primary-button" data-confirm-clear>Sí, vaciar piezas</button> <button type="button" class="secondary-button" data-cancel-clear>Cancelar</button></div>':''}
+      <div class="my-build-budget"><label for="myBuildTotalBudget">Tu presupuesto para la build · <output id="myBuildBudgetLabel" for="myBuildTotalBudget">${totalBudget?market.money(totalBudget):'Sin objetivo'}</output></label><input id="myBuildTotalBudget" type="range" min="1000000" max="18000000" step="250000" value="${totalBudget||1000000}" aria-describedby="myBuildBudgetSummary"><button type="button" class="text-button" data-clear-budget>Sin objetivo</button><p id="myBuildBudgetSummary" role="status">${budgetSummary()}</p></div>
+      </aside><div class="build-studio-main"><div class="my-build-layout"><div><h3>Tus piezas</h3>${!parts.length?'<div class="my-build-empty"><h3>Tu próxima PC empieza aquí</h3><div class="my-build-actions"><a class="primary-button" href="#configurador">Armar mi PC</a><a class="secondary-button" href="#componentes">Explorar componentes</a></div></div>':`<div class="my-build-parts">${categories.map(c=>partCard(c,parts)).join('')}</div>`}</div></div>
       ${recommendations(parts)}
       ${parts.length?`<details class="my-build-shopping"><summary>Opciones de compra de Mi build</summary>${market.plan(ids,byId)}${parts.map(p=>`<article><h3>${esc(p.name)}</h3>${market.purchase(p,parts)}</article>`).join('')}</details>`:''}</div></div>`;
-  }
-  function comparison(current, selected, parts) {
-    const fit=state.check(selected), included=state.ids().includes(selected.id);
-    return '<article class="build-piece-preview">'+image(selected)+'<h4>'+esc(selected.name)+'</h4><p>'+market.priceText(selected)+'</p>'+window.FENIXA_FIT_STATUS.render(fit,{hasParts:parts.some(p=>p.category!==selected.category)})+'<button type="button" class="primary-button" data-add-my-build="'+esc(selected.id)+'" '+(included?'disabled':'')+'>'+(included?'Ya está en Mi build':fit.status==='conflict'?'Revisar conflicto':current?'Cambiar por esta pieza':'Añadir a Mi build')+'</button></article>';
   }
   window.addEventListener('fenixa-library-changed',render);
   window.addEventListener('fenixa-build-changed',()=>{pendingClear=false;render();});
   window.addEventListener('fenixa-request-build-import',event=>{
     const next=event.detail?.parts;
     if(!Array.isArray(next)||!next.length||next.some(id=>!byId[id])||new Set(next.map(id=>byId[id].category)).size!==next.length)return;
-    if(state.ids().length){pendingImport=next.slice();pendingClear=false;render();}else state.importParts(next);
+    const reasons=event.detail?.reasons&&typeof event.detail.reasons==='object'&&!Array.isArray(event.detail.reasons)?event.detail.reasons:{};
+    if(state.ids().length){pendingImport=next.slice();pendingReasons=reasons;pendingClear=false;render();}else state.importParts(next,reasons);
   });
   window.addEventListener('fenixa-budget-changed',()=>{totalBudget=window.FENIXA_BUDGET.get();budgetSaved=window.FENIXA_BUDGET.saved();render();});
   window.addEventListener('hashchange',()=>{if(location.hash==='#mi-build')render();});
-  root.addEventListener('submit',event=>{if(event.target.id!=='myBuildFilters')return;event.preventDefault();draft=readFilters(event.target);({category,query,max,hideConflicts}=draft);render();document.getElementById('myBuildAlternative').focus();});
   root.addEventListener('input',event=>{
     if(event.target.id==='myBuildTotalBudget'){
       totalBudget=Number(event.target.value);
       document.getElementById('myBuildBudgetLabel').textContent=market.money(totalBudget);
       document.getElementById('myBuildBudgetSummary').textContent=budgetSummary();
-      return;
     }
-    retainFilters(event);
   });
-  root.addEventListener('change',event=>{if(event.target.id==='myBuildTotalBudget'){window.FENIXA_BUDGET.set(Number(event.target.value));document.getElementById('myBuildTotalBudget').focus({preventScroll:true});return;}retainFilters(event);if(event.target.id==='myBuildAlternative'){alternative=event.target.value;render();document.getElementById('myBuildAlternative').focus();}});
+  root.addEventListener('change',event=>{if(event.target.id==='myBuildTotalBudget'){window.FENIXA_BUDGET.set(Number(event.target.value));document.getElementById('myBuildTotalBudget').focus({preventScroll:true});}});
   root.addEventListener('click',event=>{
     if(event.target.closest('[data-clear-budget]')){window.FENIXA_BUDGET.set(0);return;}
     if(event.target.closest('[data-request-clear]')){pendingClear=true;render();document.querySelector('[data-confirm-clear]')?.focus();return;}
     if(event.target.closest('[data-cancel-clear]')){pendingClear=false;render();document.querySelector('[data-request-clear]')?.focus();return;}
-    if(event.target.closest('[data-confirm-clear]')){pendingClear=false;pendingImport=null;alternative='';state.clear();document.getElementById('myBuildTitle').focus();return;}
+    if(event.target.closest('[data-confirm-clear]')){pendingClear=false;pendingImport=null;state.clear();document.getElementById('myBuildTitle').focus();return;}
     const suggestion=event.target.closest('[data-suggest-id]');
     if(suggestion){window.FENIXA_REQUEST_BUILD_ADD(suggestion.dataset.suggestId,suggestion);return;}
+    // «Cambiar pieza» y «Elegir pieza» abren el catálogo filtrado; el diálogo de Mi build confirma el reemplazo.
     const edit=event.target.closest('[data-edit-category]');
-    if(edit){
-      const nextCategory=edit.dataset.editCategory;
-      if(!state.ids().some(id=>byId[id].category===nextCategory)){window.FENIXA_BROWSE_CATEGORY(nextCategory);return;}
-      category=nextCategory;query='';max='';alternative='';draft={category,query,max,hideConflicts};render();document.getElementById('myBuildCompareTitle').focus();return;
-    }
+    if(edit){window.FENIXA_BROWSE_CATEGORY(edit.dataset.editCategory);return;}
     const remove=event.target.closest('[data-remove-part]');if(remove){state.remove(remove.dataset.removePart);document.getElementById('myBuildTitle').focus();return;}
-    if(event.target.closest('[data-confirm-import]')){const next=pendingImport;pendingImport=null;state.importParts(next);return;}
-    if(event.target.closest('[data-cancel-import]')){pendingImport=null;render();}
+    if(event.target.closest('[data-confirm-import]')){const next=pendingImport,reasons=pendingReasons;pendingImport=null;pendingReasons={};state.importParts(next,reasons);return;}
+    if(event.target.closest('[data-cancel-import]')){pendingImport=null;pendingReasons={};render();}
   });
   document.addEventListener('click',event=>{
     const copy=event.target.closest('[data-copy-my-build]');
-    if(copy){const b=window.FENIXA_BUILD_EDITOR.get(copy.dataset.copyMyBuild);if(!b)return;if(state.ids().length){pendingImport=b.parts.slice();render();}else state.importParts(b.parts);location.hash='mi-build';}
+    if(copy){const b=window.FENIXA_BUILD_EDITOR.get(copy.dataset.copyMyBuild);if(!b)return;if(state.ids().length){pendingImport=b.parts.slice();pendingReasons={};render();}else state.importParts(b.parts);location.hash='mi-build';}
   });
   render();
 })();

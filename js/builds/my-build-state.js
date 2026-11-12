@@ -12,11 +12,25 @@
     }
     return result;
   }
-  let ids = [], saved = true;
+  // Optional per-piece reasons live under their own key so the id list format never changes.
+  const reasonKey = 'fenixa-my-build-reasons-v1';
+  function cleanReasons(value, list) {
+    const result = {};
+    if (!value || typeof value !== 'object' || Array.isArray(value)) return result;
+    for (const id of list) if (typeof value[id] === 'string' && value[id].trim()) result[id] = value[id].trim().slice(0, 240);
+    return result;
+  }
+  let ids = [], reasons = {}, saved = true;
   try { ids = clean(JSON.parse(localStorage.getItem(key) || '[]')); } catch { saved = false; }
-  function write(next) {
+  try { reasons = cleanReasons(JSON.parse(localStorage.getItem(reasonKey) || '{}'), ids); } catch { reasons = {}; }
+  function write(next, nextReasons = reasons) {
     ids = clean(next);
-    try { localStorage.setItem(key, JSON.stringify(ids)); saved = true; } catch { saved = false; }
+    reasons = cleanReasons(nextReasons, ids);
+    try {
+      localStorage.setItem(key, JSON.stringify(ids));
+      localStorage.setItem(reasonKey, JSON.stringify(reasons));
+      saved = true;
+    } catch { saved = false; }
     window.dispatchEvent(new Event('fenixa-build-changed'));
     return saved;
   }
@@ -52,5 +66,6 @@
   }
   window.FENIXA_MY_BUILD = {ids: () => ids.slice(), saved: () => saved, add, check, candidates, nextStep,
     remove: id => write(ids.filter(other => other !== id)),
-    importParts: parts => write(parts), clear: () => write([])};
+    reasons: () => ({...reasons}), reason: id => reasons[id] || '',
+    importParts: (parts, partReasons = {}) => write(parts, partReasons), clear: () => write([], {})};
 })();
