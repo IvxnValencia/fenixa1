@@ -1,0 +1,17 @@
+/* Continuar tu build: inicio compacto, solo si hay datos. */
+#homeContinue { display: grid; gap: 12px; margin: 0 0 20px; min-width: 0; }
+#homeContinue[hidden] { display: none; }
+#homeContinue h2 { margin: 0 0 8px; font-size: 14px; font-weight: 600; color: var(--text); }
+.home-continue-card { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 10px 12px; border: 1px solid var(--stroke); border-radius: 12px; background: var(--surface); color: var(--text); }
+.home-continue-card img, .home-continue-icon { flex: none; width: 48px; height: 48px; border-radius: 8px; object-fit: contain; background: var(--purple-faint); }
+.home-continue-icon { display: grid; place-items: center; color: var(--purple); }
+.home-continue-card div { flex: 1; min-width: 0; display: grid; }
+.home-continue-card strong { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; overflow-wrap: anywhere; font-size: 14px; line-height: 1.3; }
+.home-continue-card small { color: var(--muted); font-size: 12px; }
+.home-continue-card .primary-button, .home-continue-card .secondary-button { flex: none; min-height: 40px; padding-inline: 14px; text-decoration: none; }
+.home-continue-main { border-color: var(--purple); background: var(--purple-faint); max-width: 420px; }
+.home-continue-row { display: flex; gap: 10px; margin: 0; padding: 2px 0 6px; list-style: none; overflow-x: auto; scroll-snap-type: x proximity; }
+.home-continue-row .home-continue-card { flex: 0 0 min(300px, 82vw); scroll-snap-align: start; }
+.home-continue-status { margin: 0; color: var(--muted); font-size: 12px; }
+.home-continue-status:empty { display: none; }
+#homeContinue a:focus-visible, #homeContinue button:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
