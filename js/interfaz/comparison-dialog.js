@@ -60,7 +60,7 @@
   }
   function annotateFamilyImages(ps,selector){
     dialog.querySelectorAll(selector).forEach((article,index)=>{
-      if(!['family','category'].includes(ps[index]?.imageKind))return;
+      if(!['family','category','official'].includes(ps[index]?.imageKind))return;
       const note=document.createElement('small');note.className='comparison-image-note';
       note.textContent=ps[index].imageKind==='category'?'Ilustración · foto pendiente':'Imagen de familia';note.title=ps[index].imageNote;
       article.querySelector('img')?.after(note);

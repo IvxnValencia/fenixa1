@@ -5,7 +5,7 @@
   const labels={estudio:'Estudio',trabajo:'Trabajo',gaming:'Gaming',creativo:'Creación'};
   const referenceKind=p=>p.referenceKind||'Configuración variable';
   const regionLabel=p=>p.configurationId==='catalog'?referenceKind(p):p.region;
-  const imageNote=p=>p.imageKind==='category'?p.imageNote:'Foto oficial de familia; no certifica el teclado, acabado o etiqueta de este SKU.';
+  const imageNote=p=>p.imageKind==='category'||p.imageKind==='official'?p.imageNote:'Foto oficial de familia; no certifica el teclado, acabado o etiqueta de este SKU.';
   const imageAlt=p=>p.imageKind==='category'?'Ilustración de portátil; fotografía de '+p.model+' pendiente':'Foto oficial de la familia '+p.name;
   const checkedOn=value=>/^\d{4}-\d{2}-\d{2}$/.test(value||'')?value.split('-').reverse().join('/'):'fecha no registrada';
   const selected=new Set();
@@ -61,7 +61,7 @@
     const page=window.FENIXA_PAGER.paginate('laptops',visible,{anchor:$('laptopGrid'),signature:JSON.stringify([use,query]),onChange:render,label:'Páginas de laptops',scrollTarget:$('laptops')});
     $('laptopGrid').innerHTML=page.items.map(p=>`<article class="laptop-card fx-card" data-laptop-id="${esc(p.id)}">
       <div class="catalog-product-heading"><span class="market-category">${esc(labels[p.uses[0]]||'Laptop')} · ${esc(p.model)}</span><h3>${esc(p.name)}</h3></div>
-      <button type="button" class="catalog-photo fx-open" data-open-laptop="${esc(p.id)}" aria-label="Ver ficha de ${esc(p.name)}"><img class="product-image" src="${esc(p.image)}" alt="${esc(imageAlt(p))}" width="800" height="800" loading="lazy" decoding="async"></button>
+      <button type="button" class="catalog-photo fx-open" data-open-laptop="${esc(p.id)}" aria-label="Ver ficha de ${esc(p.name)}"><img class="product-image" src="${esc(window.FENIXA_THUMB?window.FENIXA_THUMB(p.image):p.image)}" alt="${esc(imageAlt(p))}" width="800" height="800" loading="lazy" decoding="async"></button>
       <p class="catalog-brief" title="${esc(p.specs.filter(([label])=>/procesador|gráficos/i.test(label)).map(([,value])=>value).join(' · '))}">${esc(p.specs.filter(([label])=>/procesador|gráficos/i.test(label)).map(([,value])=>value).join(' · '))}</p>
       <div class="catalog-price-line"><strong class="market-price">Precio por confirmar</strong><span class="estimate-label">Sin oferta verificada en COP</span></div>
       <div class="catalog-card-actions"><button type="button" class="compare-trigger" data-laptop-compare="${esc(p.id)}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button type="button" class="secondary-button" data-open-laptop="${esc(p.id)}">Ver ficha</button></div>

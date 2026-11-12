@@ -709,7 +709,7 @@ window.FENIXA_LAPTOP_GOAL30_ROWS = [
     const limits=[row.scope,'Referencia regional para comparar especificaciones, no recomendación de compra con stock local confirmado. Confirmar teclado, garantía, adaptador, ampliación y sufijo exactos.','No se han medido autonomía, temperatura, FPS ni velocidad real; un área mayor del radar no identifica al mejor equipo.'];
     const p={id,name,model:row.sku,uses:gaming?['gaming','creativo']:['estudio','trabajo'],region:row.region,source:row.source,checkedAt:row.checkedAt,
       referenceKind:retired?'SKU regional retirado · archivo':'SKU regional documentado',retired,
-      image:'assets/laptops/reference-placeholder.svg',imageKind:'category',imageNote:'Ilustración de portátil, no fotografía de este SKU; foto oficial pendiente.',
+      ...(window.FENIXA_LAPTOP_PHOTOS?.[id]?{imageKind:'official',...window.FENIXA_LAPTOP_PHOTOS[id]}:{image:'assets/laptops/reference-placeholder.svg',imageKind:'category',imageNote:'Ilustración de portátil, no fotografía de este SKU; foto oficial pendiente.'}),
       reason:gaming?'Configuración con GPU dedicada documentada; compara también su potencia y memoria, sin extrapolar el rendimiento de otra laptop.':'Configuración documentada para contrastar procesador, memoria instalada y panel; confirma los requisitos concretos de tus programas.',
       specs,limits};
     window.FENIXA_LAPTOPS.push(p);
