@@ -25,13 +25,19 @@
   let pendingImport = null, pendingReasons = {}, pendingClear = false;
   let totalBudget = 0, budgetSaved = true;
   totalBudget=window.FENIXA_BUDGET.get();budgetSaved=window.FENIXA_BUDGET.saved();
+  // Misma referencia que Armar mi PC (rango bajo–alto) frente al objetivo; sin precios en alguna pieza no se afirma nada.
   function budgetSummary() {
-    const prices=state.ids().map(id=>market.price(byId[id])), known=prices.filter(p=>p!==null);
-    const sum=known.reduce((s,p)=>s+p,0);
-    let message=known.length ? `Subtotal reciente: ${market.money(sum)} · ${known.length}/${prices.length} piezas.` : 'Sin precios recientes para el subtotal.';
-    if(totalBudget&&sum>totalBudget)message+=` Supera el objetivo en ${market.money(sum-totalBudget)}.`;
-    else if(totalBudget&&prices.length&&known.length===prices.length)message+=` Margen: ${market.money(totalBudget-sum)}.`;
-    return message;
+    const reference=costReference(state.ids().map(id=>byId[id]));
+    if(!state.ids().length)return '';
+    if(!reference||reference.partial||!reference.count)return 'Faltan precios';
+    if(!totalBudget)return 'Elige un objetivo para comparar';
+    if(reference.high<=totalBudget)return 'Cabe en tu presupuesto';
+    return reference.low>totalBudget||reference.low===reference.high?`Se pasa por ${market.money((reference.low>totalBudget?reference.low:reference.high)-totalBudget)}`:`Se pasa por hasta ${market.money(reference.high-totalBudget)}`;
+  }
+  // Tope del slider: el del perfil de Armar mi PC solo si la build se importó desde una propuesta (tiene razones por pieza).
+  function budgetMax() {
+    const level=window.FENIXA_BUDGET.profileLevel?.();
+    return level&&state.ids().some(id=>state.reason?.(id))?window.FENIXA_BUDGET.limit(level):window.FENIXA_BUDGET.max;
   }
   function costReference(parts) {
     if(!parts.length||!window.FENIXA_AUTO_BUILD?.reference)return null;
@@ -95,7 +101,7 @@
   function render() {
     const ids = state.ids(), parts = ids.map(id=>byId[id]);
     const conflicts = parts.filter(p=>window.FENIXA_FIT.check(p,parts.filter(other=>other.id!==p.id)).status==='conflict');
-    const reference=costReference(parts), info=moreInfo(reference);
+    const reference=costReference(parts), info=moreInfo(reference), cap=budgetMax();
     root.innerHTML = `<div class="section-heading"><div><h2 tabindex="-1" id="myBuildTitle">Mi build</h2></div><a class="secondary-button" href="#componentes">Explorar componentes </a></div>
       ${window.FENIXA_LIBRARY_UI?.render(info)||`<details><summary>Más info</summary>${info}</details>`}
       <p class="my-build-storage" role="status">${state.saved()&&budgetSaved?'Guardado en este navegador.':'Sin guardar · solo en esta pestaña.'}</p>
@@ -104,7 +110,7 @@
       ${pendingImport?`<div class="build-customization"><strong>¿Reemplazar Mi build con esta selección?</strong><p>Se sustituirán las piezas actuales por las ${pendingImport.length} de la build elegida.</p><button type="button" class="primary-button" data-confirm-import>Reemplazar Mi build</button> <button type="button" class="secondary-button" data-cancel-import>Conservar la actual</button></div>`:''}
       <div class="my-build-summary"><strong>${parts.length} ${parts.length===1?'pieza':'piezas'}</strong>${conflicts.length?`<span>${conflicts.length} con conflictos detectados</span>`:''}${parts.length?'<button type="button" class="my-build-clear" data-request-clear>Vaciar Mi build</button>':''}</div>
       ${pendingClear?'<div class="my-build-clear-confirm" role="group" aria-label="Confirmar vaciar Mi build"><strong>¿Vaciar la build actual?</strong><p>Tu presupuesto objetivo se conserva.</p><button type="button" class="primary-button" data-confirm-clear>Sí, vaciar piezas</button> <button type="button" class="secondary-button" data-cancel-clear>Cancelar</button></div>':''}
-      <div class="my-build-budget">${reference?`<p class="my-build-reference"><strong>Referencia de coste${reference.partial?' parcial':''}: ${reference.count?(reference.low===reference.high?market.money(reference.low):`${market.money(reference.low)} – ${market.money(reference.high)}`):'por confirmar'}</strong>${reference.partial?` · ${reference.count}/${reference.total} piezas`:''}</p>`:''}<label for="myBuildTotalBudget">Objetivo de presupuesto · <output id="myBuildBudgetLabel" for="myBuildTotalBudget">${totalBudget?market.money(totalBudget):'Sin objetivo'}</output></label><input id="myBuildTotalBudget" type="range" min="1000000" max="18000000" step="250000" value="${totalBudget||1000000}" aria-describedby="myBuildBudgetSummary"><button type="button" class="text-button" data-clear-budget>Sin objetivo</button><p id="myBuildBudgetSummary" role="status">${budgetSummary()}</p></div>
+      <div class="my-build-budget">${reference?`<p class="my-build-reference"><strong>Referencia de coste: ${reference.count?(reference.low===reference.high?market.money(reference.low):`${market.money(reference.low)} – ${market.money(reference.high)}`):'por confirmar'}</strong></p>${reference.total>reference.count?`<p class="my-build-missing">${reference.total-reference.count} ${reference.total-reference.count===1?'pieza sin precio':'piezas sin precio'}</p>`:''}`:''}<label for="myBuildTotalBudget">Objetivo de presupuesto · <output id="myBuildBudgetLabel" for="myBuildTotalBudget">${totalBudget?market.money(totalBudget):'Sin objetivo'}</output></label><small class="my-build-range" id="myBuildBudgetRange">De $1 a ${num(cap/1000000)} millones</small><input id="myBuildTotalBudget" type="range" min="1000000" max="${cap}" step="250000" value="${Math.min(totalBudget||1000000,cap)}" aria-describedby="myBuildBudgetRange myBuildBudgetSummary"><button type="button" class="text-button" data-clear-budget>Sin objetivo</button><p id="myBuildBudgetSummary" role="status">${budgetSummary()}</p></div>
       </aside><div class="build-studio-main"><div class="my-build-layout"><div><h3>Tus piezas</h3>${!parts.length?'<div class="my-build-empty"><h3>Tu próxima PC empieza aquí</h3><div class="my-build-actions"><a class="primary-button" href="#configurador">Armar mi PC</a><a class="secondary-button" href="#componentes">Explorar componentes</a></div></div>':`<div class="my-build-parts">${categories.map(c=>partCard(c,parts)).join('')}</div>`}</div></div>
       ${recommendations(parts)}
       ${parts.length?`<details class="my-build-shopping"><summary>Opciones de compra de Mi build</summary>${market.plan(ids,byId)}${parts.map(p=>`<article><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3>${market.purchase(p,parts)}</article>`).join('')}</details>`:''}</div></div>`;

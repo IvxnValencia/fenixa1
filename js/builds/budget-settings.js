@@ -24,5 +24,13 @@
       (current && !amounts.includes(current) ? `<option value="${current}" selected>${money(current)} · guardado anteriormente</option>` : '') +
       amounts.map(n => `<option value="${n}" ${n === current ? 'selected' : ''}>${money(n)}</option>`).join('');
   }
-  window.FENIXA_BUDGET = {min,max,step,amounts, get:() => value, saved:() => saved, set, options, money};
+  // Tope del slider: con perfil de Armar mi PC (clave level de 'fenixa-builder') es FENIXA_AUTO_BUILD.ceiling(level); si no, el general.
+  function profileLevel() {
+    try { const level = JSON.parse(localStorage.getItem('fenixa-builder') || '{}').level; return window.FENIXA_AUTO_BUILD?.profiles?.[level] ? level : null; } catch { return null; }
+  }
+  function limit(level = profileLevel()) {
+    const top = level && window.FENIXA_AUTO_BUILD?.ceiling?.(level);
+    return Number.isFinite(top) && top >= min ? Math.min(max, top) : max;
+  }
+  window.FENIXA_BUDGET = {min,max,step,amounts, get:() => value, saved:() => saved, set, options, money, profileLevel, limit};
 })();

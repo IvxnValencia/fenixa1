@@ -263,3 +263,15 @@ body #startBuild .planner-note a, body #startBuild .planner-notes a { overflow-w
   body #startBuild .planner-result-heading h2, body #startBuild .planner-total strong { font-size: 20px; }
   body #startBuild .builder-nav button { flex: 1 1 140px; }
 }
+
+/* Builds completas: mosaico de piezas (gabinete grande + dos celdas), mismo alto en todas las tarjetas, rejilla de 8 px. */
+body .build-card.fx-card { flex-direction: column; }
+body .build-card.fx-card .build-photo-button.build-mosaic { display: grid; grid-template-columns: 3fr 2fr; grid-template-rows: 1fr 1fr; gap: 8px; width: 100%; height: 192px; min-height: 192px; padding: 8px; flex-shrink: 0; overflow: hidden; background: var(--purple-faint); }
+body .build-mosaic-cell { display: grid; place-items: center; min-width: 0; min-height: 0; overflow: hidden; border-radius: 12px; background: var(--purple-faint); }
+body .build-mosaic-cell.is-case { grid-row: 1 / span 2; }
+body .build-card .build-mosaic-cell img { display: block; width: 100%; height: 100%; max-height: none; padding: 8px; box-sizing: border-box; object-fit: contain; }
+body .build-card .build-card-body { padding: 16px; gap: 8px; }
+body .build-card .build-ref-line { display: flex; align-items: baseline; gap: 8px; margin: 0; min-width: 0; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body .build-card .build-ref-line .estimate-label { font-size: 12px; color: var(--muted); }
+body .build-card .build-ref-line .build-estimate { font-size: 14px; }
+body .build-card h3 { font-size: 17px; }

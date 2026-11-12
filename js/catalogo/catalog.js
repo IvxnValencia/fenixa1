@@ -301,6 +301,20 @@
     return window.FENIXA_BUILD_DISCOVERY.total(b,id=>market.price(byId[id]));
   };
   const buildPrice = b => { const t=buildTotal(b); return t.count ? `${t.complete?'Subtotal':'Subtotal parcial'}: ${money(t.sum)}` : 'Precio por confirmar'; };
+  // Mosaico: gabinete grande a la izquierda; GPU (o CPU si no hay GPU) y CPU o RAM a la derecha.
+  const buildMosaic = b => {
+    const parts = b.parts.map(id => byId[id]).filter(Boolean), pick = c => parts.find(p => p.category === c);
+    const cell = (p, cls) => p ? `<span class="build-mosaic-cell ${cls}"><img src="${esc(thumb(p.image))}" alt="" width="160" height="120" loading="lazy" decoding="async"></span>` : `<span class="build-mosaic-cell ${cls}"></span>`;
+    const gpu = pick('gpu'), cpu = pick('cpu');
+    return cell(byId[b.caseId] || pick('case'), 'is-case') + cell(gpu || cpu, 'is-top') + cell(gpu ? cpu : pick('ram'), 'is-bottom');
+  };
+  // Referencia total: misma suma que Armar mi PC y Mi build (FENIXA_AUTO_BUILD.reference); «Sin precio» si falta alguna.
+  const buildRef = b => {
+    const ref = window.FENIXA_AUTO_BUILD?.reference, refs = ref ? b.parts.map(id => byId[id] && ref(byId[id])) : [];
+    if (!ref || !refs.length || refs.some(r => !r)) return '<span class="estimate-label">Sin precio</span>';
+    const low = refs.reduce((s, r) => s + r.low, 0), high = refs.reduce((s, r) => s + r.high, 0);
+    return `<span class="estimate-label">Ref.</span> <strong class="build-estimate">${low === high ? money(low) : money(low) + ' – ' + money(high)}</strong>`;
+  };
   function renderGallery() {
     const limit=$('buildMaxPrice').value;
     const quotedOnly=$('buildQuotedOnly').checked;
@@ -314,8 +328,7 @@
     const shortPart = p => p.label === 'Gráfica' && /sin gráfica dedicada/i.test(p.name) ? 'Gráficos integrados' : byId[p.id] ? shortName(byId[p.id]) : p.name;
     $('buildGallery').innerHTML = page.items.map(b => {
       const parts = window.FENIXA_BUILD_DISCOVERY.overview(b).filter(p => p.label === 'Procesador' || p.label === 'Gráfica');
-      const total = buildTotal(b);
-      return `<article class="build-card fx-card" data-open-build="${b.id}"><button class="build-photo-button" type="button" data-open-build="${b.id}" aria-label="Ver piezas de ${esc(b.name)}"><img src="${esc(thumb(byId[b.caseId].image))}" alt="" width="480" height="360" loading="lazy" decoding="async"></button><div class="build-card-body"><div class="build-target">${b.targetBudget?'Objetivo '+money(b.targetBudget):'Sin objetivo asignado'}</div><h3>${esc(b.name)}</h3><ul class="build-mini-specs">${parts.map(p=>`<li><span>${esc(p.label==='Procesador'?'CPU':'GPU')}</span>${esc(shortPart(p))}</li>`).join('')}</ul><div class="build-card-foot"><span class="build-estimate">${total.count?money(total.sum)+(total.complete?'':' parcial'):'Precio por confirmar'}</span><span class="build-card-more" aria-hidden="true">Ver detalles</span></div></div></article>`;
+      return `<article class="build-card fx-card" data-open-build="${b.id}"><button class="build-photo-button build-mosaic" type="button" data-open-build="${b.id}" aria-label="Ver piezas de ${esc(b.name)}">${buildMosaic(b)}</button><div class="build-card-body"><p class="build-ref-line">${buildRef(b)}</p><div class="build-target">${b.targetBudget?'Objetivo '+money(b.targetBudget):'Sin objetivo asignado'}</div><h3>${esc(b.name)}</h3><ul class="build-mini-specs">${parts.map(p=>`<li><span>${esc(p.label==='Procesador'?'CPU':'GPU')}</span>${esc(shortPart(p))}</li>`).join('')}</ul><div class="build-card-foot"><span class="build-card-more" aria-hidden="true">Ver detalles</span></div></div></article>`;
     }).join('');
     $('buildResults').textContent=visible.length+(visible.length===1?' propuesta':' propuestas')+' · presupuesto objetivo, no precio de venta'+(limit&&visible.some(b=>!b.targetBudget)?' · las originales sin objetivo se conservan visibles':'');
     $('buildsEmpty').hidden = visible.length > 0;
@@ -455,4 +468,6 @@
     if (sidebar.classList.contains('menu-open') && !sidebar.contains(event.target) && event.target !== menu) setMenu(false);
   });
   window.renderProductCatalog(); renderGallery(); routeBuild(); syncFromHash();
+  // auto-build.js carga después: al terminar la carga se repinta con las referencias.
+  window.addEventListener('load', () => { if (window.FENIXA_AUTO_BUILD?.reference) renderGallery(); }, { once: true });
 })();
