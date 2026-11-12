@@ -234,7 +234,7 @@ body #startBuild .planner-note ul { margin: 0; padding-left: 18px; }
 body #startBuild .planner-note table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: left; }
 body #startBuild .planner-note th, body #startBuild .planner-note td { padding: 8px 6px; border-bottom: 1px solid var(--stroke); vertical-align: top; overflow-wrap: anywhere; }
 body #startBuild .planner-note a, body #startBuild .planner-notes a { overflow-wrap: anywhere; }
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
   body #startBuild .planner-controls { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); column-gap: 32px; row-gap: 0; align-items: start; }
   body #startBuild .planner-controls > * { margin-bottom: 16px; }
   body #startBuild .planner-controls > .planner-result { grid-column: 2; grid-row: 1 / span 8; margin: 0; position: sticky; top: calc(var(--storefront-header, 104px) + 16px); align-self: start; max-height: calc(100vh - var(--storefront-header, 104px) - 32px); overflow: auto; overscroll-behavior: contain; }
