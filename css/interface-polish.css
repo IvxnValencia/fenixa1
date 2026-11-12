@@ -13,7 +13,7 @@ body .fx-sheet-close { width: auto; min-width: 64px; padding-inline: 14px; font-
 
 /* Todos los pasos siguen accesibles; el scroll solo indica dónde estás. */
 body #startBuild { width: 100%; max-width: none; margin: 0; }
-body #startBuild > .start-hero { margin-bottom: 28px; }
+body #startBuild > .start-hero { margin-bottom: 24px; }
 body #startBuild .start-heading h1 { max-width: 24ch; font-size: clamp(28px, 3.3vw, 42px); }
 body #startBuild .start-layout { display: block; }
 body #startBuild .builder-progress { position: sticky; top: var(--storefront-header); z-index: 8; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; padding: 8px; margin-bottom: 28px; border: 1px solid var(--stroke); border-radius: 14px; background: var(--bg); }
@@ -159,7 +159,7 @@ body .laptop-detail-dialog .product-links { display: flex; flex-wrap: wrap; gap:
   body .topbar { padding-inline: 16px; }
   body #startBuild .builder-progress { gap: 0; padding: 4px; margin-bottom: 24px; }
   body #startBuild .builder-progress button { flex-direction: column; gap: 2px; padding-inline: 2px; min-height: 52px; font-size: 11px; }
-  body #startBuild .planner-controls { gap: 28px; }
+  body #startBuild .planner-controls { gap: 24px; }
   body #startBuild .start-field legend { font-size: 18px; }
   body #startBuild .start-uses, body #startBuild .planner-levels, body #startBuild .planner-parts { grid-template-columns: minmax(0, 1fr); }
   body #startBuild .start-uses label > span { min-height: 76px; padding: 16px; }
@@ -213,8 +213,8 @@ body #startBuild .builder-summary span { color: var(--muted); }
 body #startBuild .builder-summary strong { flex: 1; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
 body #startBuild .builder-summary em { font-style: normal; font-size: 13px; color: var(--purple); }
 body #startBuild .builder-summary:focus-visible, body #startBuild .builder-nav button:focus-visible { outline: 2px solid var(--purple); outline-offset: 3px; }
-body #startBuild .builder-nav { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
-body #startBuild .builder-nav button { min-height: 48px; border-radius: 14px; }
+body #startBuild .builder-nav { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 24px; }
+body #startBuild .builder-nav button { min-height: 40px; height: 40px; border-radius: 12px; }
 body #startBuild .planner-controls > * { grid-column: 1; }
 body #startBuild .planner-controls > .planner-result { padding: clamp(18px, 2.4vw, 28px); }
 body #startBuild .planner-result.is-empty { display: none; border-style: dashed; background: transparent; }

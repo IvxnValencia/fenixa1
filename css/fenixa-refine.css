@@ -407,3 +407,32 @@ body .content:has(#componentes:not([hidden])) { padding-bottom: calc(var(--float
   body #laptops > #laptopGrid { grid-row: 6; }
   body #laptops > #laptopEmpty { grid-row: 7; }
 }
+
+/* QA P10/P11 · rejilla de 8 px, controles de 40 px y tarjetas del mismo tipo idénticas. */
+body .build-gallery, body .laptop-grid { gap: 16px; grid-auto-rows: 1fr; }
+body .fx-pager { gap: 8px; margin: 24px 0 0; }
+body .fx-page { min-width: 40px; height: 40px; }
+body #builds .build-budget-bar select, body #builds .builds-toolbar select,
+body #laptops .laptop-controls select, body #laptops .laptop-controls input { height: 40px; min-height: 40px; padding: 0 12px; }
+body .build-budget-bar .build-budget-info summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 40px; list-style: none; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--purple); }
+body .build-budget-bar .build-budget-info summary::-webkit-details-marker { display: none; }
+body .build-budget-bar .build-budget-info[open] > summary > span { transform: rotate(180deg); }
+body .build-budget-bar .build-budget-info p { margin: 0 0 8px; }
+body #mi-build > .section-heading .secondary-button, body #mi-build .saved-builds button, body #mi-build .saved-builds summary { height: 40px; min-height: 40px; }
+@media (min-width: 1101px) {
+  body #builds:not([hidden]) { grid-template-rows: auto auto auto 1fr; }
+  body #builds > .build-budget-bar {
+    grid-column: 1; grid-row: 3; display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 8px; margin: 0; padding: 16px;
+    border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface);
+  }
+  body #builds .build-budget-bar > label { display: grid; gap: 8px; }
+  body #builds .build-budget-bar #buildResults { margin: 0; align-self: start; }
+  body #builds > #buildGallery { grid-row: 2 / span 3; }
+  body #builds > #buildsEmpty { grid-row: 5; }
+  body #builds > #buildsPager, body #laptops > #laptopsPager { grid-column: 2; }
+  body #builds > #buildsPager { grid-row: 6; }
+  body #laptops > #laptopsPager { grid-row: 8; }
+}
+body #builds .build-use-filters button { height: 40px; min-height: 40px; box-sizing: border-box; }
+body #laptops #laptopGrid, body #builds #buildGallery { gap: 16px; }
+body #startBuild .builder-nav button, body #mi-build .my-build-actions .primary-button, body #mi-build .my-build-actions .secondary-button { height: 40px; min-height: 40px; }
