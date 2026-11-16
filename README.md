@@ -16,7 +16,9 @@ fenixa1/
 │   ├── mercado/        Ofertas observadas, revisión de precios y fotos
 │   ├── portatiles/     Catálogo, detalle y comparación de portátiles
 │   ├── builds/         Mi build, planificador, propuestas y presupuesto
-│   └── interfaz/       Navegación, comparador, radar y recuperación de arranque
+│   ├── interfaz/       Navegación, comparador, radar y recuperación de arranque
+│   └── ensamblaje/     Guía de ensamblaje 3D (ver su README)
+├── tests/              Pruebas de la guía de ensamblaje (abrir con un servidor local)
 └── assets/             Fotos de productos e imágenes
 ```
 
