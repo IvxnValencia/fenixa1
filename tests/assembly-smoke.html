@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Prueba integral · guía de ensamblaje</title>
+  <style>
+    body { margin: 0; padding: 24px; font: 14px/1.5 system-ui, sans-serif; color: #f7f5fb; background: #09090b; }
+    h1 { font-size: 18px; } li { margin: 2px 0; } .ok { color: #72e1ae; } .fail { color: #ff8e9a; } .info { color: #9893a8; }
+    iframe { width: 1280px; height: 900px; border: 1px solid #2b2936; background: #000; }
+  </style>
+</head>
+<body>
+  <h1>Prueba integral de la guía de ensamblaje</h1>
+  <p class="info">Carga FENIXA en un iframe y recorre la guía completa. Guarda y restaura Mi build, el avance y la modalidad de este navegador. Duración: ~1 minuto.</p>
+  <p id="summary">Ejecutando…</p>
+  <ul id="results"></ul>
+  <iframe id="app" title="FENIXA en prueba"></iframe>
+  <script type="module">
+    const KEYS = ['fenixa-my-build-v1', 'fenixa-my-build-reasons-v1', 'fenixa-assembly-progress-v1', 'fenixa-assembly-mode-v1'];
+    const backup = Object.fromEntries(KEYS.map(k => [k, localStorage.getItem(k)]));
+    const frame = document.getElementById('app');
+    const list = document.getElementById('results');
+    const wait = ms => new Promise(r => setTimeout(r, ms));
+    let passed = 0, total = 0;
+    const errors = [];
+    const report = (ok, name, detail = '') => { total++; if (ok) passed++; const li = document.createElement('li'); li.className = ok ? 'ok' : 'fail'; li.textContent = `${ok ? '✓' : '✗'} ${name}${detail ? ' — ' + detail : ''}`; list.appendChild(li); };
+    const check = (name, cond, detail) => report(Boolean(cond), name, cond ? '' : detail);
+
+    async function load(hash = 'ensamblaje') {
+      frame.src = `/index.html?smoke=${Date.now()}#${hash}`;
+      await new Promise(r => { frame.onload = r; });
+      const w = frame.contentWindow;
+      // Errores de la app (consola y excepciones sin capturar).
+      const origError = w.console.error.bind(w.console);
+      w.console.error = (...a) => { errors.push(a.map(String).join(' ')); origError(...a); };
+      w.addEventListener('error', e => errors.push(e.message));
+      w.addEventListener('unhandledrejection', e => errors.push(String(e.reason)));
+      return w;
+    }
+    async function until(fn, ms = 8000) { const end = performance.now() + ms; while (performance.now() < end) { const v = fn(); if (v) return v; await wait(50); } return null; }
+    const guideOf = w => w.FENIXA_ASSEMBLY_GUIDE?.get();
+
+    function pickBuild(w) {
+      const P = w.FENIXA_CATALOG.products, f = p => w.FENIXA_SPECS.facts(p), v = p => f(p).values;
+      const pick = (cat, fn) => P.find(p => p.category === cat && f(p).verified && fn(v(p)));
+      return [
+        pick('cpu', x => x.socket === 'AM5' && x.requiresGpu === false && /sin disipador/i.test(x.thermal || '')),
+        pick('board', x => x.socket === 'AM5' && x.boardForm === 'atx' && x.m2Slots > 0 && x.slots === 4),
+        pick('ram', x => x.memory === 'DDR5' && x.modules === 2 && !/SO-?DIMM/i.test(x.format || '')),
+        pick('storage', x => /M\.2/.test(x.format || '') && /NVMe/.test(x.pcie || '')),
+        pick('gpu', x => x.length > 200 && x.length < 300),
+        pick('power', x => /totalmente modular/i.test(x.format || '') && x.watts >= 750),
+        pick('case', x => (x.boardForms || []).includes('atx') && x.boardFormsComplete === true && x.gpuMax >= 320 && !x.gpuMaxConditional),
+        pick('cooler', x => x.coolerType === 'aio')
+      ].map(p => p?.id).filter(Boolean);
+    }
+
+    async function run() {
+      KEYS.forEach(k => localStorage.removeItem(k));
+
+      // 1 · Build vacía
+      let w = await load();
+      let g = await until(() => guideOf(w)?.viewer && guideOf(w));
+      check('Build vacía: la guía carga con el visor de referencia', g?.viewer && g.route.length === 0, 'sin visor o con ruta');
+      check('Build vacía: aviso con enlace a Mi build', /Tu build está vacía/.test(w.document.getElementById('assemblyIssues').textContent), 'sin aviso');
+
+      // 2 · Build real: ruta y escena adaptadas
+      const ids = pickBuild(w);
+      check('Catálogo: build de prueba AMD con 8 piezas verificadas', ids.length === 8, `solo ${ids.length}`);
+      w.FENIXA_MY_BUILD.importParts(ids);
+      g = await until(() => { const x = guideOf(w); return x?.viewer && x.route.length && x; });
+      const route = g.route.map(s => s.id);
+      check('Ruta: incluye M.2, GPU y refrigeración líquida tras instalar la placa', route.includes('m2') && route.includes('gpu') && route.indexOf('cooler') > route.indexOf('board-install'), route.join(','));
+      check('Escena: solo piezas de la build (bloque y radiador AIO, sin torre)', g.viewer.parts.has('radiator') && g.viewer.parts.get('cooler').userData.ruleKey === 'aio', [...g.viewer.parts.keys()].join(','));
+      check('Revisión previa: sin conflictos en una build compatible', !g.profile.blocking, g.profile.issues.map(i => i.message).join(' | '));
+
+      // 3 · Práctica: error de orientación y encaje correcto
+      const v = g.viewer;
+      v.setPractice(true); v.setMode('practice'); v.select('cpu'); await wait(700);
+      const A = v.assembly(), cpu = A.entries.get('cpu'), at = v.parts.get('board').userData.mounts.socket.at;
+      Object.assign(cpu.pose, { u: at[0], v: at[1], yaw: 90, flip: false });
+      let r = await A.drop(v.parts.get('cpu'));
+      check('Práctica: orientación incorrecta no se instala', r && !r.ok && r.code === 'orientation' && !cpu.installed, r?.code);
+      Object.assign(cpu.pose, { yaw: 0 });
+      r = await A.drop(v.parts.get('cpu')); await wait(100);
+      check('Práctica: orientación correcta encaja en el socket', r?.ok && cpu.installed && cpu.mountId === 'socket', r?.code);
+      check('Checklist: el paso del procesador se marca solo', g.done.includes('cpu'), g.done.join(','));
+      v.select('cooler'); await wait(700);
+      const cooler = A.entries.get('cooler'); Object.assign(cooler.pose, { u: at[0] + 3, v: at[1], yaw: 90 });
+      r = await A.drop(v.parts.get('cooler')); await wait(100);
+      check('Práctica: bloque AIO girado 90° es válido', r?.ok && cooler.installed, r?.code);
+
+      // 4 · Demostración: no instala ni cambia el estado
+      v.setMode('demo'); v.select('ram-1'); await wait(2500);
+      const d = v.demo(), ram = A.entries.get('ram-1');
+      check('Demostración: avanza por sus etapas', d.active && d.phaseIndex() > 0, `etapa ${d.phaseIndex()}`);
+      check('Demostración: la pieza real queda oculta y sin instalar', !v.parts.get('ram-1').visible && !ram.installed, 'estado alterado');
+      v.setMode('practice'); await wait(100);
+      check('Cambio de modalidad: vuelve la pieza real y se conserva el avance', v.parts.get('ram-1').visible && cpu.installed && !d.active, 'progreso perdido');
+
+      // 5 · Persistencia tras recargar
+      const doneBefore = g.done.slice().sort().join(',');
+      w = await load();
+      g = await until(() => { const x = guideOf(w); return x?.viewer && x.route.length && x; });
+      check('Persistencia: los pasos hechos se recuperan', g.done.slice().sort().join(',') === doneBefore, `${g.done.join(',')} ≠ ${doneBefore}`);
+      g.viewer.setPractice(true); await wait(200);
+      check('Persistencia: la práctica restaura CPU y bloque AIO', g.viewer.isInstalled('cpu') && g.viewer.isInstalled('cooler'), JSON.stringify(g.viewer.installedMap()));
+
+      // 6 · Cambio de build: la ruta se regenera
+      const intelIds = (() => { const P = w.FENIXA_CATALOG.products, f = p => w.FENIXA_SPECS.facts(p), val = p => f(p).values; const pick = (c, fn) => P.find(p => p.category === c && f(p).verified && fn(val(p))); return [pick('cpu', x => x.socket === 'LGA1700' && x.requiresGpu === false), pick('board', x => x.socket === 'LGA1700' && x.memory === 'DDR5'), pick('ram', x => x.memory === 'DDR5' && !/SO-?DIMM/i.test(x.format || '')), pick('storage', x => /2[,.]5/.test(x.format || '') && x.placement === 'Interno'), pick('power', x => /no modular/i.test(x.format || '')), pick('case', x => (x.boardForms || []).includes('micro-atx')), pick('cooler', x => x.coolerType === 'air' && /LGA1700/.test(x.sockets || ''))].map(p => p?.id).filter(Boolean); })();
+      w.FENIXA_MY_BUILD.importParts(intelIds);
+      g = await until(() => { const x = guideOf(w); return x?.viewer && x.route.includes?.('x') === false && x.route.some(s => s.id === 'sata') && x; });
+      check('Cambio de build: ruta Intel sin GPU y con unidad SATA', g && !g.route.some(s => s.id === 'gpu'), g ? g.route.map(s => s.id).join(',') : 'sin regenerar');
+
+      // 7 · Ciclos de entrada y salida: sin fugas de contextos ni geometrías
+      // El iframe debe estar en pantalla: fuera de ella el visor (correctamente) no dibuja.
+      frame.scrollIntoView({ block: 'start' });
+      const geo = [];
+      for (let i = 0; i < 6; i++) {
+        w.location.hash = 'inicio'; await wait(250);
+        w.location.hash = 'ensamblaje';
+        const vw = await until(() => w.FENIXA_ASSEMBLY_VIEWER.get());
+        w.document.getElementById('assemblyViewer').scrollIntoView({ block: 'center' }); await wait(600);
+        vw.engine.requestRender(); await new Promise(r => w.requestAnimationFrame(() => w.requestAnimationFrame(r)));
+        geo.push(vw.engine.renderer.info.memory.geometries);
+      }
+      check('Ciclos: siempre un único canvas', w.document.querySelectorAll('canvas.av-canvas').length === 1, `${w.document.querySelectorAll('canvas.av-canvas').length} canvas`);
+      check('Ciclos: geometrías estables en GPU', new Set(geo.slice(1)).size === 1, geo.join(','));
+      // Se deja terminar el encuadre inicial (amortiguación de la cámara) y luego se cuenta.
+      const idle = await (async () => { const vw = w.FENIXA_ASSEMBLY_VIEWER.get(); await wait(2000); const f0 = vw.engine.renderer.info.render.frame; await wait(1500); return vw.engine.renderer.info.render.frame - f0; })();
+      check('Reposo: el visor no dibuja sin cambios', idle === 0, `${idle} fotogramas en 1,5 s`);
+
+      // 8 · Responsividad
+      for (const width of [375, 768, 1024, 1440, 1920]) {
+        frame.style.width = `${width}px`; await wait(500);
+        const doc = w.document.documentElement;
+        check(`Responsividad ${width} px: sin desplazamiento horizontal`, doc.scrollWidth <= width + 1, `scrollWidth ${doc.scrollWidth}`);
+      }
+      frame.style.width = '1280px';
+
+      // 9 · Consola
+      check('Consola: sin errores ni excepciones', errors.length === 0, errors.slice(0, 3).join(' | '));
+    }
+
+    try { await run(); }
+    catch (e) { report(false, 'La prueba se interrumpió', e.message); }
+    finally {
+      KEYS.forEach(k => (backup[k] === null ? localStorage.removeItem(k) : localStorage.setItem(k, backup[k])));
+      report(true, 'Datos de este navegador restaurados');
+      const s = document.getElementById('summary');
+      s.textContent = `${passed} de ${total} comprobaciones superadas`;
+      s.className = passed === total ? 'ok' : 'fail';
+      window.TEST_RESULT = { passed, total, failures: [...list.querySelectorAll('.fail')].map(li => li.textContent), errors };
+    }
+  </script>
+</body>
+</html>

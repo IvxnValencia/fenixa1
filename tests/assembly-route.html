@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pruebas · perfil y ruta de montaje</title>
+  <style>
+    body { margin: 0; padding: 24px; font: 14px/1.5 system-ui, sans-serif; color: #f7f5fb; background: #09090b; }
+    h1 { font-size: 18px; } li { margin: 2px 0; } .ok { color: #72e1ae; } .fail { color: #ff8e9a; }
+  </style>
+</head>
+<body>
+  <h1>Perfil de build y generador de rutas</h1>
+  <p id="summary">Ejecutando…</p>
+  <ul id="results"></ul>
+  <script type="module">
+    import { buildProfile } from '../js/ensamblaje/build-profile.js';
+    import { generateRoute, sceneSpec } from '../js/ensamblaje/route.js';
+
+    // Piezas de prueba con fichas verificadas (valores con la forma real de FENIXA_SPECS).
+    const part = (id, category, values, extra = {}) => ({ id, category, name: extra.name || id, summary: extra.summary || '', facts: { verified: extra.verified !== false, values } });
+    const amd = {
+      cpu: part('cpu-am5', 'cpu', { socket: 'AM5', memory: 'DDR5', requiresGpu: false, thermal: 'Sin disipador incluido · AMD recomienda aire' }, { name: 'AMD Ryzen 7 9700X' }),
+      board: part('board-am5', 'board', { socket: 'AM5', memory: 'DDR5', boardForm: 'atx', format: 'ATX', slots: 4, m2Slots: 3 }, { name: 'Placa AM5 ATX' }),
+      ram: part('ram-ddr5', 'ram', { memory: 'DDR5', modules: 2, format: 'DIMM · 288 pines', profiles: 'EXPO / XMP · perfil 6000 MT/s' }),
+      storage: part('ssd-nvme', 'storage', { format: 'M.2 2280', placement: 'Interno', pcie: 'PCIe 4.0 ×4 NVMe' }),
+      gpu: part('gpu-1', 'gpu', { length: 247, connectors: '1 × 8 pines', recommendedPsu: 550 }),
+      power: part('psu-mod', 'power', { format: 'ATX 3.1 · totalmente modular', watts: 750, length: 140 }),
+      case: part('case-atx', 'case', { boardForms: ['mini-itx', 'micro-atx', 'atx'], gpuMax: 360, coolerMax: 165, psuMax: 200 }),
+      cooler: part('aio-240', 'cooler', { coolerType: 'aio', format: 'AIO 240 mm · radiador 272 × 121 × 27 mm', sockets: 'Intel LGA1851 / LGA1700 · AMD AM5 / AM4' })
+    };
+    const build = over => Object.values({ ...amd, ...over }).filter(Boolean);
+    const ids = steps => steps.map(s => s.id);
+
+    const tests = [];
+    const test = (name, fn) => tests.push([name, fn]);
+    const eq = (a, b, msg = '') => { if (JSON.stringify(a) !== JSON.stringify(b)) throw new Error(`${msg} esperado ${JSON.stringify(b)}, obtenido ${JSON.stringify(a)}`); };
+    const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
+    const severities = p => p.issues.map(i => i.severity);
+
+    test('AMD AM5 + DDR5 + NVMe + GPU + AIO: ruta completa sin conflictos', () => {
+      const p = buildProfile(build({}));
+      eq(p.blocking, false, 'blocking');
+      eq(ids(generateRoute(p)), ['prep', 'board-prep', 'cpu', 'ram', 'm2', 'case-prep', 'psu', 'board-install', 'cooler', 'gpu', 'power-cables', 'front-panel', 'fans', 'cables', 'final']);
+    });
+    test('AIO: la refrigeración va después de instalar la placa en el gabinete', () => {
+      const r = ids(generateRoute(buildProfile(build({}))));
+      ok(r.indexOf('cooler') > r.indexOf('board-install'), r.join(','));
+    });
+    test('AIO: radiador detectado (240 mm) y aviso para confirmar su ubicación', () => {
+      const p = buildProfile(build({}));
+      eq(p.cooler.radiator, 240); ok(p.issues.some(i => /radiador de 240/.test(i.message)), 'falta aviso');
+    });
+    test('Socket AM5: instrucciones de contactos en el socket (LGA)', () => {
+      const cpu = generateRoute(buildProfile(build({}))).find(s => s.id === 'cpu');
+      ok(cpu.instructions.some(i => /AM5 los contactos están en el socket/.test(i)), cpu.instructions.join(' / '));
+    });
+    test('Intel con torre de aire y sin GPU: disipador antes del gabinete y monitor a la placa', () => {
+      const p = buildProfile(build({
+        cpu: part('i5', 'cpu', { socket: 'LGA1700', memory: 'DDR4 / DDR5', requiresGpu: false, thermal: 'Intel Laminar RM1 en presentación BOX' }),
+        board: part('b760', 'board', { socket: 'LGA1700', memory: 'DDR5', boardForm: 'micro-atx', slots: 4, m2Slots: 2 }),
+        cooler: part('tower', 'cooler', { coolerType: 'air', height: 155, sockets: 'Intel LGA1700 / LGA1200 · AMD AM5 / AM4' }),
+        gpu: null
+      }));
+      const r = generateRoute(p);
+      ok(!ids(r).includes('gpu'), 'no debe haber paso de GPU');
+      ok(ids(r).indexOf('cooler') < ids(r).indexOf('case-prep'), 'torre antes del gabinete');
+      ok(r.find(s => s.id === 'final').instructions.some(i => /salida de vídeo de la placa/.test(i)), 'monitor a la placa');
+      eq(sceneSpec(p).boardForm, 'micro-atx');
+    });
+    test('CPU sin gráficos integrados y sin GPU: conflicto bloqueante', () => {
+      const p = buildProfile(build({ cpu: part('f', 'cpu', { socket: 'AM5', memory: 'DDR5', requiresGpu: true, thermal: 'Sin disipador incluido' }), gpu: null }));
+      eq(p.blocking, true); ok(p.issues.some(i => /no tiene gráficos integrados/.test(i.message)), 'mensaje');
+    });
+    test('Sockets distintos: conflicto', () => {
+      const p = buildProfile(build({ cpu: part('am4', 'cpu', { socket: 'AM4', memory: 'DDR4', thermal: 'Sin disipador incluido' }) }));
+      ok(p.issues.some(i => i.severity === 'conflict' && /AM4 y la placa AM5/.test(i.message)), JSON.stringify(p.issues));
+    });
+    test('AM4: instrucciones de pines en el procesador', () => {
+      const p = buildProfile(build({ cpu: part('am4', 'cpu', { socket: 'AM4', thermal: 'Sin disipador incluido' }), board: part('b550', 'board', { socket: 'AM4', memory: 'DDR4', boardForm: 'atx', slots: 4, m2Slots: 2 }), ram: part('d4', 'ram', { memory: 'DDR4', modules: 2, format: 'DIMM' }) }));
+      ok(generateRoute(p).find(s => s.id === 'cpu').instructions.some(i => /pines están en el procesador/.test(i)), 'AM4');
+      eq(p.blocking, false);
+    });
+    test('Memoria DDR4 en placa DDR5: conflicto', () => {
+      const p = buildProfile(build({ ram: part('d4', 'ram', { memory: 'DDR4', modules: 2, format: 'DIMM' }) }));
+      ok(p.issues.some(i => i.severity === 'conflict' && /DDR4 y la placa admite DDR5/.test(i.message)), 'DDR');
+    });
+    test('SO-DIMM: conflicto y sin paso de memoria', () => {
+      const p = buildProfile(build({ ram: part('so', 'ram', { memory: 'DDR5', modules: 2, format: 'SO-DIMM · sin búfer' }) }));
+      eq(p.blocking, true); ok(!ids(generateRoute(p)).includes('ram'), 'sin paso de RAM'); ok(!sceneSpec(p).parts.includes('ram'), 'sin RAM 3D');
+    });
+    test('Unidad externa: sin paso de almacenamiento, con aviso informativo', () => {
+      const p = buildProfile(build({ storage: part('usb', 'storage', { format: 'Portátil · USB-C', placement: 'Externo' }) }));
+      const r = ids(generateRoute(p));
+      ok(!r.includes('m2') && !r.includes('sata'), r.join(',')); ok(p.issues.some(i => i.severity === 'info' && /externa/.test(i.message)), 'info');
+    });
+    test('SSD SATA de 2,5": paso propio y alimentación SATA', () => {
+      const r = generateRoute(buildProfile(build({ storage: part('sata', 'storage', { format: '2,5 pulgadas', placement: 'Interno', pcie: 'SATA III' }) })));
+      ok(ids(r).includes('sata') && !ids(r).includes('m2'), ids(r).join(','));
+      ok(r.find(s => s.id === 'power-cables').instructions.some(i => /SATA/.test(i)), 'SATA power');
+    });
+    test('M.2 en placa sin ranuras M.2: conflicto', () => {
+      const p = buildProfile(build({ board: part('b', 'board', { socket: 'AM5', memory: 'DDR5', boardForm: 'atx', slots: 4, m2Slots: 0 }) }));
+      ok(p.issues.some(i => i.severity === 'conflict' && /ranuras M\.2/.test(i.message)), 'm2');
+    });
+    test('CPU sin disipador incluido y sin refrigeración: pieza faltante, sin paso de disipador', () => {
+      const p = buildProfile(build({ cooler: null }));
+      ok(p.issues.some(i => i.severity === 'missing' && /sin disipador/.test(i.message)), 'missing');
+      ok(!ids(generateRoute(p)).includes('cooler'), 'sin paso'); ok(!sceneSpec(p).parts.includes('cooler'), 'sin 3D');
+    });
+    test('CPU con disipador de serie y sin refrigeración: paso del disipador incluido', () => {
+      const p = buildProfile(build({ cooler: null, cpu: part('c', 'cpu', { socket: 'AM5', memory: 'DDR5', thermal: 'AMD Wraith Stealth en presentación BOX' }) }));
+      eq(p.cooler.kind, 'stock'); eq(generateRoute(p).find(s => s.id === 'cooler').title, 'Instala el disipador incluido'); eq(sceneSpec(p).coolerKind, 'stock');
+    });
+    test('Fuente no modular: instrucción específica', () => {
+      const r = generateRoute(buildProfile(build({ power: part('p', 'power', { format: 'ATX12V 2.31 · no modular', watts: 650 }) })));
+      ok(r.find(s => s.id === 'psu').instructions.some(i => /No es modular/.test(i)), 'no modular');
+    });
+    test('Fuente con menos vatios que los recomendados por la GPU: advertencia', () => {
+      const p = buildProfile(build({ power: part('p', 'power', { format: 'ATX', watts: 450 }) }));
+      ok(p.issues.some(i => i.severity === 'warning' && /550 W/.test(i.message)), 'psu');
+    });
+    test('GPU sin conector auxiliar: no pide cable PCIe', () => {
+      const r = generateRoute(buildProfile(build({ gpu: part('g', 'gpu', { length: 180, connectors: 'Sin conector de alimentación auxiliar' }) })));
+      ok(r.find(s => s.id === 'power-cables').instructions.some(i => /no publica conector auxiliar/.test(i)), 'gpu power');
+    });
+    test('Falta el gabinete: aviso, sin pasos de gabinete y gabinete 3D como referencia', () => {
+      const p = buildProfile(build({ case: null }));
+      ok(p.issues.some(i => i.severity === 'missing' && /gabinete/.test(i.message)), 'missing case');
+      const r = ids(generateRoute(p)); ok(!r.includes('case-prep') && !r.includes('board-install') && !r.includes('psu'), r.join(','));
+      eq(sceneSpec(p).placeholders, ['case']);
+    });
+    test('Placa de 2 ranuras: escena con 2 DIMM', () => eq(sceneSpec(buildProfile(build({ board: part('b', 'board', { socket: 'AM5', memory: 'DDR5', boardForm: 'micro-atx', slots: 2, m2Slots: 1 }) }))).dimmCount, 2));
+    test('Disipador sin el socket de la placa en su lista: advertencia', () => {
+      const p = buildProfile(build({ cooler: part('t', 'cooler', { coolerType: 'air', height: 150, sockets: 'Intel LGA1700 / LGA1200' }) }));
+      ok(p.issues.some(i => /AM5 no aparece/.test(i.message)), 'sockets');
+    });
+    test('Ficha no verificada: el socket se deduce del texto y se marca como tal', () => {
+      const p = buildProfile(build({ cpu: part('t', 'cpu', {}, { verified: false, name: 'Procesador X AM5 6 núcleos' }) }));
+      eq(p.platform.socket.source, 'ficha', 'la placa manda'); // la placa sí está verificada
+      const p2 = buildProfile([part('t', 'cpu', {}, { verified: false, name: 'Procesador X AM5' })]);
+      eq(p2.platform.socket, { value: 'AM5', source: 'texto' });
+    });
+    test('Kit de montaje: solo se avisa si el kit corresponde al socket de la build', () => {
+      const sockets = 'Intel LGA1700 con kit específico / 1200 · AMD AM5 / AM4';
+      const amdP = buildProfile(build({ cooler: part('c', 'cooler', { coolerType: 'air', height: 150, sockets }) }));
+      ok(!amdP.issues.some(i => /kit/.test(i.message)), 'AM5 no necesita kit');
+      const intelP = buildProfile(build({
+        cpu: part('i', 'cpu', { socket: 'LGA1700', memory: 'DDR5', thermal: 'Sin disipador incluido' }),
+        board: part('b', 'board', { socket: 'LGA1700', memory: 'DDR5', boardForm: 'atx', slots: 4, m2Slots: 2 }),
+        cooler: part('c', 'cooler', { coolerType: 'air', height: 150, sockets })
+      }));
+      ok(intelP.issues.some(i => /kit de montaje específico para LGA1700/.test(i.message)), 'LGA1700 sí');
+    });
+    test('Build vacía: ruta vacía', () => { const p = buildProfile([]); eq(p.empty, true); eq(generateRoute(p), []); });
+    test('Perfil EXPO/XMP: recordatorio en la verificación final', () => ok(generateRoute(buildProfile(build({}))).find(s => s.id === 'final').instructions.some(i => /EXPO\/XMP/.test(i)), 'expo'));
+    test('Conflictos de FENIXA_FIT se incorporan como conflicto', () => {
+      const p = buildProfile(build({}), { fitIssues: [{ partId: 'gpu-1', label: 'Conflicto de espacio', reason: 'La GPU no cabe.' }] });
+      eq(p.issues[0], { severity: 'conflict', message: 'La GPU no cabe.', partIds: ['gpu-1'] });
+    });
+
+    let passed = 0;
+    const list = document.getElementById('results');
+    for (const [name, fn] of tests) {
+      const li = document.createElement('li');
+      try { fn(); passed++; li.className = 'ok'; li.textContent = '✓ ' + name; }
+      catch (e) { li.className = 'fail'; li.textContent = '✗ ' + name + ' — ' + e.message; }
+      list.appendChild(li);
+    }
+    const summary = document.getElementById('summary');
+    summary.textContent = `${passed} de ${tests.length} pruebas superadas`;
+    summary.className = passed === tests.length ? 'ok' : 'fail';
+    window.TEST_RESULT = { passed, total: tests.length, failures: [...list.querySelectorAll('.fail')].map(li => li.textContent) };
+  </script>
+</body>
+</html>

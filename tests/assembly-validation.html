@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pruebas · validación de encaje</title>
+  <style>
+    body { margin: 0; padding: 24px; font: 14px/1.5 system-ui, sans-serif; color: #f7f5fb; background: #09090b; }
+    h1 { font-size: 18px; } li { margin: 2px 0; } .ok { color: #72e1ae; } .fail { color: #ff8e9a; } code { color: #a875ff; }
+  </style>
+</head>
+<body>
+  <h1>Validación de encaje (js/ensamblaje/3d/mounting.js)</h1>
+  <p id="summary">Ejecutando…</p>
+  <ul id="results"></ul>
+  <script type="module">
+    import { validate, angleDiff, boardMounts, RULES } from '../js/ensamblaje/3d/mounting.js';
+
+    // Datos equivalentes a la distribución ATX genérica de generic-models.js.
+    const layout = {
+      recommendedDimms: [1, 3], dimmNames: ['DIMM_A1', 'DIMM_A2', 'DIMM_B1', 'DIMM_B2'],
+      pcie: [{ y: 120, len: 89, primary: true, name: 'PCIe x16 principal' }, { y: 99.7, len: 25, name: 'PCIe x1' }, { y: 59, len: 89, name: 'PCIe x16 (ranura secundaria)' }]
+    };
+    const raw = {
+      socket: { at: [100, 215, 4.3] }, cooler: { at: [100, 215, 8.5] }, m2: { at: [42, 160, 3] }, pcie: { at: [0, 120, 2.5] },
+      dimms: [160, 170, 180, 190].map((x, i) => ({ at: [x, 204.5, 2], name: layout.dimmNames[i], recommended: [1, 3].includes(i) }))
+    };
+    const mounts = boardMounts(raw, layout);
+    const ctx = (extra = {}) => ({ mounts, installedTypes: new Set(), occupied: new Map(), partId: 'x', ...extra });
+
+    const tests = [];
+    const test = (name, fn) => tests.push([name, fn]);
+    const eq = (a, b, msg = '') => { if (a !== b) throw new Error(`${msg} esperado ${JSON.stringify(b)}, obtenido ${JSON.stringify(a)}`); };
+
+    test('angleDiff normaliza a (−180, 180]', () => { eq(angleDiff(350, 0), -10); eq(angleDiff(-270, 0), 90); eq(angleDiff(180, 0), 180); eq(angleDiff(540, 0), 180); });
+
+    test('CPU centrado y orientado: válido con yaw de encaje', () => { const r = validate('cpu', { u: 100, v: 215, yaw: 0, flip: false }, ctx()); eq(r.code, 'ok'); eq(r.mountId, 'socket'); eq(r.snapYaw, 0); });
+    test('CPU dentro de tolerancia de posición (5 mm) y giro (8°): válido', () => eq(validate('cpu', { u: 103, v: 219, yaw: 8, flip: false }, ctx()).code, 'ok'));
+    test('CPU a 7 mm: "casi", no se instala', () => { const r = validate('cpu', { u: 107, v: 215, yaw: 0 }, ctx()); eq(r.ok, false); eq(r.code, 'position'); });
+    test('CPU girado 90°: error de orientación', () => eq(validate('cpu', { u: 100, v: 215, yaw: 90 }, ctx()).code, 'orientation'));
+    test('CPU girado 180°: mensaje de esquina opuesta', () => { const r = validate('cpu', { u: 100, v: 215, yaw: 180 }, ctx()); eq(r.code, 'orientation'); eq(r.message.includes('180'), true); });
+    test('CPU girado 11° (fuera de tolerancia 10°): orientación', () => eq(validate('cpu', { u: 100, v: 215, yaw: 11 }, ctx()).code, 'orientation'));
+    test('CPU volteado: error de volteo antes que el de giro', () => eq(validate('cpu', { u: 100, v: 215, yaw: 90, flip: true }, ctx()).code, 'flip'));
+    test('CPU lejos de toda zona: "far"', () => eq(validate('cpu', { u: 400, v: 400, yaw: 0 }, ctx()).code, 'far'));
+    test('CPU sobre la ranura M.2: zona incorrecta', () => { const r = validate('cpu', { u: 42, v: 160, yaw: 0 }, ctx()); eq(r.code, 'wrong-mount'); eq(r.mountId, 'm2'); });
+
+    test('Disipador sin CPU instalado: dependencia', () => eq(validate('cooler', { u: 100, v: 215, yaw: 0 }, ctx()).code, 'dependency'));
+    test('Disipador con CPU instalado: válido', () => eq(validate('cooler', { u: 100, v: 215, yaw: 0 }, ctx({ installedTypes: new Set(['cpu']) })).code, 'ok'));
+
+    test('RAM en A2 orientada: válida', () => { const r = validate('ram', { u: 170, v: 204.5, yaw: 0 }, ctx()); eq(r.code, 'ok'); eq(r.mountId, 'dimm-1'); });
+    test('RAM en A1: no recomendada', () => eq(validate('ram', { u: 160, v: 204.5, yaw: 0 }, ctx()).code, 'not-recommended'));
+    test('RAM con la muesca invertida (180°): orientación', () => eq(validate('ram', { u: 190, v: 204.5, yaw: 180 }, ctx()).code, 'orientation'));
+    test('RAM atravesada (90°): mensaje de alineación', () => { const r = validate('ram', { u: 190, v: 204.5, yaw: 90 }, ctx()); eq(r.code, 'orientation'); eq(r.message.includes('90'), true); });
+    test('RAM en ranura ocupada por otro módulo: ocupada', () => eq(validate('ram', { u: 170, v: 204.5, yaw: 0 }, ctx({ occupied: new Map([['dimm-1', 'ram-2']]), partId: 'ram-1' })).code, 'occupied'));
+    test('RAM entre ranuras (5 mm de A2): "casi"', () => eq(validate('ram', { u: 175, v: 204.5, yaw: 0 }, ctx()).code, 'position'));
+
+    test('GPU en x16 principal: válida', () => { const r = validate('gpu', { u: 2, v: 121, yaw: 0 }, ctx()); eq(r.code, 'ok'); eq(r.mountId, 'pcie-0'); });
+    test('GPU en x16 secundaria: no recomendada', () => eq(validate('gpu', { u: 0, v: 59, yaw: 0 }, ctx()).code, 'not-recommended'));
+    test('GPU girada 180°: orientación', () => eq(validate('gpu', { u: 0, v: 120, yaw: 180 }, ctx()).code, 'orientation'));
+
+    test('M.2 orientado: válido', () => eq(validate('m2', { u: 42, v: 160, yaw: 0 }, ctx()).code, 'ok'));
+    test('M.2 volteado: volteo', () => eq(validate('m2', { u: 42, v: 160, yaw: 0, flip: true }, ctx()).code, 'flip'));
+
+    const caseCtx = { mounts: [{ id: 'psu-bay', accepts: 'psu', u: -151.5, v: 58.5, name: 'la bahía de la fuente' }], installedTypes: new Set(), occupied: new Map(), partId: 'psu' };
+    test('Fuente con ventilador abajo: válida con nota', () => { const r = validate('power', { u: -151.5, v: 58.5, yaw: 0, flip: false }, caseCtx); eq(r.code, 'ok'); eq(r.note.length > 0, true); });
+    test('Fuente con ventilador arriba: también válida', () => eq(validate('power', { u: -151.5, v: 58.5, yaw: 0, flip: true }, caseCtx).code, 'ok'));
+    test('Fuente con el conector hacia el frente: orientación', () => eq(validate('power', { u: -151.5, v: 58.5, yaw: 180 }, caseCtx).code, 'orientation'));
+
+    test('Bloque AIO girado 90°: válido, con nota sobre los tubos', () => {
+      const r = validate('aio', { u: 100, v: 215, yaw: 90 }, ctx({ installedTypes: new Set(['cpu']) }));
+      eq(r.code, 'ok'); eq(r.note.includes('tubos'), true);
+    });
+    test('Bloque AIO a 45°: orientación', () => eq(validate('aio', { u: 100, v: 215, yaw: 45 }, ctx({ installedTypes: new Set(['cpu']) })).code, 'orientation'));
+    test('Disipador de serie sin CPU: dependencia', () => eq(validate('stock', { u: 100, v: 215, yaw: 0 }, ctx()).code, 'dependency'));
+    test('Disipador de serie girado 180°: válido', () => eq(validate('stock', { u: 100, v: 215, yaw: 180 }, ctx({ installedTypes: new Set(['cpu']) })).code, 'ok'));
+    test('Compatibilidad (gancho de la Fase 4) bloquea la instalación', () => {
+      const r = validate('cpu', { u: 100, v: 215, yaw: 0 }, ctx({ compatible: () => 'Socket AM5 frente a LGA1700.' }));
+      eq(r.code, 'incompatible');
+    });
+    test('Todas las reglas tienen pose inicial incorrecta (obliga a orientar)', () => {
+      for (const [key, rule] of Object.entries(RULES)) {
+        const yaw = rule.startYaw, ok = rule.correctYaws.some(y => Math.abs(angleDiff(yaw, y)) <= rule.yawTolerance);
+        eq(ok, false, key);
+      }
+    });
+
+    let passed = 0;
+    const list = document.getElementById('results');
+    for (const [name, fn] of tests) {
+      const li = document.createElement('li');
+      try { fn(); passed++; li.className = 'ok'; li.textContent = '✓ ' + name; }
+      catch (e) { li.className = 'fail'; li.textContent = '✗ ' + name + ' — ' + e.message; }
+      list.appendChild(li);
+    }
+    const summary = document.getElementById('summary');
+    summary.textContent = `${passed} de ${tests.length} pruebas superadas`;
+    summary.className = passed === tests.length ? 'ok' : 'fail';
+    window.TEST_RESULT = { passed, total: tests.length };
+  </script>
+</body>
+</html>

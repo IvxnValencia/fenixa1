@@ -1,0 +1,200 @@
+/* Visor 3D de la guía de ensamblaje.
+   Conserva la tarjeta "Vista previa de tu recorrido" y los tokens de FENIXA;
+   la vista previa pasa a ser la zona principal. */
+
+/* El visor necesita ancho para practicar: apilado hasta 1440 px, lado a lado en pantallas anchas. */
+body .assembly-layout { grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 1440px) { body .assembly-layout { grid-template-columns: minmax(0, 2.3fr) minmax(300px, 1fr); } }
+body .assembly-preview { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+body .assembly-preview.is-3d::after { display: none; }
+body .assembly-preview.is-3d .pc-illustration { display: none; }
+
+.assembly-viewer { position: relative; flex: 1 1 auto; min-height: clamp(420px, 70vh, 760px); border: 1px solid var(--stroke-soft, var(--stroke)); border-radius: 14px; overflow: hidden; background: radial-gradient(120% 90% at 50% 100%, color-mix(in srgb, var(--purple) 10%, transparent), transparent 60%), var(--bg-soft); }
+.assembly-viewer[data-state="idle"], .assembly-viewer[data-state="loading"], .assembly-viewer[data-state="unsupported"], .assembly-viewer[data-state="error"] { display: grid; place-items: center; }
+.assembly-viewer .pc-illustration { position: relative; right: auto; bottom: auto; }
+/* Anula la regla heredada `.assembly-preview p` dentro del visor. */
+.assembly-viewer p { position: static; z-index: auto; max-width: none; }
+.assembly-viewer .av-status { position: absolute; left: 14px; right: 14px; bottom: 12px; z-index: 2; margin: 0; color: var(--muted); font-size: 11px; text-align: center; pointer-events: none; }
+.assembly-viewer[data-state="ready"] .av-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.av-root { position: absolute; inset: 0; }
+.av-stage { position: absolute; inset: 0; outline: none; touch-action: none; }
+.av-stage:focus-visible { box-shadow: inset 0 0 0 2px var(--purple); border-radius: 14px; }
+.av-canvas { display: block; width: 100%; height: 100%; }
+.av-labels { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.av-label { position: absolute; left: 0; top: 0; max-width: 190px; padding: 4px 8px 4px 16px; border: 1px solid color-mix(in srgb, var(--purple) 40%, var(--stroke)); border-radius: 8px; color: var(--text); background: color-mix(in srgb, var(--surface) 88%, transparent); font-size: 10.5px; line-height: 1.3; white-space: normal; pointer-events: none; will-change: transform; }
+.av-label::before { content: ""; position: absolute; left: 6px; top: 50%; width: 5px; height: 5px; margin-top: -2.5px; border-radius: 50%; background: var(--purple); }
+
+.av-badge { position: absolute; top: 12px; left: 12px; padding: 5px 9px; border: 1px solid var(--stroke); border-radius: 999px; color: var(--muted); background: color-mix(in srgb, var(--surface) 82%, transparent); font-size: 10.5px; font-weight: 700; letter-spacing: .02em; }
+.av-hover { position: absolute; left: 0; top: 0; z-index: 3; max-width: 240px; padding: 5px 9px; border: 1px solid var(--stroke); border-radius: 8px; color: var(--text); background: var(--surface); box-shadow: var(--shadow); font-size: 11px; pointer-events: none; }
+
+.av-toolbar { position: absolute; left: 0; right: 0; bottom: 12px; z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 3px; width: max-content; max-width: calc(100% - 24px); margin-inline: auto; padding: 5px; border: 1px solid var(--stroke); border-radius: 14px; background: color-mix(in srgb, var(--surface) 90%, transparent); backdrop-filter: blur(8px); }
+.av-tool { display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border: 1px solid transparent; border-radius: 10px; color: var(--muted); background: transparent; cursor: pointer; transition: .15s ease; }
+.av-tool svg { width: 17px; height: 17px; }
+.av-tool:hover:not(:disabled) { color: var(--text); background: var(--surface-3); }
+.av-tool:focus-visible { outline: 2px solid var(--purple); outline-offset: 1px; }
+.av-tool[aria-pressed="true"] { color: var(--purple); border-color: color-mix(in srgb, var(--purple) 40%, var(--stroke)); background: var(--purple-soft); }
+.av-tool:disabled { opacity: .38; cursor: default; }
+.av-sep { width: 1px; height: 20px; margin: 0 3px; background: var(--stroke); }
+
+.av-panel { position: absolute; z-index: 2; border: 1px solid var(--stroke); border-radius: 14px; color: var(--text); background: color-mix(in srgb, var(--surface) 94%, transparent); box-shadow: var(--shadow); backdrop-filter: blur(8px); font-size: 12px; }
+.av-panel header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.av-panel strong { display: block; font-size: 13px; line-height: 1.3; }
+.av-panel p { margin: 6px 0 0; color: var(--muted); line-height: 1.5; }
+.av-parts { top: 46px; left: 12px; width: min(260px, calc(100% - 24px)); max-height: calc(100% - 90px); overflow: auto; padding: 12px; }
+.av-parts ul { display: grid; gap: 3px; margin: 10px 0 0; padding: 0; list-style: none; }
+.av-parts li { display: flex; align-items: center; gap: 4px; }
+.av-part { flex: 1; min-width: 0; padding: 7px 8px; border: 1px solid transparent; border-radius: 8px; color: var(--muted); background: transparent; font-size: 11.5px; text-align: left; cursor: pointer; }
+.av-part:hover, .av-part.is-selected { color: var(--text); background: var(--surface-2); }
+.av-part.is-selected { border-color: color-mix(in srgb, var(--purple) 40%, var(--stroke)); }
+.av-eye, .av-close { display: grid; place-items: center; flex: 0 0 auto; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 8px; color: var(--muted); background: transparent; cursor: pointer; }
+.av-eye:hover, .av-close:hover { color: var(--text); background: var(--surface-3); }
+.av-eye svg, .av-close svg { width: 15px; height: 15px; }
+.av-eye[aria-pressed="true"] { color: var(--muted-2); }
+.av-link { padding: 0; border: 0; color: var(--purple); background: none; font-size: 11px; font-weight: 700; cursor: pointer; }
+
+.av-info { top: 12px; right: 12px; width: min(300px, calc(100% - 24px)); max-height: calc(100% - 80px); overflow: auto; padding: 14px; }
+.av-eyebrow { display: block; margin-bottom: 2px; color: var(--purple); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.av-chip { display: inline-block; margin-top: 5px; padding: 2px 7px; border-radius: 999px; color: var(--amber); background: color-mix(in srgb, var(--amber) 12%, transparent); font-size: 10px; font-weight: 700; }
+.av-info details { margin-top: 8px; border-top: 1px solid var(--stroke-soft, var(--stroke)); padding-top: 8px; }
+.av-info summary { color: var(--text); font-weight: 700; cursor: pointer; }
+.av-info ul { margin: 6px 0 0; padding-left: 17px; color: var(--muted); line-height: 1.5; }
+.av-info li + li { margin-top: 3px; }
+.av-note { font-size: 11px; }
+.av-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.av-panel .av-small { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; padding: 6px 11px; font-size: 11.5px; }
+.av-panel .av-small svg { width: 14px; height: 14px; }
+
+.assembly-viewer .av-hint { position: absolute; top: 14px; right: 14px; max-width: 46%; margin: 0; color: var(--muted-2); font-size: 10.5px; line-height: 1.4; text-align: right; pointer-events: none; }
+.av-parts:not([hidden]) ~ .av-hint, .av-info:not([hidden]) ~ .av-hint { display: none; }
+
+@media (max-width: 1100px) {
+  body .assembly-layout { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .assembly-viewer { min-height: 460px; }
+  body .assembly-preview { padding: 16px; }
+}
+/* Visor estrecho (depende del ancho del visor, no de la ventana). Mantener el
+   umbral sincronizado con SHEET_WIDTH en js/ensamblaje/3d/viewer.js. */
+.assembly-viewer { container-type: inline-size; }
+@container (max-width: 560px) {
+  .assembly-viewer .av-hint { display: none; }
+  .av-info { top: auto; bottom: 58px; left: 8px; right: 8px; width: auto; max-height: 44%; padding: 12px; }
+  .av-parts { top: 40px; right: 8px; left: 8px; width: auto; max-height: calc(100% - 110px); }
+  .av-badge { top: 8px; left: 8px; }
+  .av-toolbar { bottom: 8px; flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; max-width: calc(100% - 16px); scrollbar-width: none; }
+  .av-toolbar::-webkit-scrollbar { display: none; }
+  .av-tool { flex: 0 0 auto; width: 32px; height: 32px; }
+  .av-sep { flex: 0 0 auto; margin: 0 1px; }
+}
+@media (hover: none) {
+  .av-hover { display: none; }
+}
+
+/* Modo práctica (Fase 3) */
+.av-progress { height: 6px; margin-top: 10px; overflow: hidden; border-radius: 999px; background: var(--surface-3); }
+.av-progress span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--purple-strong), var(--purple)); transition: width .3s ease; }
+.assembly-viewer .av-progress-text { margin-top: 5px; font-size: 11px; }
+.assembly-viewer .av-msg { margin-top: 10px; padding: 8px 10px; border-left: 2px solid var(--stroke); border-radius: 0 8px 8px 0; color: var(--text); background: var(--surface-2); font-size: 11.5px; }
+.assembly-viewer .av-msg--ok { border-color: var(--green); background: color-mix(in srgb, var(--green) 9%, var(--surface-2)); }
+.assembly-viewer .av-msg--near { border-color: var(--amber); background: color-mix(in srgb, var(--amber) 9%, var(--surface-2)); }
+.assembly-viewer .av-msg--error { border-color: var(--red); background: color-mix(in srgb, var(--red) 9%, var(--surface-2)); }
+.assembly-viewer .av-keys { font-size: 10.5px; color: var(--muted-2); }
+.av-rot { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: 10px; }
+.av-loose { display: grid; gap: 2px; margin: 10px 0 0; padding: 0; list-style: none; }
+.av-loose .av-part { width: 100%; border-color: var(--stroke-soft, var(--stroke)); }
+.assembly-viewer .av-feedback { position: absolute; left: 0; right: 0; bottom: 62px; z-index: 3; width: max-content; max-width: calc(100% - 24px); margin: 0 auto; padding: 7px 11px; border: 1px solid var(--stroke); border-radius: 10px; color: var(--text); background: var(--surface); box-shadow: var(--shadow); font-size: 11.5px; pointer-events: none; }
+.assembly-viewer .av-feedback--ok { border-color: var(--green); }
+.assembly-viewer .av-feedback--near { border-color: var(--amber); }
+.assembly-viewer .av-feedback--error { border-color: var(--red); }
+.assembly-viewer .av-feedback[hidden] { display: none; }
+.av-tool[data-action="explode"]:disabled { opacity: .3; }
+
+/* Fase 4: revisión previa, ruta generada y ficha de la pieza real */
+.assembly-check { display: grid; gap: 8px; font-size: 12px; }
+.assembly-check p { margin: 0; }
+.assembly-build-line { color: var(--muted); }
+.assembly-build-line a, .assembly-empty a.av-small { color: var(--purple); font-weight: 700; }
+.assembly-empty { display: grid; gap: 6px; justify-items: start; padding: 12px; border: 1px dashed var(--stroke); border-radius: 12px; }
+.assembly-empty a.primary-button { color: #fff; }
+.assembly-empty p { color: var(--muted); }
+.assembly-ok { color: var(--muted); }
+.assembly-issues { display: grid; gap: 5px; margin: 0; padding: 0; list-style: none; }
+.assembly-issue { padding: 7px 10px; border-left: 2px solid var(--stroke); border-radius: 0 8px 8px 0; background: var(--surface-2); line-height: 1.45; }
+.assembly-issue span { display: inline-block; margin-right: 6px; font-size: 10px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.assembly-issue--conflict { border-color: var(--red); } .assembly-issue--conflict span { color: var(--red); }
+.assembly-issue--missing { border-color: var(--amber); } .assembly-issue--missing span { color: var(--amber); }
+.assembly-issue--warning { border-color: var(--amber); } .assembly-issue--warning span { color: var(--amber); }
+.assembly-issue--info { border-color: var(--cyan); } .assembly-issue--info span { color: var(--cyan); }
+.assembly-more summary { color: var(--text); font-weight: 700; cursor: pointer; }
+.assembly-more .assembly-issues { margin-top: 6px; }
+
+.assembly-step-wrap { display: grid; gap: 0; }
+body .assembly-steps .assembly-step { padding: 6px 8px; }
+.assembly-step .step-check { padding: 0; background: transparent; cursor: pointer; }
+.assembly-step .step-check:focus-visible, .step-open:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+.assembly-step .step-check:hover { border-color: var(--green); color: color-mix(in srgb, var(--green) 60%, transparent); }
+.step-open { display: flex; flex: 1; align-items: center; gap: 10px; min-width: 0; padding: 4px 2px; border: 0; color: inherit; background: transparent; font: inherit; text-align: left; cursor: pointer; }
+.step-open > span:first-child { min-width: 0; }
+.assembly-step-wrap.is-active .assembly-step { border-color: color-mix(in srgb, var(--purple) 45%, var(--stroke)); color: var(--text); }
+.assembly-step-detail { margin: 4px 0 6px; padding: 10px 12px 10px 14px; border-left: 2px solid var(--purple); border-radius: 0 10px 10px 0; background: var(--purple-faint); font-size: 12px; }
+.assembly-step-detail ol { margin: 0; padding-left: 18px; color: var(--text); line-height: 1.55; }
+.assembly-step-detail li + li { margin-top: 4px; }
+.assembly-basis { margin: 8px 0 0; color: var(--muted); font-size: 11px; }
+.assembly-basis--ficha::before { content: "● "; color: var(--green); }
+.assembly-basis--parcial::before { content: "● "; color: var(--amber); }
+.assembly-basis--generico::before { content: "● "; color: var(--muted-2); }
+.assembly-hint { margin: 4px 0 0; color: var(--purple); font-size: 11px; font-weight: 700; }
+.assembly-steps-empty { margin: 0; color: var(--muted); font-size: 12px; }
+
+.av-chip--ref { color: var(--cyan); background: color-mix(in srgb, var(--cyan) 12%, transparent); }
+.av-facts { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 6px 0 0; font-size: 11.5px; }
+.av-facts dt { color: var(--muted); }
+.av-facts dd { margin: 0; color: var(--text); overflow-wrap: anywhere; }
+/* La regla heredada limitaba los párrafos de la vista previa a 290 px. */
+body .assembly-preview p { max-width: 72ch; }
+.assembly-check p { max-width: none; }
+
+/* Fase 5: modalidades y demostración en bucle */
+.av-mode, .assembly-modes { display: inline-flex; gap: 2px; margin-top: 10px; padding: 3px; border: 1px solid var(--stroke); border-radius: 10px; background: var(--surface-2); }
+.av-mode button, .assembly-modes button { padding: 6px 10px; border: 0; border-radius: 7px; color: var(--muted); background: transparent; font: inherit; font-size: 11.5px; font-weight: 700; cursor: pointer; }
+.av-mode button:hover, .assembly-modes button:hover { color: var(--text); }
+.av-mode button[aria-pressed="true"], .assembly-modes button[aria-pressed="true"] { color: var(--text); background: var(--purple-soft); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--purple) 45%, transparent); }
+.av-mode button:focus-visible, .assembly-modes button:focus-visible { outline: 2px solid var(--purple); outline-offset: 1px; }
+.assembly-viewer .av-demo-caption { margin-top: 10px; padding: 9px 11px; border-radius: 10px; color: var(--text); background: color-mix(in srgb, var(--cyan) 10%, var(--surface-2)); font-size: 12.5px; font-weight: 600; line-height: 1.45; }
+.av-demo-steps { display: grid; gap: 3px; margin: 10px 0 0; padding-left: 18px; color: var(--muted-2); font-size: 11px; line-height: 1.4; }
+.av-demo-steps li.is-current { color: var(--text); font-weight: 700; }
+.av-demo-steps li.is-current::marker { color: var(--cyan); }
+
+/* Fase 6: zona de instrucciones del paso actual y tips por categoría */
+.assembly-side { display: grid; gap: 14px; align-content: start; min-width: 0; }
+.assembly-step-panel { padding: 18px; border: 1px solid color-mix(in srgb, var(--purple) 32%, var(--stroke)); border-radius: 16px; background: linear-gradient(160deg, var(--purple-faint), var(--surface) 55%); font-size: 12.5px; }
+.assembly-step-head h3 { margin: 2px 0 0; font-size: 17px; outline: none; }
+.assembly-step-head p { margin: 4px 0 0; color: var(--muted); }
+.assembly-step-count { color: var(--purple); font-size: 10.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.assembly-instructions { margin: 12px 0 0; padding-left: 20px; line-height: 1.55; }
+.assembly-instructions li + li { margin-top: 5px; }
+.assembly-step-panel .assembly-basis { margin-top: 8px; }
+.assembly-tips { display: grid; gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
+.assembly-tip { padding: 8px 10px; border-left: 2px solid var(--stroke); border-radius: 0 9px 9px 0; background: var(--surface-2); line-height: 1.45; }
+.assembly-tip span { display: block; margin-bottom: 2px; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.assembly-tip--caution { border-color: var(--red); } .assembly-tip--caution span { color: var(--red); }
+.assembly-tip--mistake { border-color: var(--amber); } .assembly-tip--mistake span { color: var(--amber); }
+.assembly-tip--tip { border-color: var(--purple); } .assembly-tip--tip span { color: var(--purple); }
+.assembly-tip--practice { border-color: var(--green); } .assembly-tip--practice span { color: var(--green); }
+.assembly-tip--fact { border-color: var(--cyan); } .assembly-tip--fact span { color: var(--cyan); }
+.assembly-more-tips { margin-top: 10px; }
+.assembly-more-tips summary { font-weight: 700; cursor: pointer; }
+.assembly-step-nav { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.assembly-step-nav .primary-button { flex: 1 1 auto; justify-content: center; }
+.assembly-step-panel .av-small, .assembly-step-nav .av-small { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 6px 12px; font-size: 12px; }
+.assembly-link { padding: 0; border: 0; color: var(--purple); background: none; font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+.step-open[aria-current="step"] strong { color: var(--purple); }
+
+/* Fase 7: en móvil el botón flotante "Mi build" no debe tapar la navegación del paso. */
+@media (max-width: 760px) {
+  #ensamblaje { padding-bottom: 140px; } /* el botón "Mi build" ocupa ~80–130 px desde abajo */
+  .assembly-step-nav { padding-right: 0; }
+  .assembly-step-nav .primary-button { order: -1; flex-basis: 100%; }
+}

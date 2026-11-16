@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pruebas · tips y avance</title>
+  <style>
+    body { margin: 0; padding: 24px; font: 14px/1.5 system-ui, sans-serif; color: #f7f5fb; background: #09090b; }
+    h1 { font-size: 18px; } li { margin: 2px 0; } .ok { color: #72e1ae; } .fail { color: #ff8e9a; }
+  </style>
+</head>
+<body>
+  <h1>Tips contextuales y persistencia del avance</h1>
+  <p id="summary">Ejecutando…</p>
+  <ul id="results"></ul>
+  <script type="module">
+    import { tipsForStep, TIP_TYPES } from '../js/ensamblaje/tips.js';
+    import { createProgressStore, PROGRESS_KEY, MODE_KEY } from '../js/ensamblaje/progress-store.js';
+    import { buildProfile } from '../js/ensamblaje/build-profile.js';
+    import { generateRoute } from '../js/ensamblaje/route.js';
+
+    const part = (id, category, values) => ({ id, category, name: id, summary: '', facts: { verified: true, values } });
+    const base = {
+      cpu: part('cpu', 'cpu', { socket: 'AM5', memory: 'DDR5', thermal: 'Sin disipador incluido' }),
+      board: part('board', 'board', { socket: 'AM5', memory: 'DDR5', boardForm: 'atx', format: 'ATX', slots: 4, m2Slots: 3 }),
+      ram: part('ram', 'ram', { memory: 'DDR5', modules: 2, format: 'DIMM', profiles: 'EXPO / XMP · 6000' }),
+      storage: part('ssd', 'storage', { format: 'M.2 2280', placement: 'Interno', pcie: 'PCIe 4.0 ×4 NVMe' }),
+      gpu: part('gpu', 'gpu', { length: 300, powerConnectors: '16-pin x 1', recommendedPsu: 750 }),
+      power: part('psu', 'power', { format: 'ATX 3.1 · totalmente modular', watts: 850 }),
+      case: part('case', 'case', { format: 'ATX / micro-ATX', gpuMax: 360, coolerMax: 165 }),
+      cooler: part('tower', 'cooler', { coolerType: 'air', height: 158, sockets: 'AMD AM5 / AM4' })
+    };
+    const profileOf = over => buildProfile(Object.values({ ...base, ...over }).filter(Boolean));
+    const tips = (id, over = {}) => { const p = profileOf(over); return tipsForStep(generateRoute(p).find(s => s.id === id), p); };
+    const has = (list, type, re) => list.some(t => t.type === type && re.test(t.text));
+
+    // Almacenamiento en memoria para no tocar el localStorage real.
+    const memory = () => { const m = new Map(); return { getItem: k => (m.has(k) ? m.get(k) : null), setItem: (k, v) => m.set(k, String(v)), removeItem: k => m.delete(k), raw: m }; };
+
+    const tests = [];
+    const test = (name, fn) => tests.push([name, fn]);
+    const eq = (a, b, msg = '') => { if (JSON.stringify(a) !== JSON.stringify(b)) throw new Error(`${msg} esperado ${JSON.stringify(b)}, obtenido ${JSON.stringify(a)}`); };
+    const ok = (c, msg) => { if (!c) throw new Error(msg); };
+
+    test('Cinco categorías definidas', () => eq(Object.keys(TIP_TYPES).sort(), ['caution', 'fact', 'mistake', 'practice', 'tip']));
+    test('Todos los pasos de una build completa tienen al menos un tip', () => {
+      const p = profileOf({}); for (const s of generateRoute(p)) ok(tipsForStep(s, p).length > 0, s.id);
+    });
+    test('Las precauciones aparecen primero', () => { const t = tips('cpu'); eq(t[0].type, 'caution'); });
+    test('Preparación: precaución por electricidad estática', () => ok(has(tips('prep'), 'caution', /electricidad estática|antiestática/), 'ESD'));
+    test('Fuente: nunca abrirla (precaución)', () => ok(has(tips('psu'), 'caution', /Nunca abras la fuente/), 'psu'));
+    test('CPU AM5: precaución por contactos del socket', () => ok(has(tips('cpu'), 'caution', /AM5 los contactos del socket/), 'lga'));
+    test('CPU AM4: precaución por pines del procesador', () => {
+      const t = tips('cpu', { cpu: part('cpu', 'cpu', { socket: 'AM4', thermal: 'Sin disipador incluido' }), board: part('b', 'board', { socket: 'AM4', memory: 'DDR4', boardForm: 'atx', slots: 4, m2Slots: 2 }), ram: part('r', 'ram', { memory: 'DDR4', modules: 2, format: 'DIMM' }) });
+      ok(has(t, 'caution', /AM4 se doblan/), 'am4');
+    });
+    test('RAM DDR5: dato técnico sobre el primer arranque', () => ok(has(tips('ram'), 'fact', /DDR5/), 'ddr5'));
+    test('RAM DDR4: sin dato de DDR5', () => {
+      const t = tips('ram', { cpu: part('cpu', 'cpu', { socket: 'AM4', thermal: 'Sin disipador incluido' }), board: part('b', 'board', { socket: 'AM4', memory: 'DDR4', boardForm: 'atx', slots: 4, m2Slots: 2 }), ram: part('r', 'ram', { memory: 'DDR4', modules: 2, format: 'DIMM' }) });
+      ok(!t.some(x => /DDR5/.test(x.text)), 'no ddr5');
+    });
+    test('RAM con EXPO/XMP: buena práctica de activar el perfil', () => ok(has(tips('ram'), 'practice', /EXPO\/XMP/), 'expo'));
+    test('Gráfica con conector de 16 pines: precaución específica', () => ok(has(tips('gpu'), 'caution', /16 pines/), '16pin'));
+    test('Gráfica: dato de longitud frente al gabinete', () => ok(has(tips('gpu'), 'fact', /300 mm; tu gabinete admite 360 mm/), 'len'));
+    test('Torre de aire: dato de altura frente al gabinete', () => ok(has(tips('cooler'), 'fact', /158 mm; tu gabinete admite 165 mm/), 'height'));
+    test('AIO: buena práctica sobre la posición de la bomba', () => ok(has(tips('cooler', { cooler: part('aio', 'cooler', { coolerType: 'aio', format: 'AIO 360 mm' }) }), 'practice', /bomba/), 'aio'));
+    test('Disipador de serie: no añadir pasta', () => ok(has(tips('cooler', { cooler: null, cpu: part('cpu', 'cpu', { socket: 'AM5', memory: 'DDR5', thermal: 'AMD Wraith Stealth en presentación BOX' }) }), 'tip', /preaplicada/), 'stock'));
+    test('Sin dato de ficha no se inventa: sin vatios no hay dato de la fuente', () => {
+      const t = tips('psu', { power: part('psu', 'power', { format: 'ATX' }) });
+      ok(!t.some(x => x.type === 'fact'), 'sin dato');
+    });
+
+    test('Avance: guardar y recuperar por build', () => {
+      const s = createProgressStore(memory());
+      s.save('a|b', { done: ['prep', 'cpu'], active: 'ram', installed: { cpu: 'socket' } });
+      eq(s.load('a|b'), { done: ['prep', 'cpu'], installed: { cpu: 'socket' }, active: 'ram', updatedAt: s.load('a|b').updatedAt });
+      eq(s.load('otra'), null);
+    });
+    test('Avance: builds distintas no se mezclan', () => {
+      const s = createProgressStore(memory());
+      s.save('a', { done: ['prep'] }); s.save('b', { done: ['cpu'] });
+      eq(s.load('a').done, ['prep']); eq(s.load('b').done, ['cpu']);
+    });
+    test('Avance: datos corruptos o maliciosos se descartan', () => {
+      const m = memory(); m.setItem(PROGRESS_KEY, JSON.stringify({ x: { done: ['ok', '<img onerror=1>', 5], installed: { cpu: 'socket', '<x>': 'y', ram: 3 }, active: '../../' } }));
+      const r = createProgressStore(m).load('x');
+      eq(r.done, ['ok']); eq(r.installed, { cpu: 'socket' }); eq(r.active, null);
+    });
+    test('Avance: JSON inválido no rompe la carga', () => { const m = memory(); m.setItem(PROGRESS_KEY, '{no json'); eq(createProgressStore(m).load('x'), null); });
+    test('Avance: se conservan como máximo 8 builds (las más recientes)', () => {
+      let t = 0; const s = createProgressStore(memory(), () => ++t);
+      for (let i = 0; i < 10; i++) s.save(`b${i}`, { done: ['prep'] });
+      eq(s.load('b0'), null); eq(s.load('b1'), null); ok(s.load('b9'), 'b9'); ok(s.load('b2'), 'b2');
+    });
+    test('Avance: borrar una build', () => { const s = createProgressStore(memory()); s.save('a', { done: ['prep'] }); s.clear('a'); eq(s.load('a'), null); });
+    test('Avance: sin almacenamiento disponible no lanza errores', () => {
+      const broken = { getItem() { throw new Error('bloqueado'); }, setItem() { throw new Error('cuota'); } };
+      const s = createProgressStore(broken);
+      eq(s.save('a', { done: ['prep'] }), false); eq(s.load('a'), null); eq(s.getMode(), 'practice'); s.setMode('demo');
+    });
+    test('Modalidad: se guarda y solo admite valores válidos', () => {
+      const m = memory(); const s = createProgressStore(m);
+      s.setMode('demo'); eq(s.getMode(), 'demo'); m.setItem(MODE_KEY, 'otra'); eq(s.getMode(), 'practice');
+    });
+
+    let passed = 0;
+    const list = document.getElementById('results');
+    for (const [name, fn] of tests) {
+      const li = document.createElement('li');
+      try { fn(); passed++; li.className = 'ok'; li.textContent = '✓ ' + name; }
+      catch (e) { li.className = 'fail'; li.textContent = '✗ ' + name + ' — ' + e.message; }
+      list.appendChild(li);
+    }
+    const summary = document.getElementById('summary');
+    summary.textContent = `${passed} de ${tests.length} pruebas superadas`;
+    summary.className = passed === tests.length ? 'ok' : 'fail';
+    window.TEST_RESULT = { passed, total: tests.length, failures: [...list.querySelectorAll('.fail')].map(li => li.textContent) };
+  </script>
+</body>
+</html>

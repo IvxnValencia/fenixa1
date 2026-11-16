@@ -9,6 +9,13 @@
     <link rel="icon" href="assets/favicon.svg?v=1" type="image/svg+xml" />
     <link rel="icon" href="favicon.ico?v=1" sizes="32x32" />
     <title>FENIXA · Construye tu PC con confianza</title>
+    <!-- Three.js (versión fija) para el visor 3D de la guía. Solo se descarga al abrir #ensamblaje. -->
+    <script type="importmap">
+      { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      } }
+    </script>
     <script src="js/interfaz/startup-recovery.js?v=1"></script>
     <script src="assets/thumbs/manifest.js?v=2"></script>
     <script src="js/interfaz/thumbs.js?v=1"></script>
@@ -446,6 +453,7 @@
     <link rel="stylesheet" href="css/interface-polish.css?v=13">
     <link rel="stylesheet" href="css/sidebar-desktop.css?v=1">
     <link rel="stylesheet" href="css/home-continue.css?v=4">
+    <link rel="stylesheet" href="css/assembly-3d.css?v=6">
   </head>
   <body>
     <div class="app-shell">
@@ -651,7 +659,9 @@
           <section class="section" id="ensamblaje" aria-labelledby="assembly-title" hidden>
             <div class="section-heading"><div><h2 id="assembly-title">Tu ruta de ensamblaje</h2><p>Avanza a tu ritmo. Cada paso incluye el cuidado que conviene tener antes de continuar.</p></div><button class="section-link" id="resetAssembly" type="button">Reiniciar guía</button></div>
             <div class="assembly-layout">
-              <div class="assembly-preview"><h3>Vista previa de tu recorrido</h3><p id="assemblyPreviewText">Empieza preparando una mesa limpia y despejada.</p><div class="pc-illustration" aria-hidden="true"><div class="pc-grid"></div></div></div>
+              <div class="assembly-preview"><div><h3>Vista previa de tu recorrido</h3><p id="assemblyPreviewText">Empieza preparando una mesa limpia y despejada.</p></div><div class="assembly-check" id="assemblyIssues" aria-live="polite" hidden></div><div class="assembly-viewer" id="assemblyViewer" data-state="idle"><div class="pc-illustration" aria-hidden="true"><div class="pc-grid"></div></div><p class="av-status" id="assemblyViewerStatus" role="status" aria-live="polite"></p></div></div>
+              <div class="assembly-side">
+              <section class="assembly-step-panel" id="assemblyStepPanel" aria-labelledby="assemblyStepTitle" hidden></section>
               <div class="assembly-card"><div class="assembly-card-header"><h3>Checklist de montaje</h3><span class="progress-text" id="progressText">1 de 5 completados</span></div><div class="progress-bar" aria-label="Progreso de la guía"><span id="progressBar"></span></div><div class="assembly-steps" id="assemblySteps">
                 <button class="assembly-step done" type="button"><span class="step-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 12 4 4L19 6"/></svg></span><span><strong>Prepara tu espacio</strong><small>Antiestática, luz y piezas a la mano.</small></span><span class="step-index">01</span></button>
                 <button class="assembly-step" type="button"><span class="step-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 12 4 4L19 6"/></svg></span><span><strong>Instala el procesador</strong><small>Ubica la marca de orientación del socket.</small></span><span class="step-index">02</span></button>
@@ -659,6 +669,7 @@
                 <button class="assembly-step" type="button"><span class="step-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 12 4 4L19 6"/></svg></span><span><strong>Fija la placa en la caja</strong><small>Conecta primero lo esencial.</small></span><span class="step-index">04</span></button>
                 <button class="assembly-step" type="button"><span class="step-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m5 12 4 4L19 6"/></svg></span><span><strong>Conecta y prueba</strong><small>Revisa energía, ventiladores y video.</small></span><span class="step-index">05</span></button>
               </div></div>
+              </div>
             </div>
           </section>
 
@@ -806,16 +817,7 @@
         compareSelection.splice(0); document.querySelectorAll('.market-card').forEach(card => card.classList.remove('selected')); updateCompareTray();
       });
 
-      const assemblyDescriptions = ['Empieza preparando una mesa limpia y despejada.','Alinea la marca del procesador con la del socket; no necesitas fuerza.','Coloca los módulos en las ranuras recomendadas y fija el SSD.','Asegura la placa con separadores y conecta primero el panel frontal.','Enciende, revisa ventiladores y confirma que la imagen aparece.'];
-      function updateAssembly() {
-        const steps = [...document.querySelectorAll('.assembly-step')]; const done = steps.filter(step => step.classList.contains('done')).length;
-        document.getElementById('progressText').textContent = `${done} de 5 completados`;
-        document.getElementById('progressBar').style.width = `${Math.max(20, done * 20)}%`;
-        const next = steps.findIndex(step => !step.classList.contains('done'));
-        document.getElementById('assemblyPreviewText').textContent = next === -1 ? '¡Ruta completa! Tu configuración está lista para la prueba de encendido.' : assemblyDescriptions[next];
-      }
-      document.querySelectorAll('.assembly-step').forEach(step => step.addEventListener('click', () => { step.classList.toggle('done'); updateAssembly(); }));
-      document.getElementById('resetAssembly').addEventListener('click', () => { document.querySelectorAll('.assembly-step').forEach((step, index) => step.classList.toggle('done', index === 0)); updateAssembly(); showToast('Guía reiniciada desde el primer paso.'); });
+      // La guía de ensamblaje (checklist, progreso y botón de reinicio) la gestiona js/ensamblaje/guide.js con la ruta generada a partir de Mi build.
 
       function applyTheme(theme) {
         root.classList.toggle('light', theme === 'light');
@@ -838,7 +840,6 @@
       renderBuild();
       renderMarket();
 
-      updateAssembly();
     </script>
     <script src="js/catalogo/catalog-data.js?v=5"></script>
   <script src="js/catalogo/catalog-expansion.js?v=1"></script>
@@ -898,6 +899,7 @@
     <script src="js/builds/build-planner.js?v=17"></script>
     <script src="js/builds/builder-journey.js?v=4"></script>
     <script src="js/interfaz/navigation.js?v=14"></script>
+    <script src="js/ensamblaje/assembly-viewer-loader.js?v=7"></script>
     <script src="js/interfaz/sidebar.js?v=1"></script>
     <script src="js/interfaz/home-continue.js?v=4"></script>
   </body>

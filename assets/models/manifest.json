@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "note": "Modelos 3D específicos de fabricante. Vacío: el visor usa modelos genéricos procedurales. Esquema documentado en js/ensamblaje/README.md.",
+  "models": []
+}
