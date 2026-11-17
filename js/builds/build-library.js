@@ -78,7 +78,7 @@
     if(pending.action==='import')message='Versiones importadas. Tu selección activa se conserva; revisa cada versión antes de usarla.';
     expanded=true;window.dispatchEvent(new Event('fenixa-library-changed'));dialog.close();
   });
-  dialog.addEventListener('close',()=>{pending=null;const focus=opener?.isConnected?opener:document.getElementById('savedBuildsSummary');focus?.focus({preventScroll:true});opener=null;});
+  dialog.addEventListener('close',()=>{pending=null;const focus=opener?.isConnected?opener:(document.getElementById('carrito')?.hidden===false?document.getElementById('cartTitle'):document.getElementById('savedBuildsSummary'));focus?.focus({preventScroll:true});opener=null;});
   window.addEventListener('hashchange',()=>{if(dialog.open)dialog.close();});
   document.addEventListener('change',async event=>{
     if(event.target.id!=='buildImportFile')return;

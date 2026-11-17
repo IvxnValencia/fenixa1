@@ -316,7 +316,7 @@
   };
   function toggleSaved(id) {
     const next = new Set(saved); next.has(id) ? next.delete(id) : next.add(id);
-    try { localStorage.setItem('fenixa-saved-builds', JSON.stringify([...next])); saved = next; } catch { showToast('No se pudo guardar en este navegador.'); return false; }
+    try { localStorage.setItem('fenixa-saved-builds', JSON.stringify([...next])); saved = next; window.dispatchEvent(new Event('fenixa-favorites-changed')); } catch { showToast('No se pudo guardar en este navegador.'); return false; }
     return true;
   }
   function renderGallery() {

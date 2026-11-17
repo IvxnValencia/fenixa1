@@ -1,0 +1,21 @@
+body #carrito { min-width: 0; }
+body #carrito > section { margin-top: 24px; }
+body #carrito .cart-section-heading { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+body #carrito .cart-section-heading h3 { margin: 0; font-size: 16px; }
+body #carrito .cart-section-heading > span, body #carrito small { color: var(--muted); font-size: 12px; }
+body #carrito .cart-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; }
+body #carrito .cart-card, body #carrito .cart-empty { display: flex; flex-direction: column; align-items: stretch; gap: 8px; min-width: 0; padding: 16px; border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface); }
+body #carrito .cart-card h3 { margin: 0; font-size: 16px; overflow-wrap: anywhere; }
+body #carrito .cart-kind { color: var(--muted); font-size: 12px; }
+body #carrito .cart-photos { display: flex; align-items: center; gap: 8px; height: 80px; min-width: 0; overflow: hidden; }
+body #carrito .cart-photos img { width: calc((100% - 24px)/4); max-width: 80px; height: 80px; object-fit: contain; background: transparent; }
+body #carrito .cart-summary { margin: 0; color: var(--muted); font-size: 13px; line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+body #carrito .cart-price { color: var(--purple); font-size: 15px; overflow-wrap: anywhere; }
+body #carrito .cart-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin-top: auto; padding-top: 8px; }
+body #carrito .cart-actions > *, body #carrito .cart-card > .primary-button { display: flex; align-items: center; justify-content: center; height: 40px; min-height: 40px; padding: 0 8px; border-radius: 12px; font-size: 13px; text-align: center; }
+body #carrito .cart-card > .primary-button { margin-top: auto; }
+body #carrito .cart-info { margin-top: 24px; font-size: 13px; color: var(--muted); }
+body #carrito .cart-info summary { min-height: 40px; color: var(--purple); cursor: pointer; }
+@media(max-width:560px) { body #carrito .cart-grid { grid-template-columns:minmax(0,1fr); } }
+body #carrito > .section-heading h2 { margin: 0; font-size: 18px; line-height: 24px; }
+body #carrito > .section-heading p { margin: 8px 0 0; font-size: 13px; color: var(--muted); }

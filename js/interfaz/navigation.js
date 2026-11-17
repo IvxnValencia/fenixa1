@@ -3,6 +3,7 @@
     inicio: { title: 'Inicio', sections: ['#welcome'] },
     componentes: { title: 'Componentes', sections: ['#componentes'] },
     'mi-build': { title: 'Mi build', sections: ['#mi-build'] },
+    carrito: { title: 'Carrito', sections: ['#carrito'] },
     builds: { title: 'Builds completas', sections: ['#builds'] },
     laptops: { title: 'Laptops', sections: ['#laptops'] },
     configurador: { title: 'Armar mi PC', sections: ['#startBuild'] },
