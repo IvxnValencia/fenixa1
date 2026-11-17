@@ -19,3 +19,9 @@ body #carrito .cart-info summary { min-height: 40px; color: var(--purple); curso
 @media(max-width:560px) { body #carrito .cart-grid { grid-template-columns:minmax(0,1fr); } }
 body #carrito > .section-heading h2 { margin: 0; font-size: 18px; line-height: 24px; }
 body #carrito > .section-heading p { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+/* Build en curso y versiones guardadas, lado a lado en escritorio. */
+body #carrito:not([hidden]) { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; align-items: start; }
+body #carrito > .section-heading, body #carrito > .cart-info { grid-column: 1 / -1; margin: 0; }
+body #carrito > section { min-width: 0; margin-top: 0; }
+body #carrito .cart-grid { grid-template-columns: minmax(0,1fr); }
+@media(max-width:900px) { body #carrito:not([hidden]) { grid-template-columns: minmax(0,1fr); } }
