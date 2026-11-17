@@ -92,32 +92,279 @@ body .pc-edit-form[hidden], body .compare-tray[hidden] { display: none; }
 @media (min-width: 561px) and (max-width: 980px) { body .sidebar.menu-open { display: flex; box-shadow: 0 0 0 100vmax #0009; z-index: 30; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
 [hidden] { display: none !important; }
-.profile-help { margin-bottom: 22px; border: 1px solid var(--stroke); border-radius: 14px; background: var(--surface); }
-.profile-help summary { padding: 17px 20px; cursor: pointer; font-weight: 650; color: var(--purple); }
-.profile-help > div { padding: 0 22px 18px; color: var(--muted); font-size: 14px; }
-.profile-help li { margin-bottom: 9px; }
-.profile-layout { display: grid; grid-template-columns: minmax(0,1.1fr) minmax(0,1fr); gap: 22px; align-items: start; }
-.profile-panel { padding: 24px; border: 1px solid var(--stroke); border-radius: 18px; background: var(--surface); min-width: 0; }
-.profile-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
-.profile-panel h3, .profile-panel h4 { margin: 0 0 10px; }
-.profile-hint, #profileStatus { color: var(--muted); font-size: 13px; }
-.profile-fields { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 17px 14px; }
-.profile-fields label { display: grid; gap: 7px; color: var(--muted); font-size: 12px; font-weight: 650; }
-.profile-fields input, .profile-fields select { width: 100%; min-width: 0; border: 1px solid var(--stroke); border-radius: 9px; padding: 11px 10px; background: var(--surface-2); color: var(--text); font: inherit; font-size: 13px; }
-.profile-fields input:focus, .profile-fields select:focus { outline: 2px solid var(--purple); outline-offset: 2px; }
-.profile-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
-.profile-empty { margin: 18px 0; padding: 22px; border: 1px dashed var(--stroke); border-radius: 12px; color: var(--muted); font-size: 14px; }
-#profileSummary dl { margin: 0; }
-#profileSummary dl div { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.3fr); gap: 16px; padding: 10px 0; border-bottom: 1px solid var(--stroke-soft); font-size: 13px; }
-#profileSummary dt { color: var(--muted); }
-#profileSummary dd { margin: 0; overflow-wrap: anywhere; }
-.profile-advice { padding: 19px 0; border-top: 1px solid var(--stroke); }
-.profile-advice .eyebrow { margin-bottom: 8px; font-size: 10px; }
-.profile-advice p { color: var(--text); font-size: 14px; }
-.profile-advice small { display: block; color: var(--muted); font-size: 12px; line-height: 1.65; }
-.profile-advice button { margin-top: 15px; text-align: left; white-space: normal; }
-@media (max-width: 1100px) { .profile-layout { grid-template-columns: 1fr; } }
-@media (max-width: 560px) { .profile-fields { grid-template-columns: 1fr; } .profile-panel { padding: 18px; } }
+#mi-pc > .section-heading {
+  margin-bottom: var(--ui-space-3);
+}
+#mi-pc .section-heading p {
+  margin-top: var(--ui-space-1);
+}
+.profile-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--ui-space-3);
+}
+.profile-panel {
+  min-width: 0;
+  padding: var(--ui-space-3);
+  border: 1px solid var(--stroke);
+  border-radius: var(--ios-radius-md);
+  background: var(--surface);
+}
+.profile-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ui-space-1) var(--ui-space-2);
+}
+.profile-panel h3 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+}
+.profile-panel h4 {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.4;
+}
+.profile-hint {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+#profileForm {
+  display: grid;
+  gap: var(--ui-space-2);
+  margin-top: var(--ui-space-1);
+}
+.profile-group {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.profile-group legend {
+  float: left;
+  width: 100%;
+  margin: 0 0 var(--ui-space-1);
+  padding: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.profile-priority {
+  padding: var(--ui-space-2);
+  border: 1px solid var(--stroke);
+  border-radius: var(--ios-radius-md);
+  background: var(--surface-2);
+}
+.profile-fields {
+  clear: both;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ui-space-2);
+}
+.profile-fields label {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--ui-space-1);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.profile-fields :is(input, select) {
+  width: 100%;
+  min-width: 0;
+  height: 40px;
+  min-height: 40px;
+  padding-inline: var(--ui-space-1);
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+  background: var(--surface-2);
+  color: var(--text);
+  font: inherit;
+  font-weight: 400;
+  scroll-margin-block-start: calc(var(--storefront-header, 64px) + var(--ui-space-2));
+}
+.profile-priority :is(input, select) {
+  background: var(--surface);
+}
+.profile-fields input::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+.profile-hardware {
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+}
+.profile-panel summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+.profile-hardware summary {
+  min-height: 40px;
+  padding: var(--ui-space-1) var(--ui-space-2);
+  color: var(--text);
+}
+.profile-hardware summary::marker,
+.profile-help summary {
+  color: var(--purple);
+}
+.profile-hardware-body {
+  display: grid;
+  gap: var(--ui-space-2);
+  padding: var(--ui-space-2);
+  border-top: 1px solid var(--stroke);
+}
+.profile-hardware-body .profile-group + .profile-group {
+  padding-top: var(--ui-space-2);
+  border-top: 1px solid var(--stroke-soft);
+}
+.profile-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ui-space-1);
+}
+#mi-pc .profile-panel :is(.primary-button, .secondary-button) {
+  min-height: 40px;
+  max-width: 100%;
+  padding: 0 var(--ui-space-2);
+  border-radius: 12px;
+  line-height: 1.35;
+  white-space: normal;
+}
+#profileStatus:not(:empty) {
+  margin-top: var(--ui-space-1);
+}
+#profileStatus[data-error] {
+  color: var(--red);
+}
+.profile-help {
+  margin-top: var(--ui-space-2);
+  border-top: 1px solid var(--stroke-soft);
+}
+.profile-help summary {
+  min-height: 40px;
+  padding-block: var(--ui-space-1);
+}
+.profile-help > div {
+  display: grid;
+  gap: var(--ui-space-1);
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.profile-help p {
+  margin: 0;
+}
+#profileSummary,
+#profileAdvice {
+  margin-top: var(--ui-space-2);
+}
+.profile-saved,
+.profile-empty {
+  margin: 0;
+  padding: var(--ui-space-2);
+  border: 1px solid var(--stroke);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+.profile-saved h4 {
+  overflow-wrap: anywhere;
+}
+.profile-saved p {
+  margin-top: var(--ui-space-1);
+}
+#profileSummary dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ui-space-2);
+  margin: var(--ui-space-2) 0 0;
+}
+#profileSummary dl div {
+  min-width: 0;
+  padding-top: var(--ui-space-1);
+  border-top: 1px solid var(--stroke-soft);
+  font-size: 14px;
+  line-height: 1.45;
+}
+#profileSummary dt {
+  color: var(--muted);
+  font-size: 13px;
+}
+#profileSummary dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+#profileAdviceTitle,
+#profileEdit {
+  scroll-margin-block-start: calc(var(--storefront-header, 64px) + var(--ui-space-2));
+}
+.profile-empty {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.profile-advice-list {
+  display: grid;
+  gap: var(--ui-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.profile-advice {
+  display: grid;
+  justify-items: start;
+  gap: var(--ui-space-1);
+  padding: var(--ui-space-2);
+  border: 1px solid var(--stroke);
+  border-radius: var(--ios-radius-md);
+  background: var(--surface-2);
+}
+.profile-advice p,
+.profile-purchase-note {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.profile-advice .profile-check {
+  padding-top: var(--ui-space-1);
+  border-top: 1px solid var(--stroke);
+  color: var(--muted);
+}
+.profile-purchase-note {
+  margin-top: var(--ui-space-2);
+  padding-left: var(--ui-space-1);
+  border-left: 2px solid var(--purple);
+  color: var(--muted);
+}
+@media (max-width: 1024px) {
+  .profile-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 600px) {
+  #mi-pc > .section-heading {
+    margin-bottom: var(--ui-space-2);
+  }
+  .profile-layout {
+    gap: var(--ui-space-2);
+  }
+  .profile-panel {
+    padding: var(--ui-space-2);
+  }
+  .profile-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
 .market-filterbar { display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin:16px 0 24px; padding:16px; background:var(--surface-2); border-radius:12px; }
 .market-filterbar label { color:var(--text); font-size:14px; }
 .market-filterbar select { display:block; padding:9px; margin-top:6px; background:var(--surface); color:var(--text); border:1px solid var(--stroke); border-radius:8px; }
