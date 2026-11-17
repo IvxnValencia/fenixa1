@@ -3,6 +3,9 @@
   const $=id=>document.getElementById(id), rows=window.FENIXA_LAPTOPS;
   const esc=v=>String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const labels={estudio:'Estudio',trabajo:'Trabajo',gaming:'Gaming',creativo:'Creación'};
+  const shortName=p=>window.FENIXA_SHORT_NAME?window.FENIXA_SHORT_NAME(p):p.name;
+  const keySpecs=p=>p.specs.filter(([label])=>/procesador|gráficos/i.test(label)).map(([,value])=>value);
+  const brief=p=>keySpecs(p).map(value=>value.split(' · ')[0].split(';')[0]).join(' · ');
   const referenceKind=p=>p.referenceKind||'Configuración variable';
   const regionLabel=p=>p.configurationId==='catalog'?referenceKind(p):p.region;
   const imageNote=p=>p.imageKind==='category'||p.imageKind==='official'?p.imageNote:'Foto oficial de familia; no certifica el teclado, acabado o etiqueta de este SKU.';
@@ -55,15 +58,15 @@
   function render() {
     const use=$('laptopUse').value, query=$('laptopSearch').value.trim().toLocaleLowerCase('es');
     const visible=rows.filter(p=>(use==='all'||p.uses.includes(use))&&`${p.name} ${p.model}`.toLocaleLowerCase('es').includes(query));
-    $('laptopCount').textContent=visible.length+(visible.length===1?' modelo':' modelos')+' de referencia · revisa configuración y región';
+    $('laptopCount').textContent=visible.length+(visible.length===1?' modelo':' modelos');
     $('laptopEmpty').hidden=visible.length>0;
     if(!visible.length)$('laptopEmpty').innerHTML='No hay laptops que coincidan con este uso y modelo. Prueba un nombre más corto o vuelve a explorar todas las referencias. <button type="button" class="secondary-button" data-clear-laptop-filters>Limpiar filtros de laptops</button>';
     const page=window.FENIXA_PAGER.paginate('laptops',visible,{anchor:$('laptopGrid'),signature:JSON.stringify([use,query]),onChange:render,label:'Páginas de laptops',scrollTarget:$('laptops')});
     $('laptopGrid').innerHTML=page.items.map(p=>`<article class="laptop-card fx-card" data-laptop-id="${esc(p.id)}">
-      <div class="catalog-product-heading"><span class="market-category">${esc(labels[p.uses[0]]||'Laptop')} · ${esc(p.model)}</span><h3>${esc(p.name)}</h3></div>
+      <div class="catalog-product-heading"><h3 title="${esc(p.name+' · '+p.model)}">${esc(shortName(p))}</h3></div>
       <button type="button" class="catalog-photo fx-open" data-open-laptop="${esc(p.id)}" aria-label="Ver ficha de ${esc(p.name)}"><img class="product-image" src="${esc(window.FENIXA_THUMB?window.FENIXA_THUMB(p.image):p.image)}" alt="${esc(imageAlt(p))}" width="800" height="800" loading="lazy" decoding="async"></button>
-      <p class="catalog-brief" title="${esc(p.specs.filter(([label])=>/procesador|gráficos/i.test(label)).map(([,value])=>value).join(' · '))}">${esc(p.specs.filter(([label])=>/procesador|gráficos/i.test(label)).map(([,value])=>value).join(' · '))}</p>
-      <div class="catalog-price-line"><strong class="market-price">Precio por confirmar</strong><span class="estimate-label" title="Sin oferta verificada en COP">Sin precio</span></div>
+      <p class="catalog-brief" title="${esc(keySpecs(p).join(' · '))}">${esc(brief(p))}</p>
+      <div class="catalog-price-line"><span class="market-category laptop-use">${esc(labels[p.uses[0]]||'Laptop')}</span><span class="estimate-label" title="Sin oferta verificada en COP">Sin precio</span></div>
       <div class="catalog-card-actions"><button type="button" class="compare-trigger" data-laptop-compare="${esc(p.id)}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button type="button" class="secondary-button" data-open-laptop="${esc(p.id)}">Ver ficha</button></div>
     </article>`).join('');
     renderComparison();
@@ -131,6 +134,8 @@
   $('laptopCompareClear').addEventListener('click',()=>{selected.clear();quotes.clear();versions.clear();comparisonView='all';comparisonOpen=false;render();$('laptopSearch').focus({preventScroll:true});});
   $('laptopUse').addEventListener('change',render);
   $('laptopSearch').addEventListener('input',render);
-  $('laptopEmpty').addEventListener('click',event=>{if(!event.target.closest('[data-clear-laptop-filters]'))return;$('laptopUse').value='all';$('laptopSearch').value='';render();$('laptopSearch').focus({preventScroll:true});});
+  const clearFilters=()=>{$('laptopUse').value='all';$('laptopSearch').value='';if($('laptopMore'))$('laptopMore').open=false;render();$('laptopSearch').focus({preventScroll:true});};
+  $('clearLaptopFilters')?.addEventListener('click',clearFilters);
+  $('laptopEmpty').addEventListener('click',event=>{if(event.target.closest('[data-clear-laptop-filters]'))clearFilters();});
   render();
 })();

@@ -90,23 +90,6 @@ body .fx-card:has(button:active, a:active, input:active, select:active) { transf
 body .fx-open { display: block; width: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; color: inherit; }
 body .fx-open:focus-visible, body .build-photo-button:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; border-radius: 10px; }
 
-/* Builds completas: foto, objetivo, nombre, CPU/GPU y precio. */
-body .build-gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-body .build-card.fx-card { display: flex; flex-direction: column; border-radius: 16px; }
-body .build-card .build-photo-button { display: grid; place-items: center; width: 100%; height: 168px; padding: 14px; border: 0; background: var(--surface-2); cursor: pointer; }
-body .build-card .build-photo-button { overflow: hidden; }
-body .build-card .build-photo-button img { display: block; width: 100%; height: 140px; max-height: 100%; min-height: 0; padding: 0; aspect-ratio: auto; object-fit: contain; }
-body .build-card .build-card-body { display: flex; flex: 1; flex-direction: column; gap: 6px; padding: 14px 16px 16px; }
-body .build-card .build-target { margin: 0; font-size: 12px; font-weight: 600; color: var(--purple); }
-body .build-card h3 { margin: 0; font-size: 17px; line-height: 1.3; letter-spacing: -.02em; }
-body .build-mini-specs { display: grid; gap: 4px; margin: 4px 0 0; padding: 0; list-style: none; }
-body .build-mini-specs li { display: flex; gap: 8px; min-width: 0; font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-body .build-mini-specs li span { flex-shrink: 0; width: 32px; font-size: 11px; font-weight: 600; letter-spacing: .02em; color: var(--muted-2, var(--muted)); }
-body .build-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: 10px; border-top: 1px solid var(--stroke-soft, var(--stroke)); }
-body .build-card .build-estimate { margin: 0; font-size: 14px; font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
-body .build-card-more { font-size: 12px; font-weight: 600; color: var(--purple); }
-body .build-card .catalog-image-note, body .build-card .build-photo-label { display: none; }
-
 /* Componentes: tarjeta más ligera, detalles en la ficha emergente. */
 body #marketGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
 body #marketGrid .market-card { display: flex; flex-direction: column; grid-row: auto; grid-template-rows: none; padding: 14px; gap: 0; }
@@ -183,17 +166,8 @@ body .product-sheet-details > * + * { margin-top: 10px; }
 @media (hover: none) {
   body .fx-card:hover, body #marketGrid .market-card:hover { border-color: var(--stroke); box-shadow: none; transform: none; }
 }
-@media (max-width: 1100px) {
-  body .build-gallery, body #marketGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
 @media (max-width: 700px) {
   body .content { padding: 20px 16px calc(96px + env(safe-area-inset-bottom, 0px)); }
-  body .build-gallery { grid-template-columns: 1fr; gap: 10px; }
-  body .build-card.fx-card { flex-direction: row; }
-  body .build-card .build-photo-button { width: 104px; height: auto; min-height: 112px; flex-shrink: 0; padding: 8px; }
-  body .build-card .build-photo-button img { height: 96px; }
-  body .build-card .build-card-body { padding: 12px; }
-  body .build-card h3 { font-size: 15px; }
   body #marketGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   body #marketGrid .market-card { padding: 10px; }
   body #marketGrid .catalog-photo { --catalog-photo-height: 104px; }
@@ -219,12 +193,6 @@ body .build-quick-dock:not(:has([aria-expanded="true"])) .build-quick-toggle svg
 body .build-quick-dock:not(:has([aria-expanded="true"])) .build-quick-toggle strong { flex: 0 0 auto; font-size: 13px; }
 body .build-quick-dock:not(:has([aria-expanded="true"])) #buildQuickCount { font-size: 12px; color: var(--muted); }
 body .build-quick-toggle:active { transform: scale(0.98); }
-
-/* ---------- Filtros de builds en una sola franja ---------- */
-body .build-budget-bar { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 20px; padding: 14px 16px; margin-bottom: 14px; }
-body .build-budget-bar > label:first-child select { min-height: 44px; }
-body .build-budget-bar p { flex-basis: 100%; order: 3; margin: 0; font-size: 12px; line-height: 1.5; color: var(--muted); max-width: 90ch; }
-body .build-budget-bar #buildResults { margin-left: auto; font-size: 13px; color: var(--muted); align-self: center; }
 
 /* ---------- Mi build: filas vacías en una sola línea ---------- */
 body #mi-build .my-build-row:has(.my-build-placeholder) > div:last-child { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: 12px; }
@@ -252,37 +220,37 @@ body #mi-build .build-recommendations h3 { font-size: 16px; margin-bottom: 4px; 
 
 /* ---------- Componentes: una vista en dos niveles (rejilla de 8 px, tarjetas 16 px, controles 12 px) ---------- */
 body #componentes #catalogo { display: block; margin: 0; min-width: 0; }
-body #componentes .cmp-bar { display: flex; flex-direction: row; text-align: left; padding: 0; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 24px; min-height: 40px; }
-body #componentes .cmp-bar-left { display: flex; align-items: center; gap: 16px; min-width: 0; flex: 0 1 auto; }
-body #componentes .cmp-bar-left > .cmp-deep { display: flex; align-items: center; gap: 16px; min-width: 0; }
-body #componentes .cmp-bar h2 { margin: 0; font-size: 18px; font-weight: 650; line-height: 1.2; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
-body #componentes .cmp-bar .catalog-count { width: auto; margin: 0; flex: none; font-size: 13px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
-body #componentes .cmp-back { flex: none; min-height: 40px; height: 40px; padding: 0 16px; border-radius: 12px; font-size: 14px; color: var(--purple); }
-body #componentes .cmp-bar-right { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; min-width: 0; flex: 1 1 auto; }
-body #componentes .cmp-field { display: block; margin: 0; min-width: 0; font-size: 14px; color: var(--text); }
-body #componentes .cmp-bar .cmp-field > input:not([type=range]):not([type=checkbox]),
-body #componentes .cmp-bar .cmp-field > select {
+body :is(#componentes,#builds,#laptops) .cmp-bar { display: flex; flex-direction: row; text-align: left; padding: 0; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin: 0 0 24px; min-height: 40px; }
+body :is(#componentes,#builds,#laptops) .cmp-bar-left { display: flex; align-items: center; gap: 16px; min-width: 0; flex: 0 1 auto; }
+body :is(#componentes,#builds,#laptops) .cmp-bar-left > .cmp-deep { display: flex; align-items: center; gap: 16px; min-width: 0; }
+body :is(#componentes,#builds,#laptops) .cmp-bar h2 { margin: 0; font-size: 18px; font-weight: 650; line-height: 1.2; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+body :is(#componentes,#builds,#laptops) .cmp-bar .catalog-count { width: auto; margin: 0; flex: none; font-size: 13px; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+body :is(#componentes,#builds,#laptops) .cmp-back { flex: none; min-height: 40px; height: 40px; padding: 0 16px; border-radius: 12px; font-size: 14px; color: var(--purple); }
+body :is(#componentes,#builds,#laptops) .cmp-bar-right { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; min-width: 0; flex: 1 1 auto; }
+body :is(#componentes,#builds,#laptops) .cmp-field { display: block; margin: 0; min-width: 0; font-size: 14px; color: var(--text); }
+body :is(#componentes,#builds,#laptops) .cmp-bar .cmp-field > input:not([type=range]):not([type=checkbox]),
+body :is(#componentes,#builds,#laptops) .cmp-bar .cmp-field > select {
   width: 100%; min-width: 0; height: 40px; min-height: 40px; margin: 0; padding: 0 16px; border: 1px solid var(--stroke); border-radius: 12px;
   background: var(--surface-2); color: var(--text); font: inherit; font-size: 14px;
 }
-body #componentes .cmp-search { flex: 1 1 200px; max-width: none; }
-body #componentes .cmp-bar-right > label.cmp-deep:not(.cmp-search) { flex: 0 1 148px; }
-body #componentes .cmp-more { position: relative; flex: none; }
-body #componentes .cmp-more summary {
+body :is(#componentes,#builds,#laptops) .cmp-search { flex: 1 1 200px; max-width: none; }
+body :is(#componentes,#builds,#laptops) .cmp-bar-right > label.cmp-deep:not(.cmp-search) { flex: 0 1 148px; }
+body :is(#componentes,#builds,#laptops) .cmp-more { position: relative; flex: none; }
+body :is(#componentes,#builds,#laptops) .cmp-more summary {
   display: flex; align-items: center; justify-content: center; height: 40px; padding: 0 16px; border: 1px solid var(--stroke); border-radius: 12px;
   background: var(--surface-2); color: var(--purple); font-size: 14px; font-weight: 600; white-space: nowrap; cursor: pointer; list-style: none;
 }
-body #componentes .cmp-more summary::-webkit-details-marker { display: none; }
-body #componentes .cmp-more[open] summary { border-color: var(--purple); }
-body #componentes .cmp-more-body {
+body :is(#componentes,#builds,#laptops) .cmp-more summary::-webkit-details-marker { display: none; }
+body :is(#componentes,#builds,#laptops) .cmp-more[open] summary { border-color: var(--purple); }
+body :is(#componentes,#builds,#laptops) .cmp-more-body {
   position: absolute; z-index: 5; top: calc(100% + 8px); right: 0; display: grid; gap: 16px; width: min(320px, calc(100vw - 32px)); padding: 16px;
   border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface); box-shadow: 0 16px 40px rgb(0 0 0 / .18);
 }
-body #componentes .cmp-more-body .cmp-field { display: grid; gap: 8px; font-size: 12px; color: var(--muted); }
-body #componentes .cmp-more-body .cmp-field select { height: 40px; padding: 0 16px; border: 1px solid var(--stroke); border-radius: 12px; background: var(--surface-2); color: var(--text); font: inherit; font-size: 14px; width: 100%; }
-body #componentes .cmp-more-body .market-check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text); }
-body #componentes .cmp-more-body input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--purple); }
-body #componentes .cmp-more-body .secondary-button { min-height: 40px; border-radius: 12px; justify-content: center; }
+body :is(#componentes,#builds,#laptops) .cmp-more-body .cmp-field { display: grid; gap: 8px; font-size: 12px; color: var(--muted); }
+body :is(#componentes,#builds,#laptops) .cmp-more-body .cmp-field select { height: 40px; padding: 0 16px; border: 1px solid var(--stroke); border-radius: 12px; background: var(--surface-2); color: var(--text); font: inherit; font-size: 14px; width: 100%; }
+body :is(#componentes,#builds,#laptops) .cmp-more-body .market-check { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text); }
+body :is(#componentes,#builds,#laptops) .cmp-more-body input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--purple); }
+body :is(#componentes,#builds,#laptops) .cmp-more-body .secondary-button { min-height: 40px; border-radius: 12px; justify-content: center; }
 
 body #componentes .cmp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); grid-auto-rows: 1fr; gap: 16px; overflow: visible; padding: 0; }
 body #componentes .cmp-tile {
@@ -303,24 +271,7 @@ body :is(#componentes,#builds,#laptops) .cmp-info p { margin: 0 0 8px; font-size
 body #componentes .catalog-empty { margin-top: 16px; padding: 24px 16px; border-radius: 16px; }
 body #componentes .comparison-wrap { margin-top: 16px; }
 
-body #componentes #catalogo #marketGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); grid-auto-rows: 1fr; gap: 16px; }
-body #componentes #catalogo #marketGrid .market-card { min-width: 0; padding: 16px; gap: 8px; border-radius: 16px; background: var(--surface); overflow: hidden; }
-body #componentes #catalogo #marketGrid .catalog-photo { --catalog-photo-height: 120px; height: var(--catalog-photo-height); margin: 0; padding: 0; border-radius: 12px; }
-body #componentes #catalogo #marketGrid .catalog-photo .product-image { height: var(--catalog-photo-height); max-height: var(--catalog-photo-height); padding: 0; margin: 0; }
-body #componentes #catalogo #marketGrid .catalog-product-heading { min-height: 0; }
-body #componentes #catalogo #marketGrid .market-card h3 { margin: 0; min-height: 2.6em; font-size: 14px; font-weight: 600; line-height: 1.3; color: var(--text); }
-body #componentes #catalogo #marketGrid .catalog-brief { margin: 0; font-size: 12px; color: var(--muted); }
-body #componentes #catalogo #marketGrid .catalog-price-line { min-height: 0; margin: 0; gap: 0; }
-body #componentes #catalogo #marketGrid .catalog-price-line .market-price { font-size: 15px; font-weight: 700; color: var(--purple); }
-body #componentes #catalogo #marketGrid .catalog-price-line .estimate-label { display: block; font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-body #componentes #catalogo #marketGrid .catalog-card-actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; margin-top: auto; padding: 0; width: 100%; }
-body #componentes #catalogo #marketGrid .catalog-card-actions button { width: 100%; min-width: 0; height: 40px; min-height: 40px; margin: 0; padding: 0 8px; border-radius: 12px; font-size: 13px; line-height: 1.15; white-space: normal; justify-content: center; text-align: center; }
-body #componentes #catalogo[data-level="cat"] #marketGrid .market-category { display: none; }
-body #componentes #catalogo #marketGrid .market-category { margin: 0; font-size: 11px; color: var(--muted); }
 body #componentes .fx-pager { margin: 24px 0 0; }
-@media (max-width: 1100px) {
-  body #componentes .cmp-bar-right { flex-basis: 100%; }
-}
 @media (max-width: 560px) {
   body #componentes .cmp-bar { gap: 8px; margin-bottom: 16px; }
   body #componentes .cmp-bar h2 { font-size: 17px; }
@@ -333,9 +284,6 @@ body #componentes .fx-pager { margin: 24px 0 0; }
   body #componentes .cmp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   body #componentes .cmp-tile { grid-template-rows: 64px auto auto; padding: 16px 8px; }
   body #componentes .cmp-tile img { height: 64px; }
-  body #componentes #catalogo #marketGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-  body #componentes #catalogo #marketGrid .catalog-photo { --catalog-photo-height: 96px; }
-  body #componentes #catalogo #marketGrid .catalog-card-actions { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* P6: ficha compacta, espaciado simétrico de 8 px. */
@@ -369,72 +317,9 @@ body .product-sheet-specs dt, body .product-sheet-specs dd { margin: 0; overflow
   body #componentes #catalogo[data-view="grid"] .cmp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
-/* Las tarjetas de catálogo terminan con su contenido; precio conserva su orden. */
-body #componentes #catalogo #marketGrid { grid-auto-rows: max-content; align-items: start; }
-body #componentes #catalogo #marketGrid .market-card { align-self: start; height: fit-content; }
-body #componentes #catalogo #marketGrid .catalog-card-actions { margin-top: 8px; }
-body .content:has(#componentes:not([hidden])) { padding-bottom: calc(var(--floating-height) + 12px + var(--floating-edge)); }
-
-/* P10 · Repite proceso-izquierda/resultados-derecha en builds y laptops. */
-@media (min-width: 1101px) {
-  body .content:has(#builds:not([hidden])),
-  body .content:has(#laptops:not([hidden])) { max-width: 1600px; }
-  body #builds:not([hidden]), body #laptops:not([hidden]) {
-    display: grid; grid-template-columns: minmax(224px, 256px) minmax(0, 1fr); align-items: start; gap: 12px 24px;
-  }
-  body #builds > .section-heading, body #laptops > .section-heading { grid-column: 1 / -1; }
-  body #builds > .builds-toolbar {
-    grid-column: 1; grid-row: 2; display: grid; align-content: start; gap: 12px; margin: 0; padding: 16px;
-    border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface);
-  }
-  body #builds .build-use-filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
-  body #builds .build-use-filters button { width: 100%; min-height: 40px; }
-  body #builds .builds-toolbar > label { display: grid; gap: 8px; }
-  body #builds > #buildGallery { grid-column: 2; grid-row: 2; }
-  body #builds > #buildsEmpty { grid-column: 2; grid-row: 3; }
-  body #laptops > .laptop-controls {
-    grid-column: 1; grid-row: 2; display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; gap: 12px; margin: 0; padding: 16px;
-    border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface);
-  }
-  body #laptops > .laptop-disclaimer { grid-column: 2; grid-row: 2; align-self: center; margin: 0; }
-  body #laptops > #laptopCount { grid-column: 2; grid-row: 3; margin: 0; }
-  body #laptops > #laptopCompareToolbar,
-  body #laptops > #laptopComparison,
-  body #laptops > #laptopGrid,
-  body #laptops > #laptopEmpty { grid-column: 2; }
-  body #laptops > #laptopCompareToolbar { grid-row: 4; margin: 0; }
-  body #laptops > #laptopComparison { grid-row: 5; margin: 0; }
-  body #laptops > #laptopGrid { grid-row: 6; }
-  body #laptops > #laptopEmpty { grid-row: 7; }
-}
-
-/* QA P10/P11 · rejilla de 8 px, controles de 40 px y tarjetas del mismo tipo idénticas. */
-body .build-gallery, body .laptop-grid { gap: 16px; grid-auto-rows: 1fr; }
 body .fx-pager { gap: 8px; margin: 24px 0 0; }
 body .fx-page { min-width: 40px; height: 40px; }
-body #builds .build-budget-bar select, body #builds .builds-toolbar select,
-body #laptops .laptop-controls select, body #laptops .laptop-controls input { height: 40px; min-height: 40px; padding: 0 12px; }
-body .build-budget-bar .build-budget-info summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 40px; list-style: none; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--purple); }
-body .build-budget-bar .build-budget-info summary::-webkit-details-marker { display: none; }
-body .build-budget-bar .build-budget-info[open] > summary > span { transform: rotate(180deg); }
-body .build-budget-bar .build-budget-info p { margin: 0 0 8px; }
 body #mi-build > .section-heading .secondary-button, body #mi-build .saved-builds button, body #mi-build .saved-builds summary { height: 40px; min-height: 40px; }
-@media (min-width: 1101px) {
-  body #builds:not([hidden]) { grid-template-rows: auto auto auto 1fr; }
-  body #builds > .build-budget-bar {
-    grid-column: 1; grid-row: 3; display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 8px; margin: 0; padding: 16px;
-    border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface);
-  }
-  body #builds .build-budget-bar > label { display: grid; gap: 8px; }
-  body #builds .build-budget-bar #buildResults { margin: 0; align-self: start; }
-  body #builds > #buildGallery { grid-row: 2 / span 3; }
-  body #builds > #buildsEmpty { grid-row: 5; }
-  body #builds > #buildsPager, body #laptops > #laptopsPager { grid-column: 2; }
-  body #builds > #buildsPager { grid-row: 6; }
-  body #laptops > #laptopsPager { grid-row: 8; }
-}
-body #builds .build-use-filters button { height: 40px; min-height: 40px; box-sizing: border-box; }
-body #laptops #laptopGrid, body #builds #buildGallery { gap: 16px; }
 body #startBuild .builder-nav button, body #mi-build .my-build-actions .primary-button, body #mi-build .my-build-actions .secondary-button { height: 40px; min-height: 40px; }
 
 /* P12 · Ficha: foto grande, Datos clave en tabla de 2 columnas y un único «Fuentes y notas». Rejilla de 8 px. */

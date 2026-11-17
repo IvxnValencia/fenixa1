@@ -448,9 +448,9 @@
     <link rel="stylesheet" href="css/build-refinement.css?v=2">
     <link rel="stylesheet" href="css/build-planner.css?v=4">
     <link rel="stylesheet" href="css/build-library.css?v=2">
-    <link rel="stylesheet" href="css/fenixa-refine.css?v=16">
+    <link rel="stylesheet" href="css/fenixa-refine.css?v=17">
     <link rel="stylesheet" href="css/hero-fenixa.css?v=1">
-    <link rel="stylesheet" href="css/interface-polish.css?v=13">
+    <link rel="stylesheet" href="css/interface-polish.css?v=14">
     <link rel="stylesheet" href="css/sidebar-desktop.css?v=1">
     <link rel="stylesheet" href="css/home-continue.css?v=4">
     <link rel="stylesheet" href="css/assembly-3d.css?v=6">
@@ -561,21 +561,31 @@
             </div>
           </section>
           <section class="section complete-builds" id="builds" aria-labelledby="builds-title" hidden>
-            <div class="section-heading"><div><h2 id="builds-title">Builds completas</h2><p>Configuraciones de referencia con modelos reales y una lista de compra por pieza.</p></div></div>
-            <div class="builds-toolbar"><div class="build-use-filters" role="group" aria-label="Filtrar builds"><button type="button" data-build-use="all" aria-pressed="true">Todas</button><button type="button" data-build-use="estudio" aria-pressed="false">Estudio</button><button type="button" data-build-use="trabajo" aria-pressed="false">Trabajo</button><button type="button" data-build-use="gaming" aria-pressed="false">Gaming</button><button type="button" data-build-use="creativo" aria-pressed="false">Creación</button><button type="button" data-build-use="saved" aria-pressed="false">Guardadas</button></div><label>Ordenar <select id="buildSort"><option value="featured">Destacadas</option><option value="price-asc">Objetivo: menor a mayor</option><option value="price-desc">Objetivo: mayor a menor</option></select></label></div>
+            <div class="section-heading cmp-bar builds-toolbar">
+              <div class="cmp-bar-left"><h2 id="builds-title">Builds completas</h2><span class="catalog-count" id="buildCount" role="status">0 modelos</span></div>
+              <div class="cmp-bar-right" role="group" aria-label="Buscar y filtrar builds">
+                <label class="cmp-field cmp-search"><span class="sr-only">Buscar build o componente</span><input id="buildSearch" type="search" placeholder="Buscar build" autocomplete="off"></label>
+                <div class="build-use-filters" role="group" aria-label="Filtrar builds"><button type="button" data-build-use="all" aria-pressed="true">Todas</button><button type="button" data-build-use="estudio" aria-pressed="false">Estudio</button><button type="button" data-build-use="trabajo" aria-pressed="false">Trabajo</button><button type="button" data-build-use="gaming" aria-pressed="false">Gaming</button><button type="button" data-build-use="creativo" aria-pressed="false">Creación</button><button type="button" data-build-use="saved" aria-pressed="false">Guardadas</button></div>
+                <details class="cmp-more" id="buildMore"><summary>Más filtros</summary><div class="cmp-more-body"><label class="cmp-field">Ordenar<select id="buildSort"><option value="featured">Destacadas</option><option value="price-asc">Objetivo: menor a mayor</option><option value="price-desc">Objetivo: mayor a menor</option></select></label></div></details>
+              </div>
+            </div>
             <div class="build-gallery" id="buildGallery"></div>
-            <details class="cmp-info"><summary>Más info</summary><p class="catalog-footnote">Precios de referencia observados en tiendas colombianas; confirma precio y stock antes de comprar.</p></details>
             <p id="buildsEmpty" hidden>No tienes builds guardadas. Abre una y pulsa «Guardar build».</p>
+            <details class="cmp-info" id="buildsInfo"><summary>Más info</summary><p class="catalog-footnote">Configuraciones de referencia con modelos reales y una lista de compra por pieza. Confirma precio y stock antes de comprar. El presupuesto objetivo no es una cotización; el coste final puede superarlo. Solo cotizadas exige precios recientes de todas las piezas dentro del máximo, sin envío ni ensamblaje.</p></details>
           </section>
           <section class="section" id="laptops" aria-labelledby="laptopsTitle" hidden>
-            <div class="section-heading"><div><h2 id="laptopsTitle">Laptops</h2><p>Equipos para llevar contigo. Compara su enfoque y confirma la configuración exacta antes de comprar.</p></div></div>
-            <div class="laptop-controls"><label>Uso<select id="laptopUse"><option value="all">Todos</option><option value="estudio">Estudio</option><option value="trabajo">Trabajo</option><option value="gaming">Gaming</option><option value="creativo">Creación</option></select></label><label>Buscar modelo<input type="search" id="laptopSearch" placeholder="Zenbook, TUF, ProArt…"></label></div>
-            <p class="laptop-disclaimer">Cada ficha indica si describe una familia variable o una configuración regional documentada. No es una oferta de tienda: no hay precios verificados en COP ni disponibilidad local confirmada todavía.</p>
-            <p id="laptopCount" role="status"></p>
+            <div class="section-heading cmp-bar laptop-controls">
+              <div class="cmp-bar-left"><h2 id="laptopsTitle">Laptops</h2><span class="catalog-count" id="laptopCount" role="status">0 modelos</span></div>
+              <div class="cmp-bar-right" role="group" aria-label="Buscar y filtrar laptops">
+                <label class="cmp-field cmp-search"><span class="sr-only">Buscar modelo</span><input type="search" id="laptopSearch" placeholder="Buscar modelo" autocomplete="off"></label>
+                <label class="cmp-field cmp-use"><span class="sr-only">Uso</span><select id="laptopUse"><option value="all">Uso: todos</option><option value="estudio">Estudio</option><option value="trabajo">Trabajo</option><option value="gaming">Gaming</option><option value="creativo">Creación</option></select></label>
+                <details class="cmp-more" id="laptopMore"><summary>Más filtros</summary><div class="cmp-more-body"><button type="button" class="secondary-button" id="clearLaptopFilters">Limpiar filtros</button></div></details>
+              </div>
+            </div>
             <aside class="laptop-compare-toolbar comparison-dock" id="laptopCompareToolbar" aria-label="Lista de comparaciones de laptops" hidden><button class="comparison-dock-toggle" id="laptopQueueToggle" type="button" aria-controls="laptopQueueBody" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/></svg><strong>Comparaciones</strong><span id="laptopQueueCount">0</span></button><div class="comparison-dock-body" id="laptopQueueBody" hidden><div id="laptopQueueList"></div><p id="laptopCompareStatus" role="status"></p><div class="comparison-dock-actions"><button type="button" class="secondary-button" id="laptopCompareClear">Vaciar</button><button type="button" class="primary-button" id="laptopCompareToggle" aria-controls="laptopComparison" aria-expanded="false" disabled>Comparar</button></div></div></aside>
             <section id="laptopComparison" class="laptop-comparison" aria-labelledby="laptopCompareTitle" hidden><div class="laptop-compare-top"><h3 id="laptopCompareTitle">Comparación de laptops</h3><button type="button" class="secondary-button" id="laptopCompareClose" aria-label="Cerrar comparación de laptops">Cerrar</button></div><p class="laptop-disclaimer">Datos del fabricante; una familia no identifica un SKU exacto. Sin pruebas comparables de rendimiento.</p><div id="laptopComparisonGrid" class="laptop-comparison-grid"></div></section>
-            <details class="cmp-info"><summary>Más info</summary><p class="catalog-footnote">Precios de referencia observados en tiendas colombianas; confirma precio y stock antes de comprar.</p></details>
             <div id="laptopGrid" class="laptop-grid"></div><dialog id="laptopDetailDialog" class="fx-sheet laptop-detail-dialog" aria-labelledby="laptopDetailTitle"></dialog><p id="laptopEmpty" hidden>No hay laptops para estos filtros.</p>
+            <details class="cmp-info"><summary>Más info</summary><p class="catalog-footnote">Cada ficha indica si describe una familia variable o una configuración regional documentada. No es una oferta de tienda: no hay precios verificados en COP ni disponibilidad local confirmada todavía. Confirma la configuración exacta antes de comprar.</p></details>
           </section>
           <section class="section" id="mi-build" aria-labelledby="myBuildTitle" hidden></section>
           <section class="builder-grid" id="configurador" aria-label="Configurador de PC" hidden>
@@ -882,13 +892,13 @@
     <script src="js/builds/build-library.js?v=3"></script>
   <script src="js/interfaz/comparison-radar.js?v=16"></script>
   <script src="js/interfaz/comparison-dialog.js?v=23"></script>
-    <script src="js/catalogo/catalog.js?v=41"></script>
+    <script src="js/catalogo/catalog.js?v=42"></script>
     <script src="js/portatiles/laptops-data.js?v=5"></script>
     <script src="js/portatiles/laptops-photos.js?v=1"></script>
     <script src="js/portatiles/laptops-goal30.js?v=2"></script>
   <script src="js/portatiles/laptops-goal50.js?v=2"></script>
   <script src="js/portatiles/laptop-compare.js?v=9"></script>
-    <script src="js/portatiles/laptops.js?v=18"></script>
+    <script src="js/portatiles/laptops.js?v=19"></script>
     <script src="js/portatiles/laptop-details.js?v=1"></script>
     <script src="js/builds/my-build.js?v=20"></script>
     <script src="js/builds/build-quickview.js?v=3"></script>

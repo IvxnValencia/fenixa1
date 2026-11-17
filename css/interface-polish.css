@@ -133,28 +133,11 @@ body:has(#startBuild:not([hidden])) #buildQuickCount { font-size: 12px; color: v
 body #buildQuickToggle[aria-expanded="false"] > span:last-child { transform: none; }
 body #buildQuickToggle:active, body #compareTrayToggle:active, body #laptopQueueToggle:active { transform: none; background: var(--purple-faint); }
 
-/* Tarjetas de componentes y laptops: la misma estructura y escala. */
-body #laptopGrid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
-body #laptopGrid .laptop-card { display: flex; flex-direction: column; min-width: 0; padding: 14px; gap: 0; border: 1px solid var(--stroke-soft); border-radius: 16px; background: var(--surface); }
-body #laptopGrid .market-category { font-size: 10px; }
-body #laptopGrid .catalog-product-heading { display: block; min-height: 0; }
-body #marketGrid .market-card h3, body #laptopGrid .laptop-card h3 { min-height: 2.6em; height: 2.6em; font-size: 15px; font-weight: 600; line-height: 1.3; margin: 4px 0 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-body #laptopGrid .catalog-photo { display: grid; place-items: center; width: 100%; height: 136px; margin: 6px 0 8px; padding: 4px; border: 0; border-radius: 10px; background: transparent; }
-body #laptopGrid .catalog-photo .product-image { width: 100%; height: 128px; max-height: 128px; min-height: 0; padding: 0; margin: 0; aspect-ratio: auto; object-fit: contain; background: transparent; border-radius: 0; }
-body #laptopGrid .catalog-brief { margin: 6px 0 8px; font-size: 12px; line-height: 1.5; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
-body #laptopGrid .catalog-price-line { display: flex; flex-direction: column; gap: 2px; margin: 0 0 10px; }
-body #laptopGrid .market-price { font-size: 17px; }
-body #laptopGrid .estimate-label { margin: 0; font-size: 11px; color: var(--muted); }
-body #laptopGrid .catalog-card-actions { display: grid; grid-template-columns: auto 1fr; gap: 8px; margin-top: auto; }
-body #laptopGrid .catalog-card-actions button { min-height: 40px; padding: 0 12px; font-size: 13px; border-radius: 999px; justify-content: center; }
-body #laptopGrid .compare-trigger { border: 1px solid var(--stroke); background: transparent; color: var(--text); }
-body #laptopGrid .laptop-card:has([aria-pressed="true"]) { border-color: var(--purple); }
 body .laptop-detail-specs { margin: 0 0 22px; }
 body .laptop-detail-specs > div { padding-block: 12px; border-bottom: 1px solid var(--stroke-soft); }
 body .laptop-detail-specs dt { color: var(--text); font-weight: 600; }
 body .laptop-detail-specs dd { margin: 5px 0 0; }
 body .laptop-detail-dialog .product-links { display: flex; flex-wrap: wrap; gap: 16px; }
-@media (max-width: 1100px) { body #laptopGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 700px) {
   body .topbar { padding-inline: 16px; }
   body #startBuild .builder-progress { gap: 0; padding: 4px; margin-bottom: 24px; }
@@ -165,13 +148,7 @@ body .laptop-detail-dialog .product-links { display: flex; flex-wrap: wrap; gap:
   body #startBuild .start-uses label > span { min-height: 76px; padding: 16px; }
   body #startBuild .planner-level { min-height: 0; padding: 18px; }
   body #startBuild .planner-result .planner-parts { grid-template-columns: minmax(0, 1fr); }
-  body #laptopGrid { gap: 8px; }
-  body #laptopGrid .laptop-card { padding: 10px; }
-  body #laptopGrid .catalog-photo { height: 104px; }
-  body #laptopGrid .catalog-photo .product-image { height: 96px; max-height: 96px; }
-  body #laptopGrid .catalog-card-actions { grid-template-columns: 1fr; gap: 6px; }
 }
-@media (max-width: 380px) { body #catalogo #marketGrid, body #laptopGrid { grid-template-columns: minmax(0, 1fr); } }
 @media (prefers-reduced-motion: reduce) { body #startBuild .builder-progress button { transition: none; } }
 
 /* One catalog filter surface; existing FENIXA tokens and native controls. */
@@ -264,14 +241,114 @@ body #startBuild .planner-note a, body #startBuild .planner-notes a { overflow-w
   body #startBuild .builder-nav button { flex: 1 1 140px; }
 }
 
-/* Builds completas: mosaico de piezas (gabinete grande + dos celdas), mismo alto en todas las tarjetas, rejilla de 8 px. */
-body .build-card.fx-card { flex-direction: column; }
-body .build-card.fx-card .build-photo-button.build-mosaic { display: grid; grid-template-columns: 3fr 2fr; grid-template-rows: 1fr 1fr; gap: 8px; width: 100%; height: 192px; min-height: 192px; padding: 8px; flex-shrink: 0; overflow: hidden; background: var(--purple-faint); }
-body .build-mosaic-cell { display: grid; place-items: center; min-width: 0; min-height: 0; overflow: hidden; border-radius: 12px; background: var(--purple-faint); }
-body .build-mosaic-cell.is-case { grid-row: 1 / span 2; }
-body .build-card .build-mosaic-cell img { display: block; width: 100%; height: 100%; max-height: none; padding: 8px; box-sizing: border-box; object-fit: contain; }
-body .build-card .build-card-body { padding: 16px; gap: 8px; }
-body .build-card .build-ref-line { display: flex; align-items: baseline; gap: 8px; margin: 0; min-width: 0; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-body .build-card .build-ref-line .estimate-label { font-size: 12px; color: var(--muted); }
-body .build-card .build-ref-line .build-estimate { font-size: 14px; }
-body .build-card h3 { font-size: 17px; }
+/* Catálogos: una barra y una cuadrícula, con la misma escala en las tres rutas. */
+body .content:has(:is(#componentes,#builds,#laptops):not([hidden])) {
+  width: 100%; max-width: 1600px; padding: var(--ui-space-4) var(--ui-space-4);
+  padding-bottom: calc(var(--floating-height) + var(--ui-space-4) + var(--floating-edge));
+}
+body :is(#componentes,#builds,#laptops) { min-width: 0; }
+body :is(#componentes,#builds,#laptops) .cmp-bar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--ui-space-2); width: 100%; min-height: 40px; margin: 0 0 var(--ui-space-2); padding: 0;
+  border: 0; border-radius: 0; background: transparent; text-align: left;
+}
+body :is(#componentes,#builds,#laptops) .cmp-bar-left,
+body :is(#componentes,#builds,#laptops) .cmp-bar-left > .cmp-deep { gap: var(--ui-space-2); min-height: 40px; }
+body :is(#componentes,#builds,#laptops) .cmp-bar h2 { font-size: 18px; line-height: 24px; }
+body :is(#componentes,#builds,#laptops) .cmp-bar-right { flex: 1 1 400px; gap: var(--ui-space-1); }
+body :is(#componentes,#builds,#laptops) .cmp-search { flex: 1 1 112px; width: auto; max-width: none; }
+body :is(#componentes,#builds,#laptops) .cmp-bar-right > :is(.cmp-use,label.cmp-deep) { flex: 0 1 128px; width: auto; }
+body :is(#componentes,#builds,#laptops) .cmp-more-body { gap: var(--ui-space-2); padding: var(--ui-space-2); }
+body :is(#componentes,#builds,#laptops) .cmp-more-body :is(input:not([type=checkbox]):not([type=range]),select) {
+  width: 100%; min-width: 0; height: 40px; min-height: 40px; margin: 0; padding: 0 var(--ui-space-2);
+  border: 1px solid var(--stroke); border-radius: 12px; background: var(--surface-2); color: var(--text); font: inherit; font-size: 14px;
+}
+body :is(#componentes,#builds,#laptops) .cmp-more-body button { height: 40px; padding: 0 var(--ui-space-2); }
+body #componentes #catalogPriceSlider { height: 40px; min-height: 40px; margin: 0; padding: 0; }
+body :is(#componentes,#builds,#laptops) .cmp-more-body .market-check { min-height: 40px; }
+body :is(#componentes,#builds,#laptops) .cmp-more-body input[type=checkbox] { width: 16px; height: 16px; }
+body #builds .build-use-filters {
+  display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); flex: none; gap: 0; min-width: 0; margin: 0; padding: 0;
+  border: 0; border-radius: 12px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--stroke); overflow: hidden;
+}
+body #builds .build-use-filters button {
+  width: 100%; height: 40px; min-height: 40px; margin: 0; padding: 0 var(--ui-space-1); border: 0;
+  border-radius: 0; background: transparent; color: var(--muted); font: inherit; font-size: 12px; cursor: pointer;
+}
+body #builds .build-use-filters button[aria-pressed=true] { color: var(--purple); background: var(--purple-soft); }
+body #builds .build-budget-bar { display: grid; grid-template-columns: minmax(0,1fr); gap: var(--ui-space-2); min-width: 0; margin: 0; padding: 0; border: 0; background: transparent; }
+body #builds .build-budget-bar > label { display: grid; gap: var(--ui-space-1); font-size: 12px; color: var(--muted); }
+body #builds .build-budget-bar .build-quoted-check { display: flex; align-items: center; min-height: 40px; color: var(--text); font-size: 14px; }
+body #builds .build-quoted-check input { width: 16px; height: 16px; margin: 0; accent-color: var(--purple); }
+body #builds #buildResults { margin: 0; font-size: 12px; line-height: 16px; color: var(--muted); }
+
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) {
+  display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); grid-auto-rows: 1fr;
+  align-items: stretch; gap: var(--ui-space-2); margin: 0; padding: 0; min-width: 0;
+}
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) > article {
+  display: grid; grid-template-rows: 40px 120px 16px 40px 40px; align-content: start; align-self: stretch;
+  gap: var(--ui-space-1); min-width: 0; height: auto; min-height: 0; padding: var(--ui-space-2);
+  border: 1px solid var(--stroke); border-radius: var(--ios-radius-md); background: var(--surface); overflow: hidden;
+}
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) .catalog-product-heading { display: block; min-height: 0; height: 40px; margin: 0; }
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) .catalog-product-heading > .market-category { display: none; }
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) h3 {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  min-height: 0; height: 40px; margin: 0; font-size: 14px; font-weight: 600; line-height: 20px; letter-spacing: 0; color: var(--text);
+}
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) .catalog-photo {
+  display: grid; place-items: center; width: 100%; height: 120px; min-height: 0; margin: 0; padding: 0;
+  border: 0; border-radius: 0; background: transparent; overflow: hidden;
+}
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) .product-image {
+  display: block; width: 100%; height: 120px; max-height: 120px; min-height: 0; margin: 0; padding: 0;
+  aspect-ratio: auto; object-fit: contain; border-radius: 0; background: transparent;
+}
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) .catalog-brief {
+  min-height: 0; height: 16px; margin: 0; font-size: 12px; font-weight: 400; line-height: 16px; color: var(--muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) .catalog-price-line {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-end; gap: 0;
+  height: 40px; min-height: 0; margin: 0; padding: 0; overflow: hidden;
+}
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) .market-price {
+  margin: 0; font-size: 15px; font-weight: 700; line-height: 20px; color: var(--purple); font-variant-numeric: tabular-nums;
+}
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) :is(.estimate-label,.laptop-use) {
+  display: block; max-width: 100%; margin: 0; font-size: 11px; font-weight: 400; line-height: 20px;
+  color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) .catalog-card-actions {
+  display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--ui-space-1); width: 100%; margin: 0; padding: 0;
+}
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) .catalog-card-actions button {
+  display: flex; align-items: center; justify-content: center; width: 100%; min-width: 0; height: 40px; min-height: 40px;
+  margin: 0; padding: 0 var(--ui-space-1); border-radius: 12px; font: inherit; font-size: 13px; line-height: 16px; text-align: center;
+}
+body :is(#componentes,#laptops) :is(#marketGrid,#laptopGrid) .catalog-card-actions .compare-trigger {
+  gap: var(--ui-space-1); border: 1px solid var(--stroke); background: transparent; color: var(--text);
+}
+body :is(#componentes,#laptops) :is(#marketGrid,#laptopGrid) .compare-trigger::before {
+  content: ''; width: 16px; height: 16px; flex: none; border: 1px solid var(--muted); border-radius: 4px;
+}
+body :is(#componentes,#laptops) :is(#marketGrid,#laptopGrid) .compare-trigger[aria-pressed=true]::before {
+  content: '✓'; display: grid; place-items: center; background: var(--purple-strong); border-color: var(--purple-strong); color: white; font-size: 12px;
+}
+body :is(#componentes,#builds,#laptops) .fx-pager { gap: var(--ui-space-1); margin: var(--ui-space-3) 0 0; }
+body :is(#componentes,#builds,#laptops) .fx-page { height: 40px; min-height: 40px; border-radius: 12px; }
+@media (max-width: 1100px) {
+  body :is(#componentes,#builds) .cmp-bar-right { flex-basis: 100%; }
+}
+@media (max-width: 560px) {
+  body .content:has(:is(#componentes,#builds,#laptops):not([hidden])) { padding-inline: var(--ui-space-2); }
+  body :is(#componentes,#builds,#laptops) .cmp-bar-left,
+  body :is(#componentes,#builds,#laptops) .cmp-bar-left > .cmp-deep { gap: var(--ui-space-1); }
+  body :is(#componentes,#builds,#laptops) .cmp-search { flex-basis: 100%; }
+  body :is(#componentes,#builds,#laptops) .cmp-bar-right > :is(.cmp-use,label.cmp-deep) { flex: 1 1 80px; }
+  body #builds .build-use-filters { grid-template-columns: repeat(3,minmax(0,1fr)); flex: 1 1 100%; order: 3; }
+  body #builds .cmp-search { flex-basis: 112px; }
+  body #builds .build-use-filters button { height: 40px; min-height: 40px; }
+  body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) { grid-template-columns: minmax(0,1fr); }
+}

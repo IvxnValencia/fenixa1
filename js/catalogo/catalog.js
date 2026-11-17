@@ -177,8 +177,9 @@
   $('categoryFilter').addEventListener('change', () => goLevel($('categoryFilter').value === 'all' ? 'todo' : $('categoryFilter').value));
   $('catalogSort').addEventListener('change', window.renderProductCatalog);
   // «Más filtros» se cierra con Escape (devolviendo el foco) o al pulsar fuera.
-  $('catalogMore').addEventListener('keydown', event => { if (event.key === 'Escape' && $('catalogMore').open) { event.preventDefault(); $('catalogMore').open = false; $('catalogMore').querySelector('summary').focus(); } });
-  document.addEventListener('click', event => { if ($('catalogMore').open && !$('catalogMore').contains(event.target)) $('catalogMore').open = false; });
+  const moreFilters = ['catalogMore','buildMore','laptopMore'].map($).filter(Boolean);
+  moreFilters.forEach(more => more.addEventListener('keydown', event => { if (event.key === 'Escape' && more.open) { event.preventDefault(); more.open = false; more.querySelector('summary').focus(); } }));
+  document.addEventListener('click', event => moreFilters.forEach(more => { if (more.open && !more.contains(event.target)) more.open = false; }));
   $('clearFilters').addEventListener('click', () => { resetCatalogFilters(); if (level.cat && level.cat !== 'todo') $('categoryFilter').value = level.cat; window.renderProductCatalog(); });
   function renderComparison() {
     $('compareTray').hidden = !selected.size;
@@ -285,8 +286,8 @@
   $('clearCompare').addEventListener('click', () => { selected.clear(); renderComparison(); document.querySelector('[data-compare]')?.focus({preventScroll:true}); });
   const budgetBar=document.createElement('div');
   budgetBar.className='build-budget-bar';
-  budgetBar.innerHTML='<label>Presupuesto objetivo hasta (COP)<select id="buildMaxPrice"><option value="">Todos los presupuestos</option>'+window.FENIXA_BUILD_DISCOVERY.amounts.map(value=>'<option value="'+value+'">'+money(value)+'</option>').join('')+'</select></label><label class="build-quoted-check"><input type="checkbox" id="buildQuotedOnly"> Solo builds totalmente cotizadas</label><details class="build-budget-info"><summary>Más info<span aria-hidden="true">⌄</span></summary><p>Las propuestas se muestran aunque falten precios. El objetivo no es una cotización; el coste final puede superarlo. La opción de cotizadas exige precios recientes de todas las piezas dentro de tu máximo, sin envío ni ensamblaje.</p></details><span id="buildResults" role="status"></span>';
-  $('buildGallery').before(budgetBar);
+  budgetBar.innerHTML='<label class="cmp-field">Presupuesto objetivo hasta (COP)<select id="buildMaxPrice"><option value="">Todos los presupuestos</option>'+window.FENIXA_BUILD_DISCOVERY.amounts.map(value=>'<option value="'+esc(value)+'">'+esc(money(value))+'</option>').join('')+'</select></label><label class="market-check build-quoted-check"><input type="checkbox" id="buildQuotedOnly"> Solo cotizadas</label><span id="buildResults" role="status"></span>';
+  $('buildMore').querySelector('.cmp-more-body').append(budgetBar);
   $('buildMaxPrice').addEventListener('change',renderGallery);
   $('buildQuotedOnly').addEventListener('change',renderGallery);
   window.addEventListener('fenixa-find-builds', event => {
@@ -295,53 +296,60 @@
     if(Number.isSafeInteger(max)&&max>0&&!Array.from($('buildMaxPrice').options).some(o=>o.value===String(max))){
       const option=document.createElement('option');option.value=String(max);option.textContent=money(max)+' · objetivo anterior';$('buildMaxPrice').append(option);
     }
-    $('buildMaxPrice').value=String(max);renderGallery();
+    $('buildMaxPrice').value=String(max);$('buildSearch').value='';renderGallery();
   });
   const buildTotal = b => {
     return window.FENIXA_BUILD_DISCOVERY.total(b,id=>market.price(byId[id]));
   };
   const buildPrice = b => { const t=buildTotal(b); return t.count ? `${t.complete?'Subtotal':'Subtotal parcial'}: ${money(t.sum)}` : 'Precio por confirmar'; };
-  // Mosaico: gabinete grande a la izquierda; GPU (o CPU si no hay GPU) y CPU o RAM a la derecha.
-  const buildMosaic = b => {
-    const parts = b.parts.map(id => byId[id]).filter(Boolean), pick = c => parts.find(p => p.category === c);
-    const cell = (p, cls) => p ? `<span class="build-mosaic-cell ${cls}"><img src="${esc(thumb(p.image))}" alt="" width="160" height="120" loading="lazy" decoding="async"></span>` : `<span class="build-mosaic-cell ${cls}"></span>`;
-    const gpu = pick('gpu'), cpu = pick('cpu');
-    return cell(byId[b.caseId] || pick('case'), 'is-case') + cell(gpu || cpu, 'is-top') + cell(gpu ? cpu : pick('ram'), 'is-bottom');
+  // La foto del gabinete usa la misma superficie transparente que Componentes.
+  const buildPhoto = b => {
+    const cabinet = byId[b.caseId] || b.parts.map(id => byId[id]).find(p => p?.category === 'case');
+    return cabinet ? `<img class="product-image" src="${esc(thumb(cabinet.image))}" alt="${esc(shortName(cabinet))}" width="480" height="360" loading="eager" decoding="async">` : '';
   };
   // Referencia total: misma suma que Armar mi PC y Mi build (FENIXA_AUTO_BUILD.reference); «Sin precio» si falta alguna.
   const buildRef = b => {
     const ref = window.FENIXA_AUTO_BUILD?.reference, refs = ref ? b.parts.map(id => byId[id] && ref(byId[id])) : [];
     if (!ref || !refs.length || refs.some(r => !r)) return '<span class="estimate-label">Sin precio</span>';
     const low = refs.reduce((s, r) => s + r.low, 0), high = refs.reduce((s, r) => s + r.high, 0);
-    return `<span class="estimate-label">Ref.</span> <strong class="build-estimate">${low === high ? money(low) : money(low) + ' – ' + money(high)}</strong>`;
+    return `<strong class="market-price build-estimate">Ref. ${esc(low === high ? money(low) : money(low) + ' – ' + money(high))}</strong>`;
   };
+  function toggleSaved(id) {
+    const next = new Set(saved); next.has(id) ? next.delete(id) : next.add(id);
+    try { localStorage.setItem('fenixa-saved-builds', JSON.stringify([...next])); saved = next; } catch { showToast('No se pudo guardar en este navegador.'); return false; }
+    return true;
+  }
   function renderGallery() {
     const limit=$('buildMaxPrice').value;
     const quotedOnly=$('buildQuotedOnly').checked;
-    const visible = completeBuilds.filter(b => window.FENIXA_BUILD_DISCOVERY.matches(b,{use:activeUse,limit,quotedOnly,saved},buildTotal(b)));
+    const query=$('buildSearch').value.trim().toLocaleLowerCase('es');
+    const visible = completeBuilds.filter(b => window.FENIXA_BUILD_DISCOVERY.matches(b,{use:activeUse,limit,quotedOnly,saved},buildTotal(b))&&`${b.name} ${b.parts.map(id=>byId[id]?.name||'').join(' ')}`.toLocaleLowerCase('es').includes(query));
     const sort = $('buildSort').value;
     if (sort === 'featured') visible.sort((a,b)=>Number(Boolean(b.targetBudget))-Number(Boolean(a.targetBudget))||(a.targetBudget||Infinity)-(b.targetBudget||Infinity));
     if (sort === 'price-asc') visible.sort((a,b)=>(a.targetBudget??Infinity)-(b.targetBudget??Infinity));
     if (sort === 'price-desc') visible.sort((a,b)=>(b.targetBudget??-Infinity)-(a.targetBudget??-Infinity));
-    const signature = JSON.stringify([activeUse, limit, quotedOnly, sort]);
+    const signature = JSON.stringify([activeUse, limit, quotedOnly, sort, query]);
     const page = window.FENIXA_PAGER.paginate('builds', visible, { anchor: $('buildGallery'), signature, onChange: renderGallery, label: 'Páginas de builds', scrollTarget: $('builds') });
     const shortPart = p => p.label === 'Gráfica' && /sin gráfica dedicada/i.test(p.name) ? 'Gráficos integrados' : byId[p.id] ? shortName(byId[p.id]) : p.name;
     $('buildGallery').innerHTML = page.items.map(b => {
       const parts = window.FENIXA_BUILD_DISCOVERY.overview(b).filter(p => p.label === 'Procesador' || p.label === 'Gráfica');
-      return `<article class="build-card fx-card" data-open-build="${b.id}"><button class="build-photo-button build-mosaic" type="button" data-open-build="${b.id}" aria-label="Ver piezas de ${esc(b.name)}">${buildMosaic(b)}</button><div class="build-card-body"><p class="build-ref-line">${buildRef(b)}</p><div class="build-target">${b.targetBudget?'Objetivo '+money(b.targetBudget):'Sin objetivo asignado'}</div><h3>${esc(b.name)}</h3><ul class="build-mini-specs">${parts.map(p=>`<li><span>${esc(p.label==='Procesador'?'CPU':'GPU')}</span>${esc(shortPart(p))}</li>`).join('')}</ul><div class="build-card-foot"><span class="build-card-more" aria-hidden="true">Ver detalles</span></div></div></article>`;
+      const facts=parts.map(p=>shortPart(p)).join(' · ');
+      return `<article class="build-card fx-card" data-open-build="${esc(b.id)}"><div class="catalog-product-heading"><h3 title="${esc(b.name)}">${esc(shortName(b))}</h3></div><button class="catalog-photo build-photo-button fx-open" type="button" data-open-build="${esc(b.id)}" aria-label="Ver detalles de ${esc(b.name)}">${buildPhoto(b)}</button><p class="catalog-brief" title="${esc(facts)}">${esc(facts)}</p><div class="catalog-price-line build-ref-line">${buildRef(b)}<span class="estimate-label">${b.targetBudget?'Objetivo '+esc(money(b.targetBudget)):'Sin objetivo asignado'}</span></div><div class="catalog-card-actions"><button class="secondary-button" type="button" data-save-build="${esc(b.id)}" aria-pressed="${saved.has(b.id)}">${saved.has(b.id)?'Guardada':'Guardar'}</button><button class="primary-button" type="button" data-open-build="${esc(b.id)}">Ver detalles</button></div></article>`;
     }).join('');
     $('buildResults').textContent=visible.length+(visible.length===1?' propuesta':' propuestas')+' · presupuesto objetivo, no precio de venta'+(limit&&visible.some(b=>!b.targetBudget)?' · las originales sin objetivo se conservan visibles':'');
+    $('buildCount').textContent=visible.length+(visible.length===1?' modelo':' modelos');
     $('buildsEmpty').hidden = visible.length > 0;
-    $('buildsEmpty').textContent = activeUse==='saved' ? 'Todavía no tienes builds guardadas. Abre una propuesta y pulsa Guardar build original.' : quotedOnly ? 'No hay cotizaciones completas y recientes con estos filtros. Desmarca Solo builds totalmente cotizadas para explorar propuestas con precios pendientes.' : 'No hay propuestas para estos filtros. Amplía el presupuesto objetivo o cambia de uso.';
+    $('buildsEmpty').textContent = activeUse==='saved' ? 'Todavía no tienes builds guardadas. Abre una propuesta y pulsa Guardar build original.' : quotedOnly ? 'No hay cotizaciones completas y recientes con estos filtros. Desmarca Solo cotizadas para explorar propuestas con precios pendientes.' : 'No hay propuestas para estos filtros. Amplía el presupuesto objetivo o cambia de uso.';
     document.querySelectorAll('[data-build-use]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.buildUse === activeUse)));
     if(!visible.length) {
       const clear=document.createElement('button');clear.type='button';clear.className='secondary-button';clear.textContent='Ver todas las propuestas';
-      clear.addEventListener('click',()=>{activeUse='all';$('buildMaxPrice').value='';$('buildQuotedOnly').checked=false;renderGallery();document.querySelector('[data-build-use="all"]').focus();});
+      clear.addEventListener('click',()=>{activeUse='all';$('buildMaxPrice').value='';$('buildQuotedOnly').checked=false;$('buildSearch').value='';renderGallery();document.querySelector('[data-build-use="all"]').focus();});
       $('buildsEmpty').append(document.createTextNode(' '),clear);
     }
   }
   document.querySelectorAll('[data-build-use]').forEach(b => b.addEventListener('click', () => { activeUse = b.dataset.buildUse; renderGallery(); }));
   $('buildSort').addEventListener('change', renderGallery);
+  $('buildSearch').addEventListener('input', renderGallery);
   const dialog = document.createElement('dialog'); dialog.className = 'build-dialog'; dialog.id = 'buildDialog'; dialog.setAttribute('aria-labelledby', 'detailTitle'); document.body.append(dialog);
   function renderDetail(original) {
     const build = window.FENIXA_BUILD_EDITOR.get(original.id);
@@ -350,8 +358,7 @@
     if(build.targetBudget){const info=document.createElement('p');info.className='build-target';info.textContent='Objetivo '+money(build.targetBudget)+' · no es una cotización'+(build.modified?' · corresponde a la propuesta original':'');dialog.querySelector('.detail-intro').prepend(info);}
     if(build.sources?.length){const links=document.createElement('div');links.className='product-links';links.innerHTML=build.sources.map(s=>external(s.url,esc(s.label))).join('');dialog.querySelector('.build-notes').append(links);}
     $('saveBuild').addEventListener('click', () => {
-      const next = new Set(saved); next.has(build.id) ? next.delete(build.id) : next.add(build.id);
-      try { localStorage.setItem('fenixa-saved-builds', JSON.stringify([...next])); saved = next; } catch { return showToast('No se pudo guardar en este navegador.'); }
+      if (!toggleSaved(build.id)) return;
       $('saveBuild').textContent = saved.has(build.id) ? 'Build guardada ' : 'Guardar build original'; $('saveBuild').setAttribute('aria-pressed', String(saved.has(build.id))); renderGallery();
     });
     $('shareBuild').addEventListener('click', async () => {
@@ -441,7 +448,11 @@
     if (build) { if (activeBuild !== build.id) { activeBuild = build.id; renderDetail(build); } if (!dialog.open) { opener = document.activeElement; dialog.showModal(); document.body.style.overflow = 'hidden'; } }
     else if (dialog.open) dialog.close();
   }
-  $('buildGallery').addEventListener('click', event => { const button = event.target.closest('[data-open-build]'); if (button) { opener = button.matches('article') ? button.querySelector('button[data-open-build]') : button; location.hash = `build/${button.dataset.openBuild}`; } });
+  $('buildGallery').addEventListener('click', event => {
+    const save=event.target.closest('[data-save-build]');
+    if(save){const id=save.dataset.saveBuild;if(completeBuilds.some(b=>b.id===id)&&toggleSaved(id)){renderGallery();$('buildGallery').querySelector(`[data-save-build="${id}"]`)?.focus({preventScroll:true});}return;}
+    const button = event.target.closest('[data-open-build]'); if (button) { opener = button.matches('article') ? button.querySelector('button[data-open-build]') : button; location.hash = `build/${button.dataset.openBuild}`; }
+  });
   window.addEventListener('hashchange', routeBuild);
   const menu = document.querySelector('.mobile-menu');
   const sidebar = document.querySelector('.sidebar'), scrim = document.querySelector('.menu-scrim');
