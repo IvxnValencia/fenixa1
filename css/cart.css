@@ -12,7 +12,7 @@ body #carrito .cart-photos img { width: calc((100% - 24px)/4); max-width: 80px; 
 body #carrito .cart-summary { margin: 0; color: var(--muted); font-size: 13px; line-height: 24px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 body #carrito .cart-price { color: var(--purple); font-size: 15px; overflow-wrap: anywhere; }
 body #carrito .cart-actions { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin-top: auto; padding-top: 8px; }
-body #carrito .cart-actions > *, body #carrito .cart-card > .primary-button { display: flex; align-items: center; justify-content: center; height: 40px; min-height: 40px; padding: 0 8px; border-radius: 12px; font-size: 13px; text-align: center; }
+body #carrito .cart-actions > *, body #carrito .cart-card > .primary-button, body #carrito .cart-empty > a { display: flex; align-items: center; justify-content: center; height: 40px; min-height: 40px; padding: 0 8px; border-radius: 12px; font-size: 13px; text-align: center; }
 body #carrito .cart-card > .primary-button { margin-top: auto; }
 body #carrito .cart-info { margin-top: 24px; font-size: 13px; color: var(--muted); }
 body #carrito .cart-info summary { min-height: 40px; color: var(--purple); cursor: pointer; }
@@ -25,3 +25,42 @@ body #carrito > .section-heading, body #carrito > .cart-info { grid-column: 1 / 
 body #carrito > section { min-width: 0; margin-top: 0; }
 body #carrito .cart-grid { grid-template-columns: minmax(0,1fr); }
 @media(max-width:900px) { body #carrito:not([hidden]) { grid-template-columns: minmax(0,1fr); } }
+
+/* The same cart becomes a modal drawer without duplicating its content. */
+body .cart-drawer {
+  position: fixed; inset: 0 0 0 auto; width: min(752px, 100%); height: 100dvh;
+  max-width: 100%; max-height: none; margin: 0; padding: 0; overflow: hidden;
+  border: 0; border-left: 1px solid var(--stroke); border-radius: 0;
+  background: var(--bg); color: var(--text); box-shadow: var(--shadow);
+}
+body .cart-drawer[open] { display: flex; flex-direction: column; }
+body .cart-drawer::backdrop { background: rgb(0 0 0 / .55); }
+body .cart-drawer-header {
+  display: flex; align-items: start; justify-content: space-between; gap: 16px;
+  flex: 0 0 auto; padding: 24px; background: var(--surface); border-bottom: 1px solid var(--stroke);
+}
+body .cart-drawer-header > div { min-width: 0; }
+body .cart-drawer-header h2 { margin: 0; font-size: 18px; line-height: 24px; }
+body .cart-drawer-header p { margin: 8px 0 0; color: var(--muted); font-size: 13px; line-height: 24px; }
+body .cart-drawer .cart-drawer-close {
+  display: grid; place-items: center; flex: 0 0 40px; width: 40px; height: 40px;
+  min-height: 40px; padding: 8px; border-radius: 12px; color: var(--purple);
+}
+body .cart-drawer-close svg { width: 24px; height: 24px; }
+body .cart-drawer-content { flex: 1 1 auto; min-height: 0; min-width: 0; overflow: auto; overscroll-behavior: contain; padding: 24px; }
+body .cart-drawer #carrito { margin: 0; padding: 0; }
+body .cart-drawer #carrito:not([hidden]) { display: grid; grid-template-columns: minmax(0,1fr); gap: 24px; }
+body .cart-drawer #carrito > .section-heading {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+body .cart-drawer #carrito .cart-section-heading { gap: 8px; justify-content: space-between; }
+body .cart-drawer-footer { flex: 0 0 auto; padding: 16px 24px max(16px, env(safe-area-inset-bottom)); border-top: 1px solid var(--stroke); background: var(--surface); }
+body .cart-drawer-footer a { display: flex; align-items: center; justify-content: center; height: 40px; min-height: 40px; padding: 0 16px; border-radius: 12px; font-size: 13px; }
+body .cart-drawer :is(button, a, summary):focus-visible { outline: 2px solid var(--purple); outline-offset: -2px; }
+@media(min-width:720px) { body .cart-drawer #carrito:not([hidden]) { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media(max-width:560px) {
+  body .cart-drawer { border-left: 0; }
+  body .cart-drawer-header, body .cart-drawer-content { padding: 16px; }
+  body .cart-drawer-footer { padding-inline: 16px; }
+}

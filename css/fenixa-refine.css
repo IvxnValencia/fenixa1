@@ -346,3 +346,15 @@ body .product-sheet-table td { color: var(--text); font-variant-numeric: tabular
 body #mi-build .my-build-budget [data-clear-budget] { height: 40px; min-height: 40px; margin: 8px 0 0; padding: 0 16px; border-radius: 12px; font-size: 14px; }
 body #mi-build .my-build-budget #myBuildBudgetAdjusted { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
 body #mi-build .my-build-budget #myBuildBudgetAdjusted[hidden] { display: none; }
+/* Vista de categorías: tarjetas más amplias para ocupar mejor el espacio disponible. */
+@media(min-width:1101px) {
+  body #componentes #catalogo[data-view="grid"] .cmp-grid { gap: 24px; }
+  body #componentes #catalogo[data-view="grid"] .cmp-tile { min-height: 240px; grid-template-rows: 128px 24px 24px; padding: 24px; gap: 8px; }
+  body #componentes #catalogo[data-view="grid"] .cmp-tile img { height: 128px; }
+  body #componentes #catalogo[data-view="grid"] .cmp-tile strong { font-size: 14px; line-height: 24px; }
+  body #componentes #catalogo[data-view="grid"] .cmp-tile span { font-size: 13px; line-height: 24px; }
+}
+@media(min-width:561px) and (max-width:1100px) {
+  body #componentes #catalogo[data-view="grid"] .cmp-tile { min-height: 208px; grid-template-rows: 104px auto auto; padding: 16px; }
+  body #componentes #catalogo[data-view="grid"] .cmp-tile img { height: 104px; }
+}
