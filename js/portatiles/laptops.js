@@ -67,7 +67,7 @@
       <button type="button" class="catalog-photo fx-open" data-open-laptop="${esc(p.id)}" aria-label="Ver ficha de ${esc(p.name)}"><img class="product-image" src="${esc(window.FENIXA_THUMB?window.FENIXA_THUMB(p.image):p.image)}" alt="${esc(imageAlt(p))}" width="800" height="800" loading="lazy" decoding="async"></button>
       <p class="catalog-brief" title="${esc(keySpecs(p).join(' · '))}">${esc(brief(p))}</p>
       <div class="catalog-price-line"><span class="market-category laptop-use">${esc(labels[p.uses[0]]||'Laptop')}</span><span class="estimate-label" title="Sin oferta verificada en COP">Sin precio</span></div>
-      <div class="catalog-card-actions"><button type="button" class="compare-trigger" data-laptop-compare="${esc(p.id)}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button type="button" class="secondary-button" data-open-laptop="${esc(p.id)}">Ver ficha</button></div>
+      <div class="catalog-card-actions"><button type="button" class="compare-trigger" data-laptop-compare="${esc(p.id)}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button type="button" class="primary-button" data-open-laptop="${esc(p.id)}">Ver ficha</button></div>
     </article>`).join('');
     renderComparison();
   }
