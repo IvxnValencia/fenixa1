@@ -6,9 +6,6 @@ body .topbar-actions { margin-left: auto; }
 body .sidebar .nav-link svg { flex: 0 0 18px; stroke-linecap: round; stroke-linejoin: round; }
 body:has(#nl-badge-frame) { --floating-edge: calc(84px + env(safe-area-inset-bottom, 0px)); }
 body .content { padding-bottom: calc(130px + var(--floating-edge)); }
-body #welcome .hero-showcase { background: radial-gradient(ellipse at 50% 50%, color-mix(in srgb, var(--purple) 12%, transparent), transparent 68%); }
-body #welcome .hero-actions a { gap: 0; }
-body #welcome .hero-case { animation: none; }
 body .fx-sheet-close { width: auto; min-width: 64px; padding-inline: 14px; font-size: 13px; }
 
 /* Todos los pasos siguen accesibles; el scroll solo indica dónde estás. */

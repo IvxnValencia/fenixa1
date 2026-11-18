@@ -1,74 +1,236 @@
-/* Inicio editorial. Aislado de los formularios, el catálogo y Mi build. */
-body #welcome { --hero-line: color-mix(in srgb, var(--purple) 18%, var(--stroke-soft)); }
-body #welcome .fenixa-hero {
-  display: grid; grid-template-columns: minmax(0, 1.04fr) minmax(0, 1fr);
-  align-items: center; gap: clamp(24px, 4vw, 64px);
-  min-height: 620px; padding: 32px 0 46px; margin: 0;
+/* Identidad de la cabecera y composición de Inicio. */
+body .topbar .brand { gap: 9px; }
+body .topbar .brand-mark {
+  display: block;
+  width: 32px;
+  height: 32px;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
 }
-body #welcome .start-heading { position: relative; z-index: 2; min-width: 0; max-width: none; }
-body #welcome .eyebrow { display: flex; align-items: center; gap: 10px; margin: 0 0 24px; font-size: 10px; font-weight: 650; letter-spacing: .14em; line-height: 1.6; }
-body #welcome .hero-spark { font-size: 22px; line-height: 1; }
-body #welcome .start-heading h1 { max-width: none; margin: 0 0 25px; font-size: clamp(42px, 5.3vw, 72px); font-weight: 650; line-height: 1.04; letter-spacing: -.055em; text-wrap: balance; }
-body #welcome .start-heading h1 > span { color: var(--purple); }
-body #welcome .start-heading > p { max-width: 43ch; margin: 0; font-size: clamp(15px, 1.3vw, 17px); line-height: 1.8; color: var(--muted); }
-body #welcome .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 30px 0 0; }
-body #welcome .hero-actions a { min-height: 52px; padding: 14px 23px; font-size: 13px; border-radius: 14px; gap: 15px; transition: transform 160ms var(--fx-ease-out), background-color 180ms ease, border-color 180ms ease; }
-body #welcome .hero-actions .primary-button { background: var(--purple-strong); color: #fff; border-color: var(--purple-strong); box-shadow: 0 6px 24px color-mix(in srgb, var(--purple) 16%, transparent); }
-body #welcome .hero-actions .secondary-button { background: transparent; border-color: var(--stroke); box-shadow: none; }
-body #welcome .hero-actions a > span { font-size: 20px; line-height: 1; }
-body #welcome .hero-actions a:active { transform: scale(.97); }
-body #welcome .hero-actions a:focus-visible { outline: 2px solid var(--purple); outline-offset: 5px; }
-body #welcome .start-heading .hero-reassurance { display: flex; gap: 7px; align-items: center; margin-top: 19px; font-size: 11px; line-height: 1.6; }
-body #welcome .hero-reassurance svg { flex: 0 0 15px; width: 15px; height: 15px; color: var(--purple); }
+body:not(.light) .topbar .brand-mark { filter: brightness(1.3); }
+body .topbar .brand-name {
+  font-size: 22px;
+  font-weight: 790;
+  letter-spacing: .07em;
+  line-height: 1;
+}
+
+body .content:has(> #welcome:not([hidden])) { max-width: none; padding: 0; }
+body #welcome {
+  --hero-bg: #111116;
+  --hero-title: #faf9fc;
+  --hero-accent: #d3b5fb;
+  --hero-copy: #c7c5ce;
+  --hero-button: #7942d0;
+  --hero-secondary: #2f253d;
+  --hero-border: #78628b;
+  --halo: rgb(100 60 143 / .43);
+  --floor: rgb(144 93 205 / .36);
+  --ground: rgb(3 2 9 / .78);
+  --wing-opacity: .94;
+  --gutter: clamp(32px, 4.5cqw, 80px);
+  container-type: inline-size;
+  max-width: none;
+  background: var(--hero-bg);
+}
+body.light #welcome {
+  --hero-bg: #f4f3f7;
+  --hero-title: #23212a;
+  --hero-accent: #6e448f;
+  --hero-copy: #524d5c;
+  --hero-secondary: #eae2f3;
+  --hero-border: #a089b2;
+  --halo: rgb(175 146 208 / .41);
+  --floor: rgb(137 91 174 / .34);
+  --ground: rgb(53 36 72 / .48);
+  --wing-opacity: .87;
+}
+body #welcome .fenixa-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  display: grid;
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  max-width: 1720px;
+  min-height: max(clamp(530px, 52cqw, 760px), calc(100svh - var(--storefront-header)));
+  margin: 0 auto;
+  padding: 48px var(--gutter) 82px;
+  color: var(--hero-title);
+  background:
+    radial-gradient(ellipse at 90% 54%, var(--halo), transparent 56%),
+    linear-gradient(143deg, var(--bg) 0%, var(--hero-bg) 40%);
+  border: 0;
+  border-radius: 0;
+}
+body #welcome .start-heading {
+  position: relative;
+  z-index: 1;
+  width: 52%;
+  max-width: none;
+  margin: 0;
+}
+body #welcome .start-heading h1 {
+  max-width: none;
+  margin: 0 0 23px;
+  font-size: clamp(43px, 5.65cqw, 94px);
+  font-weight: 690;
+  line-height: 1.01;
+  letter-spacing: -.045em;
+  color: var(--hero-title);
+}
+body #welcome .start-heading h1 span { color: var(--hero-accent); }
+body #welcome .start-heading p {
+  max-width: 35ch;
+  margin: 0;
+  color: var(--hero-copy);
+  font-size: clamp(16px, 1.64cqw, 22px);
+  line-height: 1.55;
+  font-weight: 400;
+}
+body #welcome .hero-actions {
+  display: flex;
+  align-items: stretch;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 30px 0 8px;
+}
+body #welcome .hero-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  min-height: 48px;
+  min-width: 144px;
+  padding: 11px 19px;
+  font-size: 15px;
+  font-weight: 620;
+  line-height: 1.3;
+  border: 1px solid var(--hero-border);
+  border-radius: 10px;
+  box-shadow: none;
+}
+body #welcome .hero-actions .primary-button {
+  background: var(--hero-button);
+  border-color: var(--hero-button);
+  color: white;
+}
+body #welcome .primary-button::after {
+  content: "";
+  width: 14px;
+  height: 14px;
+  background: center / contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='white' stroke-width='1.6'%3E%3Cpath d='M1 8h13M8 2l6 6-6 6'/%3E%3C/svg%3E");
+}
+body #welcome .secondary-button { background: var(--hero-secondary); color: var(--hero-title); }
+body #welcome .hero-explore {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  color: var(--hero-copy);
+  font-size: 14px;
+  font-weight: 540;
+  text-underline-offset: 4px;
+}
+.hero-explore svg { width: 16px; height: 16px; }
+body #welcome :is(a,button):focus-visible { outline: 3px solid var(--hero-accent); outline-offset: 4px; }
+@media (hover: hover) {
+  body #welcome .primary-button:hover { background: #6a36bc; }
+  body #welcome .secondary-button:hover { border-color: var(--hero-accent); }
+  body #welcome .hero-explore:hover { text-decoration: underline; color: var(--hero-title); }
+}
 
 body #welcome .hero-showcase {
-  position: relative; isolation: isolate; min-width: 0; width: 100%; aspect-ratio: 1;
-  margin: 0; display: grid; place-items: center;
-  background: radial-gradient(ellipse at 50% 48%, color-mix(in srgb, var(--purple) 23%, transparent), transparent 67%);
+  position: absolute;
+  right: -1.2%;
+  top: 50%;
+  width: 62%;
+  aspect-ratio: 600 / 530;
+  margin: 0;
+  transform: translateY(-52%);
+  pointer-events: none;
+  isolation: isolate;
 }
-body #welcome .hero-blueprint { position: absolute; inset: 0; z-index: -2; pointer-events: none; background-image: linear-gradient(var(--hero-line) 1px, transparent 1px), linear-gradient(90deg, var(--hero-line) 1px, transparent 1px); background-size: 44px 44px; opacity: .45; mask-image: radial-gradient(ellipse, black 10%, transparent 70%); -webkit-mask-image: radial-gradient(ellipse, black 10%, transparent 70%); }
-body #welcome .hero-watermark { position: absolute; z-index: -1; top: 5%; left: 0; width: 100%; text-align: center; font-size: clamp(70px, 9.8vw, 132px); font-weight: 800; line-height: 1; letter-spacing: -.065em; color: color-mix(in srgb, var(--purple) 10%, transparent); white-space: nowrap; pointer-events: none; }
-body #welcome .hero-orbit { position: absolute; z-index: -1; inset: 12% 5%; border: 1px solid var(--hero-line); border-radius: 50%; transform: rotate(-24deg); pointer-events: none; }
-body #welcome .hero-orbit::after { content: ''; position: absolute; inset: 12% -6%; border: 1px solid var(--hero-line); border-radius: 50%; transform: rotate(48deg); }
-body #welcome .hero-plinth { position: absolute; bottom: 9%; left: 12%; width: 76%; height: 12%; border-radius: 50%; background: radial-gradient(ellipse, color-mix(in srgb, var(--purple) 25%, var(--bg)), transparent 70%); }
-body #welcome .hero-case { display: block; position: relative; z-index: 1; width: 92%; height: auto; max-height: none; object-fit: contain; filter: drop-shadow(0 24px 18px rgb(0 0 0 / .28)); }
-body #welcome .hero-signature { position: absolute; z-index: 2; right: 0; bottom: 12%; display: flex; align-items: center; gap: 12px; padding: 14px 19px; border: 1px solid var(--hero-line); border-radius: 14px; background: color-mix(in srgb, var(--surface) 94%, transparent); box-shadow: 0 12px 30px rgb(0 0 0 / .12); }
-body #welcome .hero-signature > span { color: var(--purple); font-size: 28px; }
-body #welcome .hero-signature div { font-size: 8px; letter-spacing: .09em; color: var(--muted); }
-body #welcome .hero-signature strong { display: block; margin-top: 4px; font-size: 18px; letter-spacing: -.03em; font-weight: 600; color: var(--text); }
+.hero-floor {
+  position: absolute;
+  left: 6%;
+  right: 0;
+  top: 83%;
+  height: 14%;
+  background:
+    radial-gradient(ellipse 32% 26% at 62% 40%, var(--ground), transparent),
+    radial-gradient(ellipse 52% 44% at 54% 50%, var(--floor), transparent);
+}
+body #welcome .hero-case {
+  position: absolute;
+  left: 20%;
+  bottom: 12%;
+  width: 68%;
+  height: auto;
+  display: block;
+  max-height: none;
+  filter: none;
+}
+.hero-wing {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hero-wing canvas { display: block; width: 100%; height: 100%; }
+.hero-wing-back { opacity: var(--wing-opacity); }
+body #welcome .hero-motion {
+  position: absolute;
+  right: 7%;
+  bottom: 3%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 5px;
+  border: 0;
+  border-radius: 50%;
+  color: var(--hero-copy);
+  background: none;
+  pointer-events: auto;
+}
+.hero-motion::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid color-mix(in srgb, var(--hero-copy) 40%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--hero-bg) 78%, transparent);
+}
+.hero-motion svg { position: relative; width: 14px; height: 14px; }
+.hero-motion:is(:hover,:focus-visible)::before { border-color: currentColor; }
+body #welcome .hero-motion[hidden], .hero-motion .motion-play, .hero-motion.is-paused .motion-pause { display: none; }
+.hero-motion.is-paused .motion-play { display: block; }
 
-
-@media (hover: hover) and (pointer: fine) {
-  body #welcome .hero-actions a:hover { transform: translateY(-2px); }
-  body #welcome .hero-actions .secondary-button:hover { border-color: var(--purple); background: var(--purple-faint); }
-  body #welcome .hero-actions a:active { transform: scale(.97); }
-}
-@media (min-width: 901px) and (prefers-reduced-motion: no-preference) {
-  body #welcome .hero-case { animation: fenixa-hero-arrive 280ms var(--fx-ease-out) both; }
-}
-@keyframes fenixa-hero-arrive { from { opacity: .4; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
-@media (max-width: 1100px) {
-  body #welcome .fenixa-hero { gap: 20px; min-height: 540px; padding-block: 28px 36px; }
-  body #welcome .hero-actions a { padding-inline: 17px; }
-  body #welcome .hero-signature { right: 0; padding: 10px 13px; }
-  body #welcome .hero-signature strong { font-size: 16px; }
-}
-@media (max-width: 760px) {
-  body #welcome .fenixa-hero { grid-template-columns: minmax(0, 1fr); gap: 24px; min-height: 0; padding: 22px 0 30px; }
-  body #welcome .start-heading h1 { font-size: clamp(36px, 8.5vw, 60px); line-height: 1.08; letter-spacing: -.045em; }
-  body #welcome .eyebrow { margin-bottom: 20px; font-size: 9px; }
-  body #welcome .start-heading > p { max-width: 45ch; font-size: 15px; }
-  body #welcome .hero-actions { margin-top: 24px; gap: 10px; }
-  body #welcome .hero-actions a { flex: 1 1 170px; padding-inline: 14px; }
-  body #welcome .hero-showcase { max-width: 460px; justify-self: center; }
-  body #welcome .hero-watermark { font-size: clamp(76px, 22vw, 110px); }
-  body #welcome .hero-signature { bottom: 14%; right: 2%; }
-}
-@media (prefers-reduced-motion: reduce) {
-  body #welcome .hero-case { animation: none; }
-  body #welcome .hero-actions a { transition: none; transform: none; }
+@container (max-width: 760px) {
+  body #welcome .fenixa-hero {
+    align-content: center;
+    min-height: calc(100svh - var(--storefront-header));
+    padding: clamp(36px, 9cqw, 64px) 0 64px;
+    background: radial-gradient(ellipse at 86% 73%, var(--halo), transparent 54%), var(--hero-bg);
+  }
+  body #welcome .start-heading { width: auto; margin: 0 clamp(20px, 6cqw, 46px); }
+  body #welcome .start-heading h1 { margin-bottom: 16px; font-size: clamp(37px, 10.6cqw, 68px); }
+  body #welcome .start-heading p { font-size: 16px; max-width: 37ch; }
+  body #welcome .hero-actions { margin: 22px 0 3px; gap: 8px; }
+  body #welcome .hero-actions a { min-width: 0; padding-inline: clamp(12px, 4cqw, 20px); }
+  body #welcome .hero-showcase {
+    position: relative;
+    inset: auto;
+    justify-self: end;
+    width: min(101%, 520px);
+    margin-top: 4px;
+    transform: none;
+  }
+  body #welcome .hero-motion { right: auto; left: 5%; bottom: 2%; }
 }
 @media (forced-colors: active) {
-  body #welcome .hero-blueprint, body #welcome .hero-orbit, body #welcome .hero-plinth, body #welcome .hero-watermark { display: none; }
-  body #welcome .hero-actions a { border: 1px solid ButtonText; }
+  body #welcome .hero-actions a, .hero-motion::before { border: 1px solid ButtonText; }
 }
