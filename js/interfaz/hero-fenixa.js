@@ -3,28 +3,26 @@
   const scene = hero.querySelector('.hero-showcase');
   const button = scene.querySelector('.hero-motion');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
-  const layers = [...scene.querySelectorAll('canvas')].map(canvas => canvas.getContext('2d'));
+  const layers = [...hero.querySelectorAll('.hero-wing canvas')].map(canvas => canvas.getContext('2d'));
   if (layers.some(ctx => !ctx) || !('IntersectionObserver' in window)) return;
 
   const tau = Math.PI * 2;
   const clamp = t => Math.min(1, Math.max(0, t));
   const smooth = t => { t = clamp(t); return t * t * (3 - 2 * t); };
-  // Curves in figure coordinates. The first plume goes behind the tower.
-  const routes = [
-    [[.025,.87],[.13,.93],[.53,.87],[.83,.74],[.95,.54],[.93,.29],[.78,.16],[.54,.15],[.31,.18],[.16,.11],[.13,.01]],
-    [[.29,.87],[.48,.83],[.64,.77],[.77,.68],[.87,.59],[.94,.47],[.98,.38]]
-  ];
   function curve(route, u) {
     const t = clamp(u) * (route.length - 1);
     const i = Math.min(Math.floor(t), route.length - 2), f = t - i;
     const a = route[Math.max(i - 1, 0)], b = route[i], c = route[i + 1], d = route[Math.min(i + 2, route.length - 1)];
     return b.map((v,k) => v + .5*f*((c[k]-a[k])+f*((2*a[k]-5*v+4*c[k]-d[k])+f*(3*v-3*c[k]+d[k]-a[k]))));
   }
-  const paths = routes.map(route => Array.from({length: 135}, (_, i) => {
-    const u = i/134, [x,y] = curve(route,u), a = curve(route,u-.002), b = curve(route,u+.002);
-    const angle = Math.atan2(b[1]-a[1], b[0]-a[0]);
-    return {u,x,y,nx:-Math.sin(angle),ny:Math.cos(angle)};
-  }));
+  function samplePath(route) {
+    const steps = (route.length - 1) * 16;
+    return Array.from({length: steps + 1}, (_, i) => {
+      const u = i/steps, [x,y] = curve(route,u), a = curve(route,u-.002), b = curve(route,u+.002);
+      const angle = Math.atan2(b[1]-a[1], b[0]-a[0]);
+      return {u,x,y,nx:-Math.sin(angle),ny:Math.cos(angle)};
+    });
+  }
 
   // Cache the light falloff once. Drawing uses only small transformed bitmaps.
   function brush(rgb) {
@@ -42,6 +40,7 @@
   const midnight = {haze:brush('94,44,201'),color:brush('151,82,252'),core:brush('241,213,255')};
   const daylight = {haze:brush('175,124,220'),color:brush('135,74,195'),core:brush('111,58,159')};
   let width = 1, height = 1, visible = false, paused = false;
+  let heroWidth = 1, heroHeight = 1, sceneX = 0, sceneY = 0, paths = [];
   let frame = 0, lastDraw = null, elapsed = .55;
   try { paused = localStorage.getItem('fenixa-hero-paused') === 'true'; } catch {}
   if (paused) elapsed = 5.4;
@@ -51,8 +50,9 @@
     const reach = front ? 4.5 : 5.4;
     const tip = age / reach, tail = (age - 6.8) / reach;
     if (tip <= 0 || tail >= 1) return;
-    const start = Math.max(0, Math.floor(tail*134));
-    const end = Math.min(134, Math.ceil(tip*134));
+    const steps = path.length - 1;
+    const start = Math.max(0, Math.floor(tail*steps));
+    const end = Math.min(steps, Math.ceil(tip*steps));
     const phase = time*tau/16, widthFactor = front ? .47 : 1;
     const points = [];
     for (let i=start; i<=end; i++) {
@@ -93,24 +93,42 @@
     ctx.restore();
   }
   function draw(t) {
+    if (!paths.length) return;
     layers.forEach((ctx,index)=>{
-      ctx.clearRect(0,0,width,height);
+      ctx.clearRect(0,0,heroWidth,heroHeight);
       const localTime=t+(index ? -.7 : 0);
       if (localTime<0) return;
+      ctx.save();
+      ctx.translate(sceneX,sceneY);
       const pulse=Math.floor(localTime/8);
       for(let n=Math.max(0,pulse-1);n<=pulse;n++) {
         renderPlume(ctx,paths[index],t,localTime-n*8,(n%2)*2.6+index*.9,index===1);
       }
+      ctx.restore();
     });
   }
   function resize() {
     const box=scene.getBoundingClientRect();
+    const bounds=hero.getBoundingClientRect();
     if (!box.width || !box.height) return;
     width=box.width; height=box.height;
-    const ratio=Math.min(devicePixelRatio || 1,1.5,1100/width);
+    heroWidth=bounds.width; heroHeight=bounds.height;
+    sceneX=box.left-bounds.left; sceneY=box.top-bounds.top;
+    // The brush extends outside its centerline. Start and finish beyond the hero
+    // so its glow can cross the edges while the inner bends stay tied to the case.
+    const left=-sceneX/width, right=(heroWidth-sceneX)/width;
+    const approach = .26-left;
+    paths = [
+      samplePath([[left-.36,.78],[left,.82],[left+approach*.52,.90],[.26,.87],
+        [.47,.78],[.55,.54],[.42,.33],[.40,.22],[.53,.14],[.73,.13],
+        [right,.20],[right+.35,.12]]),
+      samplePath([[.29,.87],[.48,.83],[.64,.77],[.77,.68],[.87,.59],
+        [right,.44],[right+.32,.28]])
+    ];
+    const ratio=Math.min(devicePixelRatio || 1,1.5,1600/heroWidth,1200/heroHeight);
     for(const ctx of layers) {
-      ctx.canvas.width=Math.round(width*ratio); ctx.canvas.height=Math.round(height*ratio);
-      ctx.setTransform(ctx.canvas.width/width,0,0,ctx.canvas.height/height,0,0);
+      ctx.canvas.width=Math.round(heroWidth*ratio); ctx.canvas.height=Math.round(heroHeight*ratio);
+      ctx.setTransform(ctx.canvas.width/heroWidth,0,0,ctx.canvas.height/heroHeight,0,0);
     }
     draw(reduced.matches ? 5.4 : elapsed);
   }
@@ -135,8 +153,10 @@
   }
   hero.classList.add('has-vapor');
   resize(); sync();
-  new ResizeObserver(resize).observe(scene);
-  new IntersectionObserver(([entry])=>{visible=entry.isIntersecting; sync();}).observe(scene);
+  const resizeObserver = new ResizeObserver(resize);
+  resizeObserver.observe(hero);
+  resizeObserver.observe(scene);
+  new IntersectionObserver(([entry])=>{visible=entry.isIntersecting; sync();}).observe(hero);
   new MutationObserver(()=>{
     const next=document.body.classList.contains('light');
     if(next!==light) { light=next; draw(reduced.matches ? 5.4 : elapsed); }

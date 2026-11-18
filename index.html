@@ -23,8 +23,12 @@
     <link rel="stylesheet" href="css/catalog.css?v=11" />
     <link rel="stylesheet" href="css/my-build.css?v=6" />
     <style>
-      .fenixa-hero:not(.has-vapor) .hero-wing-back {
+      .fenixa-hero:not(.has-vapor) .hero-showcase::before {
+        content: "";
+        position: absolute;
+        inset: 0;
         background: center / 100% 100% no-repeat url("assets/hero/ala.webp");
+        mask-image: radial-gradient(ellipse closest-side, black 68%, transparent);
       }
       @font-face {
         font-family: Geist;
@@ -465,7 +469,7 @@
     <link rel="stylesheet" href="css/cart.css?v=3">
     <link rel="stylesheet" href="css/assembly-3d.css?v=6">
     <link rel="stylesheet" href="css/motion.css?v=1">
-    <link rel="stylesheet" href="css/hero-fenixa.css?v=5">
+    <link rel="stylesheet" href="css/hero-fenixa.css?v=6">
   </head>
   <body>
     <div class="app-shell">
@@ -509,15 +513,15 @@
                 </div>
                 <a class="hero-explore" href="#componentes">Explorar componentes<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg></a>
               </header>
+              <div class="hero-wing hero-wing-back" aria-hidden="true"><canvas></canvas></div>
               <figure class="hero-showcase">
                 <div class="hero-floor" aria-hidden="true"></div>
-                <div class="hero-wing hero-wing-back" aria-hidden="true"><canvas></canvas></div>
                 <img class="hero-case" src="assets/hero/gabinete-560.webp" srcset="assets/hero/gabinete-560.webp 560w, assets/hero/gabinete-1000.webp 1000w" sizes="(max-width: 700px) 70vw, (max-width: 1023px) 39vw, (max-width: 1600px) 38vw, 620px" width="1000" height="1000" fetchpriority="high" decoding="async" alt="Gabinete grafito de cristal ahumado, con una GPU y dos memorias en despiece parcial.">
-                <div class="hero-wing hero-wing-front" aria-hidden="true"><canvas></canvas></div>
                 <button class="hero-motion" type="button" aria-label="Pausar la estela" title="Pausar la estela" hidden>
                   <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path class="motion-pause" d="M6 4h2.5v12H6zm5.5 0H14v12h-2.5z"/><path class="motion-play" d="m6 3 10 7-10 7z"/></svg>
                 </button>
               </figure>
+              <div class="hero-wing hero-wing-front" aria-hidden="true"><canvas></canvas></div>
             </div>
           </section>
           <section id="startBuild" class="start-build" aria-labelledby="builderTitle" hidden>
@@ -865,7 +869,7 @@
 
     </script>
     <script src="js/interfaz/motion.js?v=1"></script>
-    <script src="js/interfaz/hero-fenixa.js?v=2"></script>
+    <script src="js/interfaz/hero-fenixa.js?v=3"></script>
     <script src="js/catalogo/catalog-data.js?v=5"></script>
   <script src="js/catalogo/catalog-expansion.js?v=1"></script>
     <script src="js/mercado/market-data.js"></script>
