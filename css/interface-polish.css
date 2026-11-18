@@ -207,7 +207,7 @@ body #startBuild .planner-rows { list-style: none; margin: 0; padding: 0; border
 body #startBuild .planner-rows > li { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; align-items: center; column-gap: 16px; box-sizing: border-box; height: 72px; padding: 8px; border-bottom: 1px solid var(--stroke-soft); border-radius: 12px; }
 body #startBuild .planner-rows > li.is-updated { background: var(--purple-faint); }
 body #startBuild .planner-row-frame { position: relative; display: block; width: 56px; height: 56px; overflow: hidden; background: var(--purple-faint); border-radius: 12px; }
-body #startBuild .planner-row-frame::before { content: ""; position: absolute; inset: 8px; background: var(--category-photo) center / contain no-repeat; opacity: .18; }
+body #startBuild .planner-category-art { position: absolute; inset: 8px; width: calc(100% - 16px); height: calc(100% - 16px); object-fit: contain; opacity: .18; pointer-events: none; }
 body #startBuild .planner-row-photo { position: relative; display: block; width: 56px; height: 56px; object-fit: contain; background: transparent; border-radius: 12px; }
 body #startBuild .planner-row-text { display: grid; align-content: center; gap: 2px; min-width: 0; }
 body #startBuild .planner-row-name { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; font-size: 13px; font-weight: 600; line-height: 16px; overflow-wrap: break-word; word-break: normal; color: var(--text); }
