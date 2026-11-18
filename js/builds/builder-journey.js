@@ -40,9 +40,14 @@
     if (paths) paths.hidden = active !== 2;
   }
   function go(index, focus = true) {
+    const previous = active;
     active = Math.max(0, Math.min(steps.length - 1, index));
     reached = Math.max(reached, active);
     render();
+    if (active !== previous) {
+      steps[active].el.dataset.direction = active > previous ? 'forward' : 'back';
+      window.FENIXA_MOTION?.reveal(steps[active].el);
+    }
     if (!focus) return;
     const heading = steps[active].el.querySelector('legend');
     if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: false }); }

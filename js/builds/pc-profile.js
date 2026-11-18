@@ -202,6 +202,7 @@
     storageUnavailable = false;
     setForm(saved);
     render();
+    window.FENIXA_MOTION?.reveal($('profileAdvice'));
     window.dispatchEvent(new Event('fenixa-profile-changed'));
     $('profileAdviceTitle').focus();
   });

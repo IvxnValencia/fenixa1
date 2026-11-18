@@ -11,6 +11,7 @@
   let pending=null, opener=null;
   function setExpanded(open, focus=false) {
     body.hidden=!open;
+    body.inert=!open;
     toggle.setAttribute('aria-expanded',String(open));
     if(open)for(const [button,content] of [['compareTrayToggle','compareTrayBody'],['laptopQueueToggle','laptopQueueBody']]) {
       $(button)?.setAttribute('aria-expanded','false');
@@ -24,7 +25,9 @@
   }
   function render() {
     const parts=state.ids().map(id=>byId.get(id)), known=parts.map(p=>market.price(p)).filter(v=>v!==null);
-    $('buildQuickCount').textContent=`${parts.length} ${parts.length===1?'pieza':'piezas'}`;
+    const count = `${parts.length} ${parts.length===1?'pieza':'piezas'}`;
+    if ($('buildQuickCount').textContent !== count) window.FENIXA_MOTION?.pulse($('buildQuickCount'));
+    $('buildQuickCount').textContent = count;
     $('buildQuickList').innerHTML=parts.length?parts.map(p=>`<article class="build-quick-item"><img src="${esc(p.image)}" alt="" width="48" height="48" loading="lazy"><div><small>${esc(categories.get(p.category))}</small><strong title="${esc(p.name)}">${esc(shortName(p))}</strong><span>${esc(market.priceText(p))}</span><small title="${esc(market.priceLabel(p))}">${esc(refLabel(p))}</small></div><button type="button" class="dock-remove" data-quick-remove="${esc(p.id)}" aria-label="Quitar ${esc(p.name)} de Mi build">×</button></article>`).join(''):'<p>Tu build está vacía. Añade piezas desde el catálogo; comparar no las añade.</p>';
     $('buildQuickSubtotal').textContent=known.length?`Subtotal ${known.length<parts.length?'parcial ':''}de precios recientes: ${market.money(known.reduce((s,v)=>s+v,0))} · ${known.length}/${parts.length} piezas. No incluye envío ni montaje.`:'Sin subtotal de precios recientes. Los importes históricos no se suman como actuales.';
     $('buildQuickSave').textContent=state.saved()?'Guardado en este navegador · compatibilidad parcial, no montaje garantizado.':'No se pudo guardar. Las piezas solo se conservan en esta pestaña.';
@@ -63,7 +66,15 @@
     if(!state.add(product.id)){ask(product,previous,state.check(product),opener);return;}
     render();notice(`${shortName(product)} reemplazó la pieza anterior. ${state.saved()?'Guardada en este navegador.':'No se pudo guardar.'}`,state.saved()?'Reemplazo confirmado en Mi build.':'Reemplazo confirmado, pero no se pudo guardar.');dialog.close();
   });
-  dialog.addEventListener('close',()=>{pending=null;const target=opener?.isConnected?opener:document.getElementById('myBuildTitle')||toggle;target.focus({preventScroll:true});opener=null;});
+  dialog.addEventListener('close', () => {
+    if (dialog.open) return;
+    const parent = document.querySelector?.('#productSheet[open]') || $('marketGrid');
+    const replacement = pending && parent?.querySelector(`[data-add-my-build="${pending.id}"]`);
+    const target = opener?.isConnected ? opener : replacement || toggle;
+    if (!target.closest?.('[hidden], [inert]')) target.focus({preventScroll:true});
+    pending = null;
+    opener = null;
+  });
   document.addEventListener('click',e=>{
     const add=e.target.closest('[data-add-my-build]');
     if(add){requestAdd(add.dataset.addMyBuild,add);return;}
@@ -73,7 +84,7 @@
   window.addEventListener('hashchange',()=>{setExpanded(false);if(dialog.open)dialog.close();});
   // Both floating controls share a vertical stack, including on low/mobile windows.
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{
-    document.body.style.setProperty('--build-quick-height',`${dock.getBoundingClientRect().height}px`);
+    document.body.style.setProperty('--build-quick-height',`${dock.offsetHeight}px`);
   }).observe(dock);
   render();
 })();

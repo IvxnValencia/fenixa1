@@ -26,6 +26,7 @@
     if (!session) return;
     const saved = session;
     session = null;
+    drawer.removeAttribute('data-closing');
     saved.marker.replaceWith(root);
     const routeChanged = location.hash !== saved.hash;
     root.hidden = routeChanged ? location.hash !== '#carrito' : saved.hidden;
@@ -45,13 +46,24 @@
   }
   function close({ restoreFocus = true } = {}) {
     if (!session) return;
-    // Put the section back synchronously, before navigation hides page sections.
     const saved = session;
-    if (drawer.open) drawer.close();
-    if (session === saved) finishClose(restoreFocus);
+    const finish = () => {
+      if (session !== saved) return;
+      if (drawer.open) drawer.close();
+      finishClose(restoreFocus);
+    };
+    // Navigation needs the cart section back before the router changes pages.
+    if (!restoreFocus) { finish(); return; }
+    if (drawer.hasAttribute('data-closing')) return;
+    drawer.setAttribute('data-closing', '');
+    const exit = drawer.getAnimations?.().find(a => a.transitionProperty === 'transform');
+    if (!exit) { finish(); return; }
+    saved.exit = exit;
+    const afterExit = () => { if (saved.exit === exit && drawer.hasAttribute('data-closing')) finish(); };
+    exit.finished.then(afterExit, afterExit);
   }
   function open(trigger = document.activeElement) {
-    if (drawer.open) return true;
+    if (drawer.open) { drawer.removeAttribute('data-closing'); return true; }
     if (document.querySelector('dialog[open]')) return false;
     // The menu's existing scrim handler also restores its inert/expanded state.
     if (document.getElementById('siteMenu')?.classList.contains('menu-open')) document.querySelector('.menu-scrim')?.click();
@@ -90,6 +102,12 @@
     // The shared menu click handler marks links active; the route stays current.
     document.querySelectorAll('.nav-link').forEach(item => item.classList.toggle('active', item.getAttribute('aria-current') === 'page'));
   });
+  drawer.addEventListener('click', event => {
+    if (drawer.hasAttribute('data-closing')) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+  }, true);
   drawer.addEventListener('click', event => {
     if (event.target.closest('[data-close-cart]')) { close(); return; }
     const link = event.target.closest('a[href]');

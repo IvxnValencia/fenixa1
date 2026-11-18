@@ -454,6 +454,7 @@
     <link rel="stylesheet" href="css/sidebar-desktop.css?v=1">
     <link rel="stylesheet" href="css/cart.css?v=3">
     <link rel="stylesheet" href="css/assembly-3d.css?v=6">
+    <link rel="stylesheet" href="css/motion.css?v=1">
   </head>
   <body>
     <div class="app-shell">
@@ -692,7 +693,7 @@
     </div>
     <aside class="build-quick-dock" id="buildQuickDock" aria-label="Vista rápida de Mi build">
       <button class="build-quick-toggle" id="buildQuickToggle" type="button" aria-expanded="false" aria-controls="buildQuickBody"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m12 3 8 4v10l-8 4-8-4V7zm-8 4 8 4 8-4m-8 4v10"/></svg><strong>Mi build</strong><span id="buildQuickCount">0 piezas</span></button>
-      <div id="buildQuickBody" class="build-quick-body" hidden><div id="buildQuickList"></div><p id="buildQuickSubtotal"></p><p id="buildQuickSave"></p><div class="build-quick-actions"><a class="primary-button" href="#mi-build">Revisar Mi build</a><a class="secondary-button" href="#componentes">Añadir piezas</a></div></div>
+      <div class="quick-disclosure"><div><div id="buildQuickBody" class="build-quick-body" hidden inert><div id="buildQuickList"></div><p id="buildQuickSubtotal"></p><p id="buildQuickSave"></p><div class="build-quick-actions"><a class="primary-button" href="#mi-build">Revisar Mi build</a><a class="secondary-button" href="#componentes">Añadir piezas</a></div></div></div></div>
     </aside>
     <p class="build-add-status" id="buildAddStatus" role="status" aria-live="polite"></p>
     <dialog class="build-add-dialog" id="buildAddDialog" aria-labelledby="buildAddTitle"></dialog>
@@ -852,6 +853,7 @@
       renderMarket();
 
     </script>
+    <script src="js/interfaz/motion.js?v=1"></script>
     <script src="js/catalogo/catalog-data.js?v=5"></script>
   <script src="js/catalogo/catalog-expansion.js?v=1"></script>
     <script src="js/mercado/market-data.js"></script>
@@ -890,10 +892,10 @@
     <script src="js/builds/my-build-state.js?v=5"></script>
     <script src="js/builds/budget-settings.js?v=5"></script>
     <script src="js/builds/build-library-state.js?v=2"></script>
-    <script src="js/builds/build-library.js?v=4"></script>
+    <script src="js/builds/build-library.js?v=5"></script>
   <script src="js/interfaz/comparison-radar.js?v=16"></script>
   <script src="js/interfaz/comparison-dialog.js?v=23"></script>
-    <script src="js/catalogo/catalog.js?v=43"></script>
+    <script src="js/catalogo/catalog.js?v=44"></script>
     <script src="js/portatiles/laptops-data.js?v=5"></script>
     <script src="js/portatiles/laptops-photos.js?v=1"></script>
     <script src="js/portatiles/laptops-goal30.js?v=2"></script>
@@ -901,20 +903,20 @@
   <script src="js/portatiles/laptop-compare.js?v=10"></script>
     <script src="js/portatiles/laptop-price-data.js?v=1"></script>
     <script src="js/portatiles/laptops-prices.js?v=1"></script>
-    <script src="js/portatiles/laptops.js?v=21"></script>
-    <script src="js/portatiles/laptop-details.js?v=2"></script>
+    <script src="js/portatiles/laptops.js?v=22"></script>
+    <script src="js/portatiles/laptop-details.js?v=3"></script>
     <script src="js/builds/my-build.js?v=20"></script>
-    <script src="js/builds/build-quickview.js?v=3"></script>
+    <script src="js/builds/build-quickview.js?v=4"></script>
     <script src="js/interfaz/radar-highlight.js?v=1"></script>
     <script src="js/builds/pc-advice.js"></script>
-    <script src="js/builds/pc-profile.js?v=3"></script>
+    <script src="js/builds/pc-profile.js?v=4"></script>
     <script src="js/builds/auto-build.js?v=5"></script>
-    <script src="js/builds/build-planner.js?v=17"></script>
-    <script src="js/builds/builder-journey.js?v=4"></script>
+    <script src="js/builds/build-planner.js?v=18"></script>
+    <script src="js/builds/builder-journey.js?v=5"></script>
     <script src="js/interfaz/navigation.js?v=15"></script>
     <script src="js/ensamblaje/assembly-viewer-loader.js?v=7"></script>
-    <script src="js/interfaz/sidebar.js?v=1"></script>
+    <script src="js/interfaz/sidebar.js?v=2"></script>
   <script src="js/interfaz/cart.js?v=1"></script>
-  <script src="js/interfaz/cart-drawer.js?v=1"></script>
+  <script src="js/interfaz/cart-drawer.js?v=2"></script>
   </body>
 </html>

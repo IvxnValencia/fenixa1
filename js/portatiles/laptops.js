@@ -32,7 +32,9 @@
   function renderComparison(message='') {
     const chosen=comparisonRows();
     $('laptopCompareToolbar').hidden=chosen.length===0;
-    $('laptopQueueCount').textContent=`${chosen.length}/4`;
+    const count = `${chosen.length}/4`;
+    if ($('laptopQueueCount').textContent !== count && chosen.length) window.FENIXA_MOTION?.pulse($('laptopQueueCount'));
+    $('laptopQueueCount').textContent = count;
     $('laptopQueueList').innerHTML=chosen.map(p=>`<div class="comparison-dock-item"><img src="${esc(p.image)}" alt="" width="56" height="56"><span>${esc(p.name)}<br><small>${esc(p.model)}</small></span><button type="button" class="dock-remove" data-laptop-queue-remove="${esc(p.id)}" aria-label="Quitar ${esc(p.name)} de comparaciones">×</button></div>`).join('');
     $('laptopCompareToggle').disabled=chosen.length<2;
     if(!chosen.length){$('laptopQueueBody').hidden=true;$('laptopQueueToggle').setAttribute('aria-expanded','false');}
@@ -85,7 +87,11 @@
       comparisonOpen=false;
     }
     if(!selected.size)comparisonOpen=false;
+    const returnFocus = document.activeElement === button;
     render();
+    const updated = $('laptopGrid').querySelector(`[data-laptop-compare="${id}"]`);
+    updated?.classList.toggle('fx-mark', selected.has(id));
+    if (returnFocus) updated?.focus({preventScroll:true});
   });
   $('laptopComparisonGrid').addEventListener('click',event=>{
     const axis=event.target.closest('[data-radar-axis]');

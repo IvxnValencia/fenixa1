@@ -46,7 +46,7 @@
       <button class="catalog-photo fx-open" type="button" data-open-product="${p.id}" aria-label="Ver detalles de ${esc(p.name)}"><img class="product-image" src="${esc(thumb(p.image))}" alt="${esc(p.name)}" width="480" height="360" loading="eager" decoding="async"></button>
       <p class="catalog-brief" title="${esc(brief(p))}">${esc(brief(p))}</p>
       <div class="catalog-price-line"><strong class="market-price">${offer?money(offer.price):'Precio por confirmar'}</strong><span class="estimate-label" title="${esc(refTitle(offer))}">${esc(refLabel(offer))}</span></div>
-      <div class="catalog-card-actions"><button class="compare-trigger" type="button" data-compare="${p.id}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button class="primary-button" type="button" data-add-my-build="${p.id}">${inBuild?'En Mi build ':fit.status==='conflict'?'Revisar conflicto':'Añadir'}</button></div>
+      <div class="catalog-card-actions"><button class="compare-trigger" type="button" data-compare="${p.id}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button class="primary-button" type="button" data-add-my-build="${p.id}"><span>${inBuild?'En Mi build ':fit.status==='conflict'?'Revisar conflicto':'Añadir'}</span></button></div>
       <details class="catalog-card-details" hidden><summary>Detalles y fuentes${fit.status==='conflict'?' · conflicto':''}</summary><div class="product-sku">${esc(p.sku)}</div><p>${esc(p.summary)}</p>${p.imageNote?`<small class="catalog-image-note">${esc(p.imageNote)}</small>`:''}<p class="catalog-price-evidence">${esc(offer?`${offer.store} · ${new Date(offer.checkedAt).toLocaleString('es-CO',{timeZone:'America/Bogota'})} · ${offer.status==='listed'?'precio publicado; stock, presentación y condiciones por confirmar':market.recent(offer)?'consultado hace menos de 72 horas':'consulta vencida; precio y stock pueden cambiar'}`:'Precio pendiente: el rango del catálogo no es una oferta.')}</p>${window.FENIXA_FIT_STATUS.render(fit,{hasParts:window.FENIXA_MY_BUILD.ids().some(id=>byId[id].category!==p.category)})}${market.purchase(p,window.FENIXA_MY_BUILD.ids().map(id=>byId[id]).filter(other=>other.category!==p.category))}<div class="product-links">${external(p.source,p.sourceType==='retailer'?'Ficha de la tienda':'Ficha del fabricante')}</div></details>
     </article>`;
 
@@ -111,13 +111,17 @@
     const size = !cols ? 8 : cols >= 4 ? cols * 2 : cols === 3 ? 9 : cols * 4;
     if (!cols) requestAnimationFrame(() => { if ($('marketGrid').clientWidth) window.renderProductCatalog(); });
     const signature = JSON.stringify([size, $('catalogMax').value, query, category, $('pricedOnly').checked, $('storeFilter').value, order]);
-    const page = window.FENIXA_PAGER.paginate('catalog', visible, { anchor: $('marketGrid'), signature, onChange: window.renderProductCatalog, label: 'Páginas de componentes', scrollTarget: $('catalogo'), size });
+    const page = window.FENIXA_PAGER.paginate('catalog', visible, { anchor: $('marketGrid'), signature, onChange: () => { window.renderProductCatalog(); revealResults(); }, label: 'Páginas de componentes', scrollTarget: $('catalogo'), size });
     $('marketGrid').innerHTML = page.items.map(card).join('');
     $('catalogCount').textContent = `${visible.length} ${visible.length===1?'modelo':'modelos'}`;
     $('catalogEmpty').classList.toggle('show', !visible.length);
     $('catalogEmpty').textContent = 'Sin resultados. Un filtro de precio excluye las piezas sin precio consultado.';
     renderComparison();
   };
+  function revealResults() {
+    const results = $('marketGrid').children.length ? $('marketGrid') : $('catalogEmpty');
+    window.FENIXA_MOTION?.reveal(results);
+  }
   function applyLevel() {
     const deep = level.cat !== null;
     $('partsGrid').hidden = deep; $('parts-title').hidden = deep; $('catalogResults').hidden = !deep;
@@ -126,20 +130,23 @@
     $('catalogo').dataset.level = level.cat === 'todo' ? 'todo' : 'cat';
     if (deep) $('catalog-title').textContent = level.cat === 'todo' ? 'Resultados' : categoryName(level.cat);
   }
-  function syncFromHash() {
+  function syncFromHash(event) {
     if (location.hash === '#catalogo') { const c = $('categoryFilter').value; history.replaceState(null, '', '#componentes/' + (c === 'all' ? 'todo' : c)); }
     const m = /^#componentes\/([\w-]+)$/.exec(location.hash);
     if (!m && location.hash !== '#componentes') return;
     let cat = m ? m[1] : null;
     if (cat !== null && cat !== 'todo' && !categories.some(c => c.id === cat)) { cat = null; history.replaceState(null, '', '#componentes'); }
     const prev = level.cat, typing = document.activeElement === $('catalogSearch');
+    if (event?.type === 'hashchange' && typing && prev === cat) return;
     level.cat = cat;
     if (cat === null) { if (prev !== null) resetCatalogFilters(); }
     else $('categoryFilter').value = cat === 'todo' ? 'all' : cat;
     applyLevel(); window.renderProductCatalog();
     if (prev === cat || typing) return;
+    if (cat === null) window.FENIXA_MOTION?.reveal($('partsGrid'));
+    else revealResults();
     requestAnimationFrame(() => {
-      if (!/^#componentes(\/|$)/.test(location.hash)) return;
+      if (!/^#componentes(\/|$)/.test(location.hash) || level.cat !== cat || document.activeElement === $('catalogSearch')) return;
       if (cat === null) ($('partsGrid').querySelector(`[data-category="${prev}"]`) || $('catalogSearch')).focus({ preventScroll: true });
       else $('catalog-title').focus({ preventScroll: true });
       $('componentes').scrollIntoView({ block: 'start', behavior: 'instant' });
@@ -163,27 +170,48 @@
       location.hash = 'componentes/' + category;
     }
   };
-  ['storeFilter','pricedOnly'].forEach(id=>$(id).addEventListener('change',window.renderProductCatalog));
+  function confirmFilter() {
+    window.FENIXA_MOTION?.pulse($('catalogCount'));
+    revealResults();
+  }
+  ['storeFilter','pricedOnly','catalogSort'].forEach(id => $(id).addEventListener('change', () => {
+    window.renderProductCatalog();
+    confirmFilter();
+  }));
+  [slider, $('catalogMax')].forEach(input => input.addEventListener('change', confirmFilter));
   window.addEventListener('hashchange', syncFromHash);
-  window.addEventListener('fenixa-build-changed', () => window.renderProductCatalog(true));
+  window.addEventListener('fenixa-build-changed', () => {
+    const id = document.activeElement?.dataset?.addMyBuild;
+    window.renderProductCatalog(true);
+    if (id && !productSheet.open) {
+      const button = $('marketGrid').querySelector(`[data-add-my-build="${id}"]`);
+      button?.focus({ preventScroll: true });
+      if (button) button.firstElementChild?.classList.add('fx-added-label');
+    }
+  });
   window.addEventListener('fenixa-profile-changed', () => window.renderProductCatalog());
   $('catalogMax').addEventListener('input', () => { syncPriceControl(); window.renderProductCatalog(); });
   $('catalogSearch').addEventListener('input', () => {
+    for (const result of [$('marketGrid'), $('partsGrid'), $('catalogEmpty')]) result.classList.remove('fx-reveal');
     const query = $('catalogSearch').value.trim();
-    if (level.cat === null && query) goLevel('todo');
+    if (level.cat === null && query) {
+      goLevel('todo');
+      syncFromHash();
+    }
     else if (level.cat === 'todo' && !query) { history.replaceState(null, '', '#componentes'); syncFromHash(); }
     else window.renderProductCatalog();
   });
   $('categoryFilter').addEventListener('change', () => goLevel($('categoryFilter').value === 'all' ? 'todo' : $('categoryFilter').value));
-  $('catalogSort').addEventListener('change', window.renderProductCatalog);
   // «Más filtros» se cierra con Escape (devolviendo el foco) o al pulsar fuera.
   const moreFilters = ['catalogMore','buildMore','laptopMore'].map($).filter(Boolean);
   moreFilters.forEach(more => more.addEventListener('keydown', event => { if (event.key === 'Escape' && more.open) { event.preventDefault(); more.open = false; more.querySelector('summary').focus(); } }));
   document.addEventListener('click', event => moreFilters.forEach(more => { if (more.open && !more.contains(event.target)) more.open = false; }));
-  $('clearFilters').addEventListener('click', () => { resetCatalogFilters(); if (level.cat && level.cat !== 'todo') $('categoryFilter').value = level.cat; window.renderProductCatalog(); });
+  $('clearFilters').addEventListener('click', () => { resetCatalogFilters(); if (level.cat && level.cat !== 'todo') $('categoryFilter').value = level.cat; window.renderProductCatalog(); confirmFilter(); });
   function renderComparison() {
     $('compareTray').hidden = !selected.size;
-    $('compareTrayCount').textContent = `${selected.size}/4`;
+    const count = `${selected.size}/4`;
+    if ($('compareTrayCount').textContent !== count && selected.size) window.FENIXA_MOTION?.pulse($('compareTrayCount'));
+    $('compareTrayCount').textContent = count;
     $('compareList').innerHTML = [...selected].map(id => `<div class="comparison-dock-item"><img src="${esc(thumb(byId[id].image))}" alt="" width="56" height="56"><span title="${esc(byId[id].name)}">${esc(shortName(byId[id]))}</span><button type="button" class="dock-remove" data-remove-compare="${esc(id)}" aria-label="Quitar ${esc(shortName(byId[id]))} de comparaciones">×</button></div>`).join('');
     $('compareTrayMessage').textContent = selected.size < 2 ? 'Elige otra pieza de la misma categoría. No se añade nada a Mi build.' : 'Tu build no cambia hasta que confirmes añadir o reemplazar una pieza.';
     $('openRealComparison').disabled = selected.size < 2;
@@ -212,6 +240,7 @@
     else if (selected.size && byId[[...selected][0]].category !== byId[id].category) return showToast('Elige piezas de la misma categoría para compararlas.');
     else selected.add(id);
     renderComparison();
+    b.classList.toggle('fx-mark', selected.has(id));
   });
   // Ficha emergente de componente: toda la tarjeta abre los detalles.
   const productSheet = document.createElement('dialog');
@@ -261,20 +290,30 @@
   function openProductSheet(id, from) {
     sheetId = id; sheetOpener = from || document.activeElement;
     renderProductSheet(id);
-    if (!productSheet.open) { productSheet.showModal(); document.body.style.overflow = 'hidden'; }
+    if (!productSheet.open) productSheet.showModal();
     productSheet.querySelector('[data-close-product]').focus({ preventScroll: true });
   }
   productSheet.addEventListener('click', event => {
     if (event.target === productSheet || event.target.closest('[data-close-product]')) { productSheet.close(); return; }
     const cmp = event.target.closest('[data-sheet-compare]');
-    if (cmp) { $('marketGrid').querySelector(`[data-compare="${cmp.dataset.sheetCompare}"]`)?.click(); renderProductSheet(sheetId); }
+    if (cmp) {
+      $('marketGrid').querySelector(`[data-compare="${cmp.dataset.sheetCompare}"]`)?.click();
+      const on = selected.has(sheetId);
+      cmp.setAttribute('aria-pressed', String(on));
+      cmp.textContent = on ? 'Quitar de comparación' : 'Comparar';
+    }
   });
   productSheet.addEventListener('close', () => {
-    document.body.style.overflow = '';
+    if (productSheet.open) return;
     const card = sheetOpener?.isConnected ? sheetOpener : $('marketGrid').querySelector(`[data-open-product="${sheetId}"]`);
-    card?.focus?.({ preventScroll: true }); sheetOpener = null; sheetId = null;
+    if (location.hash.startsWith('#componentes')) card?.focus?.({ preventScroll: true }); sheetOpener = null; sheetId = null;
   });
-  window.addEventListener('fenixa-build-changed', () => { if (productSheet.open && sheetId) renderProductSheet(sheetId); });
+  window.addEventListener('fenixa-build-changed', () => {
+    if (!productSheet.open || !sheetId) return;
+    const adding = document.activeElement?.matches('[data-add-my-build]');
+    renderProductSheet(sheetId);
+    if (adding) productSheet.querySelector('[data-add-my-build]')?.focus({ preventScroll: true });
+  });
   window.addEventListener('hashchange', () => { if (productSheet.open) productSheet.close(); });
   $('marketGrid').addEventListener('click', event => {
     const opener = event.target.closest('[data-open-product]');
@@ -359,7 +398,7 @@
     if(build.sources?.length){const links=document.createElement('div');links.className='product-links';links.innerHTML=build.sources.map(s=>external(s.url,esc(s.label))).join('');dialog.querySelector('.build-notes').append(links);}
     $('saveBuild').addEventListener('click', () => {
       if (!toggleSaved(build.id)) return;
-      $('saveBuild').textContent = saved.has(build.id) ? 'Build guardada ' : 'Guardar build original'; $('saveBuild').setAttribute('aria-pressed', String(saved.has(build.id))); renderGallery();
+      $('saveBuild').textContent = saved.has(build.id) ? 'Build guardada ' : 'Guardar build original'; $('saveBuild').setAttribute('aria-pressed', String(saved.has(build.id))); renderGallery(); window.FENIXA_MOTION?.pulse($('saveBuild'));
     });
     $('shareBuild').addEventListener('click', async () => {
       try { await navigator.clipboard.writeText(location.href); $('shareBuild').textContent = 'Enlace copiado '; } catch { $('buildShareUrl').hidden = false; $('buildShareUrl').value = location.href; $('buildShareUrl').select(); }
@@ -441,42 +480,71 @@
     event.preventDefault(); const name = event.key === 'Home' ? 'parts' : event.key === 'End' ? 'checks' : event.target.dataset.detailTab === 'parts' ? 'checks' : 'parts'; activateDetailTab(name); dialog.querySelector(`[data-detail-tab="${name}"]`).focus();
   });
   dialog.addEventListener('cancel', event => { event.preventDefault(); location.hash = 'builds'; });
-  dialog.addEventListener('close', () => { document.body.style.overflow = ''; activeBuild = null; if (location.hash.startsWith('#build/')) history.replaceState(null, '', '#builds'); opener?.focus({ preventScroll: true }); });
+  dialog.addEventListener('close', () => {
+    if (dialog.open) return;
+    if (location.hash.startsWith('#build/')) history.replaceState(null, '', '#builds');
+    if (location.hash === '#builds') {
+      const target = opener?.isConnected && opener !== document.body ? opener :
+        $('buildGallery').querySelector(`button[data-open-build="${activeBuild}"]`);
+      target?.focus({ preventScroll: true });
+    }
+    activeBuild = null;
+    opener = null;
+  });
   function routeBuild() {
     const id = location.hash.startsWith('#build/') ? location.hash.slice(7) : null;
     const build = completeBuilds.find(b => b.id === id);
-    if (build) { if (activeBuild !== build.id) { activeBuild = build.id; renderDetail(build); } if (!dialog.open) { opener = document.activeElement; dialog.showModal(); document.body.style.overflow = 'hidden'; } }
+    if (build) { if (activeBuild !== build.id) { activeBuild = build.id; renderDetail(build); } if (!dialog.open) { opener ||= document.activeElement; dialog.showModal(); } }
     else if (dialog.open) dialog.close();
   }
   $('buildGallery').addEventListener('click', event => {
     const save=event.target.closest('[data-save-build]');
-    if(save){const id=save.dataset.saveBuild;if(completeBuilds.some(b=>b.id===id)&&toggleSaved(id)){renderGallery();$('buildGallery').querySelector(`[data-save-build="${id}"]`)?.focus({preventScroll:true});}return;}
+    if (save) {
+      const id = save.dataset.saveBuild;
+      if (completeBuilds.some(b => b.id === id) && toggleSaved(id)) {
+        renderGallery();
+        const button = $('buildGallery').querySelector(`[data-save-build="${id}"]`);
+        button?.focus({preventScroll:true});
+        window.FENIXA_MOTION?.pulse(button);
+      }
+      return;
+    }
     const button = event.target.closest('[data-open-build]'); if (button) { opener = button.matches('article') ? button.querySelector('button[data-open-build]') : button; location.hash = `build/${button.dataset.openBuild}`; }
   });
   window.addEventListener('hashchange', routeBuild);
   const menu = document.querySelector('.mobile-menu');
   const sidebar = document.querySelector('.sidebar'), scrim = document.querySelector('.menu-scrim');
+  let menuOrigin;
   function setMenu(open, restoreFocus = false) {
+    if (open) {
+      window.FENIXA_MOTION?.prepareScrollLock();
+      menuOrigin = { hash: location.hash, top: window.scrollY };
+    }
     sidebar.classList.toggle('menu-open', open);
     sidebar.inert = !open && !(typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(min-width: 1024px)').matches);
     menu.setAttribute('aria-expanded', String(open));
     menu.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
     if (scrim) scrim.hidden = !open;
-    if (restoreFocus) menu.focus();
+    if (restoreFocus) {
+      menu.focus({ preventScroll: true });
+      if (menuOrigin?.hash === location.hash) window.scrollTo({top:menuOrigin.top,behavior:'instant'});
+    }
+    if (!open) menuOrigin = null;
   }
   menu.setAttribute('aria-expanded', 'false');
   menu.addEventListener('click', () => {
     const open = !sidebar.classList.contains('menu-open');
     setMenu(open);
-    if (open) sidebar.querySelector('.nav-link')?.focus();
+    if (open) sidebar.querySelector('.nav-link')?.focus({ preventScroll: true });
   });
+  window.addEventListener('hashchange', () => { if (sidebar.classList.contains('menu-open')) setMenu(false); });
   scrim?.addEventListener('click', () => setMenu(false, true));
   document.querySelectorAll('.nav-link, .brand').forEach(link => link.addEventListener('click', () => setMenu(false)));
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && sidebar.classList.contains('menu-open')) setMenu(false, true);
   });
   document.addEventListener('focusin', event => {
-    if (sidebar.classList.contains('menu-open') && !sidebar.contains(event.target) && event.target !== menu) setMenu(false);
+    if (sidebar.classList.contains('menu-open') && !sidebar.contains(event.target) && event.target !== menu && event.target !== scrim) setMenu(false);
   });
   window.renderProductCatalog(); renderGallery(); routeBuild(); syncFromHash();
   // auto-build.js carga después: al terminar la carga se repinta con las referencias.

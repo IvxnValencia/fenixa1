@@ -12,7 +12,10 @@
   }
   function syncSidebar() {
     if (!sidebar) return;
-    if (desktop.matches) { sidebar.inert = false; sidebar.classList.remove('menu-open'); const scrim = document.querySelector('.menu-scrim'); if (scrim) scrim.hidden = true; }
+    if (desktop.matches) { sidebar.inert = false; sidebar.classList.remove('menu-open'); const scrim = document.querySelector('.menu-scrim'); if (scrim) scrim.hidden = true;
+      const mobile = document.querySelector('.mobile-menu');
+      mobile?.setAttribute('aria-expanded', 'false');
+      mobile?.setAttribute('aria-label', 'Abrir menú'); }
     else if (!sidebar.classList.contains('menu-open')) sidebar.inert = true;
   }
   let stored = null; try { stored = localStorage.getItem(KEY); } catch (error) {}

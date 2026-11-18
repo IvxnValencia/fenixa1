@@ -41,7 +41,9 @@
       dialog.querySelector('#laptopDetailStatus').textContent = document.getElementById('laptopCompareStatus').textContent;
     }
   });
+  window.addEventListener('hashchange', () => { if (dialog.open) dialog.close(); });
   dialog.addEventListener('close', () => {
+    if (dialog.open || location.hash !== '#laptops') return;
     const opener = grid.querySelector(`[data-open-laptop="${currentId}"]`) || document.getElementById('laptopSearch');
     opener.focus({ preventScroll: true });
   });

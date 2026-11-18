@@ -61,7 +61,7 @@
     const save=event.target.closest('[data-save-build]');
     const restore=event.target.closest('[data-restore-build]');
     const remove=event.target.closest('[data-delete-saved-build]');
-    if(save&&!save.disabled)open('save',null,save);
+    if(save && !save.disabled && !save.dataset.saveBuild) open('save',null,save);
     if(restore&&!restore.disabled)open('restore',restore.dataset.restoreBuild,restore);
     if(remove&&!remove.disabled)open('delete',remove.dataset.deleteSavedBuild,remove);
   });
@@ -77,8 +77,22 @@
     message=pending.action==='save'?'Versión guardada. Puedes seguir cambiando tu build actual.':pending.action==='delete'?'Versión eliminada. Tu build activa se conserva.':result.persisted?'Build recuperada con sus piezas y presupuesto.':'Build recuperada en esta pestaña, pero no se pudo guardar la selección activa. Tus versiones anteriores se conservan.';
     if(pending.action==='import')message='Versiones importadas. Tu selección activa se conserva; revisa cada versión antes de usarla.';
     expanded=true;window.dispatchEvent(new Event('fenixa-library-changed'));dialog.close();
+    if (pending?.action === 'save') {
+      const cart = document.getElementById('carrito');
+      const counter = cart && !cart.hidden ? cart.querySelector('#cartSavedTitle + span') : document.querySelector('#savedBuildsTitle span');
+      window.FENIXA_MOTION?.pulse(counter);
+    }
   });
-  dialog.addEventListener('close',()=>{pending=null;const focus=opener?.isConnected?opener:(document.getElementById('carrito')?.hidden===false?document.getElementById('cartTitle'):document.getElementById('savedBuildsSummary'));focus?.focus({preventScroll:true});opener=null;});
+  dialog.addEventListener('close', () => {
+    if (dialog.open) return;
+    const cart = document.getElementById('carrito');
+    const region = cart && !cart.hidden ? cart : document.getElementById('mi-build');
+    const save = pending?.action === 'save' && region?.querySelector('[data-save-build]:not(:disabled)');
+    const target = opener?.isConnected ? opener : save || (region === cart ? document.getElementById('cartTitle') : document.getElementById('savedBuildsSummary'));
+    if (!target?.closest?.('[hidden], [inert]')) target?.focus({preventScroll:true});
+    pending = null;
+    opener = null;
+  });
   window.addEventListener('hashchange',()=>{if(dialog.open)dialog.close();});
   document.addEventListener('change',async event=>{
     if(event.target.id!=='buildImportFile')return;
