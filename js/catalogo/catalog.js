@@ -152,9 +152,10 @@
       $('componentes').scrollIntoView({ block: 'start', behavior: 'instant' });
     });
   }
-  window.FENIXA_BROWSE_CATEGORY = category => {
+  window.FENIXA_BROWSE_CATEGORY = (category, query = '') => {
     if (!categories.some(c => c.id === category)) return;
     resetCatalogFilters();
+    if (query) $('catalogSearch').value = query;
     $('categoryFilter').value = category;
     window.renderProductCatalog();
     const target = '#componentes/' + category;
@@ -341,10 +342,29 @@
     return window.FENIXA_BUILD_DISCOVERY.total(b,id=>market.price(byId[id]));
   };
   const buildPrice = b => { const t=buildTotal(b); return t.count ? `${t.complete?'Subtotal':'Subtotal parcial'}: ${money(t.sum)}` : 'Precio por confirmar'; };
-  // La foto del gabinete usa la misma superficie transparente que Componentes.
-  const buildPhoto = b => {
-    const cabinet = byId[b.caseId] || b.parts.map(id => byId[id]).find(p => p?.category === 'case');
-    return cabinet ? `<img class="product-image" src="${esc(thumb(cabinet.image))}" alt="${esc(shortName(cabinet))}" width="480" height="360" loading="eager" decoding="async">` : '';
+  // Choose covers once in featured order so filtering never changes a build's photo.
+  const covers = new Map(), photoUses = new Map(), recentCategories = [];
+  const featuredBuilds = [...completeBuilds].sort((a,b) => (a.targetBudget || Infinity) - (b.targetBudget || Infinity));
+  for (const build of featuredBuilds) {
+    const candidates = build.parts.map(id => byId[id]).filter(part => part?.image && part.imageKind !== 'category');
+    const graphicsBuild = ['gaming', 'creativo'].includes(build.use) && candidates.some(part => part.category === 'gpu');
+    const priority = /archivos|almacenamiento|\b1 TB\b/i.test(build.name) ? 'storage' :
+      /compact/i.test(build.name) ? 'case' : graphicsBuild ? 'gpu' : 'cpu';
+    candidates.sort((a,b) => (photoUses.get(a.image) || 0) - (photoUses.get(b.image) || 0) ||
+      Number(recentCategories.includes(a.category)) - Number(recentCategories.includes(b.category)) ||
+      Number(b.category === priority) - Number(a.category === priority));
+    const cover = candidates[0] || byId[build.caseId];
+    if (!cover) continue;
+    covers.set(build.id, cover);
+    photoUses.set(cover.image, (photoUses.get(cover.image) || 0) + 1);
+    recentCategories.unshift(cover.category);
+    recentCategories.length = Math.min(recentCategories.length, 6);
+  }
+  const buildPhoto = build => {
+    const part = covers.get(build.id);
+    if (!part) return '';
+    const label = esc(categoryName(part.category) + ' · ' + shortName(part));
+    return `<img class="product-image" src="${esc(thumb(part.image))}" alt="${label}" title="${label}" width="480" height="360" loading="eager" decoding="async">`;
   };
   // Referencia total: misma suma que Armar mi PC y Mi build (FENIXA_AUTO_BUILD.reference); «Sin precio» si falta alguna.
   const buildRef = b => {

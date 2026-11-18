@@ -104,6 +104,26 @@ body .pc-edit-form[hidden], body .compare-tray[hidden] { display: none; }
   align-items: start;
   gap: var(--ui-space-3);
 }
+.profile-layout:not([data-step="mejoras"]) {
+  grid-template-columns: minmax(0, 720px);
+}
+.profile-device-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  gap: var(--ui-space-2);
+  margin-top: var(--ui-space-2);
+}
+#mi-pc .profile-device-options button.secondary-button {
+  min-height: 88px;
+  justify-content: flex-start;
+  gap: var(--ui-space-2);
+  padding: var(--ui-space-2);
+  background: var(--surface-2);
+  color: var(--text);
+}
+.profile-device-options svg { width: 28px; height: 28px; flex: none; color: var(--purple); }
+#profileTeamTitle, #profileDeviceTitle { scroll-margin-top: calc(var(--storefront-header, 64px) + var(--ui-space-2)); }
+#profileDeviceChange { color: var(--purple); font-size: 14px; }
 .profile-panel {
   min-width: 0;
   padding: var(--ui-space-3);

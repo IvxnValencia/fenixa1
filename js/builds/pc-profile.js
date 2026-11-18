@@ -7,13 +7,14 @@
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const field = (id, label, options) => `<label><span>${label}</span><select name="${id}" id="profile-${id}"><option value="">Sin indicar</option>${options.map(([value, text]) => `<option value="${value}">${text}</option>`).join('')}</select></label>`;
   const input = (id, label, placeholder) => `<label><span>${label}</span><input id="profile-${id}" name="${id}" maxlength="100" placeholder="${placeholder}" autocomplete="off"></label>`;
+  const devices = { desktop: 'PC de escritorio', laptop: 'Laptop' };
   const categoryLabels = {
     storage: 'Ver discos en el catálogo',
     ram: 'Ver memorias RAM',
     gpu: 'Ver tarjetas gráficas'
   };
 
-  let saved = null, migrated = false, storageUnavailable = false;
+  let saved = null, migrated = false, storageUnavailable = false, sessionOnly = false;
   try {
     const existing = localStorage.getItem(key);
     if (existing) {
@@ -34,34 +35,46 @@
   section.innerHTML = `
     <div class="section-heading">
       <div>
-        <h2 id="pc-title">Mi PC y mejoras</h2>
-        <p>Registra tu equipo actual y descubre qué revisar antes de actualizarlo.</p>
+        <h2 id="pc-title">Mejorar mi PC</h2>
+        <p id="profileIntro">Elige tu equipo para encontrar las mejoras que encajan con tu uso.</p>
       </div>
     </div>
-    <div class="profile-layout">
-      <article class="profile-panel" aria-labelledby="profileTeamTitle">
+    <div class="profile-layout" id="profileLayout">
+      <article class="profile-panel" id="profileDevicePanel" aria-labelledby="profileDeviceTitle">
+        <h3 id="profileDeviceTitle" tabindex="-1">¿Qué equipo quieres mejorar?</h3>
+        <div class="profile-device-options">
+          <button type="button" class="secondary-button" data-device="desktop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M12 17v4m-5 0h10"/></svg>PC de escritorio</button>
+          <button type="button" class="secondary-button" data-device="laptop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="4" y="4" width="16" height="12" rx="2"/><path d="m4 16-2 4h20l-2-4"/></svg>Laptop</button>
+        </div>
+      </article>
+      <article class="profile-panel profile-results" id="profileResults" aria-labelledby="profileAdviceTitle" hidden>
+        <h3 id="profileAdviceTitle" tabindex="-1">Tus mejoras</h3>
+        <div id="profileAdvice"></div>
+        <p class="profile-purchase-note" id="profilePurchaseNote" hidden>Confirma la compatibilidad con el modelo exacto antes de comprar.</p>
+      </article>
+      <article class="profile-panel" id="profileTeamPanel" aria-labelledby="profileTeamTitle" hidden>
         <div class="profile-heading">
-          <h3 id="profileTeamTitle">Mi equipo</h3>
+          <h3 id="profileTeamTitle" tabindex="-1">Tu perfil</h3>
+          <a href="#mi-pc/equipo" id="profileDeviceChange">Cambiar equipo</a>
           <button type="button" class="secondary-button" id="profileEdit" aria-controls="profileForm">Editar equipo</button>
         </div>
         <div id="profileSummary"></div>
         <form id="profileForm">
-          <p class="profile-hint">Indica al menos un dato. Puedes dejar en blanco lo que desconozcas.</p>
+          <input type="hidden" name="device" id="profile-device">
           <fieldset class="profile-group profile-priority">
-            <legend>Uso y equipo</legend>
+            <legend>Uso y objetivo</legend>
             <div class="profile-fields">
               ${field('use', 'Uso principal', [['study', 'Estudio y trabajo'], ['gaming', 'Juegos'], ['creative', 'Edición y creación']])}
               ${field('symptom', '¿Qué quieres mejorar?', [['none', 'Nada por ahora'], ['slow', 'Lentitud'], ['memory', 'Me falta memoria'], ['space', 'Me falta espacio'], ['fps', 'FPS en juegos']])}
-              ${field('device', 'Tipo de equipo', [['desktop', 'Escritorio'], ['laptop', 'Portátil']])}
-              ${input('name', 'Nombre del equipo', 'Ej.: Mi PC de estudio')}
             </div>
           </fieldset>
           <details class="profile-hardware">
-            <summary>Componentes y almacenamiento</summary>
+            <summary>Componentes y almacenamiento (opcional)</summary>
             <div class="profile-hardware-body">
               <fieldset class="profile-group">
                 <legend>Modelo y procesador</legend>
                 <div class="profile-fields">
+                  ${input('name', 'Nombre del equipo', 'Ej.: Mi PC de estudio')}
                   ${input('cpu', 'Procesador', 'Ej.: Ryzen 5 3600')}
                   ${input('board', 'Placa base o modelo del portátil', 'Modelo exacto')}
                 </div>
@@ -85,7 +98,7 @@
             </div>
           </details>
           <div class="profile-actions">
-            <button class="primary-button" type="submit">Guardar y ver orientación</button>
+            <button class="primary-button" type="submit">Ver mis mejoras</button>
             <button class="secondary-button" type="button" id="profileCancel">Cancelar</button>
           </div>
         </form>
@@ -99,26 +112,29 @@
           </div>
         </details>
       </article>
-      <article class="profile-panel profile-results" aria-labelledby="profileAdviceTitle">
-        <h3 id="profileAdviceTitle" tabindex="-1">Orientación de mejoras</h3>
-        <div id="profileAdvice"></div>
-        <p class="profile-purchase-note" id="profilePurchaseNote" hidden>Confirma la compatibilidad con el modelo exacto antes de comprar.</p>
-      </article>
     </div>`;
 
   const form = $('profileForm');
+  const device = $('profile-device');
+  const use = $('profile-use');
+  const goal = $('profile-symptom');
+  use.required = true;
+  goal.required = true;
+  let step = null;
+
+  function restoreForm() {
+    setForm(saved);
+    if (use.value) return;
+    try {
+      const builder = JSON.parse(localStorage.getItem('fenixa-builder') || '{}');
+      use.value = { estudio:'study', trabajo:'study', gaming:'gaming', creativo:'creative' }[builder.use] || '';
+    } catch { /* A profile can be completed without browser storage. */ }
+  }
 
   function setForm(profile) {
     for (const element of form.elements) {
       if (element.name) element.value = profile?.[element.name] || '';
     }
-  }
-
-  function setEditing(editing) {
-    $('profileEdit').hidden = !saved || editing;
-    $('profileCancel').hidden = !saved;
-    $('profileSummary').hidden = !saved || editing;
-    form.hidden = Boolean(saved) && !editing;
   }
 
   function status(message = '', error = false) {
@@ -129,27 +145,24 @@
 
   function renderSummary() {
     if (!saved) return;
-    const facts = Array.from(form.querySelectorAll('[name]')).filter(control => control.name !== 'name' && control.value).map(control => {
+    const facts = Array.from(form.querySelectorAll('[name]')).filter(control => control.name !== 'name' && control.name !== 'device' && control.value).map(control => {
       const label = control.labels[0].firstElementChild.textContent;
       const value = control.selectedOptions?.[0].textContent || control.value;
       return `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
     });
     $('profileSummary').innerHTML = `
       <div class="profile-saved">
-        <h4>${esc(saved.name || 'Mi PC')}</h4>
-        <p class="profile-hint">Guardado en este navegador.</p>
+        <h4>${esc(saved.name || devices[saved.device])}</h4>
+        <p class="profile-hint">${sessionOnly ? 'Disponible en esta pestaña.' : 'Guardado en este navegador.'}</p>
       </div>
       ${facts.length ? `<dl>${facts.join('')}</dl>` : ''}`;
   }
 
   function renderAdvice() {
-    $('profileAdviceTitle').textContent = saved ? 'Qué revisar antes de comprar' : 'Orientación de mejoras';
-    $('profilePurchaseNote').hidden = !saved;
-    if (!saved) {
-      $('profileAdvice').innerHTML = '<p class="profile-empty">Guarda los datos que conozcas para ver qué revisar en tu equipo según el uso y la mejora que buscas.</p>';
-      return;
-    }
-    const items = advise(saved).map(item => `
+    $('profileAdviceTitle').textContent = saved.device === 'laptop' ? 'Mejoras para tu laptop' : 'Mejoras para tu PC de escritorio';
+    const advice = advise(saved);
+    $('profilePurchaseNote').hidden = !advice.some(item => ['ssd','ram','space','gpu'].includes(item.id));
+    const items = advice.map(item => `
       <li class="profile-advice">
         <h4>${esc(item.title)}</h4>
         <p>${esc(item.reason)}</p>
@@ -159,67 +172,82 @@
     $('profileAdvice').innerHTML = `<ul class="profile-advice-list">${items.join('')}</ul>`;
   }
 
-  function render() {
-    setEditing(false);
-    renderSummary();
-    renderAdvice();
-    if (storageUnavailable) {
-      status('No se pudo leer el perfil guardado. Puedes registrarlo de nuevo.', true);
-    } else if (migrated) {
-      status('Recuperamos tu perfil anterior. Revisa los datos y completa lo que falte.');
-    } else {
-      status();
-    }
+  function syncStep() {
+    const match = /^#mi-pc(?:\/(equipo|perfil|mejoras))?$/.exec(location.hash);
+    if (!match) { step = null; return; }
+    if (!step || !match[1]) restoreForm();
+    const complete = Boolean(saved?.device && saved.use && saved.symptom);
+    const entry = complete ? 'mejoras' : device.value ? 'perfil' : 'equipo';
+    let next = match[1] || entry;
+    if (next === 'mejoras' && !complete) next = entry;
+    if (next === 'perfil' && !device.value) next = 'equipo';
+    const route = '#mi-pc/' + next;
+    if (location.hash !== route) history.replaceState(null, '', route);
+    step = next;
+    const editing = step === 'perfil', results = step === 'mejoras';
+    $('profileDevicePanel').hidden = step !== 'equipo';
+    $('profileTeamPanel').hidden = step === 'equipo';
+    $('profileResults').hidden = !results;
+    $('profileLayout').dataset.step = step;
+    $('profileSummary').hidden = !results;
+    $('profileEdit').hidden = !results;
+    $('profileDeviceChange').hidden = !editing;
+    $('profileCancel').hidden = !complete;
+    form.hidden = !editing;
+    $('profileTeamPanel').querySelector('.profile-help').hidden = !editing;
+    if (results) setForm(saved);
+    $('profileTeamTitle').textContent = results ? 'Tu perfil' : 'Tu perfil de ' + (device.value === 'laptop' ? 'laptop' : 'escritorio');
+    $('profile-board').labels[0].firstElementChild.textContent = device.value === 'laptop' ? 'Modelo exacto de la laptop' : 'Modelo de placa base';
+    if (results) { renderSummary(); renderAdvice(); }
+    $('profileIntro').textContent = results ? use.selectedOptions[0].textContent + ' · ' + goal.selectedOptions[0].textContent :
+      editing ? 'Elige tu uso principal y qué quieres mejorar. Puedes añadir los componentes que conozcas.' :
+      'Elige tu equipo para encontrar las mejoras que encajan con tu uso.';
+    status(storageUnavailable ? 'No se pudo leer el perfil guardado.' : migrated ? 'Recuperamos tus datos anteriores. Completa tu perfil para ver las mejoras.' : '', storageUnavailable);
+    const panel = results ? $('profileResults') : editing ? $('profileTeamPanel') : $('profileDevicePanel');
+    requestAnimationFrame(() => {
+      if (location.hash !== route) return;
+      const heading = panel.querySelector('h3');
+      heading.focus({preventScroll:true});
+      heading.scrollIntoView({block:'nearest', behavior:'instant'});
+      window.FENIXA_MOTION?.reveal(results ? $('profileAdvice') : panel);
+    });
   }
 
-  $('profileEdit').addEventListener('click', () => {
-    setEditing(true);
-    status('La orientación se actualizará al guardar.');
-    $('profile-use').focus();
+  $('profileDevicePanel').addEventListener('click', event => {
+    const choice = event.target.closest('[data-device]');
+    if (!choice) return;
+    const nextDevice = choice.dataset.device;
+    if (device.value && device.value !== nextDevice) {
+      const hardware = saved?.device === nextDevice ? saved : {};
+      setForm({ ...hardware, use: use.value, symptom: goal.value });
+    }
+    device.value = nextDevice;
+    location.hash = 'mi-pc/perfil';
   });
-  $('profileCancel').addEventListener('click', () => {
-    setForm(saved);
-    render();
-    $('profileEdit').focus();
-  });
+  $('profileEdit').addEventListener('click', () => { restoreForm(); location.hash = 'mi-pc/perfil'; });
+  $('profileCancel').addEventListener('click', () => { restoreForm(); location.hash = 'mi-pc/mejoras'; });
   form.addEventListener('input', () => {
     status(saved ? 'Cambios sin guardar.' : '');
   });
   form.addEventListener('submit', event => {
     event.preventDefault();
     const value = normalize(Object.fromEntries(new FormData(form)));
-    if (!Object.values(value).some(Boolean)) {
-      status('Indica al menos un dato para guardar tu equipo.', true);
-      return;
-    }
-    try { localStorage.setItem(key, JSON.stringify(value)); }
-    catch {
-      status('No se pudo guardar. Revisa si el navegador permite el almacenamiento local. Tus cambios siguen en el formulario.', true);
-      return;
-    }
+    if (!value.device) { location.hash = 'mi-pc/equipo'; return; }
+    if (!form.reportValidity()) return;
+    try { localStorage.setItem(key, JSON.stringify(value)); sessionOnly = false; }
+    catch { sessionOnly = true; }
     saved = value;
     migrated = false;
     storageUnavailable = false;
-    setForm(saved);
-    render();
-    window.FENIXA_MOTION?.reveal($('profileAdvice'));
     window.dispatchEvent(new Event('fenixa-profile-changed'));
-    $('profileAdviceTitle').focus();
+    location.hash = 'mi-pc/mejoras';
   });
   $('profileAdvice').addEventListener('click', event => {
     const button = event.target.closest('[data-pc-category]');
     if (!button) return;
-    $('categoryFilter').value = button.dataset.pcCategory;
-    $('catalogSearch').value = button.dataset.pcQuery;
-    $('catalogMax').value = '';
-    const route = 'componentes/' + button.dataset.pcCategory;
-    window.addEventListener('hashchange', () => {
-      requestAnimationFrame(() => {
-        if (location.hash === '#' + route) $('catalog-title')?.focus({ preventScroll: true });
-      });
-    }, { once: true });
-    location.hash = route;
+    window.FENIXA_BROWSE_CATEGORY(button.dataset.pcCategory, button.dataset.pcQuery);
   });
-  setForm(saved);
-  render();
+  window.addEventListener('hashchange', syncStep);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', syncStep, {once:true});
+  else syncStep();
 })();

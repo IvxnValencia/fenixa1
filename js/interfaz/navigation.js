@@ -7,7 +7,7 @@
     builds: { title: 'Builds completas', sections: ['#builds'] },
     laptops: { title: 'Laptops', sections: ['#laptops'] },
     configurador: { title: 'Armar mi PC', sections: ['#startBuild'] },
-    'mi-pc': { title: 'Mi PC y mejoras', sections: ['#mi-pc'] },
+    'mi-pc': { title: 'Mejorar mi PC', sections: ['#mi-pc'] },
     ensamblaje: { title: 'Guía de ensamblaje', sections: ['#ensamblaje'] }
   };
   let previousPage;
@@ -16,7 +16,7 @@
     if (hash === 'configuradorc') { history.replaceState(null, '', '#configurador'); hash = 'configurador'; }
     if (hash === 'catalogo') { history.replaceState(null, '', '#componentes'); hash = 'componentes'; }
     if (hash === 'compatibilidad') { history.replaceState(null, '', '#builds'); hash = 'builds'; }
-    const requested = hash.startsWith('build/') ? 'builds' : hash.startsWith('componentes/') ? 'componentes' : hash === 'recomendacion' ? 'configurador' : hash === 'precios' ? 'inicio' : hash;
+    const requested = hash.startsWith('mi-pc/') ? 'mi-pc' : hash.startsWith('build/') ? 'builds' : hash.startsWith('componentes/') ? 'componentes' : hash === 'recomendacion' ? 'configurador' : hash === 'precios' ? 'inicio' : hash;
     const key = Object.hasOwn(routes, requested) ? requested : 'inicio';
     const page = routes[key];
     const visible = new Set(page.sections.map(selector => document.querySelector(selector)));
