@@ -58,3 +58,149 @@ body #componentes .catalog-empty { font-size: 14px; line-height: 1.5; color: var
 .help-glossary dt { color: var(--text); font-weight: 700; }
 .help-glossary dd { margin: 0; color: var(--muted); }
 @media (max-width: 560px) { .help-glossary { grid-template-columns: 1fr; gap: 2px; } .help-glossary dd { margin-bottom: 10px; } }
+
+/* ---------- Armar mi PC: precio de partida y alternativas cuando no alcanza ---------- */
+.planner-level-floor { display: inline-block; margin-top: 6px; padding: 2px 9px; border-radius: 999px; color: var(--text); background: var(--purple-soft); font-size: 12px; font-weight: 700; }
+.planner-shortfall-grid { display: grid; gap: 14px; margin-top: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); align-items: start; }
+.planner-shortfall-block { padding: 14px 16px; border: 1px solid var(--stroke); border-radius: 14px; background: var(--surface-2, var(--surface)); }
+.planner-shortfall-block h3 { margin: 0 0 10px; font-size: 14px; line-height: 1.4; }
+.planner-shortfall-parts, .planner-laptops { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.planner-shortfall-parts li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; font-size: 13px; }
+.planner-shortfall-parts li span { grid-column: 1 / -1; color: var(--muted); font-size: 12px; }
+.planner-shortfall-parts strong { min-width: 0; overflow-wrap: anywhere; }
+.planner-laptops li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 12px; padding-bottom: 8px; border-bottom: 1px solid var(--stroke); font-size: 13px; }
+.planner-laptops li:last-child { border-bottom: 0; padding-bottom: 0; }
+.planner-laptops li span { color: var(--muted); }
+.planner-laptops li a { grid-row: 1 / 3; grid-column: 2; min-height: 36px; padding: 6px 12px; font-size: 13px; white-space: nowrap; }
+.planner-shortfall-note { margin: 10px 0 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+
+/* ---------- Mejorar mi PC: varias mejoras y piezas sugeridas ---------- */
+.profile-goals { margin: 16px 0 0; padding: 0; border: 0; min-width: 0; }
+.profile-goals legend { padding: 0; color: var(--text); font-size: 14px; font-weight: 700; }
+.profile-goals legend small { color: var(--muted); font-weight: 500; }
+.profile-goals .profile-hint { margin: 4px 0 10px; }
+.profile-goal-options { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+.profile-goal { display: flex; align-items: flex-start; gap: 10px; min-height: 44px; padding: 10px 12px; border: 1px solid var(--stroke); border-radius: 12px; background: var(--surface); color: var(--text); font-size: 14px; line-height: 1.4; cursor: pointer; }
+.profile-goal:hover { border-color: color-mix(in srgb, var(--purple) 50%, var(--stroke)); }
+.profile-goal:has(input:checked) { border-color: var(--purple); background: var(--purple-faint); }
+.profile-goal input { flex: none; width: 18px; height: 18px; margin: 1px 0 0; accent-color: var(--purple); }
+.profile-goal:has(input:focus-visible) { outline: 2px solid var(--purple); outline-offset: 2px; }
+.profile-summary-goals { grid-column: 1 / -1; }
+.profile-picks-title { margin: 14px 0 8px; color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.profile-picks { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.profile-pick { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--stroke); border-radius: 12px; background: var(--surface-2, var(--surface)); }
+.profile-pick img { width: 56px; height: 56px; object-fit: contain; border-radius: 8px; background: #fff; }
+.profile-pick-text { display: grid; gap: 2px; min-width: 0; }
+.profile-pick-text strong { overflow: hidden; color: var(--text); font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+.profile-pick-text small { color: var(--muted); font-size: 12px; line-height: 1.45; }
+.profile-pick-price { color: var(--text); font-size: 13px; font-weight: 700; }
+.profile-pick-actions { display: flex; gap: 6px; }
+.profile-pick-actions .secondary-button, .profile-pick-actions .primary-button { min-height: 36px; padding: 6px 12px; font-size: 13px; white-space: nowrap; text-decoration: none; }
+.profile-see-all { margin-top: 10px; padding: 6px 0; border: 0; color: var(--purple); background: none; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.profile-see-all:hover { text-decoration: underline; }
+@media (max-width: 640px) {
+  .profile-pick { grid-template-columns: 48px minmax(0, 1fr); }
+  .profile-pick img { width: 48px; height: 48px; }
+  .profile-pick-actions { grid-column: 1 / -1; }
+  .profile-pick-actions > * { flex: 1; text-align: center; }
+  .profile-pick-text strong { white-space: normal; }
+}
+/* La columna corta acompaña al desplazarse en lugar de dejar un hueco. */
+@media (min-width: 1024px) {
+  #profileLayout[data-step="mejoras"] { align-items: start; }
+  #profileLayout[data-step="mejoras"] #profileTeamPanel { position: sticky; top: 88px; }
+}
+
+/* ---------- Mi build: compra en cada pieza ---------- */
+body #mi-build .my-build-buy { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-top: 8px; padding: 8px 10px; border: 1px solid var(--stroke); border-radius: 10px; background: color-mix(in srgb, var(--purple) 5%, transparent); }
+body #mi-build .my-build-buy-price { display: grid; flex: 1 1 160px; min-width: 0; }
+body #mi-build .my-build-buy-price strong { color: var(--text); font-size: 15px; }
+body #mi-build .my-build-buy-price small { overflow: hidden; color: var(--muted); font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+body #mi-build .my-build-buy-link { min-height: 36px; padding: 0 14px; font-size: 13px; white-space: nowrap; text-decoration: none; }
+body #mi-build .my-build-buy-more { flex-basis: 100%; }
+body #mi-build .my-build-buy-more .store-options > summary { padding: 4px 0; color: var(--purple); font-size: 12px; font-weight: 700; cursor: pointer; }
+body #mi-build .my-build-row.is-just-changed { border-color: var(--purple); box-shadow: 0 0 0 3px color-mix(in srgb, var(--purple) 30%, transparent); transition: box-shadow .3s; }
+.my-build-to-cart { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; margin-top: 20px; padding: 16px 18px; border: 1px solid color-mix(in srgb, var(--purple) 35%, var(--stroke)); border-radius: 14px; background: var(--purple-faint); }
+.my-build-to-cart p { margin: 4px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; max-width: 62ch; }
+
+/* ---------- Catálogo: vuelta a Mi build al cambiar pieza ---------- */
+.build-return-bar { position: sticky; top: 72px; z-index: 6; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin: 0 0 16px; padding: 10px 14px; border: 1px solid var(--purple); border-radius: 12px; color: var(--text); background: color-mix(in srgb, var(--purple) 14%, var(--surface)); box-shadow: var(--shadow); font-size: 14px; }
+.build-return-bar[hidden] { display: none; }
+.build-return-bar .secondary-button { min-height: 36px; padding: 0 12px; font-size: 13px; }
+
+/* ---------- Carrito como lista de compra ---------- */
+body #carrito .cart-layout { display: grid; gap: 20px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 1100px) { body #carrito .cart-layout { grid-template-columns: minmax(0, 1fr) 320px; } body #carrito .cart-total { position: sticky; top: 88px; } }
+body #carrito .cart-stores { display: grid; gap: 16px; min-width: 0; }
+body #carrito .cart-store { border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface); overflow: hidden; }
+body #carrito .cart-store header { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; padding: 12px 16px; border-bottom: 1px solid var(--stroke); background: var(--surface-2, var(--surface)); }
+body #carrito .cart-store h3 { margin: 0; font-size: 15px; }
+body #carrito .cart-store header span { color: var(--muted); font-size: 13px; font-weight: 600; }
+body #carrito .cart-store ul { margin: 0; padding: 0; list-style: none; }
+body #carrito .cart-line { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; grid-template-areas: "img text price" "img actions actions"; align-items: center; gap: 6px 14px; padding: 12px 16px; border-top: 1px solid var(--stroke); }
+body #carrito .cart-line:first-child { border-top: 0; }
+body #carrito .cart-line img { grid-area: img; width: 56px; height: 56px; object-fit: contain; border-radius: 8px; background: #fff; }
+body #carrito .cart-line-text { grid-area: text; display: grid; min-width: 0; }
+body #carrito .cart-line-text small, body #carrito .cart-line-text span { color: var(--muted); font-size: 12px; }
+body #carrito .cart-line-text strong { overflow-wrap: anywhere; font-size: 14px; }
+body #carrito .cart-line-price { grid-area: price; text-align: right; font-size: 15px; white-space: nowrap; }
+body #carrito .cart-line-actions { grid-area: actions; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+body #carrito .cart-line-actions .primary-button, body #carrito .cart-line-actions .secondary-button { min-height: 36px; padding: 0 14px; font-size: 13px; text-decoration: none; }
+body #carrito .cart-bought { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; color: var(--text); font-size: 13px; cursor: pointer; }
+body #carrito .cart-bought input { width: 18px; height: 18px; accent-color: var(--purple); }
+body #carrito .cart-line-remove { margin-left: auto; padding: 6px 4px; border: 0; color: var(--muted); background: none; font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; }
+body #carrito .cart-line.is-bought .cart-line-text strong, body #carrito .cart-line.is-bought .cart-line-price { color: var(--muted); text-decoration: line-through; }
+body #carrito .cart-line.is-bought img { opacity: .55; }
+body #carrito .cart-total { display: grid; gap: 10px; padding: 18px; border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface); }
+body #carrito .cart-total h3 { margin: 0; font-size: 16px; }
+body #carrito .cart-total dl { display: grid; gap: 8px; margin: 0; }
+body #carrito .cart-total dl div { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+body #carrito .cart-total dt { color: var(--muted); }
+body #carrito .cart-total dd { margin: 0; font-weight: 700; text-align: right; }
+body #carrito .cart-total-left { padding-top: 8px; border-top: 1px solid var(--stroke); font-size: 16px !important; }
+body #carrito .cart-total-left dd { color: var(--purple); }
+body #carrito .cart-warning, body #carrito .cart-note { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+body #carrito .cart-warning { color: var(--text); }
+body #carrito .cart-copy-status { margin: 0; min-height: 1em; color: var(--muted); font-size: 12px; }
+body #carrito .cart-saved-link { margin: 20px 0 0; color: var(--muted); font-size: 13px; }
+body #carrito .cart-saved-link a { color: var(--purple); font-weight: 700; }
+@media (max-width: 560px) {
+  body #carrito .cart-line { grid-template-columns: 48px minmax(0, 1fr); grid-template-areas: "img text" "img price" "actions actions"; }
+  body #carrito .cart-line img { width: 48px; height: 48px; }
+  body #carrito .cart-line-price { text-align: left; }
+}
+/* La lista de compra ocupa todo el ancho (antes eran dos columnas de tarjetas). */
+body #carrito:not([hidden]), body .cart-drawer #carrito:not([hidden]) { display: block; }
+body #carrito > .section-heading { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+body .cart-drawer #carrito .cart-layout { grid-template-columns: minmax(0, 1fr); }
+body .cart-drawer #carrito .cart-total { position: static; }
+
+/* ---------- Proporciones: guía de ensamblaje ----------
+   Antes, el checklist (14 pasos) iba en la columna estrecha junto al visor 3D y la
+   dejaba el doble de alta, con un gran hueco bajo el visor. Ahora el paso actual
+   acompaña al visor y el checklist ocupa todo el ancho en varias columnas. */
+@media (min-width: 1440px) {
+  body .assembly-layout > .assembly-side { display: contents; }
+  body .assembly-layout > .assembly-preview { grid-column: 1; grid-row: 1; }
+  body .assembly-layout .assembly-step-panel { grid-column: 2; grid-row: 1; align-self: stretch; }
+  body .assembly-layout .assembly-side > .assembly-card { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (min-width: 760px) {
+  body .assembly-layout .assembly-steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px 12px; align-items: start; }
+  body .assembly-layout .assembly-steps > .assembly-step-wrap { margin: 0; }
+}
+
+/* ---------- Proporciones: Armar mi PC ----------
+   Las dos columnas (pasos y propuesta) se alinean arriba y la más corta acompaña
+   al desplazarse. La más alta define la fila, así que nunca queda contenido oculto. */
+@media (min-width: 1200px) {
+  body #startBuild .start-controls { align-items: start; }
+  body #startBuild .start-controls > :not([hidden]) { position: sticky; top: 88px; }
+}
+/* Textos largos (nombres de piezas, tiendas) se parten en vez de salirse de su tarjeta. */
+body #startBuild .planner-row-name, body #mi-build .my-build-row h3, body #carrito .cart-line-text strong { overflow-wrap: anywhere; }
+/* Resumen CPU · GPU de builds y laptops: antes se cortaba con «…» en una línea. */
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) .catalog-brief { height: auto; min-height: 32px; white-space: normal; overflow: visible; text-overflow: clip; }
+body #mi-pc .profile-pick-text strong { white-space: normal; overflow: visible; }
+/* En pantallas estrechas el resumen (lo que falta por pagar) va antes de la lista. */
+@media (max-width: 1099px) { body #carrito .cart-total { order: -1; } }
