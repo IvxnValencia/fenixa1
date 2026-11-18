@@ -1,0 +1,60 @@
+/* Correcciones de usabilidad a partir de la evaluación heurística:
+   deshacer al quitar piezas, mensajes de búsqueda vacía con su causa,
+   aviso de presupuesto y sección de Ayuda. Usa los tokens de color de FENIXA. */
+
+/* ---------- Deshacer al quitar una pieza ---------- */
+.build-undo {
+  position: fixed; left: 50%; bottom: 24px; z-index: 40;
+  display: flex; align-items: center; gap: 10px;
+  max-width: min(520px, calc(100vw - 32px)); padding: 10px 10px 10px 16px;
+  border: 1px solid color-mix(in srgb, var(--purple) 40%, var(--stroke)); border-radius: 14px;
+  color: var(--text); background: var(--surface); box-shadow: var(--shadow);
+  transform: translateX(-50%); font-size: 14px;
+}
+.build-undo[hidden] { display: none; }
+.build-undo-text { flex: 1; min-width: 0; line-height: 1.4; }
+.build-undo-action { min-height: 40px; padding: 8px 14px; border: 0; border-radius: 10px; color: #fff; background: var(--purple-strong); font: inherit; font-weight: 700; cursor: pointer; }
+.build-undo-action:hover { background: var(--purple); }
+.build-undo-close { display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 9px; color: var(--muted); background: transparent; font-size: 20px; line-height: 1; cursor: pointer; }
+.build-undo-close:hover { color: var(--text); background: var(--surface-2); }
+.build-undo button:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+@media (max-width: 760px) {
+  /* Por encima del botón flotante de Mi build. */
+  .build-undo { left: 16px; right: 16px; bottom: calc(92px + var(--build-quick-height, 52px)); max-width: none; transform: none; }
+  /* En Mi build el botón flotante se oculta: la barra baja a su sitio natural. */
+  body:has(#mi-build:not([hidden])) .build-undo { bottom: max(16px, env(safe-area-inset-bottom)); }
+}
+
+/* ---------- Búsqueda: resultados vacíos y corrección ---------- */
+body #componentes .catalog-empty { font-size: 14px; line-height: 1.5; color: var(--text); }
+.catalog-empty p { max-width: 62ch; margin: 0 auto; }
+.catalog-empty-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 14px; }
+.catalog-search-note { display: inline-block; margin-left: 10px; padding: 3px 9px; border-radius: 999px; color: var(--text); background: var(--purple-soft); font-size: 12px; }
+.catalog-search-note[hidden] { display: none; }
+
+/* ---------- Presupuesto ---------- */
+#myBuildBudgetSummary[data-kind="over"] { padding: 8px 10px; border-left: 3px solid var(--red); border-radius: 0 8px 8px 0; color: var(--text); background: color-mix(in srgb, var(--red) 12%, transparent); font-weight: 700; }
+#myBuildBudgetSummary[data-kind="maybe"] { padding: 8px 10px; border-left: 3px solid var(--amber); border-radius: 0 8px 8px 0; color: var(--text); background: color-mix(in srgb, var(--amber) 12%, transparent); font-weight: 600; }
+.build-quick-budget { margin: 8px 0 0; padding: 8px 10px; border-left: 3px solid var(--amber); border-radius: 0 8px 8px 0; color: var(--text); background: color-mix(in srgb, var(--amber) 12%, transparent); font-size: 13px; }
+.build-quick-dock.is-over-budget .build-quick-budget { border-color: var(--red); background: color-mix(in srgb, var(--red) 12%, transparent); }
+/* Con el panel cerrado, un punto indica que la build se pasa del objetivo. */
+.build-quick-dock.is-over-budget #buildQuickCount::after { content: ""; display: inline-block; width: 8px; height: 8px; margin-left: 6px; border-radius: 50%; background: var(--red); vertical-align: middle; }
+
+/* ---------- Ayuda y preguntas frecuentes ---------- */
+.help-topics { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 20px; }
+.help-topics a { padding: 8px 14px; border: 1px solid var(--stroke); border-radius: 999px; color: var(--text); background: var(--surface); font-size: 14px; font-weight: 600; text-decoration: none; }
+.help-topics a:hover, .help-topics a:focus-visible { border-color: color-mix(in srgb, var(--purple) 50%, var(--stroke)); background: var(--purple-faint); }
+.help-groups { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); align-items: start; }
+.help-group { padding: 18px 20px; border: 1px solid var(--stroke); border-radius: 18px; background: var(--surface); scroll-margin-top: 90px; }
+.help-group h3 { margin: 0 0 8px; font-size: 18px; outline: none; }
+.help-group details { border-top: 1px solid var(--stroke-soft, var(--stroke)); }
+.help-group details:first-of-type { border-top: 0; }
+.help-group summary { padding: 12px 0; color: var(--text); font-size: 15px; font-weight: 700; cursor: pointer; }
+.help-group summary:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; border-radius: 6px; }
+.help-group details p { margin: 0 0 12px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+.help-group details p strong { color: var(--text); }
+.help-group a { color: var(--purple); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.help-glossary { display: grid; grid-template-columns: minmax(110px, max-content) 1fr; gap: 10px 16px; margin: 6px 0 0; font-size: 14px; line-height: 1.5; }
+.help-glossary dt { color: var(--text); font-weight: 700; }
+.help-glossary dd { margin: 0; color: var(--muted); }
+@media (max-width: 560px) { .help-glossary { grid-template-columns: 1fr; gap: 2px; } .help-glossary dd { margin-bottom: 10px; } }

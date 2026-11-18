@@ -469,6 +469,7 @@
     <link rel="stylesheet" href="css/cart.css?v=3">
     <link rel="stylesheet" href="css/assembly-3d.css?v=6">
     <link rel="stylesheet" href="css/motion.css?v=1">
+    <link rel="stylesheet" href="css/usability.css?v=2">
     <link rel="stylesheet" href="css/hero-fenixa.css?v=6">
   </head>
   <body>
@@ -486,6 +487,7 @@
           <a class="nav-link" href="#mi-pc" title="Mejorar mi PC"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect class="nav-icon-tint" x="3" y="4" width="18" height="13" rx="3"/><rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21h8m-4-4v4M7 11h3l2-4 2 7 2-3h2"/></svg><span class="nav-text">Mejorar mi PC</span></a>
 
           <a class="nav-link" href="#ensamblaje" title="Guía de ensamblaje"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path class="nav-icon-tint" d="m4 16 7-7 4 4-7 7H4z"/><path d="m4 16 9-9m-4-4 5 5m-1-5 5 5M15 5l3-3 4 4-3 3M4 16v4h4l9-9M4 4l16 16"/></svg><span class="nav-text">Guía de ensamblaje</span></a>
+          <a class="nav-link" href="#ayuda" title="Ayuda y preguntas frecuentes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle class="nav-icon-tint" cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.7M12 17h.01"/></svg><span class="nav-text">Ayuda</span></a>
         </nav>
 </aside>
       <button class="menu-scrim" type="button" aria-label="Cerrar menú" hidden tabindex="-1"></button>
@@ -559,7 +561,7 @@
           <section class="section visual-catalog" id="componentes" aria-labelledby="parts-title" hidden>
             <div class="cmp-view" id="catalogo" data-view="grid">
               <div class="section-heading cmp-bar">
-                <div class="cmp-bar-left"><h2 id="parts-title">Elige una categoría</h2><span class="cmp-deep" hidden><button class="secondary-button cmp-back" id="catalogBack" type="button">← Categorías</button><h2 id="catalog-title" tabindex="-1">Modelos</h2><span class="catalog-count" id="catalogCount" role="status">0 modelos</span></span></div>
+                <div class="cmp-bar-left"><h2 id="parts-title">Elige una categoría</h2><span class="cmp-deep" hidden><button class="secondary-button cmp-back" id="catalogBack" type="button">← Categorías</button><h2 id="catalog-title" tabindex="-1">Modelos</h2><span class="catalog-count" id="catalogCount" role="status">0 modelos</span><span class="catalog-search-note" id="catalogSearchNote" role="status" hidden></span></span></div>
                 <div class="cmp-bar-right" id="catalogFilters" role="group" aria-label="Buscar y filtrar">
                   <label class="cmp-field cmp-search"><span class="sr-only">Buscar modelo o referencia</span><input id="catalogSearch" type="search" placeholder="Buscar modelo o referencia" autocomplete="off"></label>
                   <label class="cmp-field cmp-deep" hidden><span class="sr-only">Orden</span><select id="catalogSort"><option value="featured">Destacados</option><option value="price-asc">Menor precio</option><option value="price-desc">Mayor precio</option><option value="name">Nombre A–Z</option></select></label>
@@ -700,6 +702,50 @@
             </div>
           </section>
 
+          <section class="section help-section" id="ayuda" aria-labelledby="help-title" hidden>
+            <div class="section-heading"><div><h2 id="help-title">Ayuda</h2><p>Respuestas rápidas sobre compatibilidad, precios, cómo guardar tu build y el ensamblaje.</p></div></div>
+            <nav class="help-topics" aria-label="Temas de ayuda"><a href="#ayuda-empezar">Primeros pasos</a><a href="#ayuda-compatibilidad">Compatibilidad</a><a href="#ayuda-precios">Precios y presupuesto</a><a href="#ayuda-guardar">Guardar y recuperar</a><a href="#ayuda-ensamblaje">Ensamblaje</a><a href="#ayuda-glosario">Glosario</a></nav>
+            <div class="help-groups">
+              <section class="help-group" id="ayuda-empezar" aria-labelledby="help-start"><h3 id="help-start">Primeros pasos</h3>
+                <details><summary>¿Por dónde empiezo?</summary><p>Si quieres una recomendación, entra en <a href="#configurador">Armar mi PC</a>: eliges el uso, tu perfil y el presupuesto, y FENIXA propone una base compatible. Si ya sabes qué piezas quieres, ve a <a href="#componentes">Componentes</a> y añádelas a <a href="#mi-build">Mi build</a>. Para mejorar el equipo que ya tienes, usa <a href="#mi-pc">Mejorar mi PC</a>.</p></details>
+                <details><summary>¿Cómo busco una pieza?</summary><p>Escribe la marca, el modelo o la categoría: «Ryzen 7600», «RTX 4060», «Kingston», «gabinete» o «fuente». No importan las mayúsculas ni las tildes, y se corrigen errores pequeños («Rizen» encuentra Ryzen); cuando ocurre, verás para qué palabra se muestran los resultados. Si no aparece nada, el aviso te dice qué filtro lo impide y te ofrece quitarlo.</p></details>
+                <details><summary>¿Qué diferencia hay entre Mi build, Carrito y Builds completas?</summary><p><strong>Mi build</strong> es la PC que estás armando, pieza por pieza. <strong>Carrito</strong> reúne tu build actual y las versiones que guardaste. <strong>Builds completas</strong> son configuraciones de referencia ya armadas que puedes usar como punto de partida.</p></details>
+              </section>
+              <section class="help-group" id="ayuda-compatibilidad" aria-labelledby="help-compat"><h3 id="help-compat">Compatibilidad</h3>
+                <details><summary>¿Qué comprueba la revisión de compatibilidad?</summary><p>Compara los datos verificados de las fichas: el socket del procesador y de la placa, el tipo de memoria (DDR4 o DDR5), el formato de la placa frente al gabinete, la longitud de la tarjeta gráfica y la altura del disipador frente a lo que admite el gabinete.</p><p>Es una revisión <strong>parcial</strong>: no certifica el montaje completo. Si una ficha no publica un dato, la pieza queda «por revisar» en lugar de darse por compatible.</p></details>
+                <details><summary>¿Qué significan «Compatible», «Revisar» y «Conflicto»?</summary><p><strong>Compatible</strong>: los datos disponibles coinciden con tus otras piezas. <strong>Revisar</strong>: faltan datos para confirmarlo; abre la ficha para ver cuáles. <strong>Conflicto</strong>: hay una incompatibilidad conocida (por ejemplo, socket o memoria distintos); FENIXA no la añade hasta que la resuelvas.</p></details>
+                <details><summary>¿Necesito una tarjeta gráfica?</summary><p>Solo si tu procesador no tiene gráficos integrados o si tu uso lo pide (juegos, edición 3D…). Cuando un procesador no tiene gráficos integrados, FENIXA te avisa de que sin tarjeta gráfica el equipo no dará imagen.</p></details>
+              </section>
+              <section class="help-group" id="ayuda-precios" aria-labelledby="help-prices"><h3 id="help-prices">Precios y presupuesto</h3>
+                <details><summary>¿De dónde salen los precios?</summary><p>Son precios observados en tiendas colombianas, cada uno con su tienda y la fecha de consulta. No son precios en vivo: confirma siempre el precio, el stock y la garantía en la tienda antes de comprar.</p></details>
+                <details><summary>¿Por qué dice «consulta vencida» o no hay subtotal?</summary><p>Un precio se considera reciente durante <strong>72 horas</strong> desde su consulta. Pasado ese tiempo se marca como «consulta vencida» y no se suma como si fuera actual, por eso puede no haber subtotal. Mi build muestra entonces una <strong>referencia de coste</strong> (un rango) para que puedas compararla con tu presupuesto.</p></details>
+                <details><summary>¿Cómo sé si me paso del presupuesto?</summary><p>Elige un objetivo en Mi build. FENIXA compara la referencia de coste con ese objetivo y te dice si cabe, si puede pasarse o si se pasa, con el importe. Si una pieza nueva hace que te pases, te lo avisa al añadirla y lo verás también en el panel flotante de Mi build.</p></details>
+              </section>
+              <section class="help-group" id="ayuda-guardar" aria-labelledby="help-save"><h3 id="help-save">Guardar y recuperar</h3>
+                <details><summary>¿Se guarda mi build?</summary><p>Sí, automáticamente en este navegador: se conserva al recargar o cerrar la página. Si borras los datos del navegador se pierde, salvo que la hayas exportado.</p></details>
+                <details><summary>¿Puedo guardar varias versiones o llevarla a otro dispositivo?</summary><p>Con <strong>Guardar versión</strong> conservas hasta 6 builds y vuelves a cualquiera de ellas desde Carrito. Para usarla en otro dispositivo, usa <strong>Exportar Mi build</strong> (o Exportar versiones) y luego <strong>Importar archivo</strong> en el otro navegador.</p></details>
+                <details><summary>Quité una pieza sin querer, ¿cómo la recupero?</summary><p>Al quitar una pieza aparece un aviso con el botón <strong>Deshacer</strong>; púlsalo y la pieza vuelve a tu build tal como estaba. Vaciar toda la build siempre pide confirmación antes.</p></details>
+              </section>
+              <section class="help-group" id="ayuda-ensamblaje" aria-labelledby="help-assembly"><h3 id="help-assembly">Ensamblaje</h3>
+                <details><summary>¿Cómo funciona la guía de ensamblaje?</summary><p>La <a href="#ensamblaje">Guía de ensamblaje</a> genera los pasos a partir de las piezas de Mi build. En cada paso puedes practicar en el visor 3D («Hazlo tú») o ver una demostración en bucle («Ver demostración»). Tu avance se guarda en este navegador.</p></details>
+                <details><summary>¿Qué precauciones básicas debo tener?</summary><p>Trabaja con la fuente desenchufada, descárgate de electricidad estática tocando una parte metálica sin pintura antes de manipular las piezas, no toques los contactos del procesador ni de la memoria, y nunca abras la fuente de alimentación. Ante la duda, sigue el manual de cada pieza.</p></details>
+              </section>
+              <section class="help-group" id="ayuda-glosario" aria-labelledby="help-glossary"><h3 id="help-glossary">Glosario</h3>
+                <dl class="help-glossary">
+                  <dt>Socket</dt><dd>El zócalo de la placa donde va el procesador (AM4, AM5, LGA1700…). Procesador y placa deben usar el mismo.</dd>
+                  <dt>DDR4 / DDR5</dt><dd>Generaciones de memoria RAM. No son intercambiables: la placa admite solo una.</dd>
+                  <dt>ATX, micro-ATX, Mini-ITX</dt><dd>Tamaños de placa base, de mayor a menor. El gabinete indica cuáles admite.</dd>
+                  <dt>M.2 / NVMe / SATA</dt><dd>M.2 es el formato de las unidades en tarjeta; NVMe y SATA son tipos de conexión. Las NVMe suelen ser más rápidas.</dd>
+                  <dt>Fuente (PSU) y 80 PLUS</dt><dd>La fuente alimenta el equipo; 80 PLUS es una certificación de eficiencia, no de calidad completa.</dd>
+                  <dt>PCIe x16</dt><dd>La ranura larga de la placa donde se instala la tarjeta gráfica.</dd>
+                  <dt>Disipador / AIO</dt><dd>Refrigeran el procesador: el disipador por aire con aletas y ventilador; el AIO es refrigeración líquida con radiador.</dd>
+                  <dt>VRAM</dt><dd>La memoria propia de la tarjeta gráfica.</dd>
+                  <dt>EXPO / XMP</dt><dd>Perfiles de la memoria que se activan en la BIOS para usar su velocidad anunciada.</dd>
+                </dl>
+              </section>
+            </div>
+          </section>
+
           <section class="section" id="precios" aria-labelledby="future-title" hidden>
             <div class="future-card"><div class="future-main"><div class="future-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16v14H4zM7 3v3M17 3v3M7 10h3M7 14h3M7 18h3M14 10h3M14 14h3M14 18h3"/></svg></div><div><h3 id="future-title">Precios y vendedores: listos para la siguiente fase</h3><p>La estructura ya contempla comparar ofertas, valorar reputación y detectar señales de confianza sin romper el flujo de compatibilidad.</p></div></div><span class="future-status">Próximamente</span></div>
           </section>
@@ -708,7 +754,7 @@
     </div>
     <aside class="build-quick-dock" id="buildQuickDock" aria-label="Vista rápida de Mi build">
       <button class="build-quick-toggle" id="buildQuickToggle" type="button" aria-expanded="false" aria-controls="buildQuickBody"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="m12 3 8 4v10l-8 4-8-4V7zm-8 4 8 4 8-4m-8 4v10"/></svg><strong>Mi build</strong><span id="buildQuickCount">0 piezas</span></button>
-      <div class="quick-disclosure"><div><div id="buildQuickBody" class="build-quick-body" hidden inert><div id="buildQuickList"></div><p id="buildQuickSubtotal"></p><p id="buildQuickSave"></p><div class="build-quick-actions"><a class="primary-button" href="#mi-build">Revisar Mi build</a><a class="secondary-button" href="#componentes">Añadir piezas</a></div></div></div></div>
+      <div class="quick-disclosure"><div><div id="buildQuickBody" class="build-quick-body" hidden inert><div id="buildQuickList"></div><p id="buildQuickSubtotal"></p><p id="buildQuickBudget" class="build-quick-budget" role="status" hidden></p><p id="buildQuickSave"></p><div class="build-quick-actions"><a class="primary-button" href="#mi-build">Revisar Mi build</a><a class="secondary-button" href="#componentes">Añadir piezas</a></div></div></div></div>
     </aside>
     <p class="build-add-status" id="buildAddStatus" role="status" aria-live="polite"></p>
     <dialog class="build-add-dialog" id="buildAddDialog" aria-labelledby="buildAddTitle"></dialog>
@@ -906,13 +952,15 @@
   <script src="js/fichas/spec-review-followup-data.js?v=12"></script>
   <script src="js/fichas/component-specs.js?v=33"></script>
     <script src="js/builds/my-build-state.js?v=5"></script>
+    <script src="js/builds/build-undo.js?v=2"></script>
     <script src="js/builds/budget-settings.js?v=5"></script>
     <script src="js/builds/build-library-state.js?v=2"></script>
     <script src="js/builds/build-library.js?v=5"></script>
   <script src="js/interfaz/comparison-radar.js?v=16"></script>
   <script src="js/interfaz/comparison-dialog.js?v=23"></script>
     <script src="assets/thumbs/build-covers/manifest.js?v=1"></script>
-    <script src="js/catalogo/catalog.js?v=46"></script>
+    <script src="js/catalogo/search.js?v=1"></script>
+    <script src="js/catalogo/catalog.js?v=47"></script>
     <script src="js/portatiles/laptops-data.js?v=5"></script>
     <script src="js/portatiles/laptops-photos.js?v=1"></script>
     <script src="js/portatiles/laptops-goal30.js?v=2"></script>
@@ -922,15 +970,15 @@
     <script src="js/portatiles/laptops-prices.js?v=1"></script>
     <script src="js/portatiles/laptops.js?v=22"></script>
     <script src="js/portatiles/laptop-details.js?v=3"></script>
-    <script src="js/builds/my-build.js?v=20"></script>
-    <script src="js/builds/build-quickview.js?v=4"></script>
+    <script src="js/builds/my-build.js?v=21"></script>
+    <script src="js/builds/build-quickview.js?v=5"></script>
     <script src="js/interfaz/radar-highlight.js?v=1"></script>
     <script src="js/builds/pc-advice.js?v=2"></script>
     <script src="js/builds/pc-profile.js?v=5"></script>
     <script src="js/builds/auto-build.js?v=5"></script>
     <script src="js/builds/build-planner.js?v=19"></script>
     <script src="js/builds/builder-journey.js?v=5"></script>
-    <script src="js/interfaz/navigation.js?v=16"></script>
+    <script src="js/interfaz/navigation.js?v=17"></script>
     <script src="js/ensamblaje/assembly-viewer-loader.js?v=7"></script>
     <script src="js/interfaz/sidebar.js?v=2"></script>
   <script src="js/interfaz/cart.js?v=1"></script>
