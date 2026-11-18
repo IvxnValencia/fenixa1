@@ -104,12 +104,22 @@
     const budgetNote=(step.reason?`${esc(step.reason)} `:'')+(remaining===null?'':`Margen provisional: ${market.money(Math.max(0,remaining))}.`);
     return `<section class="build-recommendations" aria-labelledby="buildRecommendationsTitle"><div><h3 id="buildRecommendationsTitle">Siguiente paso: ${esc(name)}</h3>${budgetNote?`<p>${budgetNote}</p>`:''}</div><div class="build-recommendation-list">${options.length?options.map(({product,fit,price})=>`<article>${image(product)}<div><strong title="${esc(product.name)}">${esc(shortName(product))}</strong><small>${esc(fit.label)} · ${price===null?'Sin precio reciente':market.money(price)}</small></div><button class="secondary-button" type="button" data-suggest-id="${esc(product.id)}">Añadir</button></article>`).join(''):'<p>Sin opciones comprobables dentro del margen.</p>'}</div></section>`;
   }
+  // Compra a mano en cada pieza: mejor precio consultado, botón a la tienda y el resto de tiendas plegado.
+  function buyBlock(p, parts) {
+    const ref = window.FENIXA_AUTO_BUILD?.reference?.(p);
+    // Sin oferta de tienda fechada se usa la referencia de catálogo (con su fuente) en lugar de «por confirmar».
+    const o = market.fixed(p) || (ref ? { price: ref.low, store: ref.kind === 'catalog' ? 'Referencia de catálogo' : 'Referencia publicada', url: ref.source, checkedAt: ref.date, status: 'listed' } : null), count = market.offers(p).length;
+    let store = String(o?.store || '');
+    if (store.length > 28) { try { store = new URL(o.url).hostname.replace(/^www\./, ''); } catch {} }
+    const state = o ? (o.status === 'listed' ? 'precio publicado' : market.recent(o) ? 'consultado' : 'consulta vencida') : '';
+    return `<div class="my-build-buy">${o ? `<div class="my-build-buy-price"><strong>${market.money(o.price)}</strong><small><span title="${esc(o.store)}">${esc(store)}</span> · Ref. ${esc(refDay(o))} · ${state}</small></div>${o.url ? `<a class="primary-button my-build-buy-link" href="${esc(o.url)}" target="_blank" rel="noopener noreferrer" aria-label="Comprar ${esc(shortName(p))} en ${esc(store)} (se abre en otra pestaña)">${/^Referencia/.test(o.store) ? 'Ver fuente ↗' : 'Comprar ↗'}</a>` : ''}` : '<div class="my-build-buy-price"><strong>Precio por confirmar</strong><small>Sin oferta verificada</small></div>'}${count > 1 || !o ? `<div class="my-build-buy-more">${market.purchase(p, parts).replace('Tiendas, historial y valoraciones', count > 1 ? `Comparar ${count} tiendas` : 'Buscar en tiendas')}</div>` : ''}</div>`;
+  }
   function partCard(c, parts) {
     const p = parts.find(p => p.category === c.id);
     if (!p) return `<article class="my-build-row is-empty"><div><span class="my-build-placeholder" aria-hidden="true">＋</span></div><div><small>${esc(c.name)}</small><div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">Elegir pieza</button></div></div></article>`;
     const fit = window.FENIXA_FIT.check(p, parts.filter(other => other.id !== p.id));
     const why = state.reason?.(p.id) || keyFacts(p) || 'Sin datos clave verificados';
-    return `<article class="my-build-row"><div>${image(p)}</div><div><small>${esc(c.name)} ${window.FENIXA_FIT_STATUS.tag(fit,{hasParts:parts.some(other=>other.category!==p.category)})}</small><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3><p class="my-build-why">${esc(why)}</p><p class="my-build-store">${storeLine(p)}</p>${fit.status==='conflict'?`<p class="my-build-conflict">${esc(fit.reason)}</p>`:''}<div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">Cambiar pieza</button><button type="button" class="my-build-remove" data-remove-part="${p.id}" aria-label="Quitar ${esc(shortName(p))}">Quitar</button></div></div></article>`;
+    return `<article class="my-build-row"><div>${image(p)}</div><div><small>${esc(c.name)} ${window.FENIXA_FIT_STATUS.tag(fit,{hasParts:parts.some(other=>other.category!==p.category)})}</small><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3><p class="my-build-why">${esc(why)}</p>${buyBlock(p, parts)}${fit.status==='conflict'?`<p class="my-build-conflict">${esc(fit.reason)}</p>`:''}<div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">Cambiar pieza</button><button type="button" class="my-build-remove" data-remove-part="${p.id}" aria-label="Quitar ${esc(shortName(p))}">Quitar</button></div></div></article>`;
   }
   function render() {
     const ids = state.ids(), parts = ids.map(id=>byId[id]);
@@ -126,7 +136,7 @@
       <div class="my-build-budget">${reference?`<p class="my-build-reference"><strong>Referencia de coste: ${reference.count?(reference.low===reference.high?market.money(reference.low):`${market.money(reference.low)} – ${market.money(reference.high)}`):'por confirmar'}</strong></p>${reference.total>reference.count?`<p class="my-build-missing">${reference.total-reference.count} ${reference.total-reference.count===1?'pieza sin precio':'piezas sin precio'}</p>`:''}`:''}<label for="myBuildTotalBudget">Objetivo de presupuesto · <output id="myBuildBudgetLabel" for="myBuildTotalBudget">${totalBudget?market.money(effectiveBudget()):'Sin objetivo'}</output></label><small class="my-build-range" id="myBuildBudgetRange">De $1 a ${num(cap/1000000)} millones</small><input id="myBuildTotalBudget" type="range" min="1000000" max="${cap}" step="250000" value="${effectiveBudget()||1000000}" aria-describedby="myBuildBudgetRange myBuildBudgetSummary"><small id="myBuildBudgetAdjusted" role="status"${totalBudget&&totalBudget>cap?'':' hidden'}>Ajustado al máximo de este perfil</small><button type="button" class="secondary-button" data-clear-budget>Sin objetivo</button><p id="myBuildBudgetSummary" role="status" data-kind="${budgetStatus().kind}">${budgetSummary()}</p></div>
       </aside><div class="build-studio-main"><div class="my-build-layout"><div><h3>Tus piezas</h3>${!parts.length?'<div class="my-build-empty"><h3>Tu próxima PC empieza aquí</h3><div class="my-build-actions"><a class="primary-button" href="#configurador">Armar mi PC</a><a class="secondary-button" href="#componentes">Explorar componentes</a></div></div>':`<div class="my-build-parts">${categories.map(c=>partCard(c,parts)).join('')}</div>`}</div></div>
       ${recommendations(parts)}
-      ${parts.length?`<details class="my-build-shopping"><summary>Opciones de compra de Mi build</summary>${market.plan(ids,byId)}${parts.map(p=>`<article><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3>${market.purchase(p,parts)}</article>`).join('')}</details>`:''}</div></div>`;
+      ${parts.length?`<aside class="my-build-to-cart"><div><strong>¿Lista para comprar?</strong><p>Cada pieza tiene su botón «Comprar». En el Carrito tienes la lista completa agrupada por tienda, con lo que ya compraste marcado.</p></div><a class="secondary-button" href="#carrito">Ver lista de compra</a></aside>`:''}</div></div>`;
   }
   window.addEventListener('fenixa-library-changed',render);
   window.addEventListener('fenixa-build-changed',()=>{pendingClear=false;render();});
@@ -157,7 +167,7 @@
     if(suggestion){window.FENIXA_REQUEST_BUILD_ADD(suggestion.dataset.suggestId,suggestion);return;}
     // «Cambiar pieza» y «Elegir pieza» abren el catálogo filtrado; el diálogo de Mi build confirma el reemplazo.
     const edit=event.target.closest('[data-edit-category]');
-    if(edit){window.FENIXA_BROWSE_CATEGORY(edit.dataset.editCategory);return;}
+    if(edit){window.FENIXA_BUILD_RETURN?.start(edit.dataset.editCategory);window.FENIXA_BROWSE_CATEGORY(edit.dataset.editCategory);return;}
     // Quitar con opción de deshacer (build-undo.js). El foco va a «Deshacer» sin desplazar la página;
     // al cerrarse el aviso vuelve a la pieza recuperada o a la siguiente acción de la lista.
     const remove=event.target.closest('[data-remove-part]');if(remove){const id=remove.dataset.removePart;window.FENIXA_BUILD_UNDO.remove(id,{returnFocus:()=>document.querySelector(`[data-remove-part="${CSS.escape(id)}"]`)||document.querySelector('.my-build-parts button')||document.getElementById('myBuildTitle')});return;}

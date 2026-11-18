@@ -9,6 +9,32 @@
   const dock=$('buildQuickDock'), toggle=$('buildQuickToggle'), body=$('buildQuickBody'), dialog=$('buildAddDialog');
   const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let pending=null, opener=null;
+  // «Cambiar pieza» / «Elegir pieza» desde Mi build: al confirmar la pieza de esa categoría se vuelve a Mi build.
+  const RETURN_KEY='fenixa-build-return';
+  const returning={
+    get(){try{return JSON.parse(sessionStorage.getItem(RETURN_KEY)||'null');}catch{return null;}},
+    start(category){try{sessionStorage.setItem(RETURN_KEY,JSON.stringify({category,at:Date.now()}));}catch{}banner();},
+    clear(){try{sessionStorage.removeItem(RETURN_KEY);}catch{}banner();}
+  };
+  function banner(){
+    const target=returning.get(),catalog=$('componentes');if(!catalog)return;
+    let bar=$('buildReturnBar');
+    if(!target||!/^#componentes/.test(location.hash)){if(bar)bar.hidden=true;return;}
+    if(!bar){bar=document.createElement('div');bar.id='buildReturnBar';bar.className='build-return-bar';bar.setAttribute('role','status');catalog.prepend(bar);}
+    const name={cpu:'procesador',board:'placa madre',ram:'memoria RAM',gpu:'tarjeta gráfica',storage:'almacenamiento',power:'fuente',case:'gabinete',cooler:'refrigeración',fan:'ventilador',setup:'periférico'}[target.category]||'pieza';
+    bar.innerHTML=`<span>Eligiendo <strong>${esc(name)}</strong> para Mi build. Al confirmar la pieza volverás a tu build.</span><a class="secondary-button" href="#mi-build" data-build-return-cancel>Volver sin cambiar</a>`;
+    bar.hidden=false;
+  }
+  function returnIfPending(product){
+    const target=returning.get();
+    if(!target||target.category!==product.category)return false;
+    returning.clear();
+    location.hash='mi-build';
+    // Mi build se vuelve a pintar al cambiar de ruta: el foco va a la pieza recién elegida.
+    setTimeout(()=>{const card=document.querySelector(`#mi-build [data-remove-part="${CSS.escape(product.id)}"]`)?.closest('.my-build-row');if(card){card.classList.add('is-just-changed');card.scrollIntoView({block:'center',behavior:'instant'});card.querySelector('[data-edit-category]')?.focus({preventScroll:true});setTimeout(()=>card.classList.remove('is-just-changed'),2400);}},60);
+    return true;
+  }
+  window.FENIXA_BUILD_RETURN=returning;
   function setExpanded(open, focus=false) {
     body.hidden=!open;
     body.inert=!open;
@@ -58,6 +84,7 @@
       // Si la pieza hace que la build se pase del objetivo, se dice en el mismo aviso.
       const budget=window.FENIXA_BUDGET_STATUS?.(), over=budget?.kind==='over'?` Atención: tu build ${budget.text.charAt(0).toLowerCase()+budget.text.slice(1)} de tu objetivo.`:'';
       notice(`${shortName(product)} añadida a Mi build. ${state.saved()?'Guardada en este navegador.':'No se pudo guardar.'} ${fit.label}: ${fit.reason}${over}`,over?`Pieza añadida.${over}`:state.saved()?'Pieza añadida a Mi build. Revisión de compatibilidad parcial.':'Pieza añadida, pero no se pudo guardar en este navegador.');
+      returnIfPending(product);
     }else notice('No se añadió: revisa los conflictos con tus piezas.');
   }
   window.FENIXA_REQUEST_BUILD_ADD = requestAdd;
@@ -75,7 +102,8 @@
     const product=byId.get(pending.id), previous=state.ids().map(id=>byId.get(id)).find(p=>p.category===product.category);
     if((previous?.id||null)!==pending.previousId){requestAdd(product.id,opener);return;}
     if(!state.add(product.id)){ask(product,previous,state.check(product),opener);return;}
-    render();notice(`${shortName(product)} reemplazó la pieza anterior. ${state.saved()?'Guardada en este navegador.':'No se pudo guardar.'}`,state.saved()?'Reemplazo confirmado en Mi build.':'Reemplazo confirmado, pero no se pudo guardar.');dialog.close();
+    render();notice(`${shortName(product)} reemplazó la pieza anterior. ${state.saved()?'Guardada en este navegador.':'No se pudo guardar.'}`,state.saved()?'Reemplazo confirmado en Mi build.':'Reemplazo confirmado, pero no se pudo guardar.');
+    const back=returning.get()?.category===product.category;dialog.close();if(back){opener=null;returnIfPending(product);}
   });
   dialog.addEventListener('close', () => {
     if (dialog.open) return;
@@ -93,7 +121,13 @@
   });
   window.addEventListener('fenixa-build-changed',render);
   window.addEventListener('fenixa-budget-changed',()=>setTimeout(render));
-  window.addEventListener('hashchange',()=>{setExpanded(false);if(dialog.open)dialog.close();});
+  window.addEventListener('hashchange',()=>{setExpanded(false);if(dialog.open)dialog.close();
+    // Salir del catálogo hacia otra sección (que no sea Mi build) cancela la vuelta automática.
+    if(returning.get()&&!/^#componentes/.test(location.hash)&&location.hash!=='#mi-build')returning.clear();
+    if(location.hash==='#mi-build'&&returning.get())returning.clear();
+    banner();});
+  document.addEventListener('click',e=>{if(e.target.closest('[data-build-return-cancel]'))returning.clear();});
+  banner();
   // Both floating controls share a vertical stack, including on low/mobile windows.
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{
     document.body.style.setProperty('--build-quick-height',`${dock.offsetHeight}px`);

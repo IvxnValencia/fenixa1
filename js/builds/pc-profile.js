@@ -9,10 +9,13 @@
   const input = (id, label, placeholder) => `<label><span>${label}</span><input id="profile-${id}" name="${id}" maxlength="100" placeholder="${placeholder}" autocomplete="off"></label>`;
   const devices = { desktop: 'PC de escritorio', laptop: 'Laptop' };
   const categoryLabels = {
-    storage: 'Ver discos en el catálogo',
-    ram: 'Ver memorias RAM',
-    gpu: 'Ver tarjetas gráficas'
+    storage: 'Ver todos los discos',
+    ram: 'Ver todas las memorias',
+    gpu: 'Ver todas las gráficas',
+    cooler: 'Ver toda la refrigeración'
   };
+  const goalLabels = { slow: 'Va lento en general', boot: 'Tarda en encender o abrir programas', memory: 'Me falta memoria (se traba con muchas pestañas o apps)', space: 'Me falta espacio', fps: 'Más FPS en juegos', heat: 'Se calienta o hace ruido', none: 'Nada por ahora' };
+  const goalsField = `<fieldset class="profile-goals" id="profileGoals" aria-describedby="profileGoalsHelp"><legend>¿Qué quieres mejorar? <small>(puedes elegir varias)</small></legend><p class="profile-hint" id="profileGoalsHelp">Marca todo lo que notes; combinamos las recomendaciones.</p><div class="profile-goal-options">${Object.entries(goalLabels).map(([value, text]) => `<label class="profile-goal"><input type="checkbox" name="symptoms" value="${value}"><span>${text}</span></label>`).join('')}</div></fieldset>`;
 
   let saved = null, migrated = false, storageUnavailable = false, sessionOnly = false;
   try {
@@ -65,8 +68,8 @@
             <legend>Uso y objetivo</legend>
             <div class="profile-fields">
               ${field('use', 'Uso principal', [['study', 'Estudio y trabajo'], ['gaming', 'Juegos'], ['creative', 'Edición y creación']])}
-              ${field('symptom', '¿Qué quieres mejorar?', [['none', 'Nada por ahora'], ['slow', 'Lentitud'], ['memory', 'Me falta memoria'], ['space', 'Me falta espacio'], ['fps', 'FPS en juegos']])}
             </div>
+            ${goalsField}
           </fieldset>
           <details class="profile-hardware">
             <summary>Componentes y almacenamiento (opcional)</summary>
@@ -117,9 +120,14 @@
   const form = $('profileForm');
   const device = $('profile-device');
   const use = $('profile-use');
-  const goal = $('profile-symptom');
+  const goalBoxes = () => [...form.querySelectorAll('[name="symptoms"]')];
+  const goalText = profile => (profile?.symptoms || []).map(g => goalLabels[g]?.replace(/ \(.*\)$/, '')).filter(Boolean).join(' · ');
   use.required = true;
-  goal.required = true;
+  // «Nada por ahora» es excluyente con el resto.
+  form.addEventListener('change', event => {
+    if (event.target.name !== 'symptoms' || !event.target.checked) return;
+    goalBoxes().forEach(box => { if (event.target.value === 'none' ? box !== event.target : box.value === 'none') box.checked = false; });
+  });
   let step = null;
 
   function restoreForm() {
@@ -133,7 +141,8 @@
 
   function setForm(profile) {
     for (const element of form.elements) {
-      if (element.name) element.value = profile?.[element.name] || '';
+      if (element.name === 'symptoms') element.checked = (profile?.symptoms || []).includes(element.value);
+      else if (element.name) element.value = profile?.[element.name] || '';
     }
   }
 
@@ -145,7 +154,7 @@
 
   function renderSummary() {
     if (!saved) return;
-    const facts = Array.from(form.querySelectorAll('[name]')).filter(control => control.name !== 'name' && control.name !== 'device' && control.value).map(control => {
+    const facts = Array.from(form.querySelectorAll('[name]')).filter(control => !['name', 'device', 'symptoms'].includes(control.name) && control.value).map(control => {
       const label = control.labels[0].firstElementChild.textContent;
       const value = control.selectedOptions?.[0].textContent || control.value;
       return `<div><dt>${esc(label)}</dt><dd>${esc(value)}</dd></div>`;
@@ -155,20 +164,33 @@
         <h4>${esc(saved.name || devices[saved.device])}</h4>
         <p class="profile-hint">${sessionOnly ? 'Disponible en esta pestaña.' : 'Guardado en este navegador.'}</p>
       </div>
-      ${facts.length ? `<dl>${facts.join('')}</dl>` : ''}`;
+      <dl>${facts.join('')}<div class="profile-summary-goals"><dt>Quieres mejorar</dt><dd>${esc(goalText(saved))}</dd></div></dl>`;
   }
 
   function renderAdvice() {
     $('profileAdviceTitle').textContent = saved.device === 'laptop' ? 'Mejoras para tu laptop' : 'Mejoras para tu PC de escritorio';
     const advice = advise(saved);
     $('profilePurchaseNote').hidden = !advice.some(item => ['ssd','ram','space','gpu'].includes(item.id));
-    const items = advice.map(item => `
+    const upgrades = window.FENIXA_PC_UPGRADES, money = window.FENIXA_MARKET.money;
+    const thumb = src => window.FENIXA_THUMB ? window.FENIXA_THUMB(src) : src;
+    const product = ({ p, note }) => {
+      const r = upgrades.reference(p), o = upgrades.offer(p);
+      const price = r ? (r.low === r.high ? money(r.low) : money(r.low) + '–' + money(r.high)) : 'Precio por confirmar';
+      return `<li class="profile-pick"><img src="${esc(thumb(p.image))}" alt="" width="56" height="56" loading="lazy"><div class="profile-pick-text"><strong title="${esc(p.name)}">${esc(window.FENIXA_SHORT_NAME ? window.FENIXA_SHORT_NAME(p) : p.name)}</strong><small>${esc(note)}</small><span class="profile-pick-price">${esc(price)}${o?.store ? ' · ' + esc(o.store) : ''}</span></div><div class="profile-pick-actions"><button type="button" class="secondary-button" data-pc-category="${esc(p.category)}" data-pc-query="${esc(p.name)}">Ver ficha</button>${o ? `<a class="primary-button" href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">Comprar ↗</a>` : ''}</div></li>`;
+    };
+    const items = advice.map(item => {
+      const picks = item.category && upgrades && !(item.id === 'ram' && !saved.ramType) ? upgrades.suggest(saved, item.id) : [];
+      const hint = item.id === 'ram' && !saved.ramType ? '<p class="profile-hint">Indica la generación de tu RAM (DDR3, DDR4 o DDR5) en «Editar equipo» para ver módulos compatibles.</p>' : '';
+      return `
       <li class="profile-advice">
         <h4>${esc(item.title)}</h4>
         <p>${esc(item.reason)}</p>
         <p class="profile-check">${esc(item.check)}</p>
-        ${item.category ? `<button type="button" class="secondary-button" data-pc-category="${esc(item.category)}" data-pc-query="${esc(item.query)}">${esc(categoryLabels[item.category] || 'Ver en el catálogo')}</button>` : ''}
-      </li>`);
+        ${hint}
+        ${picks.length ? `<h5 class="profile-picks-title">Opciones del catálogo</h5><ul class="profile-picks">${picks.map(product).join('')}</ul>` : ''}
+        ${item.category ? `<button type="button" class="text-button profile-see-all" data-pc-category="${esc(item.category)}" data-pc-query="${esc(item.query)}">${esc(categoryLabels[item.category] || 'Ver en el catálogo')} →</button>` : ''}
+      </li>`;
+    });
     $('profileAdvice').innerHTML = `<ul class="profile-advice-list">${items.join('')}</ul>`;
   }
 
@@ -176,7 +198,7 @@
     const match = /^#mi-pc(?:\/(equipo|perfil|mejoras))?$/.exec(location.hash);
     if (!match) { step = null; return; }
     if (!step || !match[1]) restoreForm();
-    const complete = Boolean(saved?.device && saved.use && saved.symptom);
+    const complete = Boolean(saved?.device && saved.use && saved.symptoms?.length);
     const entry = complete ? 'mejoras' : device.value ? 'perfil' : 'equipo';
     let next = match[1] || entry;
     if (next === 'mejoras' && !complete) next = entry;
@@ -199,7 +221,7 @@
     $('profileTeamTitle').textContent = results ? 'Tu perfil' : 'Tu perfil de ' + (device.value === 'laptop' ? 'laptop' : 'escritorio');
     $('profile-board').labels[0].firstElementChild.textContent = device.value === 'laptop' ? 'Modelo exacto de la laptop' : 'Modelo de placa base';
     if (results) { renderSummary(); renderAdvice(); }
-    $('profileIntro').textContent = results ? use.selectedOptions[0].textContent + ' · ' + goal.selectedOptions[0].textContent :
+    $('profileIntro').textContent = results ? use.selectedOptions[0].textContent + ' · ' + goalText(saved) :
       editing ? 'Elige tu uso principal y qué quieres mejorar. Puedes añadir los componentes que conozcas.' :
       'Elige tu equipo para encontrar las mejoras que encajan con tu uso.';
     status(storageUnavailable ? 'No se pudo leer el perfil guardado.' : migrated ? 'Recuperamos tus datos anteriores. Completa tu perfil para ver las mejoras.' : '', storageUnavailable);
@@ -219,7 +241,7 @@
     const nextDevice = choice.dataset.device;
     if (device.value && device.value !== nextDevice) {
       const hardware = saved?.device === nextDevice ? saved : {};
-      setForm({ ...hardware, use: use.value, symptom: goal.value });
+      setForm({ ...hardware, use: use.value, symptoms: goalBoxes().filter(box => box.checked).map(box => box.value) });
     }
     device.value = nextDevice;
     location.hash = 'mi-pc/perfil';
@@ -227,12 +249,17 @@
   $('profileEdit').addEventListener('click', () => { restoreForm(); location.hash = 'mi-pc/perfil'; });
   $('profileCancel').addEventListener('click', () => { restoreForm(); location.hash = 'mi-pc/mejoras'; });
   form.addEventListener('input', () => {
+    goalBoxes()[0].setCustomValidity('');
     status(saved ? 'Cambios sin guardar.' : '');
   });
   form.addEventListener('submit', event => {
     event.preventDefault();
-    const value = normalize(Object.fromEntries(new FormData(form)));
+    const data = new FormData(form), raw = Object.fromEntries(data);
+    raw.symptoms = data.getAll('symptoms');
+    const value = normalize(raw);
     if (!value.device) { location.hash = 'mi-pc/equipo'; return; }
+    const first = goalBoxes()[0];
+    first.setCustomValidity(value.symptoms.length ? '' : 'Elige al menos una opción de «¿Qué quieres mejorar?».');
     if (!form.reportValidity()) return;
     try { localStorage.setItem(key, JSON.stringify(value)); sessionOnly = false; }
     catch { sessionOnly = true; }

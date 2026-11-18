@@ -8,7 +8,7 @@
   drawer.id = 'cartDrawer';
   drawer.className = 'cart-drawer';
   drawer.setAttribute('aria-labelledby', 'cartDrawerTitle');
-  drawer.innerHTML = '<header class="cart-drawer-header"><div><h2 id="cartDrawerTitle" tabindex="-1">Carrito</h2><p>Tu selección y las builds que quieres conservar.</p></div><button class="secondary-button cart-drawer-close" type="button" data-close-cart aria-label="Cerrar carrito" autofocus><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header><div class="cart-drawer-content"></div><footer class="cart-drawer-footer"><a class="secondary-button" href="#carrito" data-cart-full>Ver carrito completo</a></footer>';
+  drawer.innerHTML = '<header class="cart-drawer-header"><div><h2 id="cartDrawerTitle" tabindex="-1">Carrito</h2><p>Lo que vas a comprar, agrupado por tienda.</p></div><button class="secondary-button cart-drawer-close" type="button" data-close-cart aria-label="Cerrar carrito" autofocus><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></header><div class="cart-drawer-content"></div><footer class="cart-drawer-footer"><a class="secondary-button" href="#carrito" data-cart-full>Ver carrito completo</a></footer>';
   document.body.append(drawer);
   const content = drawer.querySelector('.cart-drawer-content');
   const title = drawer.querySelector('#cartDrawerTitle');
