@@ -29,7 +29,14 @@
     if ($('buildQuickCount').textContent !== count) window.FENIXA_MOTION?.pulse($('buildQuickCount'));
     $('buildQuickCount').textContent = count;
     $('buildQuickList').innerHTML=parts.length?parts.map(p=>`<article class="build-quick-item"><img src="${esc(p.image)}" alt="" width="48" height="48" loading="lazy"><div><small>${esc(categories.get(p.category))}</small><strong title="${esc(p.name)}">${esc(shortName(p))}</strong><span>${esc(market.priceText(p))}</span><small title="${esc(market.priceLabel(p))}">${esc(refLabel(p))}</small></div><button type="button" class="dock-remove" data-quick-remove="${esc(p.id)}" aria-label="Quitar ${esc(p.name)} de Mi build">×</button></article>`).join(''):'<p>Tu build está vacía. Añade piezas desde el catálogo; comparar no las añade.</p>';
-    $('buildQuickSubtotal').textContent=known.length?`Subtotal ${known.length<parts.length?'parcial ':''}de precios recientes: ${market.money(known.reduce((s,v)=>s+v,0))} · ${known.length}/${parts.length} piezas. No incluye envío ni montaje.`:'Sin subtotal de precios recientes. Los importes históricos no se suman como actuales.';
+    // Sin precios recientes se explica el motivo (consultas de más de 72 h) y la fecha de la última.
+    const last=Number(market.latestCheckedAt), lastText=Number.isFinite(last)&&last>0?new Date(last).toLocaleDateString('es-CO',{timeZone:'America/Bogota',day:'numeric',month:'long'}):'';
+    $('buildQuickSubtotal').textContent=known.length?`Subtotal ${known.length<parts.length?'parcial ':''}de precios recientes: ${market.money(known.reduce((s,v)=>s+v,0))} · ${known.length}/${parts.length} piezas. No incluye envío ni montaje.`:parts.length?`Sin subtotal: los precios se consideran recientes durante 72 horas y ${lastText?`la última consulta es del ${lastText}`:'no hay consultas recientes'}. Revisa la referencia de coste en Mi build.`:'';
+    // Aviso de presupuesto visible también en el panel rápido.
+    const budget=window.FENIXA_BUDGET_STATUS?.();
+    const alert=$('buildQuickBudget');
+    if(alert){alert.hidden=!budget||!['over','maybe'].includes(budget.kind);alert.textContent=budget&&!alert.hidden?`Presupuesto: ${budget.text.charAt(0).toLowerCase()+budget.text.slice(1)}.`:'';}
+    dock.classList.toggle('is-over-budget',budget?.kind==='over');
     $('buildQuickSave').textContent=state.saved()?'Guardado en este navegador · compatibilidad parcial, no montaje garantizado.':'No se pudo guardar. Las piezas solo se conservan en esta pestaña.';
   }
   function ask(product, previous, fit, trigger) {
@@ -47,7 +54,10 @@
     const previous=state.ids().map(id=>byId.get(id)).find(p=>p.category===product.category), fit=state.check(product);
     if(previous||fit.status==='conflict'){ask(product,previous,fit,trigger);return;}
     if(state.add(id)) {
-      render();notice(`${shortName(product)} añadida a Mi build. ${state.saved()?'Guardada en este navegador.':'No se pudo guardar.'} ${fit.label}: ${fit.reason}`,state.saved()?'Pieza añadida a Mi build. Revisión de compatibilidad parcial.':'Pieza añadida, pero no se pudo guardar en este navegador.');
+      render();
+      // Si la pieza hace que la build se pase del objetivo, se dice en el mismo aviso.
+      const budget=window.FENIXA_BUDGET_STATUS?.(), over=budget?.kind==='over'?` Atención: tu build ${budget.text.charAt(0).toLowerCase()+budget.text.slice(1)} de tu objetivo.`:'';
+      notice(`${shortName(product)} añadida a Mi build. ${state.saved()?'Guardada en este navegador.':'No se pudo guardar.'} ${fit.label}: ${fit.reason}${over}`,over?`Pieza añadida.${over}`:state.saved()?'Pieza añadida a Mi build. Revisión de compatibilidad parcial.':'Pieza añadida, pero no se pudo guardar en este navegador.');
     }else notice('No se añadió: revisa los conflictos con tus piezas.');
   }
   window.FENIXA_REQUEST_BUILD_ADD = requestAdd;
@@ -55,7 +65,8 @@
   dock.addEventListener('keydown',e=>{if(e.key==='Escape'){e.preventDefault();setExpanded(false,true);}});
   dock.addEventListener('click',e=>{
     const remove=e.target.closest('[data-quick-remove]');
-    if(remove){const p=byId.get(remove.dataset.quickRemove);state.remove(p.id);render();notice(`${shortName(p)} retirada de Mi build.`,'Pieza retirada de Mi build.');toggle.focus({preventScroll:true});}
+    // Con deshacer, igual que en Mi build (build-undo.js).
+    if(remove){const p=byId.get(remove.dataset.quickRemove);window.FENIXA_BUILD_UNDO.remove(p.id,{returnFocus:toggle});render();$('buildAddStatus').textContent=`${shortName(p)} retirada de Mi build.`;}
     if(e.target.closest('a'))setExpanded(false);
   });
   dialog.addEventListener('click',e=>{
@@ -81,6 +92,7 @@
     if(e.target.closest('.comparison-dock-toggle'))setExpanded(false);
   });
   window.addEventListener('fenixa-build-changed',render);
+  window.addEventListener('fenixa-budget-changed',()=>setTimeout(render));
   window.addEventListener('hashchange',()=>{setExpanded(false);if(dialog.open)dialog.close();});
   // Both floating controls share a vertical stack, including on low/mobile windows.
   if(typeof ResizeObserver!=='undefined')new ResizeObserver(()=>{

@@ -88,16 +88,38 @@
   function resetCatalogFilters() {
     $('categoryFilter').value = 'all'; $('catalogSearch').value = ''; $('catalogMax').value = ''; $('catalogSort').value = 'featured'; $('storeFilter').value = 'all'; $('pricedOnly').checked = false; syncPriceControl();
   }
+  // Búsqueda tolerante (search.js): tildes, espacios en modelos, categoría y errores pequeños.
+  const searchIndex = window.FENIXA_SEARCH.index(products, p => window.FENIXA_SPECS.facts(p).displayName || '', categoryName);
+  const passesPrice = (p, f) => {
+    const offer = catalogOffer(p);
+    return (!f.pricedOnly || Boolean(offer && market.recent(offer))) && (offer ? offer.price <= f.high : !f.needPrice);
+  };
+  // Explica por qué no hay resultados y ofrece la acción que lo resuelve.
+  function explainEmpty(f, matcher) {
+    const q = $('catalogSearch').value.trim();
+    const inCategory = p => f.category === 'all' || p.category === f.category;
+    const label = f.category === 'all' ? '' : categoryName(f.category);
+    const parts = [], actions = [];
+    if (q && !products.some(p => matcher.test(p))) {
+      parts.push(`Ningún modelo coincide con «${esc(q)}». Revisa la ortografía o busca por marca, modelo o categoría (por ejemplo: Ryzen, RTX 4060, Kingston, gabinete).`);
+      actions.push(['clear-search', 'Borrar la búsqueda']);
+    } else {
+      const elsewhere = f.category === 'all' ? 0 : products.filter(p => !inCategory(p) && matcher.test(p) && passesPrice(p, f)).length;
+      const withoutPrice = f.needPrice ? products.filter(p => inCategory(p) && matcher.test(p)).length : 0;
+      if (elsewhere) { parts.push(`No hay resultados${q ? ` para «${esc(q)}»` : ''} en ${esc(label)}, pero sí ${elsewhere} en otras categorías.`); actions.push(['all-categories', 'Buscar en todas las categorías']); }
+      if (withoutPrice) { parts.push(`El filtro de precio o de tienda deja fuera ${withoutPrice} ${withoutPrice === 1 ? 'modelo' : 'modelos'}: con ese filtro solo se muestran piezas con un precio consultado que lo cumple.`); actions.push(['clear-price', 'Quitar filtros de precio y tienda']); }
+      if (!parts.length) { parts.push(`No hay modelos${label ? ` de ${esc(label)}` : ''} con estos filtros.`); actions.push(['clear-all', 'Limpiar filtros']); }
+    }
+    return `<p>${parts.join(' ')}</p><div class="catalog-empty-actions">${actions.map(([a, t]) => `<button type="button" class="secondary-button" data-empty-action="${a}">${t}</button>`).join('')}</div>`;
+  }
   window.renderProductCatalog = () => {
-    const low = 0;
     const high = $('catalogMax').value === '' ? Infinity : Math.max(0,Number($('catalogMax').value)||0);
     const query = $('catalogSearch').value.trim().toLocaleLowerCase('es');
     const category = $('categoryFilter').value;
     const needPrice = $('pricedOnly').checked || $('catalogMax').value !== '' || $('storeFilter').value !== 'all';
-    const visible = products.filter(p => {
-      const offer = catalogOffer(p);
-      return (!$('pricedOnly').checked || Boolean(offer && market.recent(offer))) && low <= high && (offer ? offer.price >= low && offer.price <= high : !needPrice) && (category === 'all' || p.category === category) && `${p.name} ${p.sku} ${p.summary}`.toLocaleLowerCase('es').includes(query);
-    });
+    const filters = { high, category, needPrice, pricedOnly: $('pricedOnly').checked };
+    const matcher = searchIndex($('catalogSearch').value);
+    const visible = products.filter(p => passesPrice(p, filters) && (category === 'all' || p.category === category) && matcher.test(p));
     const order = $('catalogSort').value;
     if (order === 'featured') visible.sort((a,b) => Number(Boolean(catalogOffer(b))) - Number(Boolean(catalogOffer(a))) || market.available(b).length - market.available(a).length);
     if (order === 'price-asc' || order === 'price-desc') visible.sort((a,b) => {
@@ -115,9 +137,23 @@
     $('marketGrid').innerHTML = page.items.map(card).join('');
     $('catalogCount').textContent = `${visible.length} ${visible.length===1?'modelo':'modelos'}`;
     $('catalogEmpty').classList.toggle('show', !visible.length);
-    $('catalogEmpty').textContent = 'Sin resultados. Un filtro de precio excluye las piezas sin precio consultado.';
+    $('catalogEmpty').innerHTML = visible.length ? '' : explainEmpty(filters, matcher);
+    // Corrección de la búsqueda visible: el usuario sabe qué se buscó realmente.
+    const note = $('catalogSearchNote');
+    if (note) {
+      note.hidden = !matcher.corrections.length || !visible.length;
+      note.textContent = matcher.corrections.length ? `Resultados para «${matcher.corrections.map(([, to]) => to).join(' ')}» (escribiste «${matcher.corrections.map(([from]) => from).join(' ')}»)` : '';
+    }
     renderComparison();
   };
+  $('catalogEmpty').addEventListener('click', event => {
+    const action = event.target.closest('[data-empty-action]')?.dataset.emptyAction;
+    if (!action) return;
+    if (action === 'all-categories') { goLevel('todo'); return; }
+    if (action === 'clear-search') { $('catalogSearch').value = ''; $('catalogSearch').dispatchEvent(new Event('input')); $('catalogSearch').focus(); return; }
+    if (action === 'clear-price') { $('catalogMax').value = ''; $('storeFilter').value = 'all'; $('pricedOnly').checked = false; syncPriceControl(); window.renderProductCatalog(); confirmFilter(); return; }
+    if (action === 'clear-all') $('clearFilters').click();
+  });
   function revealResults() {
     const results = $('marketGrid').children.length ? $('marketGrid') : $('catalogEmpty');
     window.FENIXA_MOTION?.reveal(results);

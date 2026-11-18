@@ -8,7 +8,8 @@
     laptops: { title: 'Laptops', sections: ['#laptops'] },
     configurador: { title: 'Armar mi PC', sections: ['#startBuild'] },
     'mi-pc': { title: 'Mejorar mi PC', sections: ['#mi-pc'] },
-    ensamblaje: { title: 'Guía de ensamblaje', sections: ['#ensamblaje'] }
+    ensamblaje: { title: 'Guía de ensamblaje', sections: ['#ensamblaje'] },
+    ayuda: { title: 'Ayuda', sections: ['#ayuda'] }
   };
   let previousPage;
   function navigate() {
@@ -16,7 +17,7 @@
     if (hash === 'configuradorc') { history.replaceState(null, '', '#configurador'); hash = 'configurador'; }
     if (hash === 'catalogo') { history.replaceState(null, '', '#componentes'); hash = 'componentes'; }
     if (hash === 'compatibilidad') { history.replaceState(null, '', '#builds'); hash = 'builds'; }
-    const requested = hash.startsWith('mi-pc/') ? 'mi-pc' : hash.startsWith('build/') ? 'builds' : hash.startsWith('componentes/') ? 'componentes' : hash === 'recomendacion' ? 'configurador' : hash === 'precios' ? 'inicio' : hash;
+    const requested = hash.startsWith('ayuda-') ? 'ayuda' : hash.startsWith('mi-pc/') ? 'mi-pc' : hash.startsWith('build/') ? 'builds' : hash.startsWith('componentes/') ? 'componentes' : hash === 'recomendacion' ? 'configurador' : hash === 'precios' ? 'inicio' : hash;
     const key = Object.hasOwn(routes, requested) ? requested : 'inicio';
     const page = routes[key];
     const visible = new Set(page.sections.map(selector => document.querySelector(selector)));
@@ -35,6 +36,11 @@
         const heading = [...visible].find(Boolean)?.querySelector('h1, h2, h3');
         if (heading) { heading.tabIndex = -1; heading.focus({ preventScroll: true }); }
       }
+    }
+    // Temas de Ayuda (#ayuda-precios…): se abre Ayuda y se lleva el tema a la vista.
+    if (hash.startsWith('ayuda-')) {
+      const topic = document.getElementById(hash);
+      if (topic) requestAnimationFrame(() => { topic.scrollIntoView({ block: 'start' }); const h = topic.querySelector('h3'); if (h) { h.tabIndex = -1; h.focus({ preventScroll: true }); } });
     }
     previousPage = key;
   }
