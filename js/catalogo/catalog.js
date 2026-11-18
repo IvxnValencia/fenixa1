@@ -342,30 +342,40 @@
     return window.FENIXA_BUILD_DISCOVERY.total(b,id=>market.price(byId[id]));
   };
   const buildPrice = b => { const t=buildTotal(b); return t.count ? `${t.complete?'Subtotal':'Subtotal parcial'}: ${money(t.sum)}` : 'Precio por confirmar'; };
-  // Choose covers once in featured order so filtering never changes a build's photo.
-  const covers = new Map(), photoUses = new Map(), recentCategories = [];
-  const featuredBuilds = [...completeBuilds].sort((a,b) => (a.targetBudget || Infinity) - (b.targetBudget || Infinity));
-  for (const build of featuredBuilds) {
-    const candidates = build.parts.map(id => byId[id]).filter(part => part?.image && part.imageKind !== 'category');
-    const graphicsBuild = ['gaming', 'creativo'].includes(build.use) && candidates.some(part => part.category === 'gpu');
-    const priority = /archivos|almacenamiento|\b1 TB\b/i.test(build.name) ? 'storage' :
-      /compact/i.test(build.name) ? 'case' : graphicsBuild ? 'gpu' : 'cpu';
-    candidates.sort((a,b) => (photoUses.get(a.image) || 0) - (photoUses.get(b.image) || 0) ||
-      Number(recentCategories.includes(a.category)) - Number(recentCategories.includes(b.category)) ||
-      Number(b.category === priority) - Number(a.category === priority));
-    const cover = candidates[0] || byId[build.caseId];
-    if (!cover) continue;
-    covers.set(build.id, cover);
-    photoUses.set(cover.image, (photoUses.get(cover.image) || 0) + 1);
-    recentCategories.unshift(cover.category);
-    recentCategories.length = Math.min(recentCategories.length, 6);
+  function coverLabel(part) {
+    const name = shortName(part);
+    if (part.category === 'ram') {
+      const { capacity, memory } = window.FENIXA_SPECS.facts(part).values || {};
+      if (capacity && memory) return `${capacity} GB ${memory}`;
+    }
+    if (part.category === 'gpu') {
+      return name.match(/\b(?:RTX|GTX|RX)\s*\d{3,4}(?:\s*(?:Ti|SUPER|XTX|XT|LP))*/i)?.[0] || name;
+    }
+    return name.replace(/^(AMD|Intel)\s+/i, '');
   }
-  const buildPhoto = build => {
-    const part = covers.get(build.id);
-    if (!part) return '';
-    const label = esc(categoryName(part.category) + ' · ' + shortName(part));
-    return `<img class="product-image" src="${esc(thumb(part.image))}" alt="${label}" title="${label}" width="480" height="360" loading="eager" decoding="async">`;
-  };
+
+  function coverImage(part, className) {
+    if (!part?.image || part.imageKind === 'category') return '';
+    const file = window.FENIXA_BUILD_COVERS?.[part.image];
+    const src = file ? 'assets/thumbs/build-covers/' + file : thumb(part.image);
+    return `<img class="${className}" src="${esc(src)}" alt="${esc(part.name)}" decoding="async">`;
+  }
+
+  function buildPhoto(build, overview) {
+    const cabinet = byId[build.caseId];
+    const cpu = byId[overview.find(p => p.category === 'cpu')?.id];
+    const gpu = byId[overview.find(p => p.category === 'gpu')?.id];
+    const ram = byId[overview.find(p => p.category === 'ram')?.id];
+    const featured = [cpu, gpu || ram].filter(Boolean);
+    const captions = featured.map(part => `<span class="build-cover-part" title="${esc(shortName(part))}">
+      ${coverImage(part, 'build-part-thumb')}<span class="build-cover-label">${esc(coverLabel(part))}</span>
+    </span>`).join('');
+    const description = [cabinet, ...featured].filter(Boolean).map(p => categoryName(p.category) + ' ' + shortName(p)).join(', ');
+    return `<button class="catalog-photo build-photo-button fx-open" type="button" data-open-build="${esc(build.id)}"
+      aria-label="Ver detalles de ${esc(build.name)}" aria-description="${esc(description)}">
+      ${coverImage(cabinet, 'build-cover-case')}<span class="build-cover-parts">${captions}</span>
+    </button>`;
+  }
   // Referencia total: misma suma que Armar mi PC y Mi build (FENIXA_AUTO_BUILD.reference); «Sin precio» si falta alguna.
   const buildRef = b => {
     const ref = window.FENIXA_AUTO_BUILD?.reference, refs = ref ? b.parts.map(id => byId[id] && ref(byId[id])) : [];
@@ -391,9 +401,9 @@
     const page = window.FENIXA_PAGER.paginate('builds', visible, { anchor: $('buildGallery'), signature, onChange: renderGallery, label: 'Páginas de builds', scrollTarget: $('builds') });
     const shortPart = p => p.label === 'Gráfica' && /sin gráfica dedicada/i.test(p.name) ? 'Gráficos integrados' : byId[p.id] ? shortName(byId[p.id]) : p.name;
     $('buildGallery').innerHTML = page.items.map(b => {
-      const parts = window.FENIXA_BUILD_DISCOVERY.overview(b).filter(p => p.label === 'Procesador' || p.label === 'Gráfica');
-      const facts=parts.map(p=>shortPart(p)).join(' · ');
-      return `<article class="build-card fx-card" data-open-build="${esc(b.id)}"><div class="catalog-product-heading"><h3 title="${esc(b.name)}">${esc(shortName(b))}</h3></div><button class="catalog-photo build-photo-button fx-open" type="button" data-open-build="${esc(b.id)}" aria-label="Ver detalles de ${esc(b.name)}">${buildPhoto(b)}</button><p class="catalog-brief" title="${esc(facts)}">${esc(facts)}</p><div class="catalog-price-line build-ref-line">${buildRef(b)}<span class="estimate-label">${b.targetBudget?'Objetivo '+esc(money(b.targetBudget)):'Sin objetivo asignado'}</span></div><div class="catalog-card-actions"><button class="secondary-button" type="button" data-save-build="${esc(b.id)}" aria-pressed="${saved.has(b.id)}">${saved.has(b.id)?'Guardada':'Guardar'}</button><button class="primary-button" type="button" data-open-build="${esc(b.id)}">Ver detalles</button></div></article>`;
+      const parts = window.FENIXA_BUILD_DISCOVERY.overview(b);
+      const facts = parts.filter(p => p.category === 'cpu' || p.category === 'gpu').map(shortPart).join(' · ');
+      return `<article class="build-card fx-card" data-open-build="${esc(b.id)}"><div class="catalog-product-heading"><h3 title="${esc(b.name)}">${esc(shortName(b))}</h3></div>${buildPhoto(b, parts)}<p class="catalog-brief" title="${esc(facts)}">${esc(facts)}</p><div class="catalog-price-line build-ref-line">${buildRef(b)}<span class="estimate-label">${b.targetBudget?'Objetivo '+esc(money(b.targetBudget)):'Sin objetivo asignado'}</span></div><div class="catalog-card-actions"><button class="secondary-button" type="button" data-save-build="${esc(b.id)}" aria-pressed="${saved.has(b.id)}">${saved.has(b.id)?'Guardada':'Guardar'}</button><button class="primary-button" type="button" data-open-build="${esc(b.id)}">Ver detalles</button></div></article>`;
     }).join('');
     $('buildResults').textContent=visible.length+(visible.length===1?' propuesta':' propuestas')+' · presupuesto objetivo, no precio de venta'+(limit&&visible.some(b=>!b.targetBudget)?' · las originales sin objetivo se conservan visibles':'');
     $('buildCount').textContent=visible.length+(visible.length===1?' modelo':' modelos');
