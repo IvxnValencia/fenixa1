@@ -8,18 +8,104 @@
   const money = n => new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(n);
   const esc = v => String(v ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const nm = p => window.FENIXA_SHORT_NAME ? window.FENIXA_SHORT_NAME(p) : p.name;
-  const age = o => (Date.now()-Date.parse(o.checkedAt))/3600000;
+  const checkedTime = o => Date.parse(/^\d{4}-\d{2}-\d{2}$/.test(o.checkedAt) ? o.checkedAt+'T00:00:00-05:00' : o.checkedAt);
+  const age = o => (Date.now()-checkedTime(o))/3600000;
   const valid = o => o.currency === 'COP' && Number.isFinite(o.price) && o.price > 0 && /^https:\/\//.test(o.url);
   const recent = o => age(o) >= -1 && age(o) <= refreshWindowHours;
-  const offers = p => [...(data.offers[p.id] || []),...(window.FENIXA_PRICE_REVIEW?.offers?.[p.id]||[])].filter(valid).slice().sort((a,b)=>a.price-b.price);
-  const available = p => offers(p).filter(o=>recent(o)&&o.status==='in_stock');
+  const stores = () => window.FENIXA_STORES || [];
+  const storeById = id => stores().find(store => store.id === id);
+  const normalizeMPN = value => typeof value === 'string' ? value.normalize('NFKC').trim().replace(/\s+/g,' ').toUpperCase() : '';
+  const priceOrder = (a,b) => a.price-b.price || Number(a.incomplete ?? true)-Number(b.incomplete ?? true);
+  const landedOrder = (a,b) => a.landed-b.landed || Number(a.incomplete)-Number(b.incomplete) || checkedTime(b)-checkedTime(a);
+  const listed = o => o.status==='listed' && o.priceVerified===true;
+  const canShip = o => o.status!=='no_ship' && (o.storeInfo || storeById(o.storeId))?.shipsToCO!==false;
+  const knownCost = value => value === null || (Number.isFinite(value) && value >= 0);
+  const cop = (value, rate) => value === null ? null : Math.round(value * rate * 100) / 100;
+  function partNumber(p) {
+    const facts = window.FENIXA_SPECS?.facts(p);
+    if (facts?.identityConflict) return '';
+    const explicit = p.mpn || p.partNumber || facts?.mpn || facts?.partNumber;
+    if (explicit) return normalizeMPN(explicit);
+    const sku = normalizeMPN(p.sku);
+    if (p.sourceType !== 'retailer' && sku && !/^(REF\.|MODELO:)/.test(sku) && !sku.includes('·')) return sku;
+    // A verified manufacturer code can identify a retailer card whose SKU is internal to the shop.
+    const code = normalizeMPN(facts?.modelKey);
+    return facts?.verified && /^(?=.*\d)[A-Z\d]+(?:[-_/][A-Z\d]+)+$/.test(code) ? code : '';
+  }
+  function storeOffer(o, mpn) {
+    if (!o || !mpn || normalizeMPN(o.mpn) !== mpn) return null;
+    const storeInfo = storeById(o.storeId);
+    if (!storeInfo || !['in_stock','listed','no_ship'].includes(o.status) || !/^https:\/\/[^/\s]+/.test(o.url) ||
+        !Number.isFinite(checkedTime(o)) || !Number.isFinite(o.price) || o.price <= 0 ||
+        !knownCost(o.shippingToCO) || !knownCost(o.importFees)) return null;
+    const fx = window.FENIXA_FX;
+    const rate = o.currency === 'COP' ? 1 : o.currency === 'USD' ? fx?.USD_COP : null;
+    if (!Number.isFinite(rate) || rate <= 0 ||
+        (o.currency === 'USD' && (!/^https:\/\//.test(fx.source) || !Number.isFinite(Date.parse(fx.checkedAt))))) return null;
+    const price = cop(o.price, rate);
+    const shippingCOP = cop(o.shippingToCO, rate);
+    const importFeesCOP = cop(o.importFees, rate);
+    const landed = cop(o.price + (o.shippingToCO ?? 0) + (o.importFees ?? 0), rate);
+    if (!Number.isFinite(landed)) return null;
+    const status = storeInfo.shipsToCO === false ? 'no_ship' : o.status;
+    return {...o, store:storeInfo.name, storeInfo, status, price, currency:'COP', originalPrice:o.price,
+      originalCurrency:o.currency, shippingCOP, importFeesCOP, landed, priceVerified:true,
+      incomplete:shippingCOP === null || importFeesCOP === null};
+  }
+  function offers(p) {
+    const legacy = [...(data.offers[p.id] || []), ...(window.FENIXA_PRICE_REVIEW?.offers?.[p.id] || [])].filter(valid);
+    const raw = window.FENIXA_STORE_OFFERS?.[p.id];
+    const mpn = Array.isArray(raw) && raw.length ? partNumber(p) : '';
+    const verified = mpn ? raw.map(o=>storeOffer(o,mpn)).filter(Boolean) : [];
+    return [...legacy,...verified].sort(priceOrder);
+  }
+  function listings(p) {
+    const byListing = new Map();
+    for (const o of offers(p)) {
+      const checkedAt = checkedTime(o);
+      if (!Number.isFinite(checkedAt) || age(o)<-1) continue;
+      const storeInfo = o.storeInfo || storeById(o.storeId) ||
+        {id:o.storeId, name:o.store, shipsToCO:null, shippingModel:'per-item'};
+      const row = {shippingCOP:null, importFeesCOP:null, landed:o.price, incomplete:true, ...o, storeInfo};
+      const key = JSON.stringify([o.storeId,o.url]);
+      const prev = byListing.get(key);
+      if (!prev || checkedAt>checkedTime(prev) ||
+          (checkedAt===checkedTime(prev) && o.storeInfo && !prev.originalCurrency)) byListing.set(key,row);
+    }
+    return [...byListing.values()].sort(landedOrder);
+  }
+  const isPriced = o => o.status==='in_stock' || listed(o);
+  function storeOptions(p) {
+    const ranked = listings(p).sort((a,b) =>
+      Number(canShip(b)&&isPriced(b))-Number(canShip(a)&&isPriced(a)) ||
+      Number(canShip(b))-Number(canShip(a)) || landedOrder(a,b));
+    const seen = new Set();
+    return ranked.filter(o=>{
+      if (seen.has(o.storeId || o.store)) return false;
+      seen.add(o.storeId || o.store);
+      return true;
+    });
+  }
+  const referenceOffers = (p, store='all', recentOnly=false) => listings(p).filter(o=>
+    canShip(o) && isPriced(o) && (!recentOnly || recent(o)) && (store==='all' || o.storeId===store));
+  const shoppingOffers = p => referenceOffers(p,'all',true).filter(o=>o.storeId && o.store);
+  const isCurrentListing = (o, rows) => rows.some(row=>row.storeId===o.storeId && row.url===o.url &&
+    row.checkedAt===o.checkedAt && row.status===o.status && row.price===o.price);
+  function activeOffers(p) {
+    const all = offers(p).filter(canShip);
+    if (!window.FENIXA_STORE_OFFERS?.[p.id]?.length) return all;
+    const rows = listings(p);
+    return all.filter(o=>isCurrentListing(o,rows));
+  }
+  const available = p => activeOffers(p).filter(o=>recent(o) && o.status==='in_stock');
   const best = p => available(p)[0] || null;
   const snapshot = p => Number.isFinite(p?.min) && p.min > 0 && Number.isFinite(p?.max) && p.max > 0 ? {price:p.min,maxPrice:p.max,store:'Referencia de catálogo',storeId:'catalog',url:p.source,checkedAt:data.checkedAt,isSnapshot:true} : null;
-  const lastObserved = p => offers(p).filter(o=>Number.isFinite(Date.parse(o.checkedAt))).sort((a,b)=>Date.parse(b.checkedAt)-Date.parse(a.checkedAt))[0] || snapshot(p);
-  const date = o => new Date(o.checkedAt).toLocaleString('es-CO',{timeZone:'America/Bogota',dateStyle:'short',timeStyle:'short'});
+  const lastObserved = p => offers(p).filter(o=>Number.isFinite(checkedTime(o))).sort((a,b)=>checkedTime(b)-checkedTime(a))[0] || snapshot(p);
+  const date = o => new Date(checkedTime(o)).toLocaleString('es-CO',{timeZone:'America/Bogota',dateStyle:'short',timeStyle:'short'});
+  const refDate = o => new Date(checkedTime(o)).toLocaleDateString('es-CO',{timeZone:'America/Bogota',day:'2-digit',month:'2-digit'});
   const price = p => best(p)?.price ?? null;
-  const quoted = p => offers(p).filter(o=>o.status==='listed'&&o.priceVerified===true&&recent(o)).sort((a,b)=>a.price-b.price)[0]||null;
-  const fixed = p => best(p) || quoted(p) || offers(p).filter(o=>o.status==='in_stock' && Number.isFinite(Date.parse(o.checkedAt)) && age(o)>=-1).sort((a,b)=>Date.parse(b.checkedAt)-Date.parse(a.checkedAt) || a.price-b.price)[0] || null;
+  const quoted = p => activeOffers(p).find(o=>listed(o) && recent(o)) || null;
+  const fixed = p => best(p) || quoted(p) || activeOffers(p).filter(o=>o.status==='in_stock' && age(o)>=-1).sort((a,b)=>checkedTime(b)-checkedTime(a) || priceOrder(a,b))[0] || null;
   const priceText = p => {
     const offer = fixed(p);
     return offer ? money(offer.price) : 'Precio por confirmar';
@@ -35,7 +121,7 @@
   }
   function history(p) {
     const recorded = evidence.priceHistory?.[p.id] || [];
-    const observations = [...recorded, ...offers(p)].filter(o => valid(o) && o.status !== 'confirm' && o.status !== 'listed' && o.storeId && o.store && Number.isFinite(Date.parse(o.checkedAt)));
+    const observations = [...recorded, ...offers(p)].filter(o => valid(o) && (!o.originalCurrency || o.originalCurrency==='COP') && !['confirm','listed','no_ship'].includes(o.status) && o.storeId && o.store && Number.isFinite(Date.parse(o.checkedAt)));
     const unique = new Map(observations.map(o => [`${o.storeId}|${o.checkedAt}|${o.price}`, o]));
     const groups = new Map();
     for (const o of unique.values()) {
@@ -58,10 +144,21 @@
     if (!item || !Number.isFinite(item.average) || item.average < 1 || item.average > 5 || !Number.isSafeInteger(item.count) || item.count < 1 || !/^https:\/\//.test(item.sourceUrl) || !Number.isFinite(Date.parse(item.checkedAt))) return `<section class="evidence-panel" aria-label="Valoraciones"><h4>Valoraciones</h4><p>Aún no tenemos valoraciones verificadas del modelo exacto. No mostramos estrellas ni reputación de tiendas sin una fuente atribuible.</p></section>`;
     return `<section class="evidence-panel" aria-label="Valoraciones"><h4>Valoraciones del modelo</h4><p><strong>${esc(item.average.toFixed(1))} / 5</strong> · ${item.count} ${item.count===1?'valoración':'valoraciones'} · consulta ${esc(new Date(item.checkedAt).toLocaleDateString('es-CO'))}</p><a href="${esc(item.sourceUrl)}" target="_blank" rel="noopener noreferrer">Ver fuente y metodología ↗</a></section>`;
   }
-  function purchase(p, parts) {
-    const all = offers(p), top = best(p), count = available(p).length;
+  const usd = new Intl.NumberFormat('es-CO',{style:'currency',currency:'USD',currencyDisplay:'code'});
+  function storeList(p) {
+    const rows = storeOptions(p);
+    const fx = window.FENIXA_FX;
+    return `<section class="store-comparison" aria-label="Tiendas consultadas"><h4>Tiendas consultadas</h4>${rows.length?`<ul class="store-quote-list">${rows.map(o=>{
+      const ships = canShip(o), confirmed = ships && (o.shippingCOP!==null || o.storeInfo.shipsToCO===true);
+      const shipping = !ships?'No envía':confirmed?'Envía a CO':'Envío por confirmar';
+      const missing = [ships && confirmed && o.shippingCOP===null?' + Envío por confirmar':'',ships && o.importFeesCOP===null?' + Impuestos por confirmar':''].filter(Boolean);
+      const status = !recent(o)?'Consulta vencida':o.status==='out_of_stock'?'Agotado al consultar':o.status==='in_stock'?'Disponible al consultar':'Stock por confirmar';
+      return `<li class="store-quote"><strong title="${esc(o.store)}">${esc(o.store)}</strong><span class="store-quote-price"><b>${money(o.landed)}</b>${o.originalCurrency==='USD'? `<small>${esc(usd.format(o.originalPrice))}</small>`:''}</span><span class="store-quote-chips"><span class="store-quote-chip${confirmed?' is-confirmed':''}">${shipping}</span>${missing.map(text=>`<span>${text}</span>`).join('')}</span><time datetime="${esc(o.checkedAt)}" title="${status} · ${esc(date(o))}">Ref. ${esc(refDate(o))}${recent(o)?'':' · Vencida'}</time><a class="store-quote-link" href="${esc(o.url)}" target="_blank" rel="noopener noreferrer" aria-label="Ver oferta en ${esc(o.store)}">↗</a></li>`;
+    }).join('')}</ul>${rows.some(o=>o.originalCurrency==='USD')?`<small>TRM: ${esc(fx.checkedAt)} · <a href="${esc(fx.source)}" target="_blank" rel="noopener noreferrer">Banco de la República ↗</a></small>`:''}`:'<p>Sin ofertas consultadas para esta referencia.</p>'}</section>`;
+  }
+  function purchase(p, parts, {includeStores=true}={}) {
     const fit = window.FENIXA_FIT.check(p,parts);
-    return `<details class="store-options"><summary>Tiendas, historial y valoraciones</summary><div class="store-offers">${window.FENIXA_FIT_STATUS.render(fit,{context:fit.context,hasParts:parts?parts.length>0:!!window.FENIXA_FIT.context()})}<section class="store-comparison" aria-label="Precios de tiendas consultadas"><h4>Precios consultados · ${esc(nm(p))}</h4>${all.length ? all.map(o=>`<article class="store-offer"><div class="store-offer-main"><strong>${esc(o.store)}</strong><span><small>Precio del producto</small><b>${money(o.price)}</b></span><span><small>Disponibilidad indicada</small>${!recent(o)?'Consulta vencida':o.status==='in_stock'?'Disponible al consultar':o.status==='out_of_stock'?'Agotado al consultar':'Sin confirmar'}</span><a class="buy-link" href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">Ver oferta ↗</a></div><small>Consultado: ${esc(date(o))} · ${esc(o.currency)} · envío e impuestos adicionales sin comprobar.</small>${o===top?`<span class="offer-best">${count>1?'Menor precio reciente consultado':'Única oferta reciente consultada'}</span>`:''}${o.sourceUrl?`<small><a href="${esc(o.sourceUrl)}" target="_blank" rel="noopener noreferrer">Fuente del precio publicado</a></small>`:''}<small>${esc(o.note || 'Confirma presentación, garantía y forma de pago en la tienda.')}</small></article>`).join(''):'<p>No hay oferta directa comprobada para esta referencia.</p>'}</section>${priceHistory(p)}${ratings(p)}${searches(p)}<small>Los importes no forman un total de compra ni representan todo el mercado. Una consulta anterior puede haber cambiado o vencido.</small></div></details>`;
+    return `<details class="store-options"><summary>Tiendas, historial y valoraciones</summary><div class="store-offers">${window.FENIXA_FIT_STATUS.render(fit,{context:fit.context,hasParts:parts?parts.length>0:!!window.FENIXA_FIT.context()})}${includeStores?storeList(p):''}${priceHistory(p)}${ratings(p)}${searches(p)}</div></details>`;
   }
   function plan(ids, byId) {
     const parts = ids.map(id=>byId[id]);
@@ -83,5 +180,5 @@
     </section>`;
   }
   const latestCheckedAt = Object.values(data.offers || {}).flat().map(o=>Date.parse(o.checkedAt)).filter(Number.isFinite).sort((a,b)=>b-a)[0] || Date.parse(data.checkedAt) || null;
-  window.FENIXA_MARKET = {offers,available,best,quoted,lastObserved,fixed,price,priceText,priceLabel,purchase,plan,recent,money,refreshWindowHours,latestCheckedAt,refreshDue:latestCheckedAt ? (Date.now()-latestCheckedAt)/3600000 > refreshWindowHours : true};
+  window.FENIXA_MARKET = {offers,listings,stores,referenceOffers,shoppingOffers,storeList,available,best,quoted,lastObserved,fixed,price,priceText,priceLabel,purchase,plan,recent,money,refreshWindowHours,latestCheckedAt,refreshDue:latestCheckedAt ? (Date.now()-latestCheckedAt)/3600000 > refreshWindowHours : true};
 })();

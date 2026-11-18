@@ -373,3 +373,8 @@ body :is(#componentes,#builds,#laptops) .fx-page { height: 40px; min-height: 40p
   body #builds .build-use-filters button { height: 40px; min-height: 40px; }
   body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) { grid-template-columns: minmax(0,1fr); }
 }
+
+/* Ficha y tarjetas: los dos botones de acción a la misma altura y en la misma línea (18/11). */
+body .catalog-card-actions { align-items: stretch !important; }
+body .catalog-card-actions > button { margin: 0 !important; align-self: stretch !important; box-sizing: border-box; }
+body .product-sheet-info .catalog-card-actions > button { height: 40px !important; min-height: 40px !important; }

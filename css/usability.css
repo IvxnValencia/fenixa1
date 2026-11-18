@@ -204,3 +204,7 @@ body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGri
 body #mi-pc .profile-pick-text strong { white-space: normal; overflow: visible; }
 /* En pantallas estrechas el resumen (lo que falta por pagar) va antes de la lista. */
 @media (max-width: 1099px) { body #carrito .cart-total { order: -1; } }
+
+/* 18/11: el resumen ocupa 2 líneas; su fila crece a 32px para no montarse sobre el precio. */
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) > article { grid-template-rows: 40px var(--card-photo-height,120px) 32px 40px 40px; }
+body :is(#componentes,#builds,#laptops) :is(#marketGrid,#buildGallery,#laptopGrid) .catalog-brief { height: 32px; min-height: 32px; line-height: 16px; white-space: normal; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; text-overflow: ellipsis; }

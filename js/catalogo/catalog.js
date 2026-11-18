@@ -19,13 +19,9 @@
   let activeBuild = null;
   const partFilters = new Map();
   let opener = null;
-  function currentOffer(p) {
-    const store = $('storeFilter')?.value || 'all';
-    return market.available(p).find(o => store === 'all' || o.storeId === store) || null;
-  }
-  function catalogOffer(p) {
-    const store=$('storeFilter')?.value||'all';
-    return store==='all'?market.fixed(p):market.offers(p).filter(o=>o.storeId===store&&(o.status==='in_stock'||(o.status==='listed'&&o.priceVerified===true&&market.recent(o)))&&Number.isFinite(Date.parse(o.checkedAt))&&Date.parse(o.checkedAt)<=Date.now()+3600000).sort((a,b)=>Date.parse(b.checkedAt)-Date.parse(a.checkedAt))[0]||null;
+  function catalogOffer(p, store=$('storeFilter').value, recentOnly=$('pricedOnly').checked) {
+    const offers = market.referenceOffers(p,store,recentOnly);
+    return offers.length ? {...offers[0], storeCount:new Set(offers.map(o=>o.storeId)).size} : null;
   }
   function brief(p) {
     const facts=window.FENIXA_SPECS.facts(p);
@@ -38,14 +34,13 @@
   const refDate = o => { const t = Date.parse(o?.checkedAt); return Number.isFinite(t) ? new Date(t).toLocaleDateString('es-CO',{timeZone:'America/Bogota',day:'numeric',month:'numeric'}).split('/').map(x=>x.padStart(2,'0')).join('/') : ''; };
   const refLabel = o => o ? 'Ref. ' + (refDate(o) || '—') : 'Sin precio';
   const refTitle = o => o ? `${o.status==='listed'?'Precio publicado':market.recent(o)?'Precio consultado':'Consulta vencida'} · COP · ${o.store}` : 'Sin oferta exacta verificada en COP';
-  function card(p) {
-    const offer = catalogOffer(p);
+  function card(p, offer) {
     const fit=window.FENIXA_MY_BUILD.check(p), inBuild=window.FENIXA_MY_BUILD.ids().includes(p.id);
     return `<article class="market-card fx-card" data-product-id="${p.id}" data-market-category="${p.category}">
       <div class="catalog-product-heading"><span class="market-category">${esc(categoryName(p.category))}${p.imageKind==='category'?' · ilustración de categoría':''}</span><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3></div>
       <button class="catalog-photo fx-open" type="button" data-open-product="${p.id}" aria-label="Ver detalles de ${esc(p.name)}"><img class="product-image" src="${esc(thumb(p.image))}" alt="${esc(p.name)}" width="480" height="360" loading="eager" decoding="async"></button>
       <p class="catalog-brief" title="${esc(brief(p))}">${esc(brief(p))}</p>
-      <div class="catalog-price-line"><strong class="market-price">${offer?money(offer.price):'Precio por confirmar'}</strong><span class="estimate-label" title="${esc(refTitle(offer))}">${esc(refLabel(offer))}</span></div>
+      <div class="catalog-price-line"><span class="store-price-summary" title="${esc(refTitle(offer))}"><strong class="market-price">${offer?'Desde '+money(offer.landed):'Precio por confirmar'}</strong>${offer?`<span class="estimate-label"> · ${offer.storeCount} ${offer.storeCount===1?'tienda':'tiendas'}</span>`:''}</span></div>
       <div class="catalog-card-actions"><button class="compare-trigger" type="button" data-compare="${p.id}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar':'Comparar'}</button><button class="primary-button" type="button" data-add-my-build="${p.id}"><span>${inBuild?'En Mi build ':fit.status==='conflict'?'Revisar conflicto':'Añadir'}</span></button></div>
       <details class="catalog-card-details" hidden><summary>Detalles y fuentes${fit.status==='conflict'?' · conflicto':''}</summary><div class="product-sku">${esc(p.sku)}</div><p>${esc(p.summary)}</p>${p.imageNote?`<small class="catalog-image-note">${esc(p.imageNote)}</small>`:''}<p class="catalog-price-evidence">${esc(offer?`${offer.store} · ${new Date(offer.checkedAt).toLocaleString('es-CO',{timeZone:'America/Bogota'})} · ${offer.status==='listed'?'precio publicado; stock, presentación y condiciones por confirmar':market.recent(offer)?'consultado hace menos de 72 horas':'consulta vencida; precio y stock pueden cambiar'}`:'Precio pendiente: el rango del catálogo no es una oferta.')}</p>${window.FENIXA_FIT_STATUS.render(fit,{hasParts:window.FENIXA_MY_BUILD.ids().some(id=>byId[id].category!==p.category)})}${market.purchase(p,window.FENIXA_MY_BUILD.ids().map(id=>byId[id]).filter(other=>other.category!==p.category))}<div class="product-links">${external(p.source,p.sourceType==='retailer'?'Ficha de la tienda':'Ficha del fabricante')}</div></details>
     </article>`;
@@ -58,6 +53,7 @@
     return `<button class="cmp-tile" type="button" data-category="${c.id}">${photo(p,'',true)}<strong>${esc(c.name)}</strong><span>${n} modelo${n === 1 ? '' : 's'}</span></button>`;
   }).join('');
   $('categoryFilter').innerHTML = '<option value="all">Todas las categorías</option>' + categories.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
+  $('storeFilter').innerHTML = '<option value="all">Todas las tiendas</option>' + market.stores().map(store => `<option value="${esc(store.id)}">${esc(store.name)}</option>`).join('');
   // Una sola vista en dos niveles; la categoría vive en el hash (#componentes/<id> o #componentes/todo).
   const level = { cat: null };
   const goLevel = cat => { location.hash = cat ? 'componentes/' + cat : 'componentes'; };
@@ -67,7 +63,7 @@
   });
   $('catalogBack').addEventListener('click', () => goLevel(null));
   const slider = $('catalogPriceSlider');
-  const priceCeiling = Math.max(1000000, Math.ceil(Math.max(0,...products.map(p=>catalogOffer(p)?.price||0))/10000)*10000+10000);
+  const priceCeiling = Math.max(1000000, Math.ceil(Math.max(0,...products.map(p=>catalogOffer(p)?.landed||0))/10000)*10000+10000);
   slider.max = String(priceCeiling);
   function syncPriceControl() {
     const raw = $('catalogMax').value;
@@ -92,7 +88,7 @@
   const searchIndex = window.FENIXA_SEARCH.index(products, p => window.FENIXA_SPECS.facts(p).displayName || '', categoryName);
   const passesPrice = (p, f) => {
     const offer = catalogOffer(p);
-    return (!f.pricedOnly || Boolean(offer && market.recent(offer))) && (offer ? offer.price <= f.high : !f.needPrice);
+    return (!f.pricedOnly || Boolean(offer && market.recent(offer))) && (offer ? (offer.landed ?? offer.price) <= f.high : !f.needPrice);
   };
   // Explica por qué no hay resultados y ofrece la acción que lo resuelve.
   function explainEmpty(f, matcher) {
@@ -117,13 +113,14 @@
     const query = $('catalogSearch').value.trim().toLocaleLowerCase('es');
     const category = $('categoryFilter').value;
     const needPrice = $('pricedOnly').checked || $('catalogMax').value !== '' || $('storeFilter').value !== 'all';
+    const prices = new Map(products.map(p => [p.id, catalogOffer(p)]));
     const filters = { high, category, needPrice, pricedOnly: $('pricedOnly').checked };
     const matcher = searchIndex($('catalogSearch').value);
     const visible = products.filter(p => passesPrice(p, filters) && (category === 'all' || p.category === category) && matcher.test(p));
     const order = $('catalogSort').value;
-    if (order === 'featured') visible.sort((a,b) => Number(Boolean(catalogOffer(b))) - Number(Boolean(catalogOffer(a))) || market.available(b).length - market.available(a).length);
+    if (order === 'featured') visible.sort((a,b) => (prices.get(b.id)?.storeCount || 0) - (prices.get(a.id)?.storeCount || 0));
     if (order === 'price-asc' || order === 'price-desc') visible.sort((a,b) => {
-      const ap=catalogOffer(a)?.price,bp=catalogOffer(b)?.price;
+      const ap=prices.get(a.id)?.landed,bp=prices.get(b.id)?.landed;
       if(ap==null)return bp==null?0:1; if(bp==null)return -1;
       return order==='price-asc'?ap-bp:bp-ap;
     });
@@ -134,7 +131,7 @@
     if (!cols) requestAnimationFrame(() => { if ($('marketGrid').clientWidth) window.renderProductCatalog(); });
     const signature = JSON.stringify([size, $('catalogMax').value, query, category, $('pricedOnly').checked, $('storeFilter').value, order]);
     const page = window.FENIXA_PAGER.paginate('catalog', visible, { anchor: $('marketGrid'), signature, onChange: () => { window.renderProductCatalog(); revealResults(); }, label: 'Páginas de componentes', scrollTarget: $('catalogo'), size });
-    $('marketGrid').innerHTML = page.items.map(card).join('');
+    $('marketGrid').innerHTML = page.items.map(p=>card(p,prices.get(p.id))).join('');
     $('catalogCount').textContent = `${visible.length} ${visible.length===1?'modelo':'modelos'}`;
     $('catalogEmpty').classList.toggle('show', !visible.length);
     $('catalogEmpty').innerHTML = visible.length ? '' : explainEmpty(filters, matcher);
@@ -308,21 +305,20 @@
     (reference.additionalSources || []).forEach(source => addSource(source.source, source.label || 'Fuente adicional'));
     addSource(p.source, p.sourceType==='retailer'?'Ficha de la tienda':'Ficha del fabricante');
     const purchase = document.createElement('div');
-    purchase.innerHTML = market.purchase(p,window.FENIXA_MY_BUILD.ids().map(id=>byId[id]).filter(other=>other.category!==p.category));
+    purchase.innerHTML = market.purchase(p,window.FENIXA_MY_BUILD.ids().map(id=>byId[id]).filter(other=>other.category!==p.category),{includeStores:false});
     purchase.querySelectorAll('.fit-status').forEach(node => node.remove());
     // The sheet owns one disclosure; the purchase view already supplies its content.
     purchase.querySelectorAll('details').forEach(node => { node.querySelector(':scope > summary')?.remove(); node.replaceWith(...node.childNodes); });
     const purchaseContent = purchase.querySelector('.store-offers')?.innerHTML || purchase.innerHTML;
     const status = [reference.identityConflict?'Identidad por confirmar':'',fit.status==='conflict'?fit.label:fit.matched?'Coincidencias encontradas':'Faltan datos de compatibilidad'].filter(Boolean).join(' · ');
-    const offer = catalogOffer(p);
+    const offer = catalogOffer(p,'all',false);
     const warning = reference.warning || (reference.identityConflict ? 'Confirma el modelo y la referencia exacta antes de comprar.' : '');
     const notes = [...new Set([/^Consulta las especificaciones y variantes/.test(p.summary||'')?'':p.summary,warning,reference.scope].filter(Boolean))];
-    const priceNote = offer ? `${offer.status==='listed'?'Publicado':market.recent(offer)?'Consultado':'Consulta vencida'} · ${new Date(offer.checkedAt).toLocaleDateString('es-CO',{timeZone:'America/Bogota',day:'numeric',month:'short',year:'numeric'})}` : 'Sin oferta exacta';
     productSheet.innerHTML = `<div class="fx-sheet-top"><span>${esc(categoryName(p.category))}</span><button type="button" class="fx-sheet-close" data-close-product aria-label="Cerrar detalles">Cerrar</button></div>
       <div class="product-sheet-main"><figure class="product-sheet-photo"><img src="${esc(p.image)}" alt="${esc(p.name)}" width="480" height="360" decoding="async"></figure>
-      <div class="product-sheet-info"><h2 id="productSheetTitle" title="${esc(p.name)}">${esc(shortName(p))}</h2><p class="catalog-brief">${esc(status)}</p><p class="product-sheet-price"><strong class="market-price">${offer?money(offer.price):'Precio por confirmar'}</strong><span class="estimate-label">${esc(priceNote)}</span></p>
+      <div class="product-sheet-info"><h2 id="productSheetTitle" title="${esc(p.name)}">${esc(shortName(p))}</h2><p class="catalog-brief">${esc(status)}</p><p class="product-sheet-price"><span class="store-price-summary"><strong class="market-price">${offer?'Desde '+money(offer.landed):'Precio por confirmar'}</strong>${offer?`<span class="estimate-label"> · ${offer.storeCount} ${offer.storeCount===1?'tienda':'tiendas'}</span>`:''}</span></p>
       <div class="catalog-card-actions"><button class="compare-trigger" type="button" data-sheet-compare="${p.id}" aria-pressed="${selected.has(p.id)}">${selected.has(p.id)?'Quitar de comparación':'Comparar'}</button><button class="primary-button" type="button" data-add-my-build="${p.id}">${inBuild?'Ya está en Mi build':fit.status==='conflict'?'Revisar conflicto':'Añadir a Mi build'}</button></div></div></div>
-      <div class="product-sheet-details">${warning?`<p class="product-sheet-warning" role="note" title="${esc(warning)}">${esc(warning)}</p>`:''}${specs}<details class="store-options"><summary>Fuentes y notas</summary><div class="store-offers"><div class="product-sku">${esc(p.sku)}</div>${notes.map(note=>`<p>${esc(note)}</p>`).join('')}${p.imageNote?`<small class="catalog-image-note">${esc(p.imageNote)}</small>`:''}<p>${esc(fit.reason || 'Añade otras piezas para revisar los datos disponibles.')}</p><p class="fit-status-limit">La revisión es parcial: no certifica el montaje completo.</p><p class="catalog-price-evidence">${esc(offer?`${offer.store} · ${new Date(offer.checkedAt).toLocaleString('es-CO',{timeZone:'America/Bogota'})} · ${offer.status==='listed'?'precio publicado; stock por confirmar':market.recent(offer)?'consulta reciente':'consulta vencida; confirma precio y stock'}`:'Precio pendiente: el rango del catálogo no es una oferta.')}</p><div class="product-links">${[...sources].map(([url,label])=>external(url,esc(label))).join('')}</div>${purchaseContent}</div></details></div>`;
+      <div class="product-sheet-details">${warning?`<p class="product-sheet-warning" role="note" title="${esc(warning)}">${esc(warning)}</p>`:''}${market.storeList?.(p)||''}${specs}<details class="store-options"><summary>Fuentes y notas</summary><div class="store-offers"><div class="product-sku">${esc(p.sku)}</div>${notes.map(note=>`<p>${esc(note)}</p>`).join('')}${p.imageNote?`<small class="catalog-image-note">${esc(p.imageNote)}</small>`:''}<p>${esc(fit.reason || 'Añade otras piezas para revisar los datos disponibles.')}</p><p class="fit-status-limit">La revisión es parcial: no certifica el montaje completo.</p><div class="product-links">${[...sources].map(([url,label])=>external(url,esc(label))).join('')}</div>${purchaseContent}</div></details></div>`;
   }
   function openProductSheet(id, from) {
     sheetId = id; sheetOpener = from || document.activeElement;

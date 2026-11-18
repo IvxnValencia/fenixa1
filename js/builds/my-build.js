@@ -23,6 +23,9 @@
     </section>`;
   }
   let pendingImport = null, pendingReasons = {}, pendingClear = false;
+  const combinationKey = 'fenixa-store-combination-v1';
+  let chosenCombination = null, combinationSaved = true, currentCombination = null;
+  try { chosenCombination = localStorage.getItem(combinationKey); } catch {}
   let totalBudget = 0, budgetSaved = true;
   totalBudget=window.FENIXA_BUDGET.get();budgetSaved=window.FENIXA_BUDGET.saved();
   // Misma referencia que Armar mi PC (rango bajo–alto) frente al objetivo; sin precios en alguna pieza no se afirma nada.
@@ -84,6 +87,35 @@
   const day = o => { const t = Date.parse(o.checkedAt); return Number.isFinite(t) ? new Date(t).toLocaleDateString('es-CO', {timeZone: 'America/Bogota', dateStyle: 'short'}) : ''; };
   const refDay = o => { const t = Date.parse(o.checkedAt); return Number.isFinite(t) ? new Date(t).toLocaleDateString('es-CO', {timeZone: 'America/Bogota', day: 'numeric', month: 'numeric'}).split('/').map(x => x.padStart(2, '0')).join('/') : '—'; };
   const shortName = p => window.FENIXA_SHORT_NAME ? window.FENIXA_SHORT_NAME(p) : p.name;
+  function combinationSignature(plan) {
+    return plan?.groups.length && !plan.incomplete.some(item=>item.kind==='offer')
+      ? JSON.stringify(plan.groups.map(group=>[group.store.id,group.shipping,group.items.map(({product,offer})=>
+        [product.id,offer.url,offer.checkedAt,offer.price,offer.shippingCOP,offer.importFeesCOP,offer.status])]))
+      : null;
+  }
+  function combinationPanel(plan, signature, active) {
+    const missing = plan.incomplete;
+    const pending = [...new Set(missing.map(item=>({
+      offer:'Sin oferta de las últimas 72 h',
+      shipping:'Envío por confirmar',
+      importFees:'Impuestos por confirmar',
+      stock:'Stock por confirmar'
+    })[item.kind]))];
+    const savings = plan.savings===null?'Ahorro sin confirmar':`Ahorras ${market.money(plan.savings)} frente a comprar todo en ${esc(plan.singleStore.store.name)}`;
+    return `<section class="store-combination" aria-labelledby="storeCombinationTitle">
+      <div class="store-combination-heading"><h3 id="storeCombinationTitle">Mejor combinación</h3>
+      ${plan.total===null?'<p>Sin ofertas recientes para tus piezas.</p>':`<div><span>${missing.length?'Total parcial':'Total en COP'}</span> <strong>${market.money(plan.total)}</strong></div>`}</div>
+      ${plan.groups.length?`<ul class="store-combination-groups">${plan.groups.map(group=>{
+        const shippingPending = group.incomplete.some(item=>item.kind==='shipping');
+        const shipping = shippingPending && !group.shipping?'Por confirmar':market.money(group.shipping)+(shippingPending?' (por confirmar)':'');
+        return `<li class="store-combination-group"><strong>${esc(group.store.name)}</strong>
+          <ul>${group.items.map(({product,offer})=>`<li><a href="${esc(offer.url)}" target="_blank" rel="noopener noreferrer">${esc(shortName(product))} ↗</a></li>`).join('')}</ul>
+          <dl><div><dt>Subtotal</dt><dd>${market.money(group.subtotal)}</dd></div><div><dt>Envío</dt><dd>${shipping}</dd></div>${group.importFees ? `<div><dt>Impuestos</dt><dd>${market.money(group.importFees)}</dd></div>`:''}</dl></li>`;
+      }).join('')}</ul><p class="store-combination-savings">${savings}</p>` : ''}
+      ${pending.length||plan.savings===null&&plan.groups.length?`<details class="store-combination-info"><summary>Más info</summary>${pending.length?`<ul>${pending.map(text=>`<li>${text}</li>`).join('')}</ul>`:''}${plan.savings===null&&plan.groups.length?'<p>El ahorro requiere una combinación y una tienda individual con costos completos para todas las piezas.</p>':''}</details>`:''}
+      ${signature?`<div class="store-combination-actions"><button type="button" class="primary-button" data-use-store-combination aria-pressed="${active}">${active?'Combinación en uso':'Usar esta combinación'}</button>${active?`<small role="status">${combinationSaved?'Guardada en este navegador.':'Seleccionada en esta pestaña.'}</small>`:''}</div>`:''}
+    </section>`;
+  }
   function storeLine(p) {
     const o = market.fixed(p);
     if (!o) return 'Precio por confirmar';
@@ -105,26 +137,30 @@
     return `<section class="build-recommendations" aria-labelledby="buildRecommendationsTitle"><div><h3 id="buildRecommendationsTitle">Siguiente paso: ${esc(name)}</h3>${budgetNote?`<p>${budgetNote}</p>`:''}</div><div class="build-recommendation-list">${options.length?options.map(({product,fit,price})=>`<article>${image(product)}<div><strong title="${esc(product.name)}">${esc(shortName(product))}</strong><small>${esc(fit.label)} · ${price===null?'Sin precio reciente':market.money(price)}</small></div><button class="secondary-button" type="button" data-suggest-id="${esc(product.id)}">Añadir</button></article>`).join(''):'<p>Sin opciones comprobables dentro del margen.</p>'}</div></section>`;
   }
   // Compra a mano en cada pieza: mejor precio consultado, botón a la tienda y el resto de tiendas plegado.
-  function buyBlock(p, parts) {
+  function buyBlock(p, parts, chosen) {
     const ref = window.FENIXA_AUTO_BUILD?.reference?.(p);
     // Sin oferta de tienda fechada se usa la referencia de catálogo (con su fuente) en lugar de «por confirmar».
-    const o = market.fixed(p) || (ref ? { price: ref.low, store: ref.kind === 'catalog' ? 'Referencia de catálogo' : 'Referencia publicada', url: ref.source, checkedAt: ref.date, status: 'listed' } : null), count = market.offers(p).length;
+    const o = chosen || market.fixed(p) || (ref ? { price: ref.low, store: ref.kind === 'catalog' ? 'Referencia de catálogo' : 'Referencia publicada', url: ref.source, checkedAt: ref.date, status: 'listed' } : null), count = market.offers(p).length;
     let store = String(o?.store || '');
     if (store.length > 28) { try { store = new URL(o.url).hostname.replace(/^www\./, ''); } catch {} }
     const state = o ? (o.status === 'listed' ? 'precio publicado' : market.recent(o) ? 'consultado' : 'consulta vencida') : '';
     return `<div class="my-build-buy">${o ? `<div class="my-build-buy-price"><strong>${market.money(o.price)}</strong><small><span title="${esc(o.store)}">${esc(store)}</span> · Ref. ${esc(refDay(o))} · ${state}</small></div>${o.url ? `<a class="primary-button my-build-buy-link" href="${esc(o.url)}" target="_blank" rel="noopener noreferrer" aria-label="Comprar ${esc(shortName(p))} en ${esc(store)} (se abre en otra pestaña)">${/^Referencia/.test(o.store) ? 'Ver fuente ↗' : 'Comprar ↗'}</a>` : ''}` : '<div class="my-build-buy-price"><strong>Precio por confirmar</strong><small>Sin oferta verificada</small></div>'}${count > 1 || !o ? `<div class="my-build-buy-more">${market.purchase(p, parts).replace('Tiendas, historial y valoraciones', count > 1 ? `Comparar ${count} tiendas` : 'Buscar en tiendas')}</div>` : ''}</div>`;
   }
-  function partCard(c, parts) {
+  function partCard(c, parts, chosenOffers) {
     const p = parts.find(p => p.category === c.id);
     if (!p) return `<article class="my-build-row is-empty"><div><span class="my-build-placeholder" aria-hidden="true">＋</span></div><div><small>${esc(c.name)}</small><div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">Elegir pieza</button></div></div></article>`;
     const fit = window.FENIXA_FIT.check(p, parts.filter(other => other.id !== p.id));
     const why = state.reason?.(p.id) || keyFacts(p) || 'Sin datos clave verificados';
-    return `<article class="my-build-row"><div>${image(p)}</div><div><small>${esc(c.name)} ${window.FENIXA_FIT_STATUS.tag(fit,{hasParts:parts.some(other=>other.category!==p.category)})}</small><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3><p class="my-build-why">${esc(why)}</p>${buyBlock(p, parts)}${fit.status==='conflict'?`<p class="my-build-conflict">${esc(fit.reason)}</p>`:''}<div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">Cambiar pieza</button><button type="button" class="my-build-remove" data-remove-part="${p.id}" aria-label="Quitar ${esc(shortName(p))}">Quitar</button></div></div></article>`;
+    return `<article class="my-build-row"><div>${image(p)}</div><div><small>${esc(c.name)} ${window.FENIXA_FIT_STATUS.tag(fit,{hasParts:parts.some(other=>other.category!==p.category)})}</small><h3 title="${esc(p.name)}">${esc(shortName(p))}</h3><p class="my-build-why">${esc(why)}</p>${buyBlock(p, parts, chosenOffers?.get(p.id))}${fit.status==='conflict'?`<p class="my-build-conflict">${esc(fit.reason)}</p>`:''}<div class="my-build-actions"><button type="button" class="secondary-button" data-edit-category="${c.id}">Cambiar pieza</button><button type="button" class="my-build-remove" data-remove-part="${p.id}" aria-label="Quitar ${esc(shortName(p))}">Quitar</button></div></div></article>`;
   }
   function render() {
     const ids = state.ids(), parts = ids.map(id=>byId[id]);
     const conflicts = parts.filter(p=>window.FENIXA_FIT.check(p,parts.filter(other=>other.id!==p.id)).status==='conflict');
     const reference=costReference(parts), info=moreInfo(reference), cap=budgetMax();
+    const plan = parts.length ? window.FENIXA_STORE_COMBINER?.best(parts) : null;
+    currentCombination = combinationSignature(plan);
+    const usingCombination = currentCombination!==null && currentCombination===chosenCombination;
+    const chosenOffers = new Map(usingCombination ? plan.groups.flatMap(group=>group.items.map(({product,offer})=>[product.id,offer])) : []);
     root.innerHTML = `<div class="section-heading"><div><h2 tabindex="-1" id="myBuildTitle">Mi build</h2></div><a class="secondary-button" href="#componentes">Explorar componentes </a></div>
       ${window.FENIXA_LIBRARY_UI?.render(info)||`<details><summary>Más info</summary>${info}</details>`}
       <p class="my-build-storage" role="status">${state.saved()&&budgetSaved?'Guardado en este navegador.':'Sin guardar · solo en esta pestaña.'}</p>
@@ -134,7 +170,7 @@
       <div class="my-build-summary"><strong>${parts.length} ${parts.length===1?'pieza':'piezas'}</strong>${conflicts.length?`<span>${conflicts.length} con conflictos detectados</span>`:''}${parts.length?'<button type="button" class="my-build-clear" data-request-clear>Vaciar Mi build</button>':''}</div>
       ${pendingClear?'<div class="my-build-clear-confirm" role="group" aria-label="Confirmar vaciar Mi build"><strong>¿Vaciar la build actual?</strong><p>Tu presupuesto objetivo se conserva.</p><button type="button" class="primary-button" data-confirm-clear>Sí, vaciar piezas</button> <button type="button" class="secondary-button" data-cancel-clear>Cancelar</button></div>':''}
       <div class="my-build-budget">${reference?`<p class="my-build-reference"><strong>Referencia de coste: ${reference.count?(reference.low===reference.high?market.money(reference.low):`${market.money(reference.low)} – ${market.money(reference.high)}`):'por confirmar'}</strong></p>${reference.total>reference.count?`<p class="my-build-missing">${reference.total-reference.count} ${reference.total-reference.count===1?'pieza sin precio':'piezas sin precio'}</p>`:''}`:''}<label for="myBuildTotalBudget">Objetivo de presupuesto · <output id="myBuildBudgetLabel" for="myBuildTotalBudget">${totalBudget?market.money(effectiveBudget()):'Sin objetivo'}</output></label><small class="my-build-range" id="myBuildBudgetRange">De $1 a ${num(cap/1000000)} millones</small><input id="myBuildTotalBudget" type="range" min="1000000" max="${cap}" step="250000" value="${effectiveBudget()||1000000}" aria-describedby="myBuildBudgetRange myBuildBudgetSummary"><small id="myBuildBudgetAdjusted" role="status"${totalBudget&&totalBudget>cap?'':' hidden'}>Ajustado al máximo de este perfil</small><button type="button" class="secondary-button" data-clear-budget>Sin objetivo</button><p id="myBuildBudgetSummary" role="status" data-kind="${budgetStatus().kind}">${budgetSummary()}</p></div>
-      </aside><div class="build-studio-main"><div class="my-build-layout"><div><h3>Tus piezas</h3>${!parts.length?'<div class="my-build-empty"><h3>Tu próxima PC empieza aquí</h3><div class="my-build-actions"><a class="primary-button" href="#configurador">Armar mi PC</a><a class="secondary-button" href="#componentes">Explorar componentes</a></div></div>':`<div class="my-build-parts">${categories.map(c=>partCard(c,parts)).join('')}</div>`}</div></div>
+      </aside><div class="build-studio-main">${plan?combinationPanel(plan,currentCombination,usingCombination):''}<div class="my-build-layout"><div><h3>Tus piezas</h3>${!parts.length?'<div class="my-build-empty"><h3>Tu próxima PC empieza aquí</h3><div class="my-build-actions"><a class="primary-button" href="#configurador">Armar mi PC</a><a class="secondary-button" href="#componentes">Explorar componentes</a></div></div>':`<div class="my-build-parts">${categories.map(c=>partCard(c,parts,chosenOffers)).join('')}</div>`}</div></div>
       ${recommendations(parts)}
       ${parts.length?`<aside class="my-build-to-cart"><div><strong>¿Lista para comprar?</strong><p>Cada pieza tiene su botón «Comprar». En el Carrito tienes la lista completa agrupada por tienda, con lo que ya compraste marcado.</p></div><a class="secondary-button" href="#carrito">Ver lista de compra</a></aside>`:''}</div></div>`;
   }
@@ -159,6 +195,16 @@
   });
   root.addEventListener('change',event=>{if(event.target.id==='myBuildTotalBudget'){window.FENIXA_BUDGET.set(Number(event.target.value));document.getElementById('myBuildTotalBudget').focus({preventScroll:true});}});
   root.addEventListener('click',event=>{
+    if (event.target.closest('[data-use-store-combination]') && currentCombination) {
+      if (chosenCombination===currentCombination) return;
+      chosenCombination = currentCombination;
+      try { localStorage.setItem(combinationKey,chosenCombination); combinationSaved = true; } catch { combinationSaved = false; }
+      const infoOpen = root.querySelector('.store-combination-info')?.open;
+      render();
+      if (infoOpen) root.querySelector('.store-combination-info').open = true;
+      root.querySelector('[data-use-store-combination]')?.focus({preventScroll:true});
+      return;
+    }
     if(event.target.closest('[data-clear-budget]')){window.FENIXA_BUDGET.set(0);return;}
     if(event.target.closest('[data-request-clear]')){pendingClear=true;render();document.querySelector('[data-confirm-clear]')?.focus();return;}
     if(event.target.closest('[data-cancel-clear]')){pendingClear=false;render();document.querySelector('[data-request-clear]')?.focus();return;}
