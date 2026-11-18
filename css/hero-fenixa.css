@@ -36,13 +36,7 @@ body #welcome .hero-signature { position: absolute; z-index: 2; right: 0; bottom
 body #welcome .hero-signature > span { color: var(--purple); font-size: 28px; }
 body #welcome .hero-signature div { font-size: 8px; letter-spacing: .09em; color: var(--muted); }
 body #welcome .hero-signature strong { display: block; margin-top: 4px; font-size: 18px; letter-spacing: -.03em; font-weight: 600; color: var(--text); }
-body #welcome .hero-showcase figcaption { position: absolute; inset: auto 0 0; text-align: center; color: var(--muted); font-size: 10px; line-height: 1.5; }
 
-body #welcome .hero-journey { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: 26px 0 0; list-style: none; border-top: 1px solid var(--stroke); gap: 28px; }
-body #welcome .hero-journey li { display: flex; gap: 16px; align-items: flex-start; min-width: 0; }
-body #welcome .hero-step-number { font-size: 11px; font-variant-numeric: tabular-nums; line-height: 2; color: var(--purple); }
-body #welcome .hero-journey h2 { margin: 0 0 6px; font-size: 13px; line-height: 1.6; letter-spacing: -.01em; font-weight: 600; }
-body #welcome .hero-journey p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.7; max-width: 33ch; }
 
 @media (hover: hover) and (pointer: fine) {
   body #welcome .hero-actions a:hover { transform: translateY(-2px); }
@@ -69,9 +63,6 @@ body #welcome .hero-journey p { margin: 0; color: var(--muted); font-size: 12px;
   body #welcome .hero-showcase { max-width: 460px; justify-self: center; }
   body #welcome .hero-watermark { font-size: clamp(76px, 22vw, 110px); }
   body #welcome .hero-signature { bottom: 14%; right: 2%; }
-  body #welcome .hero-journey { grid-template-columns: 1fr; gap: 22px; padding-top: 24px; }
-  body #welcome .hero-journey h2 { font-size: 14px; }
-  body #welcome .hero-journey p { max-width: 45ch; }
 }
 @media (prefers-reduced-motion: reduce) {
   body #welcome .hero-case { animation: none; }
