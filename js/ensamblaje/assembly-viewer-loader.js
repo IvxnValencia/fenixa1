@@ -13,7 +13,7 @@
   if (!section || !host || !preview) return;
 
   const base = document.currentScript.src;
-  const guideUrl = new URL('guide.js?v=7', base).href;
+  const guideUrl = new URL('guide.js?v=8', base).href;
   const viewerUrl = new URL('3d/viewer.js?v=7', base).href;
   let guide = null, loading = false, generation = 0;
 

@@ -71,6 +71,8 @@ function compatibilityFor(profile) {
 // ---------------------------------------------------------------- guía
 export function createGuide({ section, host, canUse3D, viewerUrl, onStatus, store = createProgressStore() }) {
   const stepsEl = section.querySelector('#assemblySteps');
+  stepsEl?.setAttribute('role', 'list');
+  stepsEl?.setAttribute('aria-label', 'Pasos del montaje');
   const panelEl = section.querySelector('#assemblyStepPanel');
   const progressText = section.querySelector('#progressText');
   const progressBar = section.querySelector('#progressBar');
@@ -154,17 +156,11 @@ export function createGuide({ section, host, canUse3D, viewerUrl, onStatus, stor
       renderPanel();
       return;
     }
+    // Barra de pasos: un segmento por paso (hecho, actual o pendiente). Sustituye al
+    // checklist, que repetía el paso a paso y no se veía junto al visor.
     stepsEl.innerHTML = route.map((s, i) => {
       const done = state.done.has(s.id), active = state.active === s.id;
-      return `<div class="assembly-step-wrap${active ? ' is-active' : ''}">
-        <div class="assembly-step${done ? ' done' : ''}">
-          <button class="step-check" type="button" data-done="${esc(s.id)}" aria-pressed="${done}" aria-label="${done ? 'Desmarcar' : 'Marcar como hecho'}: ${esc(s.title)}">${ICON_CHECK}</button>
-          <button class="step-open" type="button" data-step="${esc(s.id)}" ${active ? 'aria-current="step"' : ''}>
-            <span><strong>${esc(s.title)}</strong><small>${esc(s.summary)}</small></span>
-            <span class="step-index">${String(i + 1).padStart(2, '0')}</span>
-          </button>
-        </div>
-      </div>`;
+      return `<div class="step-seg-item" role="listitem"><button class="step-seg${done ? ' is-done' : ''}${active ? ' is-active' : ''}" type="button" data-step="${esc(s.id)}" ${active ? 'aria-current="step"' : ''} aria-label="Paso ${i + 1}: ${esc(s.title)}${done ? ' (hecho)' : ''}" title="${i + 1}. ${esc(s.title)}"><span class="step-seg-bar"></span><span class="step-seg-num">${i + 1}</span></button></div>`;
     }).join('');
     updateProgress();
     renderPanel();

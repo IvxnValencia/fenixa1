@@ -175,27 +175,13 @@ body #carrito > .section-heading { display: flex; flex-wrap: wrap; align-items: 
 body .cart-drawer #carrito .cart-layout { grid-template-columns: minmax(0, 1fr); }
 body .cart-drawer #carrito .cart-total { position: static; }
 
-/* ---------- Proporciones: guía de ensamblaje ----------
-   Antes, el checklist (14 pasos) iba en la columna estrecha junto al visor 3D y la
-   dejaba el doble de alta, con un gran hueco bajo el visor. Ahora el paso actual
-   acompaña al visor y el checklist ocupa todo el ancho en varias columnas. */
-@media (min-width: 1440px) {
-  body .assembly-layout > .assembly-side { display: contents; }
-  body .assembly-layout > .assembly-preview { grid-column: 1; grid-row: 1; }
-  body .assembly-layout .assembly-step-panel { grid-column: 2; grid-row: 1; align-self: stretch; }
-  body .assembly-layout .assembly-side > .assembly-card { grid-column: 1 / -1; grid-row: 2; }
-}
-@media (min-width: 760px) {
-  body .assembly-layout .assembly-steps { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px 12px; align-items: start; }
-  body .assembly-layout .assembly-steps > .assembly-step-wrap { margin: 0; }
-}
-
 /* ---------- Proporciones: Armar mi PC ----------
    Las dos columnas (pasos y propuesta) se alinean arriba y la más corta acompaña
    al desplazarse. La más alta define la fila, así que nunca queda contenido oculto. */
 @media (min-width: 1200px) {
   body #startBuild .start-controls { align-items: start; }
-  body #startBuild .start-controls > :not([hidden]) { position: sticky; top: 88px; }
+  /* Solo la propuesta acompaña: los pasos de la izquierda son varios bloques y fijarlos los superponía. */
+  body #startBuild .start-controls > #autoBuildResult { position: sticky; top: 88px; }
 }
 /* Textos largos (nombres de piezas, tiendas) se parten en vez de salirse de su tarjeta. */
 body #startBuild .planner-row-name, body #mi-build .my-build-row h3, body #carrito .cart-line-text strong { overflow-wrap: anywhere; }
