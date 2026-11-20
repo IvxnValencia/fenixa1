@@ -54,3 +54,21 @@ body .assembly-layout .step-seg:focus-visible { outline: 2px solid var(--purple)
   body .assembly-layout .step-seg-num { display: none; }
   body .assembly-layout .step-seg-item:has(.is-active) .step-seg-num { display: block; }
 }
+
+/* ---------- Carrito en la barra superior (a la derecha del cambio de tema) ---------- */
+.topbar-cart { position: relative; display: grid; place-items: center; color: var(--text); text-decoration: none; }
+.topbar-cart svg { width: 20px; height: 20px; }
+.topbar-cart-count { position: absolute; top: -4px; right: -4px; display: grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px; color: #fff; background: var(--purple-strong, var(--purple)); font-size: 11px; font-weight: 700; line-height: 1; }
+.topbar-cart-count[hidden] { display: none; }
+body .topbar-actions .mobile-menu { order: 3; }
+
+/* ---------- Builds completas y Laptops: mismos filtros y mismo tamaño de tarjeta ---------- */
+body #builds .build-use-filters { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+body #laptops .laptop-use-filters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); flex: none; gap: 0; min-width: 0; margin: 0; padding: 0; border: 0; border-radius: 12px; background: var(--surface-2); box-shadow: inset 0 0 0 1px var(--stroke); overflow: hidden; }
+body #laptops .laptop-use-filters button { width: 100%; height: 40px; min-height: 40px; margin: 0; padding: 0 var(--ui-space-1, 8px); border: 0; border-radius: 0; background: transparent; color: var(--muted); font: inherit; font-size: 12px; cursor: pointer; }
+body #laptops .laptop-use-filters button[aria-pressed="true"] { color: var(--purple); background: var(--purple-soft); }
+body #laptops #laptopGrid { --card-photo-height: 148px; }
+@media (max-width: 560px) {
+  body #laptops .laptop-use-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); flex: 1 1 100%; order: 3; }
+  body #builds .build-use-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

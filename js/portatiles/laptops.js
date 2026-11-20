@@ -61,11 +61,16 @@
   }
   function render() {
     const use=$('laptopUse').value, query=$('laptopSearch').value.trim().toLocaleLowerCase('es');
-    const visible=rows.filter(p=>(use==='all'||p.uses.includes(use))&&`${p.name} ${p.model}`.toLocaleLowerCase('es').includes(query));
+    const sort=$('laptopSort')?.value||'featured';
+    // Precio en COP para ordenar; los que no tienen precio en pesos van al final.
+    const cop=p=>{let o=null;try{o=window.FENIXA_LAPTOP_PRICES?.offer?.(p);}catch{}return o?.currency==='COP'&&o.price>0?o.price:null;};
+    let visible=rows.filter(p=>(use==='all'||p.uses.includes(use))&&`${p.name} ${p.model}`.toLocaleLowerCase('es').includes(query));
+    if(sort!=='featured')visible=visible.slice().sort((a,b)=>{const x=cop(a),y=cop(b);if(x===null||y===null)return (x===null)-(y===null);return sort==='price-asc'?x-y:y-x;});
+    document.querySelectorAll('[data-laptop-use]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.laptopUse===use)));
     $('laptopCount').textContent=visible.length+(visible.length===1?' modelo':' modelos');
     $('laptopEmpty').hidden=visible.length>0;
     if(!visible.length)$('laptopEmpty').innerHTML='No hay laptops que coincidan con este uso y modelo. Prueba un nombre más corto o vuelve a explorar todas las referencias. <button type="button" class="secondary-button" data-clear-laptop-filters>Limpiar filtros de laptops</button>';
-    const page=window.FENIXA_PAGER.paginate('laptops',visible,{anchor:$('laptopGrid'),signature:JSON.stringify([use,query]),onChange:render,label:'Páginas de laptops',scrollTarget:$('laptops')});
+    const page=window.FENIXA_PAGER.paginate('laptops',visible,{anchor:$('laptopGrid'),signature:JSON.stringify([use,query,sort]),onChange:render,label:'Páginas de laptops',scrollTarget:$('laptops')});
     $('laptopGrid').innerHTML=page.items.map(p=>`<article class="laptop-card fx-card" data-laptop-id="${esc(p.id)}">
       <div class="catalog-product-heading"><h3 title="${esc(p.name+' · '+p.model)}">${esc(shortName(p))}</h3></div>
       <button type="button" class="catalog-photo fx-open" data-open-laptop="${esc(p.id)}" aria-label="Ver ficha de ${esc(p.name)}"><img class="product-image" src="${esc(window.FENIXA_THUMB?window.FENIXA_THUMB(p.image):p.image)}" alt="${esc(imageAlt(p))}" width="800" height="800" loading="lazy" decoding="async"></button>
@@ -141,8 +146,11 @@
   $('laptopCompareClose').addEventListener('click',()=>{comparisonOpen=false;renderComparison();$('laptopQueueToggle').focus();});
   $('laptopCompareClear').addEventListener('click',()=>{selected.clear();quotes.clear();versions.clear();comparisonView='all';comparisonOpen=false;render();$('laptopSearch').focus({preventScroll:true});});
   $('laptopUse').addEventListener('change',render);
+  // Filtros de uso como en Builds completas: botones que mueven el select oculto.
+  document.querySelectorAll('[data-laptop-use]').forEach(b=>b.addEventListener('click',()=>{$('laptopUse').value=b.dataset.laptopUse;render();}));
+  $('laptopSort')?.addEventListener('change',render);
   $('laptopSearch').addEventListener('input',render);
-  const clearFilters=()=>{$('laptopUse').value='all';$('laptopSearch').value='';if($('laptopMore'))$('laptopMore').open=false;render();$('laptopSearch').focus({preventScroll:true});};
+  const clearFilters=()=>{$('laptopUse').value='all';$('laptopSearch').value='';if($('laptopSort'))$('laptopSort').value='featured';if($('laptopMore'))$('laptopMore').open=false;render();$('laptopSearch').focus({preventScroll:true});};
   $('clearLaptopFilters')?.addEventListener('click',clearFilters);
   $('laptopEmpty').addEventListener('click',event=>{if(event.target.closest('[data-clear-laptop-filters]'))clearFilters();});
   render();

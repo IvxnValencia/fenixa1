@@ -472,7 +472,7 @@
     <link rel="stylesheet" href="css/motion.css?v=1">
     <link rel="stylesheet" href="css/usability.css?v=17">
     <link rel="stylesheet" href="css/upgrades.css?v=1">
-    <link rel="stylesheet" href="css/overlays.css?v=2">
+    <link rel="stylesheet" href="css/overlays.css?v=3">
     <link rel="stylesheet" href="css/hero-fenixa.css?v=6">
   </head>
   <body>
@@ -484,7 +484,6 @@
           <a class="nav-link" href="#configurador" title="Armar mi PC"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 10h16M10 10v10"/></svg><span class="nav-text">Armar mi PC</span></a>
           <a class="nav-link" href="#componentes" title="Componentes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect class="nav-icon-tint" x="6" y="6" width="12" height="12" rx="3"/><rect x="6" y="6" width="12" height="12" rx="3"/><rect x="10" y="10" width="4" height="4" rx="1"/><path d="M9 3v3m6-3v3M9 18v3m6-3v3M3 9h3m-3 6h3m12-6h3m-3 6h3"/></svg><span class="nav-text">Componentes</span></a>
           <a class="nav-link" href="#mi-build" title="Mi build"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path class="nav-icon-tint" d="m12 11 8-4v10l-8 4-8-4V7z"/><path d="m12 3 8 4v10l-8 4-8-4V7zm-8 4 8 4 8-4m-8 4v10M8 5l8 4"/></svg><span class="nav-text">Mi build</span></a>
-          <a class="nav-link" href="#carrito" title="Carrito" data-open-cart aria-haspopup="dialog" aria-controls="cartDrawer" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 3h2l2.5 12h11L21 7H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span class="nav-text">Carrito</span></a>
           <a class="nav-link" href="#builds" title="Builds completas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect class="nav-icon-tint" x="6" y="3" width="12" height="18" rx="3"/><rect x="6" y="3" width="12" height="18" rx="3"/><circle cx="12" cy="14" r="3"/><path d="M10 7h4M12 11v6m-3-3h6"/></svg><span class="nav-text">Builds completas</span></a>
           <a class="nav-link" href="#laptops" title="Laptops"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect class="nav-icon-tint" x="4" y="4" width="16" height="12" rx="2"/><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M4 16 2 20h20l-2-4M10 20h4M8 8h8"/></svg><span class="nav-text">Laptops</span></a>
           <a class="nav-link" href="#mi-pc" title="Mejorar mi PC"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><rect class="nav-icon-tint" x="3" y="4" width="18" height="13" rx="3"/><rect x="3" y="4" width="18" height="13" rx="3"/><path d="M8 21h8m-4-4v4M7 11h3l2-4 2 7 2-3h2"/></svg><span class="nav-text">Mejorar mi PC</span></a>
@@ -503,6 +502,7 @@
           </a>
           <div class="topbar-actions">
             <button class="icon-button" id="themeToggle" type="button" aria-label="Cambiar tema"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg></button>
+            <a class="icon-button topbar-cart" href="#carrito" title="Carrito" aria-label="Carrito" data-open-cart aria-haspopup="dialog" aria-controls="cartDrawer" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M3 3h2l2.5 12h11L21 7H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span class="topbar-cart-count" id="topbarCartCount" hidden></span></a>
             <button class="icon-button mobile-menu" type="button" aria-label="Abrir menú" aria-controls="siteMenu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
           </div>
         </header>
@@ -586,7 +586,7 @@
               <div class="cmp-bar-left"><h2 id="builds-title">Builds completas</h2><span class="catalog-count" id="buildCount" role="status">0 modelos</span></div>
               <div class="cmp-bar-right" role="group" aria-label="Buscar y filtrar builds">
                 <label class="cmp-field cmp-search"><span class="sr-only">Buscar build o componente</span><input id="buildSearch" type="search" placeholder="Buscar build" autocomplete="off"></label>
-                <div class="build-use-filters" role="group" aria-label="Filtrar builds"><button type="button" data-build-use="all" aria-pressed="true">Todas</button><button type="button" data-build-use="estudio" aria-pressed="false">Estudio</button><button type="button" data-build-use="trabajo" aria-pressed="false">Trabajo</button><button type="button" data-build-use="gaming" aria-pressed="false">Gaming</button><button type="button" data-build-use="creativo" aria-pressed="false">Creación</button><button type="button" data-build-use="saved" aria-pressed="false">Guardadas</button></div>
+                <div class="build-use-filters" role="group" aria-label="Filtrar builds"><button type="button" data-build-use="all" aria-pressed="true">Todas</button><button type="button" data-build-use="estudio" aria-pressed="false">Estudio</button><button type="button" data-build-use="trabajo" aria-pressed="false">Trabajo</button><button type="button" data-build-use="gaming" aria-pressed="false">Gaming</button><button type="button" data-build-use="creativo" aria-pressed="false">Creación</button></div>
                 <details class="cmp-more" id="buildMore"><summary>Más filtros</summary><div class="cmp-more-body"><label class="cmp-field">Ordenar<select id="buildSort"><option value="featured">Destacadas</option><option value="price-asc">Objetivo: menor a mayor</option><option value="price-desc">Objetivo: mayor a menor</option></select></label></div></details>
               </div>
             </div>
@@ -599,8 +599,9 @@
               <div class="cmp-bar-left"><h2 id="laptopsTitle">Laptops</h2><span class="catalog-count" id="laptopCount" role="status">0 modelos</span></div>
               <div class="cmp-bar-right" role="group" aria-label="Buscar y filtrar laptops">
                 <label class="cmp-field cmp-search"><span class="sr-only">Buscar modelo</span><input type="search" id="laptopSearch" placeholder="Buscar modelo" autocomplete="off"></label>
-                <label class="cmp-field cmp-use"><span class="sr-only">Uso</span><select id="laptopUse"><option value="all">Uso: todos</option><option value="estudio">Estudio</option><option value="trabajo">Trabajo</option><option value="gaming">Gaming</option><option value="creativo">Creación</option></select></label>
-                <details class="cmp-more" id="laptopMore"><summary>Más filtros</summary><div class="cmp-more-body"><button type="button" class="secondary-button" id="clearLaptopFilters">Limpiar filtros</button></div></details>
+                <div class="build-use-filters laptop-use-filters" role="group" aria-label="Filtrar laptops"><button type="button" data-laptop-use="all" aria-pressed="true">Todas</button><button type="button" data-laptop-use="estudio" aria-pressed="false">Estudio</button><button type="button" data-laptop-use="trabajo" aria-pressed="false">Trabajo</button><button type="button" data-laptop-use="gaming" aria-pressed="false">Gaming</button><button type="button" data-laptop-use="creativo" aria-pressed="false">Creación</button></div>
+                <label class="cmp-field cmp-use" hidden><span class="sr-only">Uso</span><select id="laptopUse"><option value="all">Uso: todos</option><option value="estudio">Estudio</option><option value="trabajo">Trabajo</option><option value="gaming">Gaming</option><option value="creativo">Creación</option></select></label>
+                <details class="cmp-more" id="laptopMore"><summary>Más filtros</summary><div class="cmp-more-body"><label class="cmp-field">Ordenar<select id="laptopSort"><option value="featured">Destacadas</option><option value="price-asc">Precio: menor a mayor</option><option value="price-desc">Precio: mayor a menor</option></select></label><button type="button" class="secondary-button" id="clearLaptopFilters">Limpiar filtros</button></div></details>
               </div>
             </div>
             <aside class="laptop-compare-toolbar comparison-dock" id="laptopCompareToolbar" aria-label="Lista de comparaciones de laptops" hidden><button class="comparison-dock-toggle" id="laptopQueueToggle" type="button" aria-controls="laptopQueueBody" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor"><rect x="3" y="5" width="7" height="14" rx="1.5"/><rect x="14" y="5" width="7" height="14" rx="1.5"/></svg><strong>Comparaciones</strong><span id="laptopQueueCount">0</span></button><div class="comparison-dock-body" id="laptopQueueBody" hidden><div id="laptopQueueList"></div><p id="laptopCompareStatus" role="status"></p><div class="comparison-dock-actions"><button type="button" class="secondary-button" id="laptopCompareClear">Vaciar</button><button type="button" class="primary-button" id="laptopCompareToggle" aria-controls="laptopComparison" aria-expanded="false" disabled>Comparar</button></div></div></aside>
@@ -974,7 +975,7 @@
   <script src="js/portatiles/laptop-compare.js?v=10"></script>
     <script src="js/portatiles/laptop-price-data.js?v=1"></script>
     <script src="js/portatiles/laptops-prices.js?v=1"></script>
-    <script src="js/portatiles/laptops.js?v=22"></script>
+    <script src="js/portatiles/laptops.js?v=23"></script>
     <script src="js/portatiles/laptop-details.js?v=3"></script>
     <script src="js/builds/my-build.js?v=25"></script>
     <script src="js/builds/build-quickview.js?v=8"></script>
@@ -989,7 +990,7 @@
     <script src="js/interfaz/navigation.js?v=17"></script>
     <script src="js/ensamblaje/assembly-viewer-loader.js?v=8"></script>
     <script src="js/interfaz/sidebar.js?v=2"></script>
-  <script src="js/interfaz/cart.js?v=2"></script>
+  <script src="js/interfaz/cart.js?v=3"></script>
   <script src="js/interfaz/cart-drawer.js?v=3"></script>
   </body>
 </html>

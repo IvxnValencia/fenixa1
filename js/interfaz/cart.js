@@ -45,6 +45,9 @@
   }
   function render() {
     const all = lines(), done = bought();
+    // Contador del icono del carrito en la barra superior.
+    const badge = document.getElementById('topbarCartCount');
+    if (badge) { badge.textContent = String(all.length); badge.hidden = !all.length; badge.closest('a')?.setAttribute('aria-label', all.length ? `Carrito, ${all.length} ${all.length === 1 ? 'pieza' : 'piezas'}` : 'Carrito'); }
     // Limpia marcas de piezas que ya no están en la build.
     const ids = new Set(all.map(l => l.p.id)), kept = new Set([...done].filter(id => ids.has(id)));
     if (kept.size !== done.size) setBought(kept);
