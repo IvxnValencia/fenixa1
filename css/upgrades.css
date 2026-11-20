@@ -1,0 +1,92 @@
+/* Mejorar mi PC: plan de mejoras con piezas compatibles y overlay para leer
+   los componentes desde una captura. Usa los tokens de color de FENIXA. */
+
+/* ---------- Acceso a la captura ---------- */
+.profile-import { display: grid; gap: 6px; margin: 16px 0 4px; padding: 14px 16px; border: 1px dashed color-mix(in srgb, var(--purple) 55%, var(--stroke)); border-radius: 14px; background: var(--purple-faint); }
+.profile-import .secondary-button { display: inline-flex; align-items: center; gap: 8px; justify-self: start; }
+.profile-import svg { width: 18px; height: 18px; }
+.profile-import .profile-hint { margin: 0; }
+.profile-hardware > summary small { color: var(--muted); font-weight: 500; }
+
+/* ---------- Lo que entendimos del equipo ---------- */
+.upgrade-detected { margin: 0 0 18px; padding: 14px 16px; border: 1px solid var(--stroke); border-radius: 14px; background: var(--surface-2, var(--surface)); }
+.upgrade-detected h5 { margin: 0 0 10px; color: var(--muted); font-size: 12px; letter-spacing: .04em; text-transform: uppercase; }
+.upgrade-detected dl { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 8px 16px; margin: 0; }
+.upgrade-detected dt { color: var(--muted); font-size: 12px; }
+.upgrade-detected dd { margin: 0; color: var(--text); font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+.upgrade-missing { margin: 12px 0 0; color: var(--text); font-size: 13px; }
+.upgrade-missing .text-button, .upgrade-pick-buy .text-button { padding: 0; border: 0; color: var(--purple); background: none; font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+
+/* ---------- Secciones de mejora ---------- */
+.upgrade-list { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
+.upgrade-section { padding: 16px; border: 1px solid var(--stroke); border-radius: 16px; background: var(--surface); }
+.upgrade-section > header { display: flex; align-items: flex-start; gap: 12px; }
+.upgrade-rank { display: grid; place-items: center; flex: none; width: 28px; height: 28px; border-radius: 50%; color: #fff; background: var(--purple-strong, var(--purple)); font-size: 13px; font-weight: 700; }
+.upgrade-section h4 { margin: 2px 0 4px; font-size: 16px; }
+.upgrade-section header p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.upgrade-picks { display: grid; gap: 10px; margin: 14px 0 0; padding: 0; list-style: none; }
+.upgrade-pick { position: relative; display: grid; grid-template-columns: 64px minmax(0, 1fr) minmax(130px, auto); align-items: start; gap: 12px 14px; padding: 28px 14px 14px; border: 1px solid var(--stroke); border-radius: 12px; background: var(--surface-2, var(--surface)); }
+.upgrade-tier { position: absolute; top: 8px; left: 14px; color: var(--purple); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.upgrade-pick img { width: 64px; height: 64px; object-fit: contain; border-radius: 8px; background: #fff; }
+.upgrade-pick-body { min-width: 0; }
+.upgrade-pick-body strong { display: block; color: var(--text); font-size: 15px; overflow-wrap: anywhere; }
+.upgrade-gain { margin: 4px 0 6px; color: var(--text); font-size: 13px; }
+.upgrade-checks { display: grid; gap: 3px; margin: 0; padding: 0; list-style: none; font-size: 12px; line-height: 1.45; }
+.upgrade-checks li { position: relative; padding-left: 18px; color: var(--muted); }
+.upgrade-checks li::before { position: absolute; top: 0; left: 0; font-weight: 700; }
+.upgrade-checks .is-ok::before { content: "\2713"; color: var(--green); }
+.upgrade-checks .is-warn::before { content: "!"; left: 4px; color: var(--amber); }
+.upgrade-pick-buy { display: grid; justify-items: end; gap: 4px; text-align: right; }
+.upgrade-pick-buy > span { color: var(--text); font-size: 16px; font-weight: 700; white-space: nowrap; }
+.upgrade-pick-buy small { color: var(--muted); font-size: 12px; }
+.upgrade-pick-buy .primary-button { min-height: 36px; padding: 0 14px; font-size: 13px; white-space: nowrap; text-decoration: none; }
+.upgrade-pick-buy .text-button { font-size: 12px; }
+.upgrade-extra-title { margin: 14px 0 0; color: var(--text); font-size: 13px; font-weight: 700; }
+.upgrade-empty { margin: 12px 0 0; padding: 10px 12px; border-left: 3px solid var(--stroke); border-radius: 0 8px 8px 0; color: var(--muted); background: var(--surface-2, transparent); font-size: 13px; line-height: 1.55; }
+.upgrade-laptops { display: grid; gap: 8px; margin: 14px 0 6px; padding: 0; list-style: none; }
+.upgrade-laptops li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; padding: 10px 12px; border: 1px solid var(--stroke); border-radius: 10px; font-size: 13px; }
+.upgrade-laptops span { color: var(--muted); }
+.upgrade-laptops b { grid-row: 1 / 3; grid-column: 2; align-self: center; white-space: nowrap; }
+.upgrade-tips { margin-top: 18px; }
+.upgrade-tips summary { color: var(--purple); font-size: 14px; font-weight: 700; cursor: pointer; }
+.upgrade-tips ul { display: grid; gap: 10px; margin: 10px 0 0; padding-left: 18px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.upgrade-tips strong { color: var(--text); }
+@media (max-width: 640px) {
+  .upgrade-pick { grid-template-columns: 52px minmax(0, 1fr); }
+  .upgrade-pick img { width: 52px; height: 52px; }
+  .upgrade-pick-buy { grid-column: 1 / -1; grid-template-columns: 1fr auto; align-items: center; justify-items: start; text-align: left; }
+}
+
+/* ---------- Overlay de captura ---------- */
+.pc-import-dialog { width: min(640px, calc(100vw - 32px)); max-height: calc(100dvh - 32px); padding: 0; border: 1px solid var(--stroke); border-radius: 20px; color: var(--text); background: var(--surface); box-shadow: var(--shadow); overflow: auto; }
+.pc-import-dialog::backdrop { background: rgb(0 0 0 / .6); }
+.pc-import-header { display: flex; justify-content: space-between; gap: 16px; padding: 20px 22px 0; }
+.pc-import-header h2 { margin: 0; font-size: 18px; }
+.pc-import-header p { margin: 6px 0 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.pc-import-close { display: grid; place-items: center; flex: none; width: 40px; height: 40px; border: 0; border-radius: 10px; color: var(--muted); background: transparent; cursor: pointer; }
+.pc-import-close:hover { color: var(--text); background: var(--surface-2); }
+.pc-import-close svg { width: 22px; height: 22px; }
+.pc-import-drop { display: grid; justify-items: center; gap: 14px; margin: 18px 22px 0; padding: 36px 20px 30px; border: 2px dashed color-mix(in srgb, var(--muted) 55%, transparent); border-radius: 18px; background: color-mix(in srgb, var(--purple) 5%, transparent); text-align: center; cursor: pointer; transition: border-color .2s, background .2s; }
+.pc-import-drop[hidden] { display: none; }
+.pc-import-drop:hover, .pc-import-drop.is-over, .pc-import-drop:focus-visible { border-color: var(--purple); background: var(--purple-faint); outline: none; }
+.pc-import-cloud { width: 120px; height: 80px; color: color-mix(in srgb, var(--text) 40%, transparent); }
+.pc-import-drop .primary-button { min-width: 140px; border-radius: 999px; }
+.pc-import-drop p { margin: 0; color: var(--text); font-size: 14px; }
+.pc-import-drop kbd { padding: 1px 6px; border: 1px solid var(--stroke); border-radius: 5px; background: var(--surface-2); font: inherit; font-size: 12px; }
+.pc-import-work { display: grid; grid-template-columns: 120px minmax(0, 1fr); align-items: center; gap: 16px; margin: 18px 22px 0; }
+.pc-import-work[hidden] { display: none; }
+.pc-import-work img { width: 120px; max-height: 90px; object-fit: contain; border: 1px solid var(--stroke); border-radius: 10px; background: #000; }
+.pc-import-work img:not([src]) { display: none; }
+.pc-import-status p { margin: 0 0 8px; font-size: 14px; }
+.pc-import-bar { height: 6px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.pc-import-bar span { display: block; width: 0; height: 100%; background: var(--purple); transition: width .3s; }
+.pc-import-result { margin: 18px 22px 0; }
+.pc-import-result[hidden] { display: none; }
+.pc-import-result h3 { margin: 0; font-size: 16px; }
+.pc-import-result ul { display: grid; gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
+.pc-import-result label { display: grid; grid-template-columns: 20px minmax(110px, auto) minmax(0, 1fr); align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid var(--stroke); border-radius: 10px; font-size: 14px; cursor: pointer; }
+.pc-import-result label span { color: var(--muted); }
+.pc-import-result label strong { overflow-wrap: anywhere; }
+.pc-import-result input { width: 18px; height: 18px; accent-color: var(--purple); }
+.pc-import-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; margin-top: 16px; }
+.pc-import-privacy { margin: 16px 22px 20px; color: var(--muted); font-size: 12px; line-height: 1.5; }

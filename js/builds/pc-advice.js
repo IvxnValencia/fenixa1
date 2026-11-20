@@ -3,7 +3,8 @@
   const choices = {
     device: ['desktop', 'laptop'], ramGb: ['4', '8', '16', '32', '64', '128'],
     ramType: ['DDR3', 'DDR4', 'DDR5'], storageType: ['hdd', 'sata', 'nvme', 'ssd'],
-    graphics: ['integrated', 'dedicated'], use: ['study', 'gaming', 'creative']
+    graphics: ['integrated', 'dedicated'], use: ['study', 'gaming', 'creative'],
+    ramModules: ['1', '2', '4'], psuW: ['300', '400', '450', '500', '550', '600', '650', '750', '850', '1000']
   };
   // Se pueden marcar varias mejoras a la vez; «none» solo vale sola.
   const goals = ['slow', 'boot', 'memory', 'space', 'fps', 'heat', 'none'];

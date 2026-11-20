@@ -71,8 +71,12 @@
             </div>
             ${goalsField}
           </fieldset>
-          <details class="profile-hardware">
-            <summary>Componentes y almacenamiento (opcional)</summary>
+          <div class="profile-import">
+            <button type="button" class="secondary-button" id="profileImportOpen" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 7h3l2-3h6l2 3h3v13H4z"/><circle cx="12" cy="13" r="4"/></svg>Subir o pegar una captura de mis componentes</button>
+            <p class="profile-hint">Una captura del Administrador de tareas, de «Información del sistema» o de CPU-Z: leemos el procesador, la RAM, la gráfica y el disco y rellenamos los campos por ti.</p>
+          </div>
+          <details class="profile-hardware" id="profileHardware">
+            <summary>Componentes de tu equipo <small>(con ellos te recomendamos piezas exactas y compatibles)</small></summary>
             <div class="profile-hardware-body">
               <fieldset class="profile-group">
                 <legend>Modelo y procesador</legend>
@@ -87,8 +91,10 @@
                 <div class="profile-fields">
                   ${field('ramGb', 'Cantidad de RAM', ['4', '8', '16', '32', '64', '128'].map(v => [v, `${v} GB`]))}
                   ${field('ramType', 'Generación de RAM', ['DDR3', 'DDR4', 'DDR5'].map(v => [v, v]))}
+                  ${field('ramModules', 'Módulos de RAM instalados', [['1', '1 módulo'], ['2', '2 módulos'], ['4', '4 módulos']])}
                   ${field('graphics', 'Tipo de gráficos', [['integrated', 'Integrados'], ['dedicated', 'Tarjeta dedicada']])}
                   ${input('gpu', 'Modelo de la gráfica', 'Ej.: GeForce GTX 1660')}
+                  ${field('psuW', 'Potencia de tu fuente', ['300', '400', '450', '500', '550', '600', '650', '750', '850', '1000'].map(v => [v, v + ' W']))}
                 </div>
               </fieldset>
               <fieldset class="profile-group">
@@ -169,29 +175,47 @@
 
   function renderAdvice() {
     $('profileAdviceTitle').textContent = saved.device === 'laptop' ? 'Mejoras para tu laptop' : 'Mejoras para tu PC de escritorio';
-    const advice = advise(saved);
-    $('profilePurchaseNote').hidden = !advice.some(item => ['ssd','ram','space','gpu'].includes(item.id));
     const upgrades = window.FENIXA_PC_UPGRADES, money = window.FENIXA_MARKET.money;
     const thumb = src => window.FENIXA_THUMB ? window.FENIXA_THUMB(src) : src;
-    const product = ({ p, note }) => {
-      const r = upgrades.reference(p), o = upgrades.offer(p);
+    const shortName = p => window.FENIXA_SHORT_NAME ? window.FENIXA_SHORT_NAME(p) : p.name;
+    const { detected: d, sections } = upgrades.plan(saved);
+    const tips = advise(saved);
+    $('profilePurchaseNote').hidden = !sections.some(s => s.picks?.length);
+    // Lo que entendimos del equipo: así el usuario ve en qué se basa la compatibilidad.
+    const known = [
+      d.socket && ['Socket', d.socket + (d.sources.socket ? ' · ' + d.sources.socket : '')],
+      d.ram && ['Memoria', d.ram + (d.ramGb ? ' · ' + d.ramGb + ' GB' : '') + (d.modules ? ' en ' + d.modules + (d.modules === 1 ? ' módulo' : ' módulos') : '')],
+      ['Gráfica', d.integrated ? 'Integrada' : saved.gpu || (saved.graphics === 'dedicated' ? 'Dedicada (modelo sin indicar)' : 'Sin indicar')],
+      !d.laptop && ['Fuente', d.psu ? d.psu + ' W' : 'Sin indicar']
+    ].filter(Boolean);
+    const missing = [!d.laptop && !d.socket && 'procesador o placa', !d.ram && 'generación de RAM', !d.laptop && !d.psu && saved.symptoms?.includes('fps') && 'potencia de la fuente'].filter(Boolean);
+    const pick = x => {
+      const r = upgrades.reference(x.p), o = upgrades.offer(x.p);
       const price = r ? (r.low === r.high ? money(r.low) : money(r.low) + '–' + money(r.high)) : 'Precio por confirmar';
-      return `<li class="profile-pick"><img src="${esc(thumb(p.image))}" alt="" width="56" height="56" loading="lazy"><div class="profile-pick-text"><strong title="${esc(p.name)}">${esc(window.FENIXA_SHORT_NAME ? window.FENIXA_SHORT_NAME(p) : p.name)}</strong><small>${esc(note)}</small><span class="profile-pick-price">${esc(price)}${o?.store ? ' · ' + esc(o.store) : ''}</span></div><div class="profile-pick-actions"><button type="button" class="secondary-button" data-pc-category="${esc(p.category)}" data-pc-query="${esc(p.name)}">Ver ficha</button>${o ? `<a class="primary-button" href="${esc(o.url)}" target="_blank" rel="noopener noreferrer">Comprar ↗</a>` : ''}</div></li>`;
-    };
-    const items = advice.map(item => {
-      const picks = item.category && upgrades && !(item.id === 'ram' && !saved.ramType) ? upgrades.suggest(saved, item.id) : [];
-      const hint = item.id === 'ram' && !saved.ramType ? '<p class="profile-hint">Indica la generación de tu RAM (DDR3, DDR4 o DDR5) en «Editar equipo» para ver módulos compatibles.</p>' : '';
-      return `
-      <li class="profile-advice">
-        <h4>${esc(item.title)}</h4>
-        <p>${esc(item.reason)}</p>
-        <p class="profile-check">${esc(item.check)}</p>
-        ${hint}
-        ${picks.length ? `<h5 class="profile-picks-title">Opciones del catálogo</h5><ul class="profile-picks">${picks.map(product).join('')}</ul>` : ''}
-        ${item.category ? `<button type="button" class="text-button profile-see-all" data-pc-category="${esc(item.category)}" data-pc-query="${esc(item.query)}">${esc(categoryLabels[item.category] || 'Ver en el catálogo')} →</button>` : ''}
+      return `<li class="upgrade-pick">
+        <span class="upgrade-tier">${esc(x.tier || '')}</span>
+        <img src="${esc(thumb(x.p.image))}" alt="" width="64" height="64" loading="lazy">
+        <div class="upgrade-pick-body">
+          <strong title="${esc(x.p.name)}">${esc(shortName(x.p))}</strong>
+          <p class="upgrade-gain">${esc(x.gain)}</p>
+          <ul class="upgrade-checks">${(x.ok || []).map(t => `<li class="is-ok">${esc(t)}</li>`).join('')}${(x.warn || []).map(t => `<li class="is-warn">${esc(t)}</li>`).join('')}</ul>
+        </div>
+        <div class="upgrade-pick-buy"><span>${esc(price)}</span><small>${esc(o?.store || '')}</small>${o ? `<a class="primary-button" href="${esc(o.url)}" target="_blank" rel="noopener noreferrer" aria-label="Comprar ${esc(shortName(x.p))} (se abre en otra pestaña)">Comprar ↗</a>` : ''}<button type="button" class="text-button" data-pc-category="${esc(x.p.category)}" data-pc-query="${esc(x.p.name)}">Ver ficha</button></div>
       </li>`;
-    });
-    $('profileAdvice').innerHTML = `<ul class="profile-advice-list">${items.join('')}</ul>`;
+    };
+    const section = (s, i) => `
+      <li class="upgrade-section">
+        <header><span class="upgrade-rank">${i + 1}</span><div><h4>${esc(s.title)}</h4>${s.why ? `<p>${esc(s.why)}</p>` : ''}</div></header>
+        ${s.picks?.length ? `<ul class="upgrade-picks">${s.picks.map(pick).join('')}</ul>` : ''}
+        ${s.extra?.picks?.length ? `<p class="upgrade-extra-title">Tu fuente no alcanza para estas gráficas. Añade también:</p><ul class="upgrade-picks">${s.extra.picks.map(pick).join('')}</ul>` : ''}
+        ${s.alternatives?.length ? `<ul class="upgrade-laptops">${s.alternatives.map(l => `<li><strong>${esc(l.name)}</strong><span>${esc(l.gpu)}</span><b>${esc(money(l.price))}${l.store ? ' · ' + esc(l.store) : ''}</b></li>`).join('')}</ul><a class="text-button profile-see-all" href="#laptops">Ver todas las laptops →</a>` : ''}
+        ${!s.picks?.length && !s.alternatives?.length && s.empty ? `<p class="upgrade-empty">${esc(s.empty)}</p>` : ''}
+      </li>`;
+    $('profileAdvice').innerHTML = `
+      <div class="upgrade-detected"><h5>Lo que entendimos de tu equipo</h5><dl>${known.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl>
+        ${missing.length ? `<p class="upgrade-missing">Para afinar la compatibilidad indica: ${esc(missing.join(', '))}. <button type="button" class="text-button" data-profile-edit>Completar datos</button></p>` : ''}</div>
+      ${sections.length ? `<ol class="upgrade-list">${sections.map(section).join('')}</ol>` : '<p class="upgrade-empty">Tu equipo cubre bien lo que marcaste. No hay una pieza que cambie claramente el resultado.</p>'}
+      ${tips.length ? `<details class="upgrade-tips"><summary>Consejos antes de comprar (${tips.length})</summary><ul>${tips.map(t => `<li><strong>${esc(t.title)}</strong> ${esc(t.reason)} <span>${esc(t.check)}</span></li>`).join('')}</ul></details>` : ''}`;
   }
 
   function syncStep() {
@@ -220,6 +244,8 @@
     if (results) setForm(saved);
     $('profileTeamTitle').textContent = results ? 'Tu perfil' : 'Tu perfil de ' + (device.value === 'laptop' ? 'laptop' : 'escritorio');
     $('profile-board').labels[0].firstElementChild.textContent = device.value === 'laptop' ? 'Modelo exacto de la laptop' : 'Modelo de placa base';
+    // La fuente solo aplica a equipos de escritorio.
+    $('profile-psuW').closest('label').hidden = device.value === 'laptop';
     if (results) { renderSummary(); renderAdvice(); }
     $('profileIntro').textContent = results ? use.selectedOptions[0].textContent + ' · ' + goalText(saved) :
       editing ? 'Elige tu uso principal y qué quieres mejorar. Puedes añadir los componentes que conozcas.' :
@@ -270,6 +296,7 @@
     location.hash = 'mi-pc/mejoras';
   });
   $('profileAdvice').addEventListener('click', event => {
+    if (event.target.closest('[data-profile-edit]')) { restoreForm(); $('profileHardware').open = true; location.hash = 'mi-pc/perfil'; return; }
     const button = event.target.closest('[data-pc-category]');
     if (!button) return;
     window.FENIXA_BROWSE_CATEGORY(button.dataset.pcCategory, button.dataset.pcQuery);
